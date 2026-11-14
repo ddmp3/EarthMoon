@@ -56,7 +56,7 @@ function scoreSite(values: ParamValues, criteria: Criterion[]): { total: number;
 
 Un critère `missing` (source en panne) est exclu du total : le site n'est pas pénalisé par une panne de source. Implémentation : `apps/api/src/scoring/`.
 
-## 5. Réponse de `POST /api/analyze` (Jesus + François-Xavier)
+## 5. Réponse de `POST /api/analyze` (Jesus + François)
 
 Requête : `{ "mode": "robotics" | "calibration" | "colony" }` ou `{ "criteria": Criterion[] }`, avec en option `"bareSoilOnly": false` pour désactiver le filtre NDVI ≤ 0,1 (mode 4). Une requête invalide renvoie une erreur 400 (`ValidationError`). Pour des critères libres, `mode` vaut `"custom"` dans la réponse.
 
@@ -80,4 +80,4 @@ Les sites sont triés par `total` décroissant. Un site végétalisé (NDVI > 0,
 
 ## 6. Données d'exemple — `data/fixtures/site-values.json`
 
-Valeurs de trois sites au format `ParamValues`, pour développer le moteur de score (David), l'interface (François-Xavier) et les tests (Yann) sans l'API. **Seules les valeurs NASA POWER et USGS de Haughton sont réelles** ; les autres sont fictives et ne doivent jamais apparaître dans la démo.
+Valeurs de trois sites au format `ParamValues`, pour développer le moteur de score (David), l'interface (François) et les tests (Yann) sans l'API. **Seules les valeurs NASA POWER et USGS de Haughton sont réelles** ; les autres sont fictives et ne doivent jamais apparaître dans la démo.
