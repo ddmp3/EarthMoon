@@ -1,0 +1,21 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+tfplan
+*.tfvars
+
+# Node
+node_modules/
+dist/
+coverage/
+
+# OS / éditeurs
+.DS_Store
+.vscode/
+.idea/

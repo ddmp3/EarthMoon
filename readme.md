@@ -4,87 +4,92 @@
 
 **Identifier sur Terre des sites analogues aux futures bases permanentes sur la Lune et sur Mars.**
 
+Énoncé : https://www.spaceappschallenge.org/2026/challenges/permanent-moon-base-locations-and-mars/
+
 À partir des données ouvertes de la NASA et d'autres agences spatiales, identifier et caractériser des sites terrestres analogues (déserts, régions polaires, terrains volcaniques ou arides, grottes, etc.), expliquer **ce qui les rend analogues et ce qui ne l'est pas**, puis présenter les résultats sous forme de carte, de visualisation ou d'outil.
 
-Objectif : ne pas simplement retrouver les analogues connus, mais **faire émerger des sites peu étudiés**.
+Objectif : ne pas seulement retrouver les analogues connus, mais **faire émerger des sites peu étudiés**.
 
-## 🎯 Public cible (proposition, à valider)
+## 🚀 Périmètre du MVP : Terre ↔ Lune
 
-- **Principal** : scientifiques et ingénieurs de mission (choix de sites de test pour les rovers, les instruments et les opérations humaines).
+| Phase | Périmètre | Statut |
+|---|---|---|
+| **MVP (ce week-end)** | Sites terrestres analogues à la **Lune** (cible de référence : pôle Sud lunaire) | En cours |
+| Phase 2 | Ajout de **Mars** (MOLA, THEMIS, CRISM, SHARAD) | Après le MVP |
+
+Le moteur et l'interface sont conçus pour accueillir Mars sans refonte : seul un nouveau profil de référence sera à ajouter.
+
+## 🎯 Public cible
+
+- **Principal** : équipes de mission (ingénieurs robotique, instrumentistes, planificateurs de base) qui doivent choisir un site de test sur Terre avant d'envoyer un équipement sur la Lune.
 - **Secondaire** : enseignants, étudiants et grand public (vulgarisation).
 
-## 💡 Concept de l'application
+## 🧭 Les 4 modes de l'application
 
-Une **application web visuelle** permettant à l'utilisateur :
+L'utilisateur choisit un mode, l'application interroge les sources de données et affiche les sites terrestres classés sur une carte.
 
-- soit de **choisir un scénario prédéfini** ;
-- soit de **définir ses propres critères** de recherche.
+| # | Mode | Question à laquelle il répond |
+|---|---|---|
+| 1 | **Validation robotique** | Où tester sur Terre la **mobilité** d'un rover ou d'un robot (NASA ou autre) avant de l'envoyer sur un site lunaire ? |
+| 2 | **Calibration d'instruments** | Où calibrer sur Terre des instruments de mesure (forage, vent, gaz, sismographe, thermique) dans des conditions proches de la Lune ? |
+| 3 | **Colonie autosuffisante** | Quels sites terrestres reproduisent les conditions qui rendent un site lunaire favorable à une colonie autonome (eau, énergie, terrain, abri) ? |
+| 4 | **Critères libres** | L'utilisateur choisit lui-même les paramètres, leurs intervalles et leurs poids. Les paramètres proposés sont **limités à ceux que nos sources fournissent**. |
+
+Les modes 1 à 3 sont des **jeux de paramètres prédéfinis** ; le mode 4 expose le même catalogue de paramètres sans présélection. Détail des paramètres : **[docs/scenarios.md](docs/scenarios.md)**.
 
 Pour chaque site proposé, l'application affiche :
 
 - un **score global** de similarité ;
 - un **score par critère** ;
-- ce qui **correspond** et ce qui **ne correspond pas**.
+- ce qui **correspond**, ce qui **ne correspond pas**, et à quoi le site peut servir.
 
-## 🧭 Scénarios prédéfinis
+## ⚙️ Moteur de comparaison
 
-Chaque scénario comporte la même liste de tâches :
-
-- [ ] Établir le moteur de comparaison.
-- [ ] Établir la liste des paramètres du cas d'usage, avec pour chacun :
-  - les valeurs types ou les intervalles de valeurs ;
-  - les sources de données où les obtenir.
-- [ ] Comprendre comment comparer les sources entre elles.
-
-| # | Scénario | Variables principales | Lune / Mars | Terre |
-|---|---|---|---|---|
-| 1 | **Entraînement** de rovers et d'autres équipements | pente, relief, rugosité | LOLA / MOLA | Copernicus DEM, ICESat-2 |
-| 2 | **Calibration** d'instruments scientifiques | minéralogie, thermique, lithologie | Diviner / CRISM, THEMIS | EMIT, ASTER, GLiM |
-| 3 | **Implantation humaine** (sol et sous-sol) | température, sous-sol, cavités | Diviner, pits LROC / grottes USGS | MODIS LST, NASA POWER, GVP |
-| 4 | **Ressources** (glace, ISRU) | hydrogène, glace enfouie | LEND, Mini-RF / SHARAD | ArcticDEM, Sentinel-1 |
-
-Filtre commun à tous les scénarios : **exclusion des zones végétalisées** (MODIS NDVI).
+- Chaque paramètre d'un mode a un **intervalle cible** (valeurs souhaitées) et une **tolérance**.
+- Score d'un critère : **1** dans l'intervalle, décroissance linéaire jusqu'à **0** à la limite de tolérance.
+- Score global : **moyenne pondérée** des scores par critère (poids fixés par le mode, ou par l'utilisateur en mode 4).
+- Filtre commun : **exclusion des zones végétalisées** (MODIS NDVI).
+- Candidats du MVP : une **liste versionnée de points** (analogues connus + régions froides, arides ou volcaniques peu étudiées). Le criblage sur une grille mondiale est prévu en phase 2.
 
 ## ✅ Validation
 
-- Les analogues reconnus doivent obtenir un score élevé : Atacama, Dry Valleys, cratère Haughton, Mauna Kea, Rio Tinto, Svalbard, Islande.
+- Les analogues reconnus doivent obtenir un score élevé : Atacama, Dry Valleys, cratère Haughton, Mauna Kea, Svalbard, Islande.
 - Un témoin négatif (Amazonie) doit obtenir un score bas.
+- Les meilleurs sites **hors** de cette liste sont mis en avant comme sites peu étudiés.
 
 ## 📡 Sources de données
 
-La liste complète des sources, leurs modes d'accès et leur statut de test est maintenue dans [docs/sources.md](docs/sources.md).
+Liste complète, modes d'accès et statut de test : **[docs/sources.md](docs/sources.md)**.
 
 Principes retenus :
 
-- **Aucun stockage de données** côté application.
-- **Accès par API uniquement** (REST, STAC, WMTS, lecture partielle de COG).
-- **Profil de référence Lune / Mars** : calculé une seule fois hors ligne, puis livré sous forme d'un fichier JSON versionné.
-- **Sécurité** : le jeton Earthdata Login ne doit **jamais** être commité.
+- **Aucune base de données** : les valeurs sont lues par API (REST, STAC, WMTS, lecture partielle de COG) et gardées seulement en cache mémoire dans l'API.
+- **Profil de référence lunaire** : établi une seule fois et livré sous forme d'un fichier JSON versionné (paramètres, pas jeu de données).
+- **Socle sans authentification** : toutes les sources du MVP sont accessibles sans compte. Aucun secret ne doit être commité.
 
 ## ⚠️ Limites de l'analogie terrestre
 
-La Terre ne reproduit pas :
+La Terre ne reproduit pas la gravité réduite, le vide, l'absence de vent ni l'environnement de rayonnement lunaires. Chaque fiche de site rappelle ce que l'analogie ne couvre pas. La biologie et l'habitabilité sont hors périmètre.
 
-- la gravité réduite ;
-- le vide lunaire ;
-- l'atmosphère ténue de Mars ;
-- l'environnement de rayonnement.
+## 🛠️ Architecture et stack
 
-La biologie et l'habitabilité sont hors du périmètre de ce projet.
+Même modèle que notre projet précédent (meteormadness), sur **Azure** :
 
-## 🛠️ Stack technologique
+- **Front** : React + TypeScript + Vite + Tailwind + Leaflet, hébergé sur **Azure Static Web App**.
+- **API** : Node.js + TypeScript + Express, contrat **OpenAPI**, image Docker dans **Azure Container Registry**, exécutée sur **Azure Container Apps**.
+- **Infrastructure** : **Terraform** (`infra/terraform`), région `canadacentral`, souscription DEV.
 
-- **TypeScript**
-- **React**
-- **OpenAPI**
+Détail : **[docs/architecture.md](docs/architecture.md)**. L'API publique (OpenAPI) est aussi un livrable.
 
-Option : proposer un **accès API** à notre application.
+## 🗓️ Plan projet
+
+Répartition des tâches de l'équipe : **[docs/plan-projet.md](docs/plan-projet.md)**.
 
 ## 🤖 Intelligence artificielle utilisée
 
-- **Claude** (Anthropic) : modèle(s) à préciser.
+- **Claude** (Anthropic), via Claude Code : analyse des sources, documentation, code.
 - **Microsoft Copilot**
 
 ## 👥 Équipe
 
-Équipe locale **Cyber&Space Montréal**.
+Équipe locale **Cyber&Space Montréal** : François-Xavier, Jesus, Ouassim, Yann, Xavier, David.
