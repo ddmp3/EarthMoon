@@ -10,6 +10,21 @@ Maquette cliquable : [maquettes/index.html](maquettes/index.html) (à ouvrir dan
 - **Aperçu mobile** (bouton en haut à droite) : affiche la maquette dans un cadre de téléphone. La mise en page mobile repose sur des *container queries*, donc elle s'applique aussi bien dans ce cadre que sur un vrai téléphone.
 - **État démo** (écran Carte) : simule les états chargement, erreur de source et aucun résultat.
 
+## Site lunaire de référence et globes 3D
+
+L'application n'est plus limitée au pôle Sud : l'utilisateur choisit un **site lunaire de référence** parmi 14 sites (pôles, mers, puits de tubes de lave, zones volcaniques, face cachée).
+
+- **Choix** : dans une liste avec recherche (nom, région, mission, type ; flèches + Entrée au clavier), ou en **cliquant un point sur la Lune en 3D** (accueil ou écran Explorer). Les étiquettes se masquent derrière le globe et quand elles se chevauchent.
+- **Fiche du site lunaire** : type, coordonnées, intérêt du site, pente, relief, temps éclairé, températures du sol au soleil et à l'ombre, glace d'eau, missions, et ce que l'application cherche sur Terre pour ce site. Bouton « Voir les analogues terrestres ».
+- **Globes** : la carte plate est remplacée par une Terre en 3D (continents, atmosphère, points colorés par note). Vues **Lune**, **Côte à côte** (par défaut) et **Terre**. Glisser pour tourner, molette ou pincement pour zoomer, rotation lente au repos, recentrage animé sur le site choisi.
+- **Scénarios génériques** : certains critères suivent le site lunaire choisi (pente et relief du scénario 1, latitude du scénario 3 seulement pour un site polaire, volcanisme renforcé pour une mer ou un tube de lave). Ces critères portent la mention « adapté » dans la fiche d'un site terrestre. **Règle proposée, à valider par Ouassim et David** : le README prévoit un seul profil de référence (`data/reference/moon-south-pole.json`) ; il en faudrait un par site lunaire.
+- Coordonnées des sites lunaires réelles ; caractéristiques **indicatives**, à remplacer par LOLA, Diviner et LEND.
+
+Interfaces dont la maquette reprend les principes (sans en copier l'apparence) :
+- NASA Eyes on the Solar System : globe 3D cliquable et panneau d'information du lieu choisi.
+- NASA Moon Trek et LROC QuickMap : recherche de lieux lunaires par nom.
+- Google Earth : recentrage animé sur le lieu choisi, étiquettes qui suivent le globe.
+
 ## Parcours
 
 ```mermaid
@@ -52,7 +67,9 @@ flowchart LR
 | Écran | Route | Champs utilisés |
 |---|---|---|
 | Accueil | `GET /api/modes` (à renommer `/api/scenarios` ?) | `id`, `name`, `question`, `audience` (public visé) |
-| Accueil | `GET /api/reference/moon` | nom et coordonnées du site lunaire de référence |
+| Accueil, Explorer | `GET /api/reference/moon` | liste des sites lunaires : `id`, `name`, `region`, `lat`, `lon`, `kind` |
+| Fiche lunaire | `GET /api/reference/moon/{id}` | `slope`, `roughness`, `illumination`, `tempDay`, `tempNight`, `ice`, `missions`, `description` |
+| Explorer | `POST /api/analyze` | entrée supplémentaire : `moonSite` (id du site lunaire de référence) |
 | Carte | `POST /api/analyze` | par site : `id`, `name`, `region`, `lat`, `lon`, `kind` (`known` / `control` / `new`), `score` (0-100), `excluded` (bool), `criteria[]` |
 | Fiche | `POST /api/analyze` ou `GET /api/sites/{id}` | par critère : `param`, `group` (instrument ou besoin), `value`, `min`, `max`, `tolerance`, `weight`, `score` (0-1) ; `usage` (texte) |
 | Fiche (bulles), Mode 4, Aide | `GET /api/parameters` | `id`, `label`, `help`, `unit`, `min`, `max`, `family`, `source`, `moonEquivalent` |
