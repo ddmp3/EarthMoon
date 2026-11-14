@@ -44,7 +44,7 @@ Chaque connecteur ne renvoie que ses paramètres. L'API fusionne les résultats 
 ## 4. Critères et score (David)
 
 ```ts
-type Criterion = { param: ParamId; min?: number; max?: number; tolerance: number; weight: number };
+type Criterion = { param: ParamId; min?: number; max?: number; tolerance: number; weight: number; group?: string }; // group : instrument (mode 2) ou besoin (mode 3)
 
 type CriterionScore = {
   param: ParamId; value: number | null; score: number;            // 0 à 1
@@ -54,9 +54,11 @@ type CriterionScore = {
 function scoreSite(values: ParamValues, criteria: Criterion[]): { total: number; criteria: CriterionScore[] }; // total sur 100
 ```
 
+Un critère `missing` (source en panne) est exclu du total : le site n'est pas pénalisé par une panne de source. Implémentation : `apps/api/src/scoring/`.
+
 ## 5. Réponse de `POST /api/analyze` (Jesus + François-Xavier)
 
-Requête : `{ "mode": "robotics" | "calibration" | "colony" }` ou `{ "criteria": Criterion[] }`.
+Requête : `{ "mode": "robotics" | "calibration" | "colony" }` ou `{ "criteria": Criterion[] }`, avec en option `"bareSoilOnly": false` pour désactiver le filtre NDVI ≤ 0,1 (mode 4). Une requête invalide renvoie une erreur 400 (`ValidationError`). Pour des critères libres, `mode` vaut `"custom"` dans la réponse.
 
 ```json
 {
@@ -74,7 +76,7 @@ Requête : `{ "mode": "robotics" | "calibration" | "colony" }` ou `{ "criteria":
 }
 ```
 
-Les sites sont triés par `total` décroissant. `GET /api/sites/{id}` renvoie le même objet site, plus `values` (toutes les valeurs brutes) et `sources`.
+Les sites sont triés par `total` décroissant. Un site végétalisé (NDVI > 0,1) reste dans la liste, en dernier, avec `"total": 0` et `"excluded": "vegetation"` : l'Amazonie apparaît ainsi en bas avec la raison de son exclusion. `GET /api/sites/{id}` renvoie le même objet site, plus `values` (toutes les valeurs brutes) et `sources`.
 
 ## 6. Données d'exemple — `data/fixtures/site-values.json`
 

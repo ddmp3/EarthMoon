@@ -1,0 +1,49 @@
+{
+  "id": "moon-south-pole",
+  "body": "moon",
+  "name": "Pôle Sud lunaire",
+  "status": "brouillon : seules les valeurs sourcées sont renseignées, le reste est à compléter avec Ouassim (voir todo)",
+  "params": {
+    "latitude_abs": {
+      "min": 84,
+      "max": 90,
+      "unit": "°",
+      "source": "NASA, 19 août 2022 : les 13 régions candidates d'Artemis III sont à moins de 6° de latitude du pôle Sud — https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-Moon/"
+    },
+    "lst_night": {
+      "min": -238,
+      "unit": "°C",
+      "source": "Paige et al. 2010, Science 330:479, « Diviner Lunar Radiometer Observations of Cold Traps in the Moon's South Polar Region » : températures inférieures à 35 K (≈ -238 °C) dans les régions en ombre permanente — https://pubs.usgs.gov/publication/70036393"
+    },
+    "wind": {
+      "min": 0,
+      "max": 0,
+      "unit": "m/s",
+      "source": "Pas d'atmosphère (exosphère seulement), donc pas de vent"
+    },
+    "humidity": {
+      "min": 0,
+      "max": 0,
+      "unit": "%",
+      "source": "Pas d'atmosphère"
+    },
+    "precipitation": {
+      "min": 0,
+      "max": 0,
+      "unit": "mm/jour",
+      "source": "Pas d'atmosphère"
+    },
+    "ndvi": {
+      "min": 0,
+      "max": 0,
+      "unit": "",
+      "source": "Aucune végétation"
+    }
+  },
+  "todo": [
+    "slope_mean, slope_max, roughness : LOLA (GDR ou cartes de pente des régions Artemis III)",
+    "lst_day, lst_amplitude : Diviner, températures maximales des crêtes éclairées (cartes de Sefton-Nash et al., EPSC 2013)",
+    "quake_count : séismes lunaires peu profonds, sismomètres Apollo (Nakamura)",
+    "solar : fraction d'éclairage des crêtes polaires (Mazarico et al. 2011, LOLA)"
+  ]
+}
