@@ -38,6 +38,28 @@ Points d'équipe de 10 minutes : sam 20 h, sam minuit, dim 9 h, dim 12 h.
 - Aucun secret dans le repo (voir [architecture.md](architecture.md#sécurité-revue-xavier)).
 - Bloqué plus de 30 minutes : on le dit dans le canal d'équipe.
 - Chacun peut s'appuyer sur Claude : donnez-lui le lien du repo et le fichier de doc lié à votre tâche, demandez du concret (code, tableau, texte), puis vérifiez le résultat.
+- **Personne n'attend personne** : on code contre les [contrats partagés](contrats.md) et les données d'exemple (`data/fixtures/site-values.json`), puis on branche le vrai livrable quand il arrive. Un changement de contrat se décide en équipe, dans une PR dédiée.
+
+## Passages de relais
+
+| Qui attend | Tâche | Attend | Prévu | Pour avancer sans attendre |
+|---|---|---|---|---|
+| David | Site en ligne (v0) | Jesus : squelette API ; François-Xavier : squelette web | sam 17 h 30 | Appliquer Terraform tout de suite (image de démonstration déjà prévue), pousser les vraies images après fusion |
+| David | Profil lunaire | Ouassim : specs rovers lunaires | sam 18 h 30 | Partir des intervalles de `docs/scenarios.md` |
+| David | `/api/analyze` branché | Jesus : connecteurs POWER, USGS, DEM, MODIS | sam 20 h – 22 h | Connecteur factice qui lit les fixtures, remplacé source par source |
+| David | Version de démo | François-Xavier : fiche site | dim minuit | Redéployer ce qui est fusionné à chaque jalon |
+| Jesus | Routes `/parameters`, `/modes`, `/sites` | Ouassim : `data/candidates.json` | sam 21 h | Servir les 3 sites des fixtures |
+| Jesus | Explication par Claude (bonus) | David : `/api/analyze` | sam 23 h 30 | Préparer l'appel avec un site des fixtures |
+| François-Xavier | Écran d'accueil | Yann : maquettes, textes d'aide | sam 17 h 30 / 20 h | Écran simple d'après `docs/scenarios.md`, textes provisoires dans un fichier séparé |
+| François-Xavier | Carte, fiche site | David : `/api/analyze` | sam 23 h 30 | Lire les fixtures (même format que la réponse de l'API) |
+| François-Xavier | Formulaire mode 4 | Yann : textes d'aide | sam 20 h | Paramètres tirés de `docs/scenarios.md`, textes branchés plus tard |
+| Ouassim | Vérification des classements | David : version déployée | dim 12 h | API en local depuis `main` dès que `/api/analyze` est fusionné |
+| Yann | Tests de la v0 | David : site en ligne | sam 20 h | Tester les écrans en local avec les fixtures |
+| Yann | Feu vert du gel | David : version de démo | dim 12 h | Dérouler le plan de test sur la dernière version déployée |
+| Xavier | Contrôle du site en ligne | David : site en ligne | sam 20 h | Relire la config CORS et la limitation de débit dans le code |
+| Xavier | Script et vidéo de démo | François-Xavier : fiche site ; Ouassim : 3 sites | dim minuit / 11 h | Script sur les maquettes de Yann, vidéo en dernier |
+
+La page de suivi montre en direct, pour chaque tâche, ce qu'elle attend (vert quand c'est livré) et ce qu'elle débloque.
 
 ---
 
@@ -76,7 +98,8 @@ Points d'équipe de 10 minutes : sam 20 h, sam minuit, dim 9 h, dim 12 h.
 ## Ouassim — expertise métier (robotique, instruments) et données
 
 - [ ] Vérifier les intervalles des modes 1 et 2 de [scenarios.md](scenarios.md) : chercher avec Claude les spécifications des rovers lunaires (pente franchissable, températures) et des instruments (forage, sismomètres Apollo) ; noter chaque source.
-- [ ] Créer `data/candidates.json` : les 7 sites de validation + 30 à 50 sites peu étudiés (nom, latitude, longitude, type de terrain). Format à convenir avec Jesus.
+- [ ] Créer `data/candidates.json` : les 7 sites de validation + 30 à 50 sites peu étudiés (format : [contrats.md §1](contrats.md#1-sites-candidats--datacandidatesjson-ouassim)).
+- [ ] Sam 23 h 30 : écrire le classement attendu par mode (quels sites en haut, lesquels en bas, et pourquoi).
 - [ ] Avec David : valeurs lunaires de référence (Diviner, LOLA, LEND) dans `data/reference/moon-south-pole.json`, avec les sources.
 - [ ] Dimanche : lancer les 4 modes et vérifier le classement (analogues connus en haut, Amazonie en bas) ; signaler les écarts.
 - [ ] Fournir à Xavier 3 sites peu étudiés « coups de cœur » pour la présentation.

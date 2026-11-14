@@ -1,0 +1,89 @@
+{
+  "note": "Données d'exemple pour développer sans l'API (voir docs/contrats.md). Seules les valeurs NASA POWER et USGS de Haughton sont réelles (relevées le 2026-11-14) ; toutes les autres sont fictives.",
+  "sites": [
+    {
+      "id": "haughton",
+      "name": "Cratère Haughton (île Devon)",
+      "lat": 75.38,
+      "lon": -89.67,
+      "terrain": "impact",
+      "role": "validation",
+      "values": {
+        "slope_mean": 7.5,
+        "slope_max": 24,
+        "roughness": 18,
+        "elevation": 173,
+        "ndvi": 0.04,
+        "lst_day": 4,
+        "lst_night": -22,
+        "lst_amplitude": 26,
+        "t2m_mean": -14.42,
+        "t2m_min": -48.55,
+        "t2m_max": 16.81,
+        "wind": 3.08,
+        "humidity": 94.36,
+        "precipitation": 0.85,
+        "solar": 2.32,
+        "latitude_abs": 75.38,
+        "quake_count": 18,
+        "volcano_distance": 1400
+      }
+    },
+    {
+      "id": "atacama",
+      "name": "Désert d'Atacama",
+      "lat": -24.5,
+      "lon": -69.25,
+      "terrain": "desert",
+      "role": "validation",
+      "values": {
+        "slope_mean": 6,
+        "slope_max": 28,
+        "roughness": 25,
+        "elevation": 2400,
+        "ndvi": 0.02,
+        "lst_day": 45,
+        "lst_night": 2,
+        "lst_amplitude": 43,
+        "t2m_mean": 14,
+        "t2m_min": -6,
+        "t2m_max": 30,
+        "wind": 4.5,
+        "humidity": 18,
+        "precipitation": 0.02,
+        "solar": 7.2,
+        "latitude_abs": 24.5,
+        "quake_count": 950,
+        "volcano_distance": 35
+      }
+    },
+    {
+      "id": "amazonie",
+      "name": "Amazonie (témoin négatif)",
+      "lat": -3.47,
+      "lon": -62.37,
+      "terrain": "forest",
+      "role": "negative",
+      "values": {
+        "slope_mean": 1.5,
+        "slope_max": 6,
+        "roughness": 3,
+        "elevation": 60,
+        "ndvi": 0.85,
+        "lst_day": 31,
+        "lst_night": 22,
+        "lst_amplitude": 9,
+        "t2m_mean": 27,
+        "t2m_min": 20,
+        "t2m_max": 34,
+        "wind": 1.2,
+        "humidity": 85,
+        "precipitation": 7.5,
+        "solar": 4.8,
+        "latitude_abs": 3.47,
+        "quake_count": 2,
+        "volcano_distance": 2100
+      }
+    }
+  ]
+}
