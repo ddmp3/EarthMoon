@@ -64,12 +64,25 @@ Analyser la structure géologique du sol et du sous-sol pour favoriser l'install
 
 ## 📡 Sources de données
 
-> **À établir** : liste des sources de données.
+La liste complète des sources, leurs modes d'accès et leur statut de test est maintenue dans docs/sources.md.
 
 Principes retenus :
 
 - **Aucun stockage de données** côté application.
-- **Accès par API uniquement** aux sources.
+- **Accès par API uniquement** aux sources (REST, STAC, WMTS, lecture partielle de COG par requêtes HTTP Range).
+- **Profil de référence Lune / Mars** : calculé une seule fois hors ligne, puis livré sous forme d'un petit fichier JSON versionné (des paramètres, pas un jeu de données).
+- **Sites candidats sur Terre** : interrogés en direct par API.
+- **Sécurité** : le jeton Earthdata Login ne doit **jamais** être commité.
+
+Sources prioritaires (socle) :
+
+| Source | Corps | Variables |
+|---|---|---|
+| LRO LOLA | Lune | relief, pente |
+| LRO Diviner | Lune | température de surface |
+| Copernicus DEM GLO-30 | Terre | relief, pente |
+| MODIS LST | Terre | température de surface |
+| NASA POWER | Terre | température de l'air, vent, ensoleillement |
 
 ## 🛠️ Stack technologique
 
