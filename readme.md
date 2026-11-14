@@ -17,35 +17,59 @@ Une **application web visuelle** permettant à l'utilisateur :
 - soit de **choisir un scénario prédéfini** ;
 - soit de **définir ses propres critères** de recherche.
 
-### Scénarios prédéfinis (3 à 4)
+## 🧭 Scénarios prédéfinis (3 à 4)
 
-1. **Entraînement** : entraîner des rovers ou d'autres équipements.
-2. **Calibration** : calibrer des instruments scientifiques.
-3. **Implantation humaine** : analyser la structure géologique du sol et du sous-sol pour favoriser l'installation d'une base.
-4. **Ressources (proposé)** : repérer les sites analogues pour la glace et l'hydrogène (extraction de ressources sur place, ISRU).
+### 1. Entraînement de rovers et d'autres équipements
 
-### Moteur de comparaison
+**À faire :**
 
-> **Proposition, à valider par l'équipe.**
+- [ ] Établir le moteur de comparaison.
+- [ ] Établir la liste des paramètres du cas d'usage, avec pour chacun :
+  - les valeurs types ou les intervalles de valeurs ;
+  - les sources de données où les obtenir.
+- [ ] Comprendre comment comparer les sources entre elles.
 
-- Cible de référence : le pôle Sud lunaire (profil de température Diviner, pente et relief LOLA).
-- Chaque site candidat est représenté par un vecteur de variables normalisées (température, pente, relief, puis minéralogie).
-- Le scénario choisi fixe le poids de chaque variable.
-- Score de similarité = 1 − distance pondérée normalisée, avec un détail par variable (ce qui est similaire, ce qui ne l'est pas, à quoi le site servirait).
-- Validation : les analogues reconnus (Atacama, Dry Valleys, Haughton, Mauna Kea, Rio Tinto, Svalbard, Islande) doivent obtenir un score élevé, et un témoin négatif (Amazonie) un score bas.
-- Bonus : rugosité radar (SAR) sur 1 ou 2 sites seulement.
+### 2. Calibration d'instruments scientifiques
+
+**À faire :**
+
+- [ ] Établir le moteur de comparaison.
+- [ ] Établir la liste des paramètres du cas d'usage, avec pour chacun :
+  - les valeurs types ou les intervalles de valeurs ;
+  - les sources de données où les obtenir.
+- [ ] Comprendre comment comparer les sources entre elles.
+
+### 3. Implantation humaine
+
+Analyser la structure géologique du sol et du sous-sol pour favoriser l'installation d'une base.
+
+**À faire :**
+
+- [ ] Établir le moteur de comparaison.
+- [ ] Établir la liste des paramètres du cas d'usage, avec pour chacun :
+  - les valeurs types ou les intervalles de valeurs ;
+  - les sources de données où les obtenir.
+- [ ] Comprendre comment comparer les sources entre elles.
+
+### 4. *(À définir)*
+
+**À faire :**
+
+- [ ] Définir le scénario.
+- [ ] Établir le moteur de comparaison.
+- [ ] Établir la liste des paramètres du cas d'usage, avec pour chacun :
+  - les valeurs types ou les intervalles de valeurs ;
+  - les sources de données où les obtenir.
+- [ ] Comprendre comment comparer les sources entre elles.
 
 ## 📡 Sources de données
 
-Liste détaillée, avec l'accès API et le statut de vérification : **[docs/sources.md](docs/sources.md)**.
-
-Socle : LOLA et Diviner (Lune), Copernicus DEM, MODIS LST et NASA POWER (Terre). En complément : EMIT ou ASTER pour la minéralogie.
+> **À établir** : liste des sources de données.
 
 Principes retenus :
 
 - **Aucun stockage de données** côté application.
 - **Accès par API uniquement** aux sources.
-- Exception assumée : le profil de la cible (Lune, Mars) est précalculé une fois et livré comme petit fichier de configuration versionné. Ce sont des paramètres, pas un jeu de données.
 
 ## 🛠️ Stack technologique
 
