@@ -1,5 +1,7 @@
 # Plan projet — MVP Terre ↔ Lune (week-end du 14-15 novembre 2026)
 
+> **Version à suivre pendant le week-end : https://claude.ai/artifact/L14HHuEdPnAwuw5RFp7moJ** (une colonne par personne, tâches à cocher, avancement partagé en direct).
+
 ## Objectif du week-end
 
 Une application web **déployée sur Azure** où l'on choisit un des 4 modes et où l'on obtient sur une carte les sites terrestres classés, avec pour chacun un score global, un score par critère et ce qui correspond ou non. Plus une présentation et une soumission Space Apps complètes.

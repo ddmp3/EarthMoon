@@ -83,7 +83,8 @@ Détail : **[docs/architecture.md](docs/architecture.md)**. L'API publique (Open
 
 ## 🗓️ Plan projet
 
-Répartition des tâches de l'équipe : **[docs/plan-projet.md](docs/plan-projet.md)**.
+- **Tâches de chacun, à cocher : https://claude.ai/artifact/L14HHuEdPnAwuw5RFp7moJ**
+- Version texte : [docs/plan-projet.md](docs/plan-projet.md).
 
 ## 🤖 Intelligence artificielle utilisée
 
