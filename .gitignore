@@ -19,3 +19,6 @@ coverage/
 .DS_Store
 .vscode/
 .idea/
+
+# Maquettes de brainstorming (outil local)
+.superpowers/

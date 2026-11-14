@@ -1,5 +1,7 @@
 # Parcours utilisateur et maquettes
 
+> **Nouveau parcours narratif** : [maquettes/parcours.html](maquettes/parcours.html), conçu d'après [superpowers/specs/2026-11-14-parcours-narratif-design.md](superpowers/specs/2026-11-14-parcours-narratif-design.md). La recherche se déroule en 6 chapitres (Mission, Le site lunaire, Candidats, Comparer, Choisir, Dossier), avec une scène 3D qui suit chaque chapitre et une ambiance qui change selon le scénario. Le reste de ce document décrit la première maquette (`maquettes/index.html`), conservée pour comparer.
+
 Maquette cliquable : [maquettes/index.html](maquettes/index.html) (à ouvrir dans un navigateur). Les valeurs des sites sont **fictives** ; les scénarios, paramètres et intervalles viennent de [scenarios.md](scenarios.md). Le score est calculé avec la formule du README pour que le classement de la maquette soit cohérent.
 
 > **Vocabulaire** : dans l'interface, on parle de **scénario** (et non de « mode »). Les docs du repo et le contrat d'API disent encore « mode » : à aligner avec l'équipe.

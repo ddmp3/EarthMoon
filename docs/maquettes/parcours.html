@@ -1,0 +1,1409 @@
+<title>Parcours Analogues Lune</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap">
+<style>
+/* Concept : un carnet de mission en 6 chapitres. À gauche le récit (ce que l'équipe décide), à droite la scène 3D qui accompagne
+   chaque chapitre. Une seule famille (Archivo, largeur variable) : large et grasse pour les titres, normale pour le texte.
+   Le seul élément spectaculaire est la scène ; tout le reste est sobre. La couleur d'accent et le motif de la scène suivent le scénario. */
+:root {
+  --night: #0e1626; --panel: #142033; --panel-2: #1a2840; --card: #111b2c; --line: #24334c; --line-2: #2f4160;
+  --ink: #eaf0f8; --muted: #9aa8bf; --dim: #66758e; --moon: #d7dbe4;
+  --good: #4bd69a; --mid: #f2c25b; --bad: #ff6f6f;
+  --cand-a: #ff7a90; --cand-b: #6fe0b0; --cand-c: #8ab0ff;
+  --accent: #e6e9f0; --accent-ink: #0e1626;
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --void: var(--night);
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif; --f-body: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif; --f-mono: var(--f-body);
+  --bar-h: 64px;
+  color-scheme: dark;
+}
+/* Ambiance par scénario */
+:root[data-scen="1"] { --accent: #e8a33d; }   /* robotique : ocre du terrain */
+:root[data-scen="2"] { --accent: #36d7e8; }   /* instruments : cyan d'oscilloscope */
+:root[data-scen="3"] { --accent: #f4d35e; }   /* colonie : or solaire */
+:root[data-scen="4"] { --accent: #e6e9f0; }   /* critères libres : neutre */
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; overflow: hidden; }
+body { background: var(--night); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.55; font-variant-numeric: tabular-nums; }
+h1, h2, h3, h4 { font-family: var(--f-display); margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(26px, 2.4vw, 34px); font-weight: 760; font-stretch: 116%; line-height: 1.08; letter-spacing: -.01em; }
+h2 { font-size: 19px; font-weight: 700; font-stretch: 110%; line-height: 1.2; }
+h3 { font-size: 15px; font-weight: 700; font-stretch: 105%; }
+p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.lbl { font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.muted { color: var(--muted); }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.hud { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; }
+
+/* Cadre (aperçu mobile) */
+.stage-outer { height: 100%; display: grid; place-items: center; background: radial-gradient(1px 1px at 20% 30%, #fff8 50%, transparent), radial-gradient(1px 1px at 70% 60%, #fff6 50%, transparent), radial-gradient(1px 1px at 40% 80%, #fff5 50%, transparent), radial-gradient(1px 1px at 85% 15%, #fff7 50%, transparent), var(--night); background-size: 240px 240px, 310px 310px, 270px 270px, 350px 350px, auto; }
+.device { position: relative; width: 100%; height: 100%; overflow: hidden; container: app / inline-size; background: var(--night); transition: width .45s, height .45s, border-radius .45s; }
+body.phone .device { width: 390px; height: min(844px, calc(100% - 32px)); border-radius: 46px; border: 10px solid #1b2436; box-shadow: 0 30px 90px rgba(0,0,0,.6); }
+body.phone .app { padding-top: 34px; }
+.app { height: 100%; display: flex; flex-direction: column; }
+
+/* Barre : marque, chapitres, outils */
+.bar { flex: none; height: var(--bar-h); display: flex; align-items: center; gap: 18px; border-bottom: 1px solid var(--line); background: var(--night); position: relative; z-index: 30; }
+.brand { font-family: var(--f-display); font-weight: 800; font-stretch: 122%; font-size: 17px; white-space: nowrap; background: none; border: 0; padding: 0; display: flex; align-items: center; gap: 9px; }
+.brand i { width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #e7eaf0, #8b93a1 60%, #2b3240); box-shadow: inset -4px -3px 5px rgba(0,0,0,.6); }
+.steps { list-style: none; margin: 0 auto; padding: 0; display: flex; gap: 2px; min-width: 0; }
+.steps button { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 0; background: none; border-radius: 6px; color: var(--dim); white-space: nowrap; font-size: 13.5px; font-weight: 600; }
+.steps button .n { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; border: 1.5px solid currentColor; flex: none; }
+.steps button.done { color: var(--muted); }
+.steps button.done .n { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.steps button[aria-current="step"] { color: var(--ink); background: var(--panel); }
+.steps button[aria-current="step"] .n { border-color: var(--accent); color: var(--accent); }
+.steps button:disabled { cursor: default; opacity: .55; }
+.steps li + li button::before { content: ""; width: 10px; height: 1.5px; background: var(--line-2); margin-right: 2px; }
+.tools { display: flex; gap: 8px; align-items: center; }
+.ghost-btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 11px; border: 1px solid var(--line-2); background: transparent; font-size: 13px; border-radius: 6px; white-space: nowrap; }
+.ghost-btn:hover { border-color: var(--accent); }
+.ghost-btn[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.toggle { display: flex; gap: 6px; align-items: center; font-size: 12.5px; color: var(--muted); white-space: nowrap; }
+.toggle input { accent-color: var(--accent); }
+@media (max-width: 600px) { #phone-btn { display: none; } }
+
+/* Annotations API */
+.api { display: inline-block; font-size: 11px; padding: 1px 6px; border: 1px dashed #ff9b5e; color: #ff9b5e; border-radius: 3px; white-space: nowrap; font-weight: 500; }
+body:not(.show-api) .api { display: none; }
+
+/* Scène et récit */
+.main { flex: 1; min-height: 0; display: grid; grid-template-columns: 440px minmax(0, 1fr); grid-template-areas: "recit scene"; }
+.recit { grid-area: recit; min-height: 0; display: flex; flex-direction: column; border-right: 1px solid var(--line); background: var(--night); }
+.recit-body { flex: 1; min-height: 0; overflow-y: auto; padding: 26px 24px 20px; display: grid; gap: 22px; align-content: start; }
+.recit-body > * { min-width: 0; }
+.recit-nav { flex: none; display: flex; gap: 10px; align-items: center; padding: 14px 24px; border-top: 1px solid var(--line); background: var(--night); }
+.recit-nav .hint { flex: 1; font-size: 12.5px; color: var(--muted); }
+.scene { grid-area: scene; position: relative; min-width: 0; min-height: 0; overflow: hidden; background: radial-gradient(ellipse at 50% 45%, #16233a, var(--night) 70%); }
+.scene::before { content: ""; position: absolute; inset: 0; background: var(--motif, none); opacity: .55; pointer-events: none; transition: opacity .6s; }
+.globes { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; }
+.globes[data-mode="moon"] { grid-template-columns: 1fr 0fr; }
+.globes[data-mode="earth"] { grid-template-columns: 0fr 1fr; }
+.globes[data-mode="stack"] { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+.gpanel { position: relative; min-width: 0; min-height: 0; overflow: hidden; }
+.gpanel canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; cursor: grab; touch-action: none; }
+.gpanel canvas:active { cursor: grabbing; }
+.globes[data-mode="split"] .gp-moon { border-right: 1px solid var(--line); }
+.globes[data-mode="stack"] .gp-moon { border-bottom: 1px solid var(--line); }
+.gp-name { position: absolute; z-index: 6; left: 18px; top: 16px; pointer-events: none; display: grid; gap: 1px; }
+.gp-name b { font-family: var(--f-display); font-stretch: 120%; font-weight: 760; font-size: 15px; }
+.gp-name span { font-size: 12.5px; color: var(--muted); }
+.caption { position: absolute; z-index: 7; left: 18px; bottom: 16px; max-width: min(460px, calc(100% - 36px)); font-size: 13px; color: var(--muted); background: color-mix(in srgb, var(--night) 75%, transparent); padding: 8px 12px; border-radius: 6px; border: 1px solid var(--line); }
+.glabels { position: absolute; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+.glabel { position: absolute; left: 0; top: 0; padding: 1px 7px; font-size: 11.5px; font-weight: 600; white-space: nowrap; color: var(--ink); background: color-mix(in srgb, var(--night) 80%, transparent); border: 1px solid var(--line-2); border-radius: 4px; pointer-events: auto; cursor: pointer; }
+.glabel:hover { border-color: var(--accent); }
+.glabel.sel { border-color: var(--accent); color: var(--accent); z-index: 2; }
+.glabel.hidden { opacity: 0; pointer-events: none; }
+.gtip { position: absolute; z-index: 8; padding: 4px 8px; font-size: 12px; background: var(--panel-2); border: 1px solid var(--accent); border-radius: 4px; pointer-events: none; white-space: nowrap; transform: translate(12px, -50%); }
+.gfail { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; color: var(--muted); font-size: 13px; }
+
+/* Mises en page par chapitre */
+.main[data-ch="4"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(220px, 34vh) minmax(0, 1fr); grid-template-areas: "scene" "recit"; }
+.main[data-ch="4"] .recit { border-right: 0; border-top: 1px solid var(--line); }
+.main[data-ch="6"] { grid-template-columns: minmax(0, 1fr) 360px; grid-template-areas: "recit scene"; }
+.main[data-ch="6"] .recit { border-right: 0; border-left: 0; }
+.main[data-ch="6"] .scene { border-left: 1px solid var(--line); }
+.main[data-ch="4"] .recit-body, .main[data-ch="6"] .recit-body { padding: 24px max(24px, calc((100% - 1180px) / 2)); }
+
+/* Éléments du récit */
+.chap-n { font-size: 13px; font-weight: 600; color: var(--accent); }
+.lead { color: var(--muted); font-size: 15px; max-width: 62ch; }
+.block { display: grid; gap: 10px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 700; font-size: 14.5px; border-radius: 6px; white-space: nowrap; transition: filter .15s, transform .15s; }
+.btn:hover { filter: brightness(1.08); }
+.btn:active { transform: translateY(1px); }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line-2); }
+.btn.ghost:hover { border-color: var(--accent); }
+.btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+.notice { font-size: 13px; padding: 10px 12px; border-radius: 6px; border: 1px solid var(--mid); color: var(--mid); background: color-mix(in srgb, var(--mid) 8%, transparent); }
+
+/* Chapitre 1 */
+.pick-cur { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px 14px; }
+.pick-cur b { font-family: var(--f-display); font-stretch: 112%; font-size: 18px; display: block; }
+.search { width: 100%; padding: 10px 12px 10px 34px; border: 1px solid var(--line-2); background: var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239aa8bf' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-4-4'/%3E%3C/svg%3E") no-repeat 11px 50% / 15px; border-radius: 6px; }
+.mlist { list-style: none; margin: 0; padding: 0; max-height: 236px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; }
+.mlist .grp { padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--dim); background: var(--card); border-bottom: 1px solid var(--line); }
+.mlist button { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 8px 12px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; }
+.mlist button:hover, .mlist button.kb { background: var(--panel); }
+.mlist button[aria-selected="true"] { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+.mlist .nm { font-weight: 600; font-size: 14px; display: block; }
+.mlist .mt { font-size: 12px; color: var(--muted); }
+.scen-opts { display: grid; gap: 8px; }
+.scen-opt { display: grid; grid-template-columns: 38px minmax(0, 1fr); gap: 12px; align-items: start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); text-align: left; transition: border-color .2s, background .2s; }
+.scen-opt:hover { border-color: var(--line-2); }
+.scen-opt[aria-checked="true"] { border-color: var(--sc); background: color-mix(in srgb, var(--sc) 9%, var(--card)); }
+.scen-opt .sw { width: 38px; height: 38px; border-radius: 8px; background: color-mix(in srgb, var(--sc) 18%, transparent); border: 1.5px solid var(--sc); display: grid; place-items: center; color: var(--sc); }
+.scen-opt .sw svg { width: 20px; height: 20px; }
+.scen-opt b { display: block; font-size: 14.5px; }
+.scen-opt span { font-size: 13px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 5px 11px; border: 1px solid var(--line-2); background: transparent; font-size: 12.5px; border-radius: 999px; color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+
+/* Chapitre 2 */
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.facts div { padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); display: grid; gap: 1px; }
+.facts b { font-size: 17px; font-weight: 700; }
+.facts span { font-size: 12px; color: var(--muted); }
+.need { display: grid; gap: 2px; }
+.need-fam { font-size: 12.5px; font-weight: 700; color: var(--accent); margin-top: 8px; }
+.need-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.need-row small { grid-column: 1 / -1; color: var(--muted); font-size: 12.5px; }
+.tag { font-size: 11.5px; font-weight: 600; padding: 1px 6px; border-radius: 4px; border: 1px solid currentColor; }
+
+/* Chapitre 3 */
+.range-head { display: flex; justify-content: space-between; align-items: baseline; }
+.range-val { font-weight: 700; color: var(--accent); }
+.range { position: relative; height: 26px; }
+.range .track { position: absolute; left: 8px; right: 8px; top: 11px; height: 4px; border-radius: 2px; background: linear-gradient(90deg, color-mix(in srgb, var(--bad) 45%, transparent) 0 40%, color-mix(in srgb, var(--mid) 45%, transparent) 40% 70%, color-mix(in srgb, var(--good) 45%, transparent) 70%); }
+.range .fill { position: absolute; top: 10px; height: 6px; border: 1.5px solid var(--accent); border-radius: 3px; pointer-events: none; }
+.range input { position: absolute; left: 0; right: 0; top: 5px; width: 100%; height: 16px; margin: 0; background: none; pointer-events: none; -webkit-appearance: none; appearance: none; }
+.range input::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; width: 16px; height: 16px; border-radius: 50%; background: var(--accent); border: 3px solid var(--night); box-shadow: 0 0 0 1px var(--accent); cursor: grab; }
+.range input::-moz-range-thumb { pointer-events: auto; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 3px solid var(--night); cursor: grab; }
+.range input::-moz-range-track { background: none; }
+.demo { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--dim); }
+.demo button { padding: 2px 8px; border: 1px dashed var(--line-2); background: transparent; font-size: 12px; border-radius: 4px; color: var(--muted); }
+.demo button[aria-pressed="true"] { border-color: #ff9b5e; color: #ff9b5e; }
+.rank { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.rank li { animation: rowIn .3s both; animation-delay: calc(var(--i, 0) * 30ms); }
+@keyframes rowIn { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+.row { width: 100%; display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 4px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; }
+.row:hover, .row.hl { background: var(--panel); }
+.row .pos { color: var(--dim); font-size: 13px; font-weight: 600; }
+.row .nm { font-weight: 600; display: block; }
+.row .mt { font-size: 12.5px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.score { font-weight: 700; font-size: 15px; min-width: 42px; text-align: center; padding: 2px 6px; border-radius: 4px; border: 1.5px solid currentColor; }
+.s-good { color: var(--good); } .s-mid { color: var(--mid); } .s-bad { color: var(--bad); } .s-off { color: var(--dim); }
+.in-trio { font-size: 11.5px; font-weight: 700; padding: 1px 6px; border-radius: 4px; color: var(--night); }
+.excl { padding: 8px 4px; font-size: 12.5px; color: var(--dim); border-bottom: 1px solid var(--line); }
+.state-box { display: grid; gap: 10px; padding: 16px; border: 1px dashed var(--line-2); border-radius: 6px; color: var(--muted); }
+.state-box h3 { color: var(--ink); }
+.skel { height: 48px; border-radius: 6px; background: linear-gradient(90deg, var(--panel), var(--line), var(--panel)); background-size: 200% 100%; animation: sk 1.2s linear infinite; }
+@keyframes sk { to { background-position: -200% 0; } }
+.src { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 10px; font-size: 13px; }
+
+/* Chapitre 4 : comparaison */
+.cmp { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 20px; align-items: start; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.ccard { display: grid; gap: 12px; align-content: start; padding: 16px; border: 1px solid var(--line); border-top: 3px solid var(--cc); border-radius: 6px; background: var(--card); transition: border-color .25s, box-shadow .25s; }
+.ccard.chosen { box-shadow: 0 0 0 2px var(--cc); }
+.ccard-h { display: grid; grid-template-columns: 30px minmax(0, 1fr) auto; gap: 10px; align-items: center; }
+.ccard-h .lt { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: var(--night); background: var(--cc); }
+.ccard-h b { display: block; font-size: 15.5px; }
+.ccard-h small { color: var(--muted); font-size: 12.5px; }
+.fams-g { display: grid; gap: 2px; }
+.fam-g { display: grid; grid-template-columns: 112px minmax(0, 1fr) 30px; gap: 8px; align-items: center; padding: 5px 4px; margin: 0 -4px; border: 0; background: none; text-align: left; border-radius: 4px; font-size: 13px; }
+.fam-g:hover { background: var(--panel); }
+.fam-g .gb { height: 7px; border-radius: 4px; background: var(--line); overflow: hidden; }
+.fam-g .gb i { display: block; height: 100%; background: var(--accent); border-radius: 4px; transition: width .6s cubic-bezier(.2,.8,.2,1); }
+.fam-g .gv { font-weight: 700; text-align: right; font-size: 12.5px; }
+.fam-g[aria-expanded="true"] { background: var(--panel); }
+.fam-detail { display: grid; gap: 4px; padding: 8px 10px; margin: 2px 0 6px; border-left: 2px solid var(--accent); font-size: 12.5px; }
+.fam-detail div { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; }
+.fam-detail .lv { color: var(--moon); }
+.verdict { font-size: 14px; font-style: italic; color: var(--ink); border-left: 2px solid var(--cc); padding-left: 10px; }
+.ccard-b { display: flex; gap: 8px; flex-wrap: wrap; }
+.ovl { border-color: var(--line-2); }
+.ovl[aria-pressed="true"] { border-color: var(--cc); color: var(--cc); background: color-mix(in srgb, var(--cc) 10%, transparent); }
+.radar-box { padding: 14px; display: grid; gap: 8px; position: sticky; top: 0; }
+.radar-box svg { width: 100%; height: auto; overflow: visible; }
+.rd-ring { fill: none; stroke: var(--line); }
+.rd-axis { stroke: var(--line-2); }
+.rd-band { stroke: var(--good); stroke-width: 6; stroke-linecap: round; opacity: .3; }
+.rd-lbl { fill: var(--muted); font-size: 10.5px; font-family: var(--f-body); }
+.rd-moon { fill: var(--moon); fill-opacity: .12; stroke: var(--moon); stroke-width: 1.8; stroke-dasharray: 5 4; }
+.rd-cand { fill-opacity: .2; stroke-width: 2; stroke-linejoin: round; transform-origin: 200px 170px; animation: grow .5s cubic-bezier(.2,.8,.2,1) both; mix-blend-mode: screen; }
+@keyframes grow { from { transform: scale(0); opacity: 0; } to { transform: none; opacity: 1; } }
+.legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12.5px; color: var(--muted); }
+.legend span { display: flex; gap: 6px; align-items: center; }
+.legend i { width: 14px; height: 9px; border-radius: 2px; }
+
+/* Chapitre 5 */
+.why { display: grid; gap: 8px; }
+.why li { font-size: 14px; }
+.alt { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 10px 12px; border: 1px solid var(--line); border-left: 3px solid var(--cc); border-radius: 6px; background: var(--card); }
+
+/* Chapitre 6 : dossier */
+.dossier { display: grid; gap: 28px; max-width: 980px; }
+.dossier-h { display: grid; gap: 8px; }
+.dossier-h .meta { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 13.5px; color: var(--muted); }
+.dossier-h .meta b { color: var(--ink); }
+.dsec { display: grid; gap: 12px; }
+.chars { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px 24px; }
+.chars h3 { color: var(--accent); margin-bottom: 4px; }
+.chars dl { margin: 0; display: grid; gap: 4px; font-size: 13px; }
+.chars dl div { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dotted var(--line-2); padding-bottom: 3px; }
+.chars dt { color: var(--muted); } .chars dd { margin: 0; font-weight: 600; }
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.cmp-table th { text-align: left; font-size: 12.5px; color: var(--muted); font-weight: 600; padding: 8px; border-bottom: 1px solid var(--line-2); }
+.cmp-table td { padding: 9px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.cmp-table td.v { white-space: nowrap; font-weight: 600; }
+.cmp-table td.lv { white-space: nowrap; color: var(--moon); }
+.tablebox { overflow-x: auto; }
+.lvl { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }
+.lvl-2 { background: color-mix(in srgb, var(--good) 16%, transparent); color: var(--good); }
+.lvl-1 { background: color-mix(in srgb, var(--mid) 16%, transparent); color: var(--mid); }
+.lvl-0 { background: color-mix(in srgb, var(--bad) 16%, transparent); color: var(--bad); }
+.scope { display: grid; gap: 10px; }
+.scope-row { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 14px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); }
+.scope-row h3 { font-size: 14.5px; } .scope-row p { font-size: 14px; color: var(--muted); }
+.scope-row p b { color: var(--ink); font-weight: 600; }
+.never { padding: 14px 16px; border: 1px dashed var(--bad); border-radius: 6px; display: grid; gap: 6px; }
+.never h3 { color: var(--bad); }
+.never p { font-size: 14px; color: var(--muted); }
+
+/* Fiche d'un site (chapitre 3) et aide */
+.sheet, .drawer { position: absolute; z-index: 40; top: var(--bar-h); right: 0; bottom: 0; width: min(440px, 100%); background: var(--panel); border-left: 1px solid var(--line-2); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,.45); animation: slideIn .3s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes slideIn { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sheet-in { padding: 20px; display: grid; gap: 18px; }
+.sheet-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: start; }
+.close { border: 1px solid var(--line-2); background: transparent; border-radius: 6px; padding: 4px 10px; color: var(--muted); }
+.crow { display: grid; gap: 3px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.crow .l { display: flex; justify-content: space-between; gap: 8px; }
+.crow .s { display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.bar-s { height: 5px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.bar-s i { display: block; height: 100%; }
+.drawer { width: min(520px, 100%); }
+.help-in { padding: 22px; display: grid; gap: 22px; }
+.help-in section { display: grid; gap: 8px; }
+.help-in p, .help-in li { color: var(--muted); font-size: 14px; }
+.help-in b { color: var(--ink); }
+.help-in ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.glos { margin: 0; display: grid; }
+.glos div { padding: 8px 0; border-bottom: 1px solid var(--line); }
+.glos dt { font-weight: 700; } .glos dd { margin: 2px 0 0; color: var(--muted); font-size: 13.5px; }
+
+/* Atelier des critères libres (scénario 4) */
+.atelier { position: absolute; z-index: 45; inset: var(--bar-h) 0 0 0; background: var(--night); overflow-y: auto; animation: slideIn .3s both; }
+.atelier-in { max-width: 1180px; margin: 0 auto; padding: 24px 24px 0; display: grid; gap: 18px; }
+.atelier-h { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; }
+</style>
+<style id="free-css">
+.toolbar { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; padding: 14px 16px; }
+.toolbar label { display: flex; gap: 8px; align-items: center; font-size: 14px; flex-wrap: wrap; }
+.toolbar select { padding: 6px 8px; border: 1px solid var(--line-2); background: var(--panel-2); border-radius: 3px; }
+.toolbar input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+.toolbar .spacer { flex: 1; }
+.unit { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.err { color: var(--bad); font-size: 14px; }
+/* Thèmes repliables */
+.fams { display: grid; gap: 14px; }
+.fam-panel { overflow: visible; }
+.fam-h { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 14px; align-items: center; padding: 16px 18px; background: none; border: 0; text-align: left; color: var(--ink); }
+.fam-h:hover .fam-name { color: var(--accent); }
+.fam-ico { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line-2); border-radius: 50%; color: var(--accent); background: var(--accent-soft); }
+.fam-ico svg { width: 20px; height: 20px; }
+.fam-name { font-family: var(--f-display); font-size: 22px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; transition: color .2s; display: block; }
+.fam-sub { font-size: 12.5px; color: var(--muted); }
+.fam-count { font-family: var(--f-mono); font-size: 11px; color: var(--muted); padding: 3px 8px; border: 1px solid var(--line-2); border-radius: 999px; white-space: nowrap; }
+.fam-count.has { color: var(--accent); border-color: var(--accent); }
+.chev { width: 18px; height: 18px; color: var(--muted); transition: transform .3s; }
+.fam-panel.closed .chev { transform: rotate(-90deg); }
+.fam-body { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .35s cubic-bezier(.2,.8,.2,1); }
+.fam-panel.closed .fam-body { grid-template-rows: 0fr; }
+.fam-inner { overflow: hidden; min-height: 0; }
+.fam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 12px; padding: 0 18px 18px; }
+
+/* Carte de paramètre */
+.pcard { display: grid; gap: 12px; align-content: start; padding: 16px; border: 1px solid var(--line); background: var(--card); border-radius: 4px; transition: border-color .25s, box-shadow .25s; }
+.pcard.on { border-color: color-mix(in srgb, var(--accent) 50%, transparent); box-shadow: 0 0 24px color-mix(in srgb, var(--accent) 7%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent); }
+.pbody { display: grid; gap: 12px; transition: opacity .25s; }
+.pcard:not(.on) .pbody { opacity: .42; }
+.phead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: start; }
+.pname { font-weight: 600; font-size: 15px; }
+.phelp { font-size: 12.5px; color: var(--muted); }
+.switch { position: relative; width: 40px; height: 22px; flex: none; border: 0; border-radius: 11px; background: var(--line-2); transition: background .2s; }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); transition: transform .25s cubic-bezier(.2,.8,.2,1), background .2s; }
+.switch[aria-checked="true"] { background: var(--accent); box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 50%, transparent); }
+.switch[aria-checked="true"]::after { transform: translateX(18px); background: var(--accent-ink); }
+.want { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.want-v { font-family: var(--f-mono); font-size: 17px; color: var(--accent); font-weight: 500; }
+.want-n { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.vslider { position: relative; height: 40px; }
+.vslider .vs-track { position: absolute; left: 8px; right: 8px; top: 13px; height: 4px; border-radius: 2px; background: var(--line-2); }
+.vslider .vs-tol { position: absolute; top: 12px; height: 6px; background: repeating-linear-gradient(45deg, rgba(245,196,81,.45) 0 3px, rgba(245,196,81,.12) 3px 6px); border-radius: 2px; pointer-events: none; transition: left .08s, width .08s; }
+.vslider .vs-fill { position: absolute; top: 11px; height: 8px; border-radius: 3px; background: var(--accent); box-shadow: 0 0 12px color-mix(in srgb, var(--accent) 55%, transparent); pointer-events: none; }
+.vslider .vs-tick { position: absolute; top: 27px; width: 7px; height: 7px; margin-left: -3.5px; border-radius: 50%; background: var(--dim); transition: background .2s, transform .2s; }
+.vslider .vs-tick.in { background: var(--good); transform: scale(1.25); }
+.vslider input { position: absolute; left: 0; right: 0; top: 7px; width: 100%; height: 16px; margin: 0; background: none; pointer-events: none; -webkit-appearance: none; appearance: none; }
+.vslider input::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); border: 4px solid var(--accent); box-shadow: 0 0 0 3px var(--void); cursor: grab; }
+.vslider input::-moz-range-thumb { pointer-events: auto; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); border: 4px solid var(--accent); box-shadow: 0 0 0 3px var(--void); cursor: grab; }
+.vslider input::-moz-range-track { background: none; }
+.vslider input:active::-webkit-slider-thumb { cursor: grabbing; transform: scale(1.15); }
+.vs-scale { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 10px; color: var(--dim); margin-top: -6px; }
+.pfoot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+.marge { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+.marge input { width: 100%; accent-color: var(--mid); }
+.marge output { font-family: var(--f-mono); color: var(--mid); white-space: nowrap; }
+.imp { display: flex; gap: 3px; }
+.imp button { display: flex; gap: 2px; align-items: center; padding: 5px 7px; border: 1px solid var(--line-2); background: transparent; border-radius: 3px; font-size: 11px; color: var(--muted); }
+.imp button i { width: 5px; height: 12px; border-radius: 1px; background: var(--line-2); }
+.imp button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.imp button[aria-pressed="true"] i.f { background: var(--accent); }
+.imp-lbl { font-size: 11px; color: var(--dim); font-family: var(--f-mono); text-align: right; }
+
+/* Barre de lancement collante */
+.free-bar { position: sticky; bottom: 12px; z-index: 6; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 14px 18px; background: var(--panel); backdrop-filter: blur(10px); box-shadow: 0 -10px 40px rgba(0,0,0,.5); }
+.free-bar .act { font-family: var(--f-display); font-size: 20px; letter-spacing: .06em; text-transform: uppercase; }
+.free-bar .act b { color: var(--accent); }
+.preview { font-size: 12.5px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.preview .pv { font-family: var(--f-mono); font-size: 11.5px; padding: 1px 7px; border: 1px solid var(--line-2); border-radius: 3px; color: var(--ink); animation: rowIn .3s both; }
+.preview .pv b { font-weight: 500; }
+
+</style>
+<style>
+/* Mobile : container queries (valables aussi dans l'aperçu mobile) */
+@container app (max-width: 900px) {
+  .steps .t { display: none; }
+  .steps button { padding: 6px; }
+  .steps li + li button::before { width: 6px; }
+  .toggle { display: none; }
+  .main, .main[data-ch="4"], .main[data-ch="6"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: 300px minmax(0, 1fr); grid-template-areas: "scene" "recit"; }
+  .recit { border-right: 0; border-top: 1px solid var(--line); }
+  .main[data-ch="6"] .scene { border-left: 0; }
+  .recit-body { padding: 18px 16px; }
+  .recit-nav { padding: 10px 16px; }
+  .recit-nav .hint { display: none; }
+  .main[data-ch="4"] .recit-body, .main[data-ch="6"] .recit-body { padding: 18px 16px; }
+  .globes[data-mode="split"], .globes[data-mode="stack"] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
+  .caption { display: none; }
+  .cmp { grid-template-columns: minmax(0, 1fr); }
+  .radar-box { position: static; }
+  .facts { grid-template-columns: 1fr 1fr; }
+  .scope-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .sheet, .drawer { top: 0; width: 100%; z-index: 50; }
+  .atelier { inset: 0; z-index: 55; }
+  .atelier-in { padding: 18px 16px 0; }
+}
+@container app (max-width: 520px) {
+  .brand span { display: none; }
+  .bar { gap: 6px; }
+  .steps { gap: 0; }
+  .steps li + li button::before { display: none; }
+  .steps button { padding: 4px 3px; }
+  .steps button .n { width: 22px; height: 22px; }
+  .tools .ghost-btn { padding: 6px 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+</style>
+
+<div class="stage-outer">
+<div class="device" id="device">
+<div class="app" id="app">
+  <header class="bar wrap">
+    <button class="brand" type="button" data-go="1" aria-label="Recommencer au chapitre 1"><i aria-hidden="true"></i><span>Analogues Lune</span></button>
+    <ol class="steps" id="steps" aria-label="Chapitres de la recherche"></ol>
+    <div class="tools">
+      <label class="toggle"><input type="checkbox" id="toggle-api" checked> Annotations API</label>
+      <button class="ghost-btn" type="button" id="help-btn" aria-expanded="false">Aide</button>
+      <button class="ghost-btn" type="button" id="phone-btn" aria-pressed="false">Aperçu mobile</button>
+    </div>
+  </header>
+
+  <main class="main" id="main" data-ch="1">
+    <section class="recit" aria-live="polite">
+      <div class="recit-body" id="recit"></div>
+      <div class="recit-nav">
+        <button class="btn ghost" type="button" id="back">Retour</button>
+        <span class="hint" id="hint"></span>
+        <button class="btn" type="button" id="next">Suivant</button>
+      </div>
+    </section>
+    <section class="scene" aria-label="Scène 3D">
+      <div class="globes" id="globes" data-mode="moon">
+        <div class="gpanel gp-moon" role="region" aria-label="Lune en 3D"><div class="gp-name"><b>Lune</b><span id="gp-moon-sub"></span></div></div>
+        <div class="gpanel gp-earth" role="region" aria-label="Terre en 3D"><div class="gp-name"><b>Terre</b><span id="gp-earth-sub"></span></div></div>
+      </div>
+      <p class="caption" id="caption"></p>
+    </section>
+  </main>
+</div>
+
+<section class="sheet" id="sheet" hidden aria-label="Fiche du site terrestre"></section>
+
+<aside class="drawer" id="help" hidden aria-label="Aide">
+  <div class="help-in">
+    <div class="sheet-top"><h2>Aide</h2><button class="close" type="button" id="help-close" aria-label="Fermer l'aide">Fermer</button></div>
+    <section>
+      <h3>La recherche en 6 chapitres</h3>
+      <ol>
+        <li><b>Mission</b> : le site lunaire visé et ce que vous voulez tester.</li>
+        <li><b>Le site lunaire</b> : ce qui le caractérise, donc ce qu'il faut retrouver sur Terre.</li>
+        <li><b>Candidats</b> : les sites terrestres classés selon leur note.</li>
+        <li><b>Comparer</b> : les 3 meilleurs face à la Lune, famille par famille.</li>
+        <li><b>Choisir</b> : le site retenu, ses forces et ce qu'il faudra compenser.</li>
+        <li><b>Dossier</b> : caractéristiques, analogies et différences, portée des tests.</li>
+      </ol>
+      <p>Vous pouvez revenir à tout moment à un chapitre déjà vu : la suite se recalcule.</p>
+    </section>
+    <section>
+      <h3>Comment la note est calculée</h3>
+      <p>Chaque critère a un <b>intervalle souhaité</b> et une <b>marge</b>. Dans l'intervalle, sa note vaut 1 ; au-delà, elle baisse en ligne droite jusqu'à 0 à la fin de la marge. La note du site est la moyenne des notes de critères, pondérée par leur importance (1 à 3), sur 100.</p>
+      <p>Les sites couverts de végétation (NDVI supérieur à 0,1) sont exclus. Certains intervalles s'adaptent au site lunaire : pente et relief au scénario 1, latitude au scénario 3, volcanisme pour une mer ou un tube de lave.</p>
+    </section>
+    <section>
+      <h3>Portée des tests</h3>
+      <p><b>Représentatif</b> : critère noté 0,7 ou plus, et valeur proche de la valeur lunaire. <b>Partiel</b> : note entre 0,4 et 0,7, ou bonne note mais valeur encore loin de la Lune. <b>Non représentatif</b> : note sous 0,4.</p>
+      <p>La gravité, le vide et le rayonnement lunaires ne sont jamais reproductibles sur Terre.</p>
+    </section>
+    <section>
+      <h3>Glossaire</h3>
+      <input type="search" class="search" id="glos-q" placeholder="Chercher un terme" aria-label="Chercher dans le glossaire">
+      <dl class="glos" id="glos"></dl>
+    </section>
+  </div>
+</aside>
+
+<section class="atelier" id="atelier" hidden aria-label="Critères libres">
+  <form class="atelier-in" id="free-form" novalidate>
+    <div class="atelier-h">
+      <div class="block">
+        <h1>Vos propres critères</h1>
+        <p class="lead">Activez les paramètres qui comptent pour votre mission, puis faites glisser les poignées. Les points sous chaque curseur sont les sites candidats : ils passent au vert quand ils entrent dans votre intervalle. <span class="api">GET /api/parameters</span></p>
+      </div>
+      <button class="close" type="button" id="atelier-close">Annuler</button>
+    </div>
+    <div class="toolbar hud">
+      <label for="prefill">Partir des réglages du <select id="prefill"><option value="">aucun scénario</option></select></label>
+      <label><input type="checkbox" id="ndvi-filter" checked> Exclure les sites avec végétation</label>
+      <span class="spacer"></span>
+      <button type="button" class="ghost-btn" data-fold="open">Tout déplier</button>
+      <button type="button" class="ghost-btn" data-fold="close">Tout replier</button>
+    </div>
+    <div class="fams" id="free-fams"></div>
+    <div class="free-bar hud">
+      <div style="display:grid;gap:6px;min-width:0">
+        <span class="act" id="act-count"></span>
+        <div class="preview" id="preview" aria-live="polite"></div>
+        <span class="err" id="free-err" role="alert"></span>
+      </div>
+      <button type="submit" class="btn">Utiliser ces critères</button>
+    </div>
+  </form>
+</section>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.echarts = { registerMap: (name, geo) => { window.WORLD_GEO = geo; } };</script>
+<script src="https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+<script>
+// ---------- Outils ----------
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const tone = n => n >= 70 ? "good" : n >= 40 ? "mid" : "bad";
+const fmt = v => (Math.round(v * 100) / 100).toLocaleString("fr-CA");
+const unitOf = p => P[p].unit ? " " + P[p].unit : "";
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function target(c) {
+  if (c.min != null && c.max != null) return `${fmt(c.min)} à ${fmt(c.max)}${unitOf(c.p)}`;
+  if (c.max != null) return `≤ ${fmt(c.max)}${unitOf(c.p)}`;
+  if (c.min != null) return `≥ ${fmt(c.min)}${unitOf(c.p)}`;
+  return "toutes valeurs";
+}
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+
+// ---------- État du parcours ----------
+const state = {
+  ch: 1, reached: 1,                       // chapitre affiché, chapitre le plus loin atteint
+  ref: "shackleton", scen: 1, prevScen: 1,   // site lunaire, scénario
+  instr: new Set(["Forage", "Vent", "Gaz", "Sismographe", "Thermique"]),
+  custom: null, ndvi: true,                  // critères libres (scénario 4)
+  rmin: 0, rmax: 100, demo: "normal", loadingUntil: 0, dirty: true,
+  manual: [], chosen: null, overlay: new Set(), openFam: new Set(), notice: "",
+};
+function currentCriteria() {
+  const m = SCEN.find(m => m.id === state.scen);
+  if (m.id === 4) return state.custom || [];
+  const base = m.id === 2 ? m.criteria.filter(c => state.instr.has(c.g)) : m.criteria;
+  return base.map(c => adapt(c, m.id, refSite())).filter(Boolean);
+}
+
+// ---------- Catalogue des paramètres (docs/scenarios.md) ----------
+const FAMILIES = ["Relief", "Températures", "Atmosphère et climat", "Énergie et position", "Géologie", "Surface"];
+const P = {
+  slope_mean:       { fam: "Relief", label: "Pente moyenne", unit: "°", lo: 0, hi: 45, src: "Copernicus DEM", moon: "LOLA : pentes des régions polaires", help: "Inclinaison moyenne du terrain dans un rayon de 1 km." },
+  slope_max:        { fam: "Relief", label: "Pente la plus raide", unit: "°", lo: 0, hi: 70, src: "Copernicus DEM", moon: "LOLA : bords de cratères", help: "La pente la plus forte dans un rayon de 1 km. Sert à tester les limites de franchissement d'un rover." },
+  roughness:        { fam: "Relief", label: "Relief accidenté", unit: "m", lo: 0, hi: 200, src: "Copernicus DEM", moon: "LOLA : terrain cratérisé", help: "Écart d'altitude autour du site : plus c'est élevé, plus le terrain est bosselé." },
+  elevation:        { fam: "Relief", label: "Altitude", unit: "m", lo: -100, hi: 6000, src: "Copernicus DEM", moon: "Pas d'équivalent direct", help: "Hauteur au-dessus du niveau de la mer. En altitude, l'air est plus froid et plus sec." },
+  lst_day:          { fam: "Températures", label: "Température du sol, le jour", unit: "°C", lo: -60, hi: 70, src: "MODIS (MOD11A2)", moon: "Diviner : environ +120 °C en plein soleil", help: "Température de la surface mesurée par satellite, de jour." },
+  lst_night:        { fam: "Températures", label: "Température du sol, la nuit", unit: "°C", lo: -70, hi: 40, src: "MODIS (MOD11A2)", moon: "Diviner : environ -170 °C la nuit", help: "Température de la surface mesurée par satellite, de nuit." },
+  lst_amplitude:    { fam: "Températures", label: "Écart jour-nuit du sol", unit: "°C", lo: 0, hi: 60, src: "MODIS (MOD11A2)", moon: "Diviner : écart de plus de 250 °C", help: "Différence entre la température du sol le jour et la nuit. On cherche les plus grands écarts terrestres." },
+  t2m_mean:         { fam: "Températures", label: "Température moyenne de l'air", unit: "°C", lo: -40, hi: 35, src: "NASA POWER", moon: "Pas d'air : indicateur du froid et du sol gelé", help: "Moyenne sur plusieurs décennies. Sous 0 °C, le sol reste souvent gelé, comme le régolithe glacé." },
+  t2m_min:          { fam: "Températures", label: "Température la plus basse de l'air", unit: "°C", lo: -60, hi: 25, src: "NASA POWER", moon: "Pas d'air : indicateur du froid extrême", help: "Moyenne des minimums. Utile pour tester le matériel au grand froid." },
+  t2m_max:          { fam: "Températures", label: "Température la plus haute de l'air", unit: "°C", lo: -20, hi: 50, src: "NASA POWER", moon: "Pas d'air", help: "Moyenne des maximums." },
+  wind:             { fam: "Atmosphère et climat", label: "Vent moyen", unit: "m/s", lo: 0, hi: 15, src: "NASA POWER", moon: "0 : pas d'atmosphère", help: "Vitesse moyenne du vent à 2 m du sol. Moins il y en a, plus c'est comparable." },
+  humidity:         { fam: "Atmosphère et climat", label: "Humidité de l'air", unit: "%", lo: 0, hi: 100, src: "NASA POWER", moon: "0 : pas d'atmosphère", help: "Humidité relative à 2 m. Un air sec perturbe moins les capteurs de gaz." },
+  precipitation:    { fam: "Atmosphère et climat", label: "Pluie et neige", unit: "mm/j", lo: 0, hi: 10, src: "NASA POWER", moon: "0", help: "Précipitations moyennes. Un sol sec et meuble ressemble davantage au régolithe." },
+  solar:            { fam: "Énergie et position", label: "Ensoleillement", unit: "kWh/m²/j", lo: 0, hi: 8, src: "NASA POWER", moon: "Éclairage presque continu sur certaines crêtes polaires", help: "Énergie solaire reçue par jour, utile pour alimenter une base." },
+  latitude_abs:     { fam: "Énergie et position", label: "Proximité d'un pôle", unit: "°", lo: 0, hi: 90, src: "Coordonnées du site", moon: "Soleil rasant du pôle Sud lunaire", help: "Latitude du site, nord ou sud. Près des pôles, le Soleil reste bas sur l'horizon." },
+  quake_count:      { fam: "Géologie", label: "Séismes à moins de 300 km", unit: "séismes", lo: 0, hi: 2000, src: "USGS Earthquake Catalog", moon: "Séismes lunaires rares et faibles", help: "Nombre de séismes de magnitude 2,5 et plus depuis 2000. Peu de séismes = bruit sismique faible." },
+  volcano_distance: { fam: "Géologie", label: "Distance au volcan le plus proche", unit: "km", lo: 0, hi: 3000, src: "Smithsonian GVP", moon: "Mers basaltiques, tubes de lave", help: "Près d'un volcan, on trouve du basalte et parfois des tubes de lave, comme sur la Lune." },
+  ndvi:             { fam: "Surface", label: "Végétation (NDVI)", unit: "", lo: 0, hi: 1, src: "MODIS (MOD13A1)", moon: "Aucune végétation", help: "De 0 (sol nu) à 1 (végétation dense). Sert de filtre commun : au-dessus de 0,1, le site est exclu." },
+};
+
+// ---------- Scénarios (intervalles de docs/scenarios.md, à valider par Ouassim) ----------
+const SCEN = [
+  { id: 1, name: "Validation robotique", q: "Où tester la mobilité d'un rover ou d'un robot avant de l'envoyer sur la Lune ?", who: "Ingénieurs robotique", usage: "Essais de mobilité de rover",
+    criteria: [ { p: "slope_mean", min: 5, max: 15, t: 10, w: 3 }, { p: "slope_max", min: 15, max: 30, t: 10, w: 1 }, { p: "roughness", min: 5, max: 40, t: 30, w: 2 },
+      { p: "precipitation", min: null, max: 1, t: 1, w: 1 }, { p: "t2m_min", min: null, max: -20, t: 20, w: 1 }, { p: "lst_amplitude", min: 20, max: null, t: 15, w: 1 },
+      { p: "volcano_distance", min: null, max: 50, t: 100, w: 1 } ] },
+  { id: 2, name: "Calibration d'instruments", q: "Où calibrer un instrument (forage, vent, gaz, sismographe, thermique) dans des conditions proches de la Lune ?", who: "Instrumentistes", usage: "Calibration",
+    criteria: [ { g: "Forage", p: "t2m_mean", min: null, max: 0, t: 10, w: 2 }, { g: "Forage", p: "volcano_distance", min: null, max: 50, t: 100, w: 1 },
+      { g: "Vent", p: "wind", min: null, max: 3, t: 3, w: 2 }, { g: "Gaz", p: "humidity", min: null, max: 40, t: 30, w: 2 }, { g: "Gaz", p: "precipitation", min: null, max: 0.5, t: 1, w: 1 },
+      { g: "Sismographe", p: "quake_count", min: null, max: 5, t: 20, w: 3 }, { g: "Thermique", p: "lst_amplitude", min: 25, max: null, t: 15, w: 2 }, { g: "Thermique", p: "t2m_min", min: null, max: -30, t: 20, w: 1 } ] },
+  { id: 3, name: "Colonie autosuffisante", q: "Quels sites réunissent l'eau, l'énergie, un terrain constructible et un abri, comme un bon site de base lunaire ?", who: "Planificateurs de base, enseignants", usage: "Entraînement à la vie en base",
+    criteria: [ { g: "Eau", p: "t2m_mean", min: null, max: -5, t: 10, w: 3 }, { g: "Énergie", p: "latitude_abs", min: 65, max: null, t: 15, w: 2 }, { g: "Énergie", p: "solar", min: 2, max: null, t: 2, w: 1 },
+      { g: "Construction", p: "slope_mean", min: null, max: 5, t: 5, w: 3 }, { g: "Abri", p: "volcano_distance", min: null, max: 100, t: 200, w: 1 },
+      { g: "Stabilité", p: "quake_count", min: null, max: 10, t: 30, w: 2 }, { g: "Survie", p: "t2m_min", min: null, max: -30, t: 20, w: 1 } ] },
+  { id: 4, name: "Critères libres", q: "Vous choisissez les paramètres, les valeurs souhaitées et leur importance.", who: "Tous publics", usage: "Correspond à vos critères", criteria: [] },
+];
+
+// ---------- Sites fictifs (valeurs plausibles, PAS issues des sources) ----------
+const S = (id, name, region, lat, lon, kind, v) => ({ id, name, region, lat, lon, kind, v: { ...v, latitude_abs: Math.abs(lat), lst_amplitude: v.lst_day - v.lst_night } });
+const SITES = [
+  S("atacama", "Désert d'Atacama", "Chili", -24.5, -69.25, "connu", { slope_mean: 6, slope_max: 22, roughness: 25, elevation: 2500, ndvi: .03, lst_day: 45, lst_night: 2, t2m_mean: 12, t2m_min: -2, t2m_max: 26, wind: 4.5, humidity: 18, precipitation: .05, solar: 7.2, quake_count: 120, volcano_distance: 40 }),
+  S("dry-valleys", "Vallées sèches de McMurdo", "Antarctique", -77.5, 161.8, "connu", { slope_mean: 9, slope_max: 28, roughness: 35, elevation: 1000, ndvi: 0, lst_day: -10, lst_night: -35, t2m_mean: -20, t2m_min: -40, t2m_max: -2, wind: 5.5, humidity: 55, precipitation: .1, solar: 3.1, quake_count: 0, volcano_distance: 95 }),
+  S("haughton", "Cratère Haughton", "Île Devon, Nunavut", 75.38, -89.67, "connu", { slope_mean: 7, slope_max: 24, roughness: 30, elevation: 200, ndvi: .05, lst_day: 5, lst_night: -25, t2m_mean: -14.4, t2m_min: -38, t2m_max: 6, wind: 4, humidity: 94, precipitation: .4, solar: 2.4, quake_count: 3, volcano_distance: 900 }),
+  S("mauna-kea", "Mauna Kea", "Hawaï", 19.82, -155.47, "connu", { slope_mean: 12, slope_max: 30, roughness: 40, elevation: 4000, ndvi: .02, lst_day: 25, lst_night: -3, t2m_mean: 3, t2m_min: -4, t2m_max: 10, wind: 6, humidity: 40, precipitation: 1.2, solar: 6.5, quake_count: 400, volcano_distance: 0 }),
+  S("svalbard", "Bockfjorden", "Svalbard, Norvège", 79.4, 13.4, "connu", { slope_mean: 10, slope_max: 32, roughness: 45, elevation: 300, ndvi: .08, lst_day: 4, lst_night: -18, t2m_mean: -6, t2m_min: -25, t2m_max: 7, wind: 5, humidity: 80, precipitation: .7, solar: 2.0, quake_count: 25, volcano_distance: 5 }),
+  S("islande", "Holuhraun", "Hauts plateaux, Islande", 64.87, -16.83, "connu", { slope_mean: 4, slope_max: 18, roughness: 12, elevation: 700, ndvi: .04, lst_day: 12, lst_night: -6, t2m_mean: .5, t2m_min: -15, t2m_max: 10, wind: 7, humidity: 82, precipitation: 2.2, solar: 2.5, quake_count: 900, volcano_distance: 10 }),
+  S("amazonie", "Forêt amazonienne", "Brésil", -3.4, -62.2, "temoin", { slope_mean: 2, slope_max: 9, roughness: 8, elevation: 60, ndvi: .85, lst_day: 31, lst_night: 23, t2m_mean: 27, t2m_min: 22, t2m_max: 32, wind: 1.2, humidity: 88, precipitation: 7.5, solar: 4.8, quake_count: 2, volcano_distance: 2400 }),
+  S("chang-tang", "Plateau du Chang Tang", "Tibet, Chine", 34.5, 85.5, "nouveau", { slope_mean: 6, slope_max: 20, roughness: 22, elevation: 5000, ndvi: .06, lst_day: 30, lst_night: -15, t2m_mean: -4, t2m_min: -28, t2m_max: 12, wind: 6, humidity: 35, precipitation: .4, solar: 6.0, quake_count: 30, volcano_distance: 60 }),
+  S("tanquary", "Fjord Tanquary", "Île d'Ellesmere, Nunavut", 81.4, -76.9, "nouveau", { slope_mean: 8, slope_max: 26, roughness: 33, elevation: 400, ndvi: .04, lst_day: 2, lst_night: -30, t2m_mean: -18, t2m_min: -42, t2m_max: 5, wind: 3, humidity: 70, precipitation: .2, solar: 2.2, quake_count: 4, volcano_distance: 1100 }),
+  S("khaybar", "Harrat Khaybar", "Arabie saoudite", 25.0, 39.9, "nouveau", { slope_mean: 5, slope_max: 25, roughness: 18, elevation: 1200, ndvi: .03, lst_day: 55, lst_night: 15, t2m_mean: 25, t2m_min: 8, t2m_max: 40, wind: 3.5, humidity: 22, precipitation: .1, solar: 6.8, quake_count: 2, volcano_distance: 0 }),
+  S("antofalla", "Salar d'Antofalla", "Puna, Argentine", -25.6, -67.6, "nouveau", { slope_mean: 11, slope_max: 29, roughness: 38, elevation: 4200, ndvi: .02, lst_day: 35, lst_night: -10, t2m_mean: 2, t2m_min: -18, t2m_max: 15, wind: 6, humidity: 25, precipitation: .2, solar: 7.0, quake_count: 60, volcano_distance: 15 }),
+  S("peary", "Terre de Peary", "Nord du Groenland", 82.5, -30, "nouveau", { slope_mean: 6, slope_max: 22, roughness: 20, elevation: 600, ndvi: .02, lst_day: 0, lst_night: -32, t2m_mean: -20, t2m_min: -40, t2m_max: 4, wind: 4, humidity: 75, precipitation: .15, solar: 2.0, quake_count: 1, volcano_distance: 1300 }),
+];
+const KIND = { connu: "Analogue connu", temoin: "Témoin négatif", nouveau: "Peu étudié" };
+
+const GLOSSARY = [
+  ["Analogue terrestre", "Site sur Terre qui reproduit certaines conditions d'un autre astre. Il ne les reproduit jamais toutes."],
+  ["Basalte", "Roche volcanique sombre. C'est la roche principale des mers lunaires, les grandes plaines sombres visibles depuis la Terre."],
+  ["Copernicus DEM", "Carte mondiale de l'altitude à 30 m de résolution, produite par l'Agence spatiale européenne. Sert à calculer pentes et relief."],
+  ["Diviner", "Instrument de la sonde LRO qui mesure la température de la surface lunaire."],
+  ["Écart jour-nuit", "Différence entre la température la plus haute et la plus basse sur une journée. Aussi appelé amplitude thermique."],
+  ["Importance", "Poids d'un critère dans la note, de 1 à 3. Un critère d'importance 3 compte trois fois plus qu'un critère d'importance 1."],
+  ["LEND", "Instrument de la sonde LRO qui détecte l'hydrogène près de la surface, signe probable de glace d'eau."],
+  ["LOLA", "Altimètre laser de la sonde LRO. Il a cartographié le relief et les pentes de toute la Lune."],
+  ["LRO", "Lunar Reconnaissance Orbiter : sonde de la NASA en orbite autour de la Lune depuis 2009."],
+  ["Marge", "Distance au-delà de l'intervalle souhaité sur laquelle la note d'un critère descend de 1 à 0. Aussi appelée tolérance."],
+  ["MODIS", "Capteur des satellites Terra et Aqua de la NASA. Il mesure notamment la végétation et la température du sol."],
+  ["NASA POWER", "Service de la NASA qui fournit des moyennes climatiques (température, vent, humidité, soleil) pour tout point du globe."],
+  ["NDVI", "Indice de végétation calculé à partir d'images satellite : 0 pour un sol nu, proche de 1 pour une forêt dense."],
+  ["Ombre permanente", "Fond de cratère polaire que le Soleil n'éclaire jamais. Parmi les endroits les plus froids du système solaire, il peut abriter de la glace."],
+  ["Pergélisol", "Sol qui reste gelé toute l'année. Sur Terre, c'est l'indice le plus proche de la glace cachée du sol lunaire."],
+  ["Pôle Sud lunaire", "Région visée par les futures bases habitées, pour sa glace probable et ses crêtes presque toujours ensoleillées."],
+  ["Régolithe", "Couche de poussière et de fragments de roche qui recouvre la Lune, formée par des milliards d'années d'impacts."],
+  ["Relief accidenté", "Variation de l'altitude autour d'un site. Aussi appelé rugosité. Un relief accidenté met à l'épreuve la mobilité d'un rover."],
+  ["Scénario", "Ensemble de critères qui répond à une question de mission : tester un rover, calibrer un instrument, préparer une base."],
+  ["Note de compatibilité", "Note de 0 à 100 qui mesure à quel point un site terrestre ressemble à la Lune pour le scénario choisi."],
+  ["Site peu étudié", "Site bien classé qui ne fait pas partie des analogues déjà connus. C'est ce que l'application cherche à faire émerger."],
+  ["Smithsonian GVP", "Programme mondial de volcanisme : inventaire de tous les volcans actifs depuis 12 000 ans."],
+  ["Témoin négatif", "Site choisi parce qu'il ne ressemble pas à la Lune (l'Amazonie). Il doit obtenir une mauvaise note : c'est un contrôle du calcul."],
+  ["Tube de lave", "Tunnel naturel laissé par une coulée de lave. Sur la Lune, ce serait un abri contre le rayonnement et les écarts de température."],
+  ["USGS", "Institut d'études géologiques des États-Unis. Il tient le catalogue mondial des séismes utilisé ici."],
+].sort((a, b) => a[0].localeCompare(b[0], "fr"));
+
+// ---------- Sites lunaires (coordonnées réelles ; caractéristiques INDICATIVES pour la maquette) ----------
+// kind : pôle, mer, tube (puits / tube de lave), volcanique, hautes terres. slope en °, rough en m, températures en °C, illum en % du temps éclairé.
+const MOON_SITES = [
+  { id: "shackleton", name: "Cratère Shackleton", region: "Pôle Sud", lat: -89.67, lon: 129.8, kind: "pôle", polar: true, slope: 12, rough: 35, tday: -20, tnight: -190, illum: 80, ice: "Probable",
+    missions: "Région candidate des missions Artemis", why: "Son bord est éclairé presque en permanence, alors que son fond reste à l'ombre depuis des milliards d'années : la glace d'eau a pu s'y accumuler." },
+  { id: "connecting-ridge", name: "Crête Shackleton – de Gerlache", region: "Pôle Sud", lat: -89.45, lon: -138, kind: "pôle", polar: true, slope: 8, rough: 25, tday: -10, tnight: -170, illum: 85, ice: "Possible",
+    missions: "Région candidate des missions Artemis", why: "Une des crêtes les plus ensoleillées du pôle Sud, entre deux cratères à l'ombre permanente : énergie et glace à proximité." },
+  { id: "haworth", name: "Cratère Haworth", region: "Pôle Sud", lat: -87.45, lon: -5.13, kind: "pôle", polar: true, slope: 10, rough: 40, tday: -30, tnight: -200, illum: 15, ice: "Probable",
+    missions: "—", why: "Vaste zone d'ombre permanente, parmi les endroits les plus froids de la Lune." },
+  { id: "cabeus", name: "Cratère Cabeus", region: "Pôle Sud", lat: -84.9, lon: -35.5, kind: "pôle", polar: true, slope: 9, rough: 30, tday: -60, tnight: -200, illum: 20, ice: "Détectée",
+    missions: "Impact LCROSS (NASA, 2009) : de l'eau a été détectée dans le panache", why: "Seul site lunaire où de l'eau a été mesurée directement après un impact volontaire." },
+  { id: "nobile", name: "Région de Nobile", region: "Pôle Sud", lat: -85.2, lon: 53.5, kind: "pôle", polar: true, slope: 8, rough: 25, tday: -30, tnight: -190, illum: 40, ice: "Probable",
+    missions: "Ancienne cible du rover VIPER (NASA)", why: "Mosaïque de petites zones d'ombre permanente accessibles à un rover." },
+  { id: "shiv-shakti", name: "Point Shiv Shakti", region: "Hautes latitudes sud", lat: -69.37, lon: 32.32, kind: "hautes terres", polar: false, slope: 6, rough: 15, tday: 70, tnight: -170, illum: 50, ice: "Improbable",
+    missions: "Alunissage de Chandrayaan-3 (Inde, 2023)", why: "Premier alunissage près du pôle Sud ; mesures de température du sol sur place." },
+  { id: "von-karman", name: "Cratère Von Kármán", region: "Face cachée", lat: -45.44, lon: 177.6, kind: "hautes terres", polar: false, slope: 3, rough: 8, tday: 100, tnight: -180, illum: 50, ice: "Improbable",
+    missions: "Chang'e 4 (Chine, 2019) : premier alunissage sur la face cachée", why: "Fond plat d'un cratère dans le plus grand bassin d'impact de la Lune." },
+  { id: "tranquillity", name: "Base de la Tranquillité", region: "Mer de la Tranquillité", lat: 0.67, lon: 23.47, kind: "mer", polar: false, slope: 2, rough: 5, tday: 120, tnight: -170, illum: 50, ice: "Improbable",
+    missions: "Apollo 11 (NASA, 1969)", why: "Plaine basaltique plate : le site d'atterrissage le plus simple, mais sans glace." },
+  { id: "hadley", name: "Rainure de Hadley", region: "Bord de la mer des Pluies", lat: 26.13, lon: 3.63, kind: "mer", polar: false, slope: 5, rough: 20, tday: 120, tnight: -170, illum: 50, ice: "Improbable",
+    missions: "Apollo 15 (NASA, 1971)", why: "Ancien chenal de lave au pied des monts Apennins." },
+  { id: "taurus-littrow", name: "Vallée de Taurus-Littrow", region: "Bord de la mer de la Sérénité", lat: 20.19, lon: 30.77, kind: "volcanique", polar: false, slope: 6, rough: 25, tday: 120, tnight: -170, illum: 50, ice: "Improbable",
+    missions: "Apollo 17 (NASA, 1972)", why: "Vallée encaissée avec dépôts volcaniques sombres et éboulis des massifs voisins." },
+  { id: "marius-pit", name: "Puits des collines de Marius", region: "Océan des Tempêtes", lat: 14.09, lon: -56.8, kind: "tube", polar: false, slope: 4, rough: 15, tday: 110, tnight: -170, illum: 50, ice: "Improbable",
+    missions: "Repéré par la sonde japonaise Kaguya (2009)", why: "Ouverture probable vers un tube de lave : un abri naturel contre le rayonnement et les écarts de température." },
+  { id: "tranq-pit", name: "Puits de la mer de la Tranquillité", region: "Mer de la Tranquillité", lat: 8.34, lon: 33.22, kind: "tube", polar: false, slope: 3, rough: 10, tday: 115, tnight: -170, illum: 50, ice: "Improbable",
+    missions: "Photographié par LRO", why: "Puits d'environ 100 m de large qui pourrait mener à une cavité souterraine." },
+  { id: "aristarchus", name: "Plateau d'Aristarque", region: "Océan des Tempêtes", lat: 24.0, lon: -47.5, kind: "volcanique", polar: false, slope: 7, rough: 30, tday: 115, tnight: -170, illum: 50, ice: "Improbable",
+    missions: "—", why: "Région volcanique riche en cendres et en chenaux de lave, l'une des plus variées de la Lune." },
+  { id: "peary", name: "Cratère Peary", region: "Pôle Nord", lat: 88.6, lon: 33.0, kind: "pôle", polar: true, slope: 7, rough: 25, tday: -20, tnight: -180, illum: 70, ice: "Possible",
+    missions: "—", why: "Ses bords sont parmi les zones les plus éclairées du pôle Nord." },
+];
+const MOON_KIND = { "pôle": "Région polaire", "mer": "Mer basaltique", "tube": "Puits / tube de lave", "volcanique": "Zone volcanique", "hautes terres": "Hautes terres" };
+const refSite = () => MOON_SITES.find(m => m.id === state.ref);
+
+// Rend les scénarios génériques : certains intervalles suivent le site lunaire choisi (règle proposée, à valider par Ouassim).
+function adapt(c, scenId, m) {
+  c = { ...c };
+  const set = (min, max) => { c.min = min; c.max = max; c.adapted = true; };
+  if (scenId === 1 && c.p === "slope_mean") set(Math.max(0, m.slope - 4), m.slope + 4);
+  if (scenId === 1 && c.p === "slope_max") set(Math.max(0, m.slope * 2 - 5), m.slope * 2 + 10);
+  if (scenId === 1 && c.p === "roughness") set(Math.round(m.rough * .5), Math.round(m.rough * 1.5));
+  if (scenId === 3 && c.p === "latitude_abs" && !m.polar) return null; // site non polaire : l'éclairage polaire ne compte pas
+  if (c.p === "volcano_distance" && ["mer", "tube", "volcanique"].includes(m.kind)) { c.w += 2; c.adapted = true; }
+  if (c.p === "t2m_mean" && !m.polar) { c.w = Math.max(1, c.w - 1); c.adapted = true; }
+  return c;
+}
+
+// ---------- Moteur (formule du README) ----------
+function critScore(v, c) {
+  let d = 0;
+  if (c.min != null && v < c.min) d = c.min - v;
+  else if (c.max != null && v > c.max) d = v - c.max;
+  return Math.max(0, 1 - d / c.t);
+}
+console.assert(critScore(10, { min: 5, max: 15, t: 10 }) === 1 && critScore(20, { min: 5, max: 15, t: 10 }) === .5 && critScore(40, { min: null, max: 15, t: 10 }) === 0, "critScore");
+function analyze(criteria, ndviFilter) {
+  const W = criteria.reduce((a, c) => a + c.w, 0) || 1;
+  return SITES.map(s => {
+    const rows = criteria.map(c => ({ ...c, v: s.v[c.p], s: critScore(s.v[c.p], c) }));
+    const score = Math.round(100 * rows.reduce((a, r) => a + r.w * r.s, 0) / W);
+    return { site: s, rows, score, excluded: ndviFilter && s.v.ndvi > 0.1 };
+  }).sort((a, b) => (a.excluded - b.excluded) || (b.score - a.score));
+}
+
+
+// ---------- Globes 3D (three.js) ----------
+const DEG = Math.PI / 180;
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+// Décodage du format compressé des cartes ECharts 4 (UTF8Encoding).
+function decodeRing(str, off) {
+  const out = []; let px = off[0], py = off[1];
+  for (let i = 0; i < str.length; i += 2) {
+    let x = str.charCodeAt(i) - 64, y = str.charCodeAt(i + 1) - 64;
+    x = (x >> 1) ^ (-(x & 1)); y = (y >> 1) ^ (-(y & 1));
+    x += px; y += py; px = x; py = y; out.push([x / 1024, y / 1024]);
+  }
+  return out;
+}
+function earthTexture() {
+  const W = 2048, H = 1024, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const g = cv.getContext("2d");
+  const grd = g.createLinearGradient(0, 0, 0, H); grd.addColorStop(0, "#0a1426"); grd.addColorStop(.5, "#0c1b33"); grd.addColorStop(1, "#0a1426");
+  g.fillStyle = grd; g.fillRect(0, 0, W, H);
+  const X = lon => (lon + 180) / 360 * W, Y = lat => (90 - lat) / 180 * H;
+  g.strokeStyle = "rgba(108,210,255,.10)"; g.lineWidth = 1;
+  for (let lon = -180; lon <= 180; lon += 15) { g.beginPath(); g.moveTo(X(lon), 0); g.lineTo(X(lon), H); g.stroke(); }
+  for (let lat = -75; lat <= 75; lat += 15) { g.beginPath(); g.moveTo(0, Y(lat)); g.lineTo(W, Y(lat)); g.stroke(); }
+  const geo = window.WORLD_GEO;
+  if (geo) {
+    g.fillStyle = "#1e2c42"; g.strokeStyle = "rgba(108,210,255,.6)"; g.lineWidth = 1.3;
+    const ring = pts => { pts.forEach(([lon, lat], i) => { const prev = pts[i - 1]; if (!i || Math.abs(lon - prev[0]) > 180) g.moveTo(X(lon), Y(lat)); else g.lineTo(X(lon), Y(lat)); }); };
+    geo.features.forEach(f => {
+      const gm = f.geometry, polys = gm.type === "Polygon" ? [gm.coordinates.map((r, i) => [r, gm.encodeOffsets[i]])] : gm.coordinates.map((p, j) => p.map((r, i) => [r, gm.encodeOffsets[j][i]]));
+      polys.forEach(p => { g.beginPath(); p.forEach(([r, off]) => ring(typeof r === "string" ? decodeRing(r, off) : r)); g.fill("evenodd"); g.stroke(); });
+    });
+  }
+  return cv;
+}
+const MARIA = [[10,-55,25,22],[33,-16,11,16],[28,17.5,8,9],[8.5,31,9,11],[17,59,6,8],[-7.8,51,9,7],[-15,35,5,5],[-21,-17,8,10],[-24,-39,5,5],[56,1.4,4,40],[13,4,3,4],[-10,-23,5,6],[7.5,-31,5,8],[27,147,3,3],[-19,-93,4,4],[-38.9,93,6,6],[1.3,87,4,4],[13,86,3,4]];
+function moonTexture() {
+  const W = 2048, H = 1024, cv = document.createElement("canvas"); cv.width = W; cv.height = H; const g = cv.getContext("2d"), r = rng(7);
+  const X = lon => (lon + 180) / 360 * W, Y = lat => (90 - lat) / 180 * H;
+  g.fillStyle = "#9a9ca3"; g.fillRect(0, 0, W, H);
+  for (let i = 0; i < 500; i++) { const x = r() * W, y = r() * H, rad = 20 + r() * 120, rg = g.createRadialGradient(x, y, 0, x, y, rad); const c = r() < .5 ? "255,255,255" : "40,42,48"; rg.addColorStop(0, `rgba(${c},.07)`); rg.addColorStop(1, `rgba(${c},0)`); g.fillStyle = rg; g.fillRect(x - rad, y - rad, rad * 2, rad * 2); }
+  g.save(); g.filter = "blur(10px)"; g.fillStyle = "rgba(52,55,63,.62)";
+  MARIA.forEach(([lat, lon, rl, rn]) => [-W, 0, W].forEach(dx => { g.beginPath(); g.ellipse(X(lon) + dx, Y(lat), rn / 360 * W / Math.max(.3, Math.cos(lat * DEG)), rl / 180 * H, 0, 0, 6.283); g.fill(); })); // copies décalées : pas de couture à ±180°
+  g.restore();
+  for (let i = 0; i < 1500; i++) {
+    const lat = Math.asin(2 * r() - 1) / DEG, lon = r() * 360 - 180, rad = Math.pow(r(), 4.5) * 30 + 1, sx = 1 / Math.max(.25, Math.cos(lat * DEG));
+    const x = X(lon), y = Y(lat), a = .1 + .12 * Math.min(1, rad / 10);
+    g.fillStyle = `rgba(30,32,38,${a})`; g.beginPath(); g.ellipse(x + rad * .12 * sx, y + rad * .12, rad * sx, rad, 0, 0, 6.283); g.fill();
+    g.strokeStyle = `rgba(235,237,242,${a})`; g.lineWidth = Math.max(.6, rad * .14); g.beginPath(); g.ellipse(x, y, rad * sx, rad, 0, 3.7, 5.9); g.stroke();
+  }
+  [[-43.3, -11.2, 1], [9.6, -20.1, .6]].forEach(([lat, lon, k]) => { // rayons de Tycho et Copernic
+    g.strokeStyle = `rgba(245,246,250,${.07 * k})`; g.lineWidth = 3;
+    for (let i = 0; i < 26; i++) { const a = r() * 6.283, l = 60 + r() * 260 * k; g.beginPath(); g.moveTo(X(lon), Y(lat)); g.lineTo(X(lon) + Math.cos(a) * l * 1.3, Y(lat) + Math.sin(a) * l); g.stroke(); }
+  });
+  return cv;
+}
+const latLonVec = (lat, lon, rad) => { const phi = (90 - lat) * DEG, th = (lon + 180) * DEG; return new THREE.Vector3(-rad * Math.sin(phi) * Math.cos(th), rad * Math.cos(phi), rad * Math.sin(phi) * Math.sin(th)); };
+
+class Globe {
+  constructor(el, opt) {
+    this.el = el; this.opt = opt; this.markers = new Map(); this.labels = new Map();
+    if (!window.THREE) { el.insertAdjacentHTML("beforeend", `<div class="gfail">Globe 3D indisponible (bibliothèque three.js non chargée). La liste reste utilisable.</div>`); this.dead = true; return; }
+    const R = this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    R.setPixelRatio(Math.min(2, devicePixelRatio || 1)); el.prepend(R.domElement);
+    this.scene = new THREE.Scene(); this.camera = new THREE.PerspectiveCamera(35, 1, .1, 100); this.dist = opt.dist || 3.6; this.camera.position.z = this.dist;
+    this.scene.add(new THREE.AmbientLight(0xffffff, opt.ambient ?? .38));
+    const sun = new THREE.DirectionalLight(0xffffff, 1.05); sun.position.set(-3, 1.4, 3); this.scene.add(sun);
+    this.group = new THREE.Group(); this.group.rotation.order = "XYZ"; this.scene.add(this.group);
+    const tex = new THREE.CanvasTexture(opt.texture()); tex.anisotropy = R.capabilities.getMaxAnisotropy();
+    this.group.add(new THREE.Mesh(new THREE.SphereGeometry(1, 96, 64), new THREE.MeshPhongMaterial({ map: tex, shininess: opt.glow ? 14 : 3, specular: opt.glow ? 0x223344 : 0x111111 })));
+    if (opt.glow) this.scene.add(new THREE.Mesh(new THREE.SphereGeometry(1.08, 64, 48), new THREE.ShaderMaterial({
+      uniforms: { c: { value: new THREE.Color(opt.glow) } }, side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false,
+      vertexShader: "varying vec3 vN; void main(){ vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
+      fragmentShader: "uniform vec3 c; varying vec3 vN; void main(){ float i = pow(0.72 - dot(vN, vec3(0.0, 0.0, 1.0)), 3.0); gl_FragColor = vec4(c, 1.0) * i; }" })));
+    this.mg = new THREE.Group(); this.group.add(this.mg);
+    this.ring = new THREE.Mesh(new THREE.RingGeometry(.028, .04, 40), new THREE.MeshBasicMaterial({ color: 0xff8a4c, side: THREE.DoubleSide, transparent: true }));
+    this.ring.visible = false; this.group.add(this.ring);
+    this.rot = { x: .3, y: 0 }; this.tgt = { x: .3, y: 0 }; this.idleAt = 0;
+    this.lblBox = document.createElement("div"); this.lblBox.className = "glabels"; el.appendChild(this.lblBox);
+    this.tip = document.createElement("div"); this.tip.className = "gtip"; this.tip.hidden = true; el.appendChild(this.tip);
+    this.ray = new THREE.Raycaster(); this.bindInput();
+    new ResizeObserver(() => this.resize()).observe(el); this.resize();
+    const loop = t => { this.tick(t); requestAnimationFrame(loop); }; requestAnimationFrame(loop);
+  }
+  resize() {
+    const w = this.el.clientWidth, h = this.el.clientHeight; if (!w || !h) return;
+    this.renderer.setSize(w, h, false); this.camera.aspect = w / h; this.camera.updateProjectionMatrix(); this.w = w; this.h = h;
+    this.zoomOff = this.zoomOff || 0; this.base = (this.opt.dist || 3.6) * Math.max(1, .95 * h / w); this.dist = this.base + this.zoomOff; // le globe tient dans un panneau étroit
+  }
+  bindInput() {
+    const cv = this.renderer.domElement, pts = new Map(); let sx = 0, sy = 0, moved = 0, pinch = 0;
+    cv.addEventListener("pointerdown", e => { try { cv.setPointerCapture(e.pointerId); } catch (_) {} pts.set(e.pointerId, e); sx = e.clientX; sy = e.clientY; moved = 0; this.idleAt = performance.now() + 5000; });
+    cv.addEventListener("pointermove", e => {
+      if (!pts.has(e.pointerId)) { this.hover(e); return; }
+      const p = pts.get(e.pointerId); pts.set(e.pointerId, e);
+      if (pts.size === 2) { const [a, b] = [...pts.values()], d = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); if (pinch) this.zoom((pinch - d) * .01); pinch = d; return; }
+      const dx = e.clientX - p.clientX, dy = e.clientY - p.clientY; moved += Math.abs(dx) + Math.abs(dy);
+      const k = .006 * (this.dist / 3.6); this.tgt.y += dx * k; this.tgt.x = Math.max(-1.45, Math.min(1.45, this.tgt.x + dy * k));
+    });
+    const up = e => { if (pts.has(e.pointerId) && moved < 5 && pts.size === 1) this.click(e); pts.delete(e.pointerId); if (pts.size < 2) pinch = 0; this.idleAt = performance.now() + 5000; };
+    cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+    cv.addEventListener("pointerleave", () => { this.tip.hidden = true; this.opt.onHover?.(null); });
+    cv.addEventListener("wheel", e => { e.preventDefault(); this.zoom(e.deltaY * .0015); }, { passive: false });
+  }
+  zoom(d) { this.dist = Math.max(1.7, Math.min(this.base * 1.8, this.dist + d)); this.zoomOff = this.dist - this.base; this.idleAt = performance.now() + 5000; }
+  pick(e) {
+    const b = this.renderer.domElement.getBoundingClientRect();
+    this.ray.setFromCamera({ x: (e.clientX - b.left) / b.width * 2 - 1, y: -(e.clientY - b.top) / b.height * 2 + 1 }, this.camera);
+    const hit = this.ray.intersectObjects([...this.markers.values()].map(m => m.hit), false)[0];
+    return hit ? { id: hit.object.userData.id, x: e.clientX - b.left, y: e.clientY - b.top } : null;
+  }
+  hover(e) { const h = this.pick(e); this.renderer.domElement.style.cursor = h ? "pointer" : ""; if (h && this.opt.tip) { this.tip.textContent = this.opt.tip(h.id); this.tip.style.left = h.x + "px"; this.tip.style.top = h.y + "px"; this.tip.hidden = false; } else this.tip.hidden = true; this.opt.onHover?.(h && h.id); }
+  click(e) { const h = this.pick(e); if (h) this.opt.onPick?.(h.id); }
+  setMarkers(list) {
+    this.markers.forEach(m => this.mg.remove(m.mesh, m.hit)); this.markers.clear();
+    this.lblBox.textContent = ""; this.labels.clear();
+    list.forEach(d => {
+      const pos = latLonVec(d.lat, d.lon, 1.006);
+      const mesh = new THREE.Mesh(new THREE.SphereGeometry(d.size || .018, 14, 10), new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: d.dim ? .45 : 1 }));
+      const hit = new THREE.Mesh(new THREE.SphereGeometry((d.size || .018) * 2.6, 8, 6), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }));
+      mesh.position.copy(pos); hit.position.copy(pos); hit.userData.id = d.id; this.mg.add(mesh, hit);
+      this.markers.set(d.id, { mesh, hit, d, base: 1 });
+      if (this.opt.labels) { const l = document.createElement("button"); l.type = "button"; l.className = "glabel"; l.textContent = d.label; l.onclick = () => this.opt.onPick?.(d.id); this.lblBox.appendChild(l); this.labels.set(d.id, l); }
+    });
+    this.select(this.sel);
+  }
+  select(id) {
+    this.sel = id; const m = id && this.markers.get(id);
+    this.ring.visible = !!m;
+    if (m) { this.ring.position.copy(m.mesh.position.clone().multiplyScalar(1.002)); this.ring.lookAt(m.mesh.position.clone().multiplyScalar(2)); }
+    this.labels.forEach((l, k) => l.classList.toggle("sel", k === id));
+  }
+  highlight(id) { this.markers.forEach((m, k) => m.mesh.scale.setScalar(k === id ? 1.8 : 1)); }
+  focus(lat, lon) {
+    let y = -lon * DEG - Math.PI / 2; while (y - this.tgt.y > Math.PI) y -= 2 * Math.PI; while (this.tgt.y - y > Math.PI) y += 2 * Math.PI;
+    this.tgt = { x: Math.max(-1.45, Math.min(1.45, lat * DEG)), y }; this.idleAt = performance.now() + 7000;
+    if (reduce) this.rot = { ...this.tgt };
+  }
+  tick(t) {
+    if (!this.el.offsetParent || !this.w) return;
+    if (!reduce && t > this.idleAt && this.opt.spin !== false) this.tgt.y += .0011;
+    this.rot.x += (this.tgt.x - this.rot.x) * .1; this.rot.y += (this.tgt.y - this.rot.y) * .1;
+    this.group.rotation.set(this.rot.x, this.rot.y, 0);
+    this.camera.position.z += (this.dist - this.camera.position.z) * .15;
+    if (this.ring.visible) this.ring.scale.setScalar(1 + .35 * Math.abs(Math.sin(t / 380)));
+    this.renderer.render(this.scene, this.camera);
+    if (this.labels.size) {
+      // Étiquettes : masquées derrière le globe ou si elles chevauchent une autre (le site choisi passe en premier).
+      const camPos = this.camera.position, v = new THREE.Vector3(), placed = [];
+      [...this.markers.keys()].sort((a, b) => (b === this.sel) - (a === this.sel)).forEach(id => {
+        const m = this.markers.get(id), l = this.labels.get(id); m.mesh.getWorldPosition(v);
+        const front = v.clone().sub(camPos).dot(v) < -.25;
+        v.project(this.camera);
+        const x = (v.x + 1) / 2 * this.w, y = (1 - v.y) / 2 * this.h, wd = m.d.label.length * 6.6 + 16;
+        const box = [x - wd / 2, y - 30, x + wd / 2, y - 10];
+        const clash = placed.some(b => box[0] < b[2] && box[2] > b[0] && box[1] < b[3] && box[3] > b[1]);
+        const show = front && !clash; if (show) placed.push(box);
+        l.classList.toggle("hidden", !show);
+        l.style.transform = `translate(${x}px, ${y}px) translate(-50%, -150%)`;
+      });
+    }
+  }
+}
+
+
+// Valeur lunaire équivalente d'un paramètre terrestre (null = sans équivalent, ex. air). Indicatif.
+function moonVal(p, m) {
+  switch (p) {
+    case "slope_mean": return m.slope;
+    case "slope_max": return Math.round(m.slope * 2.5);
+    case "roughness": return m.rough;
+    case "lst_day": return m.tday;
+    case "lst_night": return m.tnight;
+    case "lst_amplitude": return m.tday - m.tnight;
+    case "wind": case "humidity": case "precipitation": case "ndvi": case "quake_count": return 0;
+    case "solar": return Math.round(32.7 * m.illum / 100 * 10) / 10; // 1361 W/m² hors atmosphère ≈ 32,7 kWh/m²/j × part du temps éclairé
+    case "latitude_abs": return Math.abs(m.lat);
+    case "volcano_distance": return ["mer", "tube", "volcanique"].includes(m.kind) ? 0 : null;
+    default: return null; // altitude, température de l'air : pas d'équivalent
+  }
+}
+const moonTxt = (p, m) => { const v = moonVal(p, m); return v == null ? "sans équivalent" : `${fmt(v)}${unitOf(p)}`; };
+
+// ---------- Critères libres ----------
+$("#prefill").insertAdjacentHTML("beforeend", SCEN.slice(0, 3).map(m => `<option value="${m.id}">scénario ${m.id} · ${esc(m.name)}</option>`).join(""));
+// Curseurs sur 0..1000. Échelle logarithmique pour les grandeurs très étalées (on vise surtout les petites valeurs).
+["quake_count", "volcano_distance", "roughness"].forEach(id => P[id].log = true);
+const FAM_ICO = {
+  "Relief": '<path d="M3 19l6-10 4 6 3-4 5 8z"/>',
+  "Températures": '<path d="M10 14V5a2 2 0 1 1 4 0v9a4 4 0 1 1-4 0z"/><path d="M12 10v6"/>',
+  "Atmosphère et climat": '<path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3M3 12h8"/>',
+  "Énergie et position": '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
+  "Géologie": '<path d="M2 12h4l2-6 3 12 3-9 2 3h6"/>',
+};
+const FAM_SUB = { "Relief": "Pentes et terrain, pour la mobilité et la construction", "Températures": "Froid, chaleur et écarts jour-nuit", "Atmosphère et climat": "Vent, humidité et précipitations", "Énergie et position": "Soleil et latitude", "Géologie": "Séismes et volcanisme" };
+const FREE_IDS = Object.keys(P).filter(id => id !== "ndvi");
+const IMP = ["Faible", "Moyenne", "Forte"];
+const toV = (p, s) => p.log ? p.lo + Math.expm1(s / 1000 * Math.log1p(p.hi - p.lo)) : p.lo + (p.hi - p.lo) * s / 1000;
+const toS = (p, v) => p.log ? 1000 * Math.log1p(Math.max(0, v - p.lo)) / Math.log1p(p.hi - p.lo) : 1000 * (v - p.lo) / (p.hi - p.lo);
+const snap = (p, v) => { const st = p.hi - p.lo <= 10 ? .1 : v >= 200 ? 10 : 1; return Math.round(v / st) * st; };
+const pos = s => `calc(8px + (100% - 16px) * ${Math.max(0, Math.min(1000, s)) / 1000})`;
+console.assert(Math.abs(toV(P.quake_count, toS(P.quake_count, 5)) - 5) < 1e-6, "échelle log");
+let free = {};
+
+function loadFree(fromScen) {
+  const base = fromScen ? SCEN.find(m => m.id === fromScen).criteria : (state.custom || SCEN[0].criteria);
+  free = {};
+  FREE_IDS.forEach(id => {
+    const p = P[id], c = base.find(c => c.p === id);
+    free[id] = c ? { on: true, min: c.min, max: c.max, t: c.t, w: Math.min(3, c.w) }
+                 : { on: false, min: snap(p, p.lo + (p.hi - p.lo) * .25), max: snap(p, p.lo + (p.hi - p.lo) * .75), t: snap(p, (p.hi - p.lo) / 8), w: 1 };
+  });
+  renderFams();
+}
+function renderFams() {
+  $("#free-fams").innerHTML = FAMILIES.filter(f => FREE_IDS.some(id => P[id].fam === f)).map(f => {
+    const ids = FREE_IDS.filter(id => P[id].fam === f);
+    const open = ids.some(id => free[id].on);
+    return `<section class="fam-panel hud ${open ? "" : "closed"}" data-fam="${f}">
+      <button type="button" class="fam-h" aria-expanded="${open}">
+        <span class="fam-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${FAM_ICO[f]}</svg></span>
+        <span style="min-width:0"><span class="fam-name">${f}</span><span class="fam-sub">${FAM_SUB[f]}</span></span>
+        <span class="fam-count"></span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="fam-body"><div class="fam-inner"><div class="fam-grid">${ids.map(cardHtml).join("")}</div></div></div>
+    </section>`;
+  }).join("");
+  FREE_IDS.forEach(updateCard); updateBar();
+}
+function cardHtml(id) {
+  const p = P[id], f = free[id];
+  return `<article class="pcard" data-p="${id}">
+    <div class="phead">
+      <div style="min-width:0"><div class="pname">${esc(p.label)} <span class="unit">${esc(p.unit)}</span></div><div class="phelp">${esc(p.help)}</div></div>
+      <button type="button" class="switch" role="switch" aria-checked="${f.on}" aria-label="Utiliser ${esc(p.label)}"></button>
+    </div>
+    <div class="pbody">
+      <div class="want"><span class="want-v"></span><span class="want-n"></span></div>
+      <div class="vslider">
+        <div class="vs-track"></div><div class="vs-tol l"></div><div class="vs-tol r"></div><div class="vs-fill"></div>
+        ${SITES.map(s => `<span class="vs-tick" data-s="${s.id}" title="${esc(s.name)} : ${fmt(s.v[id])}${unitOf(id)}"></span>`).join("")}
+        <input type="range" class="vs-min" min="0" max="1000" step="1" aria-label="${esc(p.label)} : minimum souhaité">
+        <input type="range" class="vs-max" min="0" max="1000" step="1" aria-label="${esc(p.label)} : maximum souhaité">
+      </div>
+      <div class="vs-scale"><span>${fmt(p.lo)}</span>${p.log ? `<span>échelle log</span>` : ""}<span>${fmt(p.hi)}${unitOf(id)}</span></div>
+      <div class="pfoot">
+        <label class="marge">Marge <input type="range" class="vs-t" min="0" max="1000" step="1" aria-label="Marge"><output></output></label>
+        <div style="display:grid;gap:3px"><div class="imp" role="group" aria-label="Importance">${[1, 2, 3].map(n => `<button type="button" data-w="${n}" aria-label="Importance ${IMP[n - 1].toLowerCase()}">${[1, 2, 3].map(k => `<i class="${k <= n ? "f" : ""}"></i>`).join("")}</button>`).join("")}</div><span class="imp-lbl"></span></div>
+      </div>
+    </div>
+  </article>`;
+}
+function updateCard(id) {
+  const p = P[id], f = free[id], card = document.querySelector(`.pcard[data-p="${id}"]`); if (!card) return;
+  const sMin = f.min == null ? 0 : toS(p, f.min), sMax = f.max == null ? 1000 : toS(p, f.max);
+  card.classList.toggle("on", f.on);
+  card.querySelector(".switch").setAttribute("aria-checked", f.on);
+  card.querySelector(".vs-min").value = sMin; card.querySelector(".vs-max").value = sMax;
+  const fill = card.querySelector(".vs-fill"); fill.style.left = pos(sMin); fill.style.width = `calc((100% - 16px) * ${(sMax - sMin) / 1000})`;
+  const tl = card.querySelector(".vs-tol.l"), tr = card.querySelector(".vs-tol.r");
+  tl.hidden = f.min == null; tr.hidden = f.max == null;
+  if (f.min != null) { const a = toS(p, Math.max(p.lo, f.min - f.t)); tl.style.left = pos(a); tl.style.width = `calc((100% - 16px) * ${(sMin - a) / 1000})`; }
+  if (f.max != null) { const b = toS(p, Math.min(p.hi, f.max + f.t)); tr.style.left = pos(sMax); tr.style.width = `calc((100% - 16px) * ${(b - sMax) / 1000})`; }
+  card.querySelector(".want-v").textContent = f.min == null && f.max == null ? "Aucune limite" : target({ p: id, min: f.min, max: f.max });
+  const pool = SITES.filter(s => !($("#ndvi-filter").checked && s.v.ndvi > .1));
+  let n = 0;
+  card.querySelectorAll(".vs-tick").forEach(t => {
+    const s = SITES.find(s => s.id === t.dataset.s), v = s.v[id], vis = pool.includes(s);
+    t.hidden = !vis; t.style.left = pos(toS(p, Math.max(p.lo, Math.min(p.hi, v))));
+    const inn = (f.min == null || v >= f.min) && (f.max == null || v <= f.max); t.classList.toggle("in", inn); if (vis && inn) n++;
+  });
+  card.querySelector(".want-n").textContent = `${n} site${n > 1 ? "s" : ""} sur ${pool.length} dedans`;
+  const tmax = (p.hi - p.lo) / 2;
+  card.querySelector(".vs-t").value = 1000 * f.t / tmax;
+  card.querySelector(".marge output").textContent = `± ${fmt(f.t)}${unitOf(id)}`;
+  card.querySelectorAll(".imp button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.w === f.w));
+  card.querySelector(".imp-lbl").textContent = `Importance ${IMP[f.w - 1].toLowerCase()}`;
+  const panel = card.closest(".fam-panel"), ids = FREE_IDS.filter(i => P[i].fam === panel.dataset.fam), on = ids.filter(i => free[i].on).length;
+  const cnt = panel.querySelector(".fam-count"); cnt.textContent = `${on} / ${ids.length} actif${on > 1 ? "s" : ""}`; cnt.classList.toggle("has", on > 0);
+}
+function freeCriteria() { return FREE_IDS.filter(id => free[id].on).map(id => ({ p: id, ...free[id], t: free[id].t || (P[id].hi - P[id].lo) / 100 })); }
+function updateBar() {
+  const crit = freeCriteria();
+  $("#act-count").innerHTML = crit.length ? `<b>${crit.length}</b> critère${crit.length > 1 ? "s" : ""} actif${crit.length > 1 ? "s" : ""}` : "Aucun critère actif";
+  const valid = crit.filter(c => c.min != null || c.max != null);
+  if (!valid.length) { $("#preview").innerHTML = "Activez un paramètre pour voir un aperçu du classement."; return; }
+  const top = analyze(valid, $("#ndvi-filter").checked).filter(r => !r.excluded).slice(0, 3);
+  $("#preview").innerHTML = `Aperçu : ${top.map(r => `<span class="pv">${esc(r.site.name)} <b class="s-${tone(r.score)}">${r.score}</b></span>`).join("")}`;
+  $("#free-err").textContent = "";
+}
+$("#prefill").addEventListener("change", e => loadFree(+e.target.value || null));
+$("#ndvi-filter").addEventListener("change", () => { FREE_IDS.forEach(updateCard); updateBar(); });
+document.querySelector("[data-fold='open']").parentElement.addEventListener("click", e => {
+  const b = e.target.closest("[data-fold]"); if (!b) return;
+  document.querySelectorAll(".fam-panel").forEach(pn => { pn.classList.toggle("closed", b.dataset.fold === "close"); pn.querySelector(".fam-h").setAttribute("aria-expanded", b.dataset.fold === "open"); });
+});
+$("#free-fams").addEventListener("click", e => {
+  const h = e.target.closest(".fam-h");
+  if (h) { const pn = h.closest(".fam-panel"); const closed = pn.classList.toggle("closed"); h.setAttribute("aria-expanded", !closed); return; }
+  const card = e.target.closest(".pcard"); if (!card) return;
+  const id = card.dataset.p;
+  if (e.target.closest(".switch")) free[id].on = !free[id].on;
+  else if (e.target.closest("[data-w]")) { free[id].w = +e.target.closest("[data-w]").dataset.w; free[id].on = true; }
+  else return;
+  updateCard(id); updateBar();
+});
+$("#free-fams").addEventListener("input", e => {
+  const card = e.target.closest(".pcard"); if (!card) return;
+  const id = card.dataset.p, p = P[id], f = free[id], s = +e.target.value;
+  if (e.target.classList.contains("vs-min")) { const sm = Math.min(s, toS(p, f.max ?? p.hi)); f.min = sm <= 0 ? null : snap(p, toV(p, sm)); }
+  else if (e.target.classList.contains("vs-max")) { const sm = Math.max(s, toS(p, f.min ?? p.lo)); f.max = sm >= 1000 ? null : snap(p, toV(p, sm)); }
+  else if (e.target.classList.contains("vs-t")) f.t = snap(p, s / 1000 * (p.hi - p.lo) / 2);
+  f.on = true;
+  updateCard(id); updateBar();
+});
+
+// =====================================================================
+// Parcours en 6 chapitres
+// =====================================================================
+const CHAPTERS = ["Mission", "Le site lunaire", "Candidats", "Comparer", "Choisir", "Dossier"];
+const THEME = {
+  1: { accent: "#e8a33d", motif: "contours", icon: '<path d="M3 18l5-8 4 5 3-4 6 7z"/><circle cx="17" cy="6" r="2"/>' },
+  2: { accent: "#36d7e8", motif: "scope", icon: '<path d="M2 12h3l2-5 3 10 3-8 2 3h7"/>' },
+  3: { accent: "#f4d35e", motif: "hex", icon: '<path d="M12 3l7 4v8l-7 4-7-4V7z"/><path d="M9 13h6v4"/>' },
+  4: { accent: "#e6e9f0", motif: "dots", icon: '<path d="M4 7h10M18 7h2M4 12h4M12 12h8M4 17h12"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="17" r="2"/>' },
+};
+const CAND = [{ l: "A", v: "--cand-a", hex: "#ff7a90" }, { l: "B", v: "--cand-b", hex: "#6fe0b0" }, { l: "C", v: "--cand-c", hex: "#8ab0ff" }];
+const MOON_HEX = "#d7dbe4";
+const FAM_TEST = { "Relief": "les essais de mobilité et de franchissement", "Températures": "les tests thermiques", "Atmosphère et climat": "les calibrations de capteurs (vent, gaz)", "Énergie et position": "les essais d'énergie solaire et d'éclairage", "Géologie": "le forage et les mesures sismiques" };
+const FAM_STRONG = { "Relief": "idéal pour la mobilité", "Températures": "bon terrain thermique", "Atmosphère et climat": "air sec et calme", "Énergie et position": "bien exposé au soleil", "Géologie": "sol stable, d'origine volcanique" };
+const FAM_WEAK = { "Relief": "relief peu représentatif", "Températures": "froid insuffisant", "Atmosphère et climat": "trop humide ou venteux", "Énergie et position": "énergie solaire limitée", "Géologie": "sismicité ou substrat peu adaptés" };
+const FAM_FIX = { "Relief": "sur un banc d'essai ou un second site", "Températures": "en chambre thermique à vide", "Atmosphère et climat": "en laboratoire", "Énergie et position": "par simulation d'éclairage", "Géologie": "sur un second site ou par simulation" };
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const pct = s => Math.round(s * 100);
+const fmtLat = v => `${fmt(Math.abs(v))}° ${v >= 0 ? "N" : "S"}`, fmtLon = v => `${fmt(Math.abs(v))}° ${v >= 0 ? "E" : "O"}`;
+
+// ---------- Calculs ----------
+function results() {
+  if (state.demo === "empty") return [];
+  return analyze(currentCriteria(), state.scen === 4 ? state.ndvi : true);
+}
+function trioOf(res) {
+  const ok = res.filter(r => !r.excluded);
+  const manual = state.manual.map(id => ok.find(r => r.site.id === id)).filter(Boolean);
+  state.manual = manual.map(r => r.site.id);
+  const rest = ok.filter(r => !state.manual.includes(r.site.id));
+  return [...manual, ...rest].slice(0, 3).sort((a, b) => b.score - a.score);
+}
+function famScores(r) {
+  return FAMILIES.map(f => {
+    const rows = r.rows.filter(x => P[x.p].fam === f); if (!rows.length) return null;
+    const W = rows.reduce((a, x) => a + x.w, 0);
+    return { fam: f, s: rows.reduce((a, x) => a + x.w * x.s, 0) / W, rows };
+  }).filter(Boolean);
+}
+function verdict(r) {
+  const fs = famScores(r); if (!fs.length) return "";
+  const best = [...fs].sort((a, b) => b.s - a.s)[0], worst = [...fs].sort((a, b) => a.s - b.s)[0];
+  if (fs.length === 1) return cap(best.s >= .7 ? FAM_STRONG[best.fam] : FAM_WEAK[best.fam]);
+  return `${cap(FAM_STRONG[best.fam])}, ${worst.s < .7 ? FAM_WEAK[worst.fam] : "sans point faible marqué"}`;
+}
+// Option A : la note du scénario, corrigée par l'écart réel à la Lune.
+function levelFor(row, m) {
+  let lv = row.s >= .7 ? 2 : row.s >= .4 ? 1 : 0;
+  const mv = moonVal(row.p, m); let far = false;
+  if (mv != null) {
+    const p = P[row.p], outScale = mv < p.lo || mv > p.hi;
+    const gap = outScale ? 1 : Math.abs(toS(p, row.v) - toS(p, mv)) / 1000;
+    if (lv === 2 && gap > .35) { lv = 1; far = true; }
+  }
+  return { lv, mv, far };
+}
+console.assert(levelFor({ p: "lst_night", v: -30, s: 1 }, { tday: 0, tnight: -190 }).lv === 1, "option A : bonne note mais loin de la Lune = partiel");
+const detailTxt = (row, mv) => mv != null
+  ? `${P[row.p].label} : ${fmt(row.v)}${unitOf(row.p)} ici contre ${fmt(mv)}${unitOf(row.p)} sur la Lune`
+  : `${P[row.p].label} : ${fmt(row.v)}${unitOf(row.p)} pour ${target(row)} souhaité`;
+
+// ---------- Thème selon le scénario ----------
+function motifUrl(kind, col) {
+  let svg = "", size = "520px";
+  const c = encodeURIComponent(col);
+  if (kind === "contours") {
+    const r = rng(11); let paths = "";
+    [[150, 170], [430, 380], [520, 90]].forEach(([cx, cy]) => {
+      const s1 = r() * 6, s2 = r() * 6;
+      for (let k = 1; k <= 7; k++) {
+        const R = k * 22, pts = [];
+        for (let i = 0; i <= 64; i++) { const a = i / 64 * 6.283, rr = R * (1 + .1 * Math.sin(3 * a + s1) + .06 * Math.sin(5 * a + s2)); pts.push(`${(cx + Math.cos(a) * rr).toFixed(1)},${(cy + Math.sin(a) * rr).toFixed(1)}`); }
+        paths += `<polyline points='${pts.join(" ")}'/>`;
+      }
+    });
+    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='520'><g fill='none' stroke='${col}' stroke-opacity='.16' stroke-width='1'>${paths}</g></svg>`; size = "600px";
+  } else if (kind === "scope") {
+    let g = ""; for (let i = 0; i <= 240; i += 24) g += `<path d='M${i} 0V120M0 ${i / 2}H240'/>`;
+    let w = "M0 60"; for (let x = 0; x <= 240; x += 4) w += ` L${x} ${(60 + 26 * Math.sin(x / 240 * 6.283 * 2)).toFixed(1)}`;
+    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='120'><g stroke='${col}' fill='none'><g stroke-opacity='.08'>${g}</g><path d='${w}' stroke-opacity='.22' stroke-width='1.4'/></g></svg>`; size = "240px 120px";
+  } else if (kind === "hex") {
+    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='97'><path d='M28 0 56 16v32L28 64 0 48V16zM28 64v33' fill='none' stroke='${col}' stroke-opacity='.14'/></svg>`; size = "56px 97px";
+  } else {
+    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26'><circle cx='13' cy='13' r='1' fill='${col}' fill-opacity='.22'/></svg>`; size = "26px";
+  }
+  return `url("data:image/svg+xml,${encodeURIComponent(svg).replace(/%23/g, "%23")}") center / ${size}`;
+}
+function applyTheme() {
+  const t = THEME[state.scen];
+  document.documentElement.dataset.scen = state.scen;
+  document.documentElement.style.setProperty("--motif", motifUrl(t.motif, t.accent));
+  [earthG, moonG].forEach(g => g && !g.dead && g.scene.traverse(o => { if (o.material && o.material.uniforms && o.material.uniforms.c) o.material.uniforms.c.value.set(t.accent); }));
+}
+
+// ---------- Globes ----------
+let earthG, moonG;
+const zoomTo = (g, off) => { if (!g || g.dead) return; g.zoomOff = off; g.dist = g.base + off; };
+function initGlobes() {
+  moonG = new Globe($(".gp-moon"), { texture: moonTexture, labels: true, ambient: .3, onPick: id => setRef(id) });
+  earthG = new Globe($(".gp-earth"), { texture: earthTexture, glow: THEME[state.scen].accent, onPick: id => onEarthPick(id), onHover: id => hlRow(id),
+    tip: id => { const r = lastRes.find(r => r.site.id === id); return r ? `${r.site.name} : ${r.excluded ? "exclu" : r.score + " sur 100"}` : ""; } });
+}
+function moonMarkers() { const acc = THEME[state.scen].accent; return MOON_SITES.map(m => ({ id: m.id, lat: m.lat, lon: m.lon, label: m.name, color: new THREE.Color(m.id === state.ref ? acc : MOON_HEX), size: m.id === state.ref ? .02 : .014 })); }
+let lastRes = [], lastTrio = [];
+function updateScene() {
+  const ch = state.ch, m = refSite(), g = $("#globes");
+  g.dataset.mode = { 1: "moon", 2: "moon", 3: "earth", 4: "split", 5: "earth", 6: "stack" }[ch];
+  $("#gp-moon-sub").textContent = m.name;
+  if (!moonG || moonG.dead) return;
+  moonG.setMarkers(moonMarkers()); moonG.select(state.ref); moonG.focus(m.lat, m.lon);
+  zoomTo(moonG, ch === 2 ? -1.1 : 0);
+  const chosen = lastTrio.find(r => r.site.id === state.chosen);
+  let list = [];
+  if (ch <= 3) list = lastRes.filter(r => r.excluded || (r.score >= state.rmin && r.score <= state.rmax)).map(r => ({ id: r.site.id, lat: r.site.lat, lon: r.site.lon, dim: r.excluded, color: new THREE.Color(cssVar("--" + (r.excluded ? "dim" : tone(r.score)))), size: .019 }));
+  else list = lastTrio.map((r, i) => ({ id: r.site.id, lat: r.site.lat, lon: r.site.lon, color: new THREE.Color(CAND[i].hex), size: ch >= 5 && r.site.id !== state.chosen ? .016 : .024, dim: ch >= 5 && r.site.id !== state.chosen }));
+  earthG.setMarkers(list);
+  earthG.select(ch >= 5 ? state.chosen : null);
+  const focus = ch >= 5 && chosen ? chosen : lastTrio[0];
+  if (focus && ch >= 3) earthG.focus(focus.site.lat, focus.site.lon);
+  zoomTo(earthG, ch === 5 ? -1 : 0);
+  $("#gp-earth-sub").textContent = ch === 3 ? `${lastRes.filter(r => !r.excluded).length} sites candidats` : ch === 4 ? `${lastTrio.length} candidats comparés` : chosen ? chosen.site.name : "";
+  const cap = {
+    1: "Cliquez un site sur la Lune pour le choisir. Faites glisser pour tourner la Lune, molette pour zoomer.",
+    2: `${m.name} : ${MOON_KIND[m.kind].toLowerCase()}, ${m.region.toLowerCase()}.`,
+    3: "Chaque point est un site candidat ; sa couleur indique sa note. Cliquez-en un pour ouvrir sa fiche.",
+    4: "", 5: chosen ? `${chosen.site.name}, ${chosen.site.region}.` : "", 6: "",
+  }[ch];
+  $("#caption").textContent = cap; $("#caption").hidden = !cap;
+}
+
+// ---------- Rendu général ----------
+function render() {
+  lastRes = results(); lastTrio = trioOf(lastRes);
+  if (state.chosen && !lastTrio.some(r => r.site.id === state.chosen)) { state.chosen = null; state.notice = "Le site retenu ne fait plus partie des candidats comparés : choisissez-en un autre."; }
+  [...state.overlay].forEach(id => { if (!lastTrio.some(r => r.site.id === id)) state.overlay.delete(id); });
+  if (state.ch >= 5 && !state.chosen) state.ch = 4;
+  const main = $("#main"); main.dataset.ch = state.ch;
+  renderSteps();
+  $("#recit").innerHTML = [ch1, ch2, ch3, ch4, ch5, ch6][state.ch - 1]();
+  bindChapter();
+  renderNav();
+  updateScene();
+}
+function canReach(n) { if (n > state.reached) return false; if (n >= 5 && !state.chosen) return false; if (n >= 4 && !lastTrio.length) return false; return true; }
+function renderSteps() {
+  $("#steps").innerHTML = CHAPTERS.map((t, i) => { const n = i + 1;
+    return `<li><button type="button" data-go="${n}" ${n === state.ch ? 'aria-current="step"' : ""} class="${n < state.ch || (n <= state.reached && n !== state.ch && canReach(n)) ? "done" : ""}" ${canReach(n) || n === state.ch ? "" : "disabled"}><span class="n">${n}</span><span class="t">${t}</span></button></li>`; }).join("");
+}
+function renderNav() {
+  const ch = state.ch, m = refSite(), loading = isLoading();
+  const next = { 1: `Découvrir ${m.name}`, 2: "Voir les candidats", 3: `Comparer les ${lastTrio.length > 1 ? lastTrio.length + " meilleurs" : "candidats"}`, 4: state.chosen ? "Revoir le site retenu" : "Choisissez un candidat", 5: "Ouvrir le dossier de tests", 6: "" }[ch];
+  const nb = $("#next"); nb.textContent = next; nb.hidden = ch === 6;
+  nb.disabled = (ch === 3 && (!lastTrio.length || loading || state.demo === "error")) || (ch === 4 && !state.chosen);
+  $("#back").hidden = ch === 1;
+  $("#hint").textContent = { 1: "", 2: "", 3: lastTrio.length ? "" : "Aucun candidat à comparer", 4: state.chosen ? "" : "Choisissez un des candidats", 5: "", 6: "Dossier consultable à l'écran" }[ch];
+}
+function go(n) {
+  if (n !== state.ch && !canReach(n) && n !== state.ch + 1) return;
+  if (n === 3 && state.dirty) { state.loadingUntil = reduce ? 0 : Date.now() + 650; state.dirty = false; setTimeout(() => state.ch === 3 && render(), 700); }
+  if (n === 4 && !state.overlay.size && lastTrio[0]) state.overlay.add(lastTrio[0].site.id);
+  state.ch = n; state.reached = Math.max(state.reached, n); state.notice = state.notice && n <= 4 ? state.notice : "";
+  $("#sheet").hidden = true;
+  render(); $("#recit").scrollTop = 0;
+}
+const isLoading = () => state.demo === "loading" || Date.now() < state.loadingUntil;
+function markDirty() { state.dirty = true; }
+
+// ---------- Chapitre 1 : Mission ----------
+function ch1() {
+  const m = refSite();
+  return `<div class="block"><span class="chap-n">Chapitre 1 sur 6</span><h1>Où allez-vous sur la Lune, et que voulez-vous y préparer ?</h1>
+    <p class="lead">Choisissez le site lunaire visé, puis ce que vos tests doivent valider. Vous pourrez revenir changer ces choix à tout moment.</p></div>
+  <div class="block"><h2>Le site lunaire</h2>
+    <div class="pick-cur hud"><div><b>${esc(m.name)}</b><span class="muted" style="font-size:13px">${esc(m.region)}, ${esc(MOON_KIND[m.kind].toLowerCase())}</span></div><span class="api">GET /api/reference/moon</span></div>
+    <input type="search" class="search" id="msearch" placeholder="Chercher : Shackleton, Apollo, tube de lave…" aria-label="Chercher un site lunaire" autocomplete="off">
+    <ul class="mlist" id="mlist" role="listbox" aria-label="Sites lunaires"></ul>
+    <p class="muted" style="font-size:13px">Vous pouvez aussi cliquer un site directement sur la Lune.</p></div>
+  <div class="block"><h2>Ce que vos tests doivent valider</h2>
+    <div class="scen-opts" role="radiogroup" aria-label="Scénario">${SCEN.map(s => `<button type="button" class="scen-opt" role="radio" data-scen="${s.id}" aria-checked="${s.id === state.scen}" style="--sc:${THEME[s.id].accent}">
+      <span class="sw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${THEME[s.id].icon}</svg></span>
+      <span><b>${esc(s.name)}</b><span>${esc(s.q)}</span>${s.id === 4 && state.custom ? `<span style="display:block;color:var(--sc);margin-top:4px">${state.custom.length} critère${state.custom.length > 1 ? "s" : ""} définis · modifier</span>` : ""}</span></button>`).join("")}</div>
+    <span class="api">GET /api/modes</span></div>`;
+}
+function renderMoonList() {
+  const q = ($("#msearch")?.value || "").trim().toLowerCase(), ul = $("#mlist"); if (!ul) return;
+  const hits = MOON_SITES.filter(m => !q || [m.name, m.region, m.missions, MOON_KIND[m.kind]].join(" ").toLowerCase().includes(q));
+  const groups = [...new Set(hits.map(m => m.region))];
+  ul.innerHTML = hits.length ? groups.map(g => `<li class="grp" role="presentation">${esc(g)}</li>` + hits.filter(m => m.region === g).map(m =>
+    `<li role="presentation"><button type="button" role="option" data-moon="${m.id}" aria-selected="${m.id === state.ref}"><span style="min-width:0"><span class="nm">${esc(m.name)}</span><span class="mt">${esc(MOON_KIND[m.kind])}${m.missions !== "—" ? ", " + esc(m.missions.split(" :")[0].split(" (")[0]) : ""}</span></span><span class="mt">${fmtLat(m.lat)}</span></button></li>`).join("")).join("")
+    : `<li class="grp" role="presentation">Aucun site ne correspond à « ${esc(q)} ». Essayez un nom de mission ou de région.</li>`;
+}
+function setRef(id) {
+  if (state.ref === id) return;
+  state.ref = id; markDirty();
+  if (state.ch > 2) state.ch = 2;   // nouveau site : on reprend l'histoire à sa présentation
+  render();
+}
+
+// ---------- Chapitre 2 : le site lunaire ----------
+function ch2() {
+  const m = refSite(), crit = currentCriteria(), s = SCEN.find(x => x.id === state.scen);
+  const fams = FAMILIES.map(f => [f, crit.filter(c => P[c.p].fam === f)]).filter(([, l]) => l.length);
+  return `<div class="block"><span class="chap-n">Chapitre 2 sur 6</span><h1>${esc(m.name)}</h1>
+    <p class="lead">${esc(MOON_KIND[m.kind])}, ${esc(m.region.toLowerCase())}, ${fmtLat(m.lat)} ${fmtLon(m.lon)}.</p><p>${esc(m.why)}</p></div>
+  <div class="facts">
+    <div><b>${m.slope}°</b><span>Pente moyenne</span></div><div><b>${m.rough} m</b><span>Relief accidenté</span></div><div><b>${m.illum} %</b><span>Temps éclairé</span></div>
+    <div><b>${m.tday > 0 ? "+" : ""}${m.tday} °C</b><span>Sol au soleil</span></div><div><b>${m.tnight} °C</b><span>Sol à l'ombre</span></div><div><b>${esc(m.ice)}</b><span>Glace d'eau</span></div>
+  </div>
+  <p class="muted" style="font-size:13.5px"><b style="color:var(--ink)">Missions :</b> ${esc(m.missions)}</p>
+  <div class="block"><h2>Ce qu'il faudra retrouver sur Terre</h2>
+    <p class="muted" style="font-size:13.5px">Pour le scénario « ${esc(s.name)} », un site terrestre devra s'approcher de ces valeurs. ${crit.some(c => c.adapted) ? "Les critères marqués « adapté » suivent les caractéristiques de ce site lunaire." : ""}</p>
+    ${crit.length ? `<div class="need">${fams.map(([f, l]) => `<span class="need-fam">${f}</span>` + l.map(c => `<div class="need-row"><span>${esc(P[c.p].label)}</span><b>${target(c)}</b><small>Sur la Lune : ${moonTxt(c.p, m)}${c.adapted ? ` <span class="tag" style="color:var(--accent)">adapté</span>` : ""}</small></div>`).join("")).join("")}</div>`
+      : `<div class="state-box">Aucun critère défini. Revenez au chapitre 1 pour choisir un scénario ou définir vos critères.</div>`}
+    <span class="api">GET /api/reference/moon/${m.id}</span></div>`;
+}
+
+// ---------- Chapitre 3 : candidats ----------
+function ch3() {
+  const m = refSite(), s = SCEN.find(x => x.id === state.scen);
+  const head = `<div class="block"><span class="chap-n">Chapitre 3 sur 6</span><h1>Les sites terrestres les plus proches de ${esc(m.name)}</h1>
+    <p class="lead">Classés selon le scénario « ${esc(s.name)} ». Les 3 premiers seront comparés. Ouvrez un autre site pour le mettre dans la comparaison.</p></div>`;
+  const instr = state.scen === 2 ? `<div class="block"><span class="lbl">Instruments à calibrer</span><div class="chips" id="instr">${["Forage", "Vent", "Gaz", "Sismographe", "Thermique"].map(g => `<button type="button" class="chip" data-g="${g}" aria-pressed="${state.instr.has(g)}">${g}</button>`).join("")}</div></div>` : "";
+  const range = `<div class="block"><div class="range-head"><span class="lbl" id="range-lbl">Notes affichées</span><span class="range-val">${state.rmin} à ${state.rmax}</span></div>
+    <div class="range" role="group" aria-labelledby="range-lbl"><div class="track"></div><div class="fill" style="left:calc(8px + (100% - 16px) * ${state.rmin / 100});width:calc((100% - 16px) * ${(state.rmax - state.rmin) / 100})"></div>
+    <input type="range" id="r-min" min="0" max="100" step="5" value="${state.rmin}" aria-label="Note minimale"><input type="range" id="r-max" min="0" max="100" step="5" value="${state.rmax}" aria-label="Note maximale"></div>
+    <div class="chips" id="presets">${[["0,100", "Toutes"], ["70,100", "70 et plus"], ["40,69", "40 à 69"], ["0,39", "Moins de 40"]].map(([v, t]) => `<button type="button" class="chip" data-r="${v}" aria-pressed="${v === state.rmin + "," + state.rmax}">${t}</button>`).join("")}</div></div>`;
+  const demo = `<div class="demo" aria-label="États à démontrer (maquette)">État démo : ${[["normal", "Normal"], ["loading", "Chargement"], ["error", "Erreur"], ["empty", "Aucun résultat"]].map(([v, t]) => `<button type="button" data-demo="${v}" aria-pressed="${state.demo === v}">${t}</button>`).join("")} <span class="api">POST /api/analyze { moonSite, scenario | criteria[] }</span></div>`;
+  let body;
+  if (isLoading()) body = `<div class="state-box" aria-live="polite"><h3>Interrogation des sources</h3><div class="src"><span>NASA POWER, climat</span><span style="color:var(--good)">OK</span><span>Copernicus DEM, relief</span><span style="color:var(--good)">OK</span><span>MODIS, végétation et sol</span><span style="color:var(--mid)">2ᵉ essai</span><span>USGS, séismes</span><span>en attente</span></div></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
+  else if (state.demo === "error") body = `<div class="state-box" role="alert"><h3>Températures du sol indisponibles</h3><p>Le service MODIS ne répond pas après 3 essais. Réessayez dans une minute, ou continuez sans ce paramètre.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-demo="normal">Réessayer</button><button type="button" class="btn ghost" data-demo="normal">Continuer sans MODIS</button></div></div>`;
+  else {
+    const kept = lastRes.filter(r => !r.excluded), out = lastRes.filter(r => r.excluded), shown = kept.filter(r => r.score >= state.rmin && r.score <= state.rmax);
+    if (!kept.length) body = `<div class="state-box"><h3>Aucun site ne correspond</h3><p>Tous les candidats sont exclus ou obtiennent 0 avec ces critères. Revenez au chapitre 1 pour changer de scénario ou élargir vos critères.</p><button type="button" class="btn ghost" data-go="1">Revenir à la mission</button></div>`;
+    else {
+      const row = (r, i) => { const t = lastTrio.findIndex(x => x.site.id === r.site.id);
+        return `<li style="--i:${i}"><button type="button" class="row" data-site="${r.site.id}"><span class="pos">${r.excluded ? "" : kept.indexOf(r) + 1}</span>
+        <span style="min-width:0"><span class="nm">${esc(r.site.name)}</span><span class="mt">${esc(r.site.region)}, ${esc(KIND[r.site.kind].toLowerCase())}${t >= 0 ? ` <span class="in-trio" style="background:var(${CAND[t].v})">Candidat ${CAND[t].l}</span>` : ""}</span></span>
+        <span class="score s-${r.excluded ? "off" : tone(r.score)}">${r.excluded ? "exclu" : r.score}</span></button></li>`; };
+      body = `<p class="lbl">${shown.length} site${shown.length > 1 ? "s" : ""} sur ${kept.length} entre ${state.rmin} et ${state.rmax}</p>
+        ${shown.length ? `<ol class="rank">${shown.map(row).join("")}</ol>` : `<div class="state-box">Aucun site dans cette plage de notes. <button type="button" class="btn ghost" data-r="0,100">Afficher toutes les notes</button></div>`}
+        ${out.length ? `<p class="excl">Exclus parce que couverts de végétation : ${out.map(r => esc(r.site.name)).join(", ")}</p>` : ""}`;
+    }
+  }
+  return head + instr + range + demo + `<div class="block">${body}</div>`;
+}
+function hlRow(id) { document.querySelectorAll(".row").forEach(b => b.classList.toggle("hl", b.dataset.site === id)); }
+function onEarthPick(id) { if (state.ch <= 3) openSheet(id); else if (state.ch === 4) { const c = document.querySelector(`.ccard[data-site="${id}"]`); c && c.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" }); } }
+function openSheet(id) {
+  const r = lastRes.find(r => r.site.id === id); if (!r) return;
+  const m = refSite(), t = lastTrio.findIndex(x => x.site.id === id), sh = $("#sheet");
+  sh.innerHTML = `<div class="sheet-in">
+    <div class="sheet-top"><div style="display:grid;gap:4px;min-width:0"><span class="lbl">${esc(KIND[r.site.kind])}</span><h2>${esc(r.site.name)}</h2><span class="muted" style="font-size:13px">${esc(r.site.region)}, ${fmtLat(r.site.lat)} ${fmtLon(r.site.lon)}</span><span class="api">GET /api/sites/${r.site.id}</span></div>
+      <button class="close" type="button" id="sheet-close" aria-label="Fermer la fiche">Fermer</button></div>
+    <p><span class="score s-${r.excluded ? "off" : tone(r.score)}" style="font-size:22px;padding:4px 10px">${r.excluded ? "exclu" : r.score}</span> <span class="muted">sur 100 face à ${esc(m.name)}</span></p>
+    ${r.excluded ? `<p class="notice">Ce site est couvert de végétation : il est exclu de la recherche.</p>`
+      : t >= 0 ? `<p class="lbl" style="color:var(${CAND[t].v})">Fait partie de la comparaison (candidat ${CAND[t].l})</p>`
+      : `<button type="button" class="btn" id="add-cmp">Mettre dans la comparaison</button><p class="muted" style="font-size:12.5px;margin-top:-8px">Il remplacera ${esc(lastTrio.filter(x => !state.manual.includes(x.site.id)).slice(-1)[0]?.site.name || lastTrio.slice(-1)[0]?.site.name || "")}.</p>`}
+    <div>${r.rows.map(x => `<div class="crow"><div class="l"><span>${esc(P[x.p].label)}</span><b>${fmt(x.v)}${unitOf(x.p)}</b></div>
+      <div class="bar-s"><i style="width:${Math.max(2, pct(x.s))}%;background:var(--${tone(pct(x.s))})"></i></div>
+      <div class="s"><span>Souhaité : ${target(x)}</span><span style="color:var(--moon)">Lune : ${moonTxt(x.p, m)}</span></div></div>`).join("")}</div>
+  </div>`;
+  sh.hidden = false;
+  $("#sheet-close").onclick = () => { sh.hidden = true; };
+  const add = $("#add-cmp"); if (add) add.onclick = () => { addManual(id); sh.hidden = true; };
+}
+// Le site ajouté remplace le moins bien noté des candidats choisis automatiquement (sinon le moins bien noté tout court).
+function addManual(id) {
+  const removable = lastTrio.filter(x => !state.manual.includes(x.site.id));
+  const drop = lastTrio.length < 3 ? null : (removable.length ? removable : lastTrio).slice(-1)[0];
+  if (drop) state.manual = state.manual.filter(x => x !== drop.site.id);
+  state.manual.push(id);
+  render();
+}
+
+// ---------- Chapitre 4 : comparer ----------
+function ch4() {
+  const m = refSite(), s = SCEN.find(x => x.id === state.scen), n = lastTrio.length;
+  const word = ["Aucun candidat", "Un candidat", "Deux candidats", "Trois candidats"][n];
+  const cards = lastTrio.map((r, i) => {
+    const c = CAND[i], fs = famScores(r);
+    return `<article class="ccard${state.chosen === r.site.id ? " chosen" : ""}" data-site="${r.site.id}" style="--cc:var(${c.v})">
+      <div class="ccard-h"><span class="lt">${c.l}</span><span style="min-width:0"><b>${esc(r.site.name)}</b><small>${esc(r.site.region)}</small></span><span class="score s-${tone(r.score)}">${r.score}</span></div>
+      <div class="fams-g">${fs.map(f => { const key = r.site.id + "|" + f.fam, open = state.openFam.has(key);
+        return `<button type="button" class="fam-g" data-fam="${key}" aria-expanded="${open}"><span>${f.fam}</span><span class="gb"><i style="width:${Math.max(3, pct(f.s))}%"></i></span><span class="gv">${pct(f.s)}</span></button>
+        ${open ? `<div class="fam-detail">${f.rows.map(x => `<div><span>${esc(P[x.p].label)}</span><b>${fmt(x.v)}${unitOf(x.p)}</b><span class="lv">${moonTxt(x.p, m)}</span></div>`).join("")}<div class="muted"><span>Valeur du site, puis valeur lunaire</span></div></div>` : ""}`; }).join("")}</div>
+      <p class="verdict">« ${esc(verdict(r))} »</p>
+      <div class="ccard-b"><button type="button" class="ghost-btn ovl" data-ovl="${r.site.id}" aria-pressed="${state.overlay.has(r.site.id)}">Superposer à la Lune</button><button type="button" class="btn" data-choose="${r.site.id}">Choisir ce site</button></div>
+    </article>`; }).join("");
+  return `<div class="block"><span class="chap-n">Chapitre 4 sur 6</span><h1>${word} face à ${esc(m.name)}</h1>
+    <p class="lead">Scénario « ${esc(s.name)} ». Chaque jauge résume une famille de critères ; cliquez-la pour voir les valeurs du site et de la Lune. « Superposer » pose la forme d'un site sur celle de la Lune.</p>
+    ${state.notice ? `<p class="notice">${esc(state.notice)}</p>` : ""}</div>
+  <div class="cmp"><div class="radar-box hud">${radar()}</div><div class="cards">${cards}</div></div>`;
+}
+function radar() {
+  const m = refSite(), crit = lastTrio[0] ? lastTrio[0].rows : [];
+  if (crit.length < 3) return `<p class="muted" style="font-size:13px">Le graphique de surface demande au moins 3 critères. Comparez les jauges des cartes.</p>`;
+  const N = crit.length, cx = 200, cy = 170, R = 112;
+  const norm = (p, v) => Math.max(0, Math.min(1, toS(P[p], Math.max(P[p].lo, Math.min(P[p].hi, v))) / 1000));
+  const pt = (i, k) => { const a = -Math.PI / 2 + i * 2 * Math.PI / N; return [cx + Math.cos(a) * R * k, cy + Math.sin(a) * R * k]; };
+  const poly = ks => ks.map((k, i) => k == null ? null : pt(i, k).map(n => n.toFixed(1)).join(",")).filter(Boolean).join(" ");
+  const rings = [.25, .5, .75, 1].map(k => `<polygon class="rd-ring" points="${poly(crit.map(() => k))}"/>`).join("");
+  const axes = crit.map((x, i) => { const [ex, ey] = pt(i, 1), lo = x.min == null ? 0 : norm(x.p, x.min), hi = x.max == null ? 1 : norm(x.p, x.max), [ax, ay] = pt(i, lo), [bx, by] = pt(i, hi), [lx, ly] = pt(i, 1.17);
+    const anchor = Math.abs(lx - cx) < 8 ? "middle" : lx > cx ? "start" : "end", lbl = P[x.p].label.length > 22 ? P[x.p].label.slice(0, 21) + "…" : P[x.p].label;
+    return `<line class="rd-axis" x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}"/><line class="rd-band" x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}"/><text class="rd-lbl" x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="middle"><title>${esc(P[x.p].label)}</title>${esc(lbl)}</text>`; }).join("");
+  const moonK = crit.map(x => { const v = moonVal(x.p, m); return v == null ? null : norm(x.p, v); });
+  const moonPoly = moonK.filter(k => k != null).length >= 3 ? `<polygon class="rd-moon" points="${poly(moonK)}"/>` : "";
+  const cands = lastTrio.map((r, i) => state.overlay.has(r.site.id) ? `<polygon class="rd-cand" points="${poly(r.rows.map(x => norm(x.p, x.v)))}" style="fill:var(${CAND[i].v});stroke:var(${CAND[i].v})"><title>${esc(r.site.name)}</title></polygon>` : "").join("");
+  return `<span class="lbl">Forme de chaque site comparée à celle de la Lune</span>
+    <svg viewBox="0 0 400 340" role="img" aria-label="Graphique de surface : Lune et candidats superposés">${rings}${axes}${moonPoly}${cands}</svg>
+    <div class="legend"><span><i style="background:var(--moon);opacity:.6"></i>${esc(m.name)}</span>${lastTrio.map((r, i) => state.overlay.has(r.site.id) ? `<span><i style="background:var(${CAND[i].v})"></i>${esc(r.site.name)}</span>` : "").join("")}<span><i style="background:var(--good);height:4px;opacity:.5"></i>Intervalle souhaité</span></div>
+    <p class="muted" style="font-size:12px">Chaque axe va de la plus petite à la plus grande valeur possible sur Terre. Une valeur lunaire hors de cette échelle est posée au bord.</p>`;
+}
+
+// ---------- Chapitre 5 : choisir ----------
+function ch5() {
+  const m = refSite(), s = SCEN.find(x => x.id === state.scen), r = lastTrio.find(x => x.site.id === state.chosen); if (!r) return "";
+  const fs = famScores(r), strong = fs.filter(f => f.s >= .7), weak = fs.filter(f => f.s < .7);
+  const others = lastTrio.map((x, i) => [x, i]).filter(([x]) => x.site.id !== r.site.id);
+  return `<div class="block"><span class="chap-n">Chapitre 5 sur 6</span><h1>Vous retenez ${esc(r.site.name)}</h1>
+    <p class="lead">${esc(r.site.region)}. Note de ${r.score} sur 100 face à ${esc(m.name)}, pour le scénario « ${esc(s.name)} ».</p></div>
+  <div class="block"><h2>Ce qui joue en sa faveur</h2>${strong.length ? `<ul class="why">${strong.map(f => `<li><b>${f.fam}</b> : ${FAM_STRONG[f.fam]} (${pct(f.s)} sur 100).</li>`).join("")}</ul>` : `<p class="muted">Aucune famille de critères n'atteint 70 : ce site reste un compromis.</p>`}</div>
+  <div class="block"><h2>Ce qu'il faudra compenser</h2>${weak.length ? `<ul class="why">${weak.map(f => `<li><b>${f.fam}</b> : ${FAM_WEAK[f.fam]} (${pct(f.s)} sur 100).</li>`).join("")}</ul>` : `<p class="muted">Pas de point faible marqué pour ce scénario.</p>`}</div>
+  ${others.length ? `<div class="block"><h2>Les autres candidats</h2>${others.map(([x, i]) => `<div class="alt" style="--cc:var(${CAND[i].v})"><span><b>${esc(x.site.name)}</b> <span class="muted">${x.score} sur 100, ${esc(verdict(x).toLowerCase())}</span></span><button type="button" class="ghost-btn" data-choose="${x.site.id}">Retenir plutôt</button></div>`).join("")}</div>` : ""}`;
+}
+
+// ---------- Chapitre 6 : dossier ----------
+function ch6() {
+  const m = refSite(), s = SCEN.find(x => x.id === state.scen), r = lastTrio.find(x => x.site.id === state.chosen); if (!r) return "";
+  const fs = famScores(r);
+  const chars = FAMILIES.map(f => { const ids = Object.keys(P).filter(id => P[id].fam === f); return ids.length ? `<div><h3>${f}</h3><dl>${ids.map(id => `<div><dt>${esc(P[id].label)}</dt><dd>${fmt(r.site.v[id])}${unitOf(id)}</dd></div>`).join("")}</dl></div>` : ""; }).join("");
+  const rows = r.rows.map(x => { const L = levelFor(x, m), lvTxt = ["Non représentatif", "Partiel", "Représentatif"][L.lv];
+    return `<tr><td>${esc(P[x.p].label)}</td><td class="v">${fmt(x.v)}${unitOf(x.p)}</td><td class="lv">${moonTxt(x.p, m)}</td><td>${target(x)}</td><td><span class="lvl lvl-${L.lv}">${lvTxt}</span>${L.far ? `<br><small class="muted">bonne note, mais encore loin de la Lune</small>` : ""}</td></tr>`; }).join("");
+  const scope = fs.map(f => {
+    const ls = f.rows.map(x => ({ x, ...levelFor(x, m) })), lv = Math.floor(ls.reduce((a, l) => a + l.lv, 0) / ls.length + 1e-9);
+    const worst = [...ls].sort((a, b) => a.lv - b.lv || a.x.s - b.x.s)[0], best = [...ls].sort((a, b) => b.lv - a.lv || b.x.s - a.x.s)[0];
+    const txt = lv === 2 ? `<b>Conditions proches de la Lune.</b> ${esc(detailTxt(best.x, best.mv))} : ${FAM_TEST[f.fam]} seront représentatifs.`
+      : lv === 1 ? `<b>À compléter.</b> ${esc(detailTxt(worst.x, worst.mv))} : ${FAM_TEST[f.fam]} seront à compléter ${FAM_FIX[f.fam]}.`
+      : `<b>Hors de portée sur ce site.</b> ${esc(detailTxt(worst.x, worst.mv))} : ${FAM_TEST[f.fam]} ne seront pas représentatifs ici.`;
+    return `<div class="scope-row"><div style="display:grid;gap:6px;align-content:start"><h3>${f.fam}</h3><span class="lvl lvl-${lv}" style="justify-self:start">${["Non représentatif", "Partiel", "Représentatif"][lv]}</span></div><p>${txt}</p></div>`; }).join("");
+  return `<div class="dossier">
+    <div class="dossier-h"><span class="chap-n">Chapitre 6 sur 6</span><h1>Dossier de tests pour ${esc(r.site.name)}</h1>
+      <div class="meta"><span>Site terrestre <b>${esc(r.site.name)}</b>, ${esc(r.site.region)}</span><span>Comparé à <b>${esc(m.name)}</b></span><span>Scénario <b>${esc(s.name)}</b></span><span>Note <b>${r.score} sur 100</b></span></div>
+      <span class="api">GET /api/sites/${r.site.id}?moonSite=${m.id}</span></div>
+    <section class="dsec"><h2>Caractéristiques du site</h2><div class="chars">${chars}</div><p class="muted" style="font-size:12.5px">Maquette : valeurs fictives. Sources prévues : NASA POWER, Copernicus DEM, MODIS, USGS, Smithsonian GVP.</p></section>
+    <section class="dsec"><h2>Analogies et différences avec ${esc(m.name)}</h2>
+      <div class="tablebox"><table class="cmp-table"><thead><tr><th>Critère</th><th>Ce site</th><th>Lune</th><th>Souhaité</th><th>Analogie</th></tr></thead><tbody>${rows}</tbody></table></div></section>
+    <section class="dsec"><h2>Portée des tests</h2><div class="scope">${scope}</div>
+      <div class="never"><h3>Jamais reproductible sur Terre</h3><p>La gravité lunaire (six fois plus faible), le vide et le rayonnement solaire et cosmique. Ces aspects demandent des essais en vol parabolique, en chambre à vide ou sous accélérateur.</p></div></section>
+  </div>`;
+}
+
+// ---------- Interactions ----------
+function bindChapter() {
+  if (state.ch === 1) { renderMoonList(); const q = $("#msearch"); q.oninput = renderMoonList; q.onkeydown = e => {
+      const items = [...document.querySelectorAll("#mlist [data-moon]")]; if (!items.length) return; let i = items.findIndex(b => b.classList.contains("kb"));
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); items[i]?.classList.remove("kb"); i = (i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length; items[i].classList.add("kb"); items[i].scrollIntoView({ block: "nearest" }); }
+      if (e.key === "Enter") { e.preventDefault(); (items[i] || items[0]).click(); } }; }
+  if (state.ch === 3) {
+    $("#r-min") && ($("#r-min").onchange = e => { state.rmin = Math.min(+e.target.value, state.rmax); render(); });
+    $("#r-max") && ($("#r-max").onchange = e => { state.rmax = Math.max(+e.target.value, state.rmin); render(); });
+  }
+}
+$("#recit").addEventListener("click", e => {
+  const t = e.target;
+  const moon = t.closest("[data-moon]"); if (moon) { state.ref = moon.dataset.moon; markDirty(); render(); setTimeout(() => $("#msearch")?.focus(), 0); return; }
+  const sc = t.closest(".scen-opt[data-scen]"); if (sc) { const id = +sc.dataset.scen; if (id === 4) { openAtelier(); return; } state.prevScen = state.scen = id; markDirty(); applyTheme(); render(); return; }
+  const g = t.closest("[data-g]"); if (g) { const k = g.dataset.g; if (state.instr.has(k)) { if (state.instr.size > 1) state.instr.delete(k); } else state.instr.add(k); render(); return; }
+  const r = t.closest("[data-r]"); if (r) { const [a, b] = r.dataset.r.split(",").map(Number); state.rmin = a; state.rmax = b; render(); return; }
+  const d = t.closest("[data-demo]"); if (d) { state.demo = d.dataset.demo; render(); return; }
+  const row = t.closest("[data-site].row"); if (row) { openSheet(row.dataset.site); return; }
+  const f = t.closest("[data-fam]"); if (f) { const k = f.dataset.fam; state.openFam.has(k) ? state.openFam.delete(k) : state.openFam.add(k); render(); return; }
+  const o = t.closest("[data-ovl]"); if (o) { const k = o.dataset.ovl; state.overlay.has(k) ? state.overlay.delete(k) : state.overlay.add(k); render(); return; }
+  const ch = t.closest("[data-choose]"); if (ch) { state.chosen = ch.dataset.choose; state.notice = ""; state.reached = Math.max(state.reached, 5); go(5); return; }
+});
+$("#recit").addEventListener("mouseover", e => { const b = e.target.closest(".row[data-site], .ccard[data-site]"); if (b && earthG && !earthG.dead) earthG.highlight(b.dataset.site); });
+$("#recit").addEventListener("mouseout", e => { if (e.target.closest(".row[data-site], .ccard[data-site]") && earthG && !earthG.dead) earthG.highlight(null); });
+document.addEventListener("click", e => { const s = e.target.closest("[data-go]"); if (s) { const n = +s.dataset.go; if (n <= state.reached || n === 1) go(n); } });
+$("#next").onclick = () => { if (state.ch === 4) { if (state.chosen) go(5); return; } go(state.ch + 1); };
+$("#back").onclick = () => go(Math.max(1, state.ch - 1));
+
+// Atelier des critères libres (scénario 4)
+let atelierLoaded = false;
+function openAtelier() {
+  if (!atelierLoaded) { $("#prefill").value = state.custom ? "" : String(state.prevScen < 4 ? state.prevScen : 1); loadFree(state.custom ? null : (state.prevScen < 4 ? state.prevScen : 1)); atelierLoaded = true; }
+  $("#atelier").hidden = false; $("#atelier").scrollTop = 0;
+}
+$("#atelier-close").onclick = () => { $("#atelier").hidden = true; };
+$("#free-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const crit = freeCriteria(), open = crit.find(c => c.min == null && c.max == null);
+  const err = !crit.length ? "Activez au moins un paramètre." : open ? `${P[open.p].label} : resserrez l'intervalle, il couvre toutes les valeurs.` : "";
+  $("#free-err").textContent = err; if (err) return;
+  state.custom = crit; state.ndvi = $("#ndvi-filter").checked; state.scen = 4; markDirty();
+  $("#atelier").hidden = true; applyTheme(); render();
+});
+
+// Aide, annotations, aperçu mobile
+function renderGlossary() { const q = $("#glos-q").value.trim().toLowerCase(); const it = GLOSSARY.filter(([t, d]) => !q || (t + " " + d).toLowerCase().includes(q)); $("#glos").innerHTML = it.length ? it.map(([t, d]) => `<div><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("") : `<div><dd>Aucun terme ne correspond à « ${esc(q)} ».</dd></div>`; }
+$("#glos-q").oninput = renderGlossary; renderGlossary();
+$("#help-btn").onclick = () => { const h = $("#help"); h.hidden = !h.hidden; $("#help-btn").setAttribute("aria-expanded", !h.hidden); };
+$("#help-close").onclick = () => { $("#help").hidden = true; $("#help-btn").setAttribute("aria-expanded", "false"); };
+$("#toggle-api").onchange = e => document.body.classList.toggle("show-api", e.target.checked);
+document.body.classList.add("show-api");
+$("#phone-btn").onclick = e => { const on = document.body.classList.toggle("phone"); e.currentTarget.setAttribute("aria-pressed", on); e.currentTarget.textContent = on ? "Quitter" : "Aperçu mobile"; };
+document.addEventListener("keydown", e => { if (e.key === "Escape") { $("#sheet").hidden = true; $("#help").hidden = true; } });
+
+// Démarrage
+initGlobes();
+applyTheme();
+render();
+
+</script>
