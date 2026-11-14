@@ -246,6 +246,30 @@ body:not(.show-api) .api { display: none; }
 .tip::before { content: ""; position: absolute; top: -6px; left: 18px; width: 10px; height: 10px; background: var(--panel-2); border-left: 1px solid var(--accent); border-top: 1px solid var(--accent); transform: rotate(45deg); }
 .tip .k { color: var(--muted); }
 .crit-row:hover .tip, .crit-row:focus .tip { opacity: 1; visibility: visible; transform: none; }
+.crit-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.seg { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--line-2); border-radius: 999px; }
+.seg button { padding: 4px 12px; border: 0; border-radius: 999px; background: none; font-size: 12px; color: var(--muted); transition: background .2s, color .2s; }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.overlay-tg { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+.overlay-tg input { width: 16px; height: 16px; accent-color: var(--thrust); }
+.overlay-tg b { color: var(--thrust); font-weight: 500; }
+.moonline { color: var(--thrust); }
+.radar { display: grid; gap: 8px; animation: viewIn .4s both; }
+.radar svg { width: 100%; height: auto; max-width: 100%; overflow: visible; }
+.rd-ring { fill: none; stroke: var(--line); stroke-width: 1; }
+.rd-axis { stroke: var(--line-2); stroke-width: 1; }
+.rd-band { stroke: var(--good); stroke-width: 6; stroke-linecap: round; opacity: .35; }
+.rd-lbl { fill: var(--muted); font-family: var(--f-mono); font-size: 10.5px; cursor: help; }
+.rd-earth { fill: var(--accent); fill-opacity: .28; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; transform-origin: 230px 175px; animation: grow .6s cubic-bezier(.2,.8,.2,1) both; }
+.rd-moon { fill: var(--thrust); fill-opacity: .24; stroke: var(--thrust); stroke-width: 2; stroke-dasharray: 5 3; stroke-linejoin: round; transform-origin: 230px 175px; animation: grow .6s .1s cubic-bezier(.2,.8,.2,1) both; mix-blend-mode: screen; }
+.rd-dot-e { fill: var(--accent); stroke: var(--void); stroke-width: 1.5; cursor: help; }
+.rd-dot-m { fill: var(--thrust); stroke: var(--void); stroke-width: 1.5; cursor: help; }
+.rd-out { fill: var(--thrust); font-size: 9px; }
+@keyframes grow { from { transform: scale(0); opacity: 0; } to { transform: none; opacity: 1; } }
+.rd-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); }
+.rd-legend span { display: flex; align-items: center; gap: 6px; }
+.rd-legend i { width: 14px; height: 10px; border-radius: 2px; opacity: .8; }
+.rd-legend i.band { height: 4px; background: var(--good); opacity: .5; }
 .match { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .match > div { padding: 12px; font-size: 13px; border: 1px solid var(--line); background: rgba(17,24,39,.6); border-radius: 3px; }
 .match h3 { font-size: 15px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
@@ -889,7 +913,7 @@ function target(c) {
 function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
 
 // ---------- État ----------
-const state = { view: "accueil", scen: 1, ref: "shackleton", gmode: "split", instr: new Set(["Forage", "Vent", "Gaz", "Sismographe", "Thermique"]), selected: null, demo: "normal", custom: null, ndvi: true, rmin: 0, rmax: 100, loadingUntil: 0 };
+const state = { view: "accueil", scen: 1, ref: "shackleton", gmode: "split", sheetView: "list", overlay: false, instr: new Set(["Forage", "Vent", "Gaz", "Sismographe", "Thermique"]), selected: null, demo: "normal", custom: null, ndvi: true, rmin: 0, rmax: 100, loadingUntil: 0 };
 function currentCriteria() {
   const m = SCEN.find(m => m.id === state.scen);
   if (m.id === 4) return state.custom || [];
@@ -1347,14 +1371,16 @@ function renderSheet(res) {
       <div><h3 style="color:var(--good)">Correspond · ${ok.length}</h3>${ok.length ? `<ul>${ok.map(x => `<li>${esc(P[x.p].label)}</li>`).join("")}</ul>` : "Aucun critère"}</div>
       <div><h3 style="color:var(--bad)">Ne correspond pas · ${ko.length}</h3>${ko.length ? `<ul>${ko.map(x => `<li>${esc(P[x.p].label)}</li>`).join("")}</ul>` : "Aucun critère"}</div>
     </div>
-    <div style="display:grid;gap:8px">
-      <span class="eyebrow">Note par critère · survolez ou touchez un critère pour sa description</span>
-      <div class="crit">${r.rows.map(x => `<div class="crit-row" tabindex="0" aria-describedby="tip-${x.p}">
-        <div class="crit-line"><span>${x.g ? `<span class="eyebrow" style="font-size:10px">${esc(x.g)}</span> ` : ""}<span class="lbl">${esc(P[x.p].label)}</span></span><span class="v">${fmt(x.v)}${unitOf(x.p)}</span></div>
-        <div class="bar" role="img" aria-label="Note ${Math.round(x.s * 100)} sur 100"><i data-w="${Math.max(2, x.s * 100)}" style="background:var(--${tone(x.s * 100)})${wasOpen || reduce ? `;width:${Math.max(2, x.s * 100)}%` : ""}"></i></div>
-        <div class="crit-sub"><span>Souhaité : ${target(x)} · importance ${x.w}${x.adapted ? ` · <span style="color:var(--thrust)" title="Intervalle ou importance adapté au site lunaire choisi">adapté</span>` : ""}</span><span class="mono">${Math.round(x.s * 100)}</span></div>
-        <div class="tip" role="tooltip" id="tip-${x.p}"><span>${esc(P[x.p].help)}</span><span><span class="k">Sur la Lune :</span> ${esc(P[x.p].moon)}</span><span><span class="k">Source :</span> ${esc(P[x.p].src)}</span></div>
-      </div>`).join("")}</div>
+    <div style="display:grid;gap:10px">
+      <div class="crit-head">
+        <span class="eyebrow">Valeurs par critère</span>
+        <div class="seg" role="group" aria-label="Affichage des critères">
+          <button type="button" data-sv="list" aria-pressed="${state.sheetView === "list"}">Liste</button>
+          <button type="button" data-sv="chart" aria-pressed="${state.sheetView === "chart"}">Graphique</button>
+        </div>
+      </div>
+      <label class="overlay-tg"><input type="checkbox" id="ov-moon" ${state.overlay ? "checked" : ""}> Superposer les valeurs de <b>${esc(refSite().name)}</b></label>
+      ${state.sheetView === "chart" && r.rows.length >= 3 ? radarHtml(r, state.overlay) : (state.sheetView === "chart" ? `<p class="coords">Le graphique demande au moins 3 critères : affichage en liste.</p>` : "") + critListHtml(r, wasOpen, state.overlay)}
     </div>
     <div class="notmoon"><b>Ce que ce site ne reproduit pas :</b> la gravité lunaire (6 fois plus faible), le vide, l'absence de vent et le rayonnement. Le froid y reste très loin des -230 °C des cratères à l'ombre permanente.</div>
     <p class="coords">Valeurs : NASA POWER, Copernicus DEM, MODIS, USGS, Smithsonian GVP. <b style="color:var(--thrust)">Maquette : valeurs fictives.</b></p>
@@ -1362,6 +1388,8 @@ function renderSheet(res) {
   sheet.dataset.id = s.id; sheet.dataset.scen = m.id;
   sheet.hidden = false;
   $("#close-sheet").onclick = () => { state.selected = null; renderMap(); };
+  sheet.querySelectorAll("[data-sv]").forEach(b => b.onclick = () => { state.sheetView = b.dataset.sv; renderSheet(res); });
+  $("#ov-moon").onchange = e => { state.overlay = e.target.checked; renderSheet(res); };
   if (!wasOpen && !reduce) {
     if (!r.excluded) countUp($("#gauge-n"), r.score);
     requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -1370,6 +1398,74 @@ function renderSheet(res) {
     }));
   }
 }
+// Valeur lunaire équivalente d'un paramètre terrestre (null = sans équivalent, ex. air). Indicatif.
+function moonVal(p, m) {
+  switch (p) {
+    case "slope_mean": return m.slope;
+    case "slope_max": return Math.round(m.slope * 2.5);
+    case "roughness": return m.rough;
+    case "lst_day": return m.tday;
+    case "lst_night": return m.tnight;
+    case "lst_amplitude": return m.tday - m.tnight;
+    case "wind": case "humidity": case "precipitation": case "ndvi": case "quake_count": return 0;
+    case "solar": return Math.round(32.7 * m.illum / 100 * 10) / 10; // 1361 W/m² hors atmosphère ≈ 32,7 kWh/m²/j × part du temps éclairé
+    case "latitude_abs": return Math.abs(m.lat);
+    case "volcano_distance": return ["mer", "tube", "volcanique"].includes(m.kind) ? 0 : null;
+    default: return null; // altitude, température de l'air : pas d'équivalent
+  }
+}
+const moonTxt = (p, m) => { const v = moonVal(p, m); return v == null ? "sans équivalent" : `${fmt(v)}${unitOf(p)}`; };
+
+function critListHtml(r, wasOpen, overlay) {
+  const m = refSite();
+  return `<p class="coords" style="margin-top:-4px">Survolez ou touchez un critère pour sa description.</p><div class="crit">${r.rows.map(x => `<div class="crit-row" tabindex="0" aria-describedby="tip-${x.p}">
+    <div class="crit-line"><span>${x.g ? `<span class="eyebrow" style="font-size:10px">${esc(x.g)}</span> ` : ""}<span class="lbl">${esc(P[x.p].label)}</span></span><span class="v">${fmt(x.v)}${unitOf(x.p)}</span></div>
+    <div class="bar" role="img" aria-label="Note ${Math.round(x.s * 100)} sur 100"><i data-w="${Math.max(2, x.s * 100)}" style="background:var(--${tone(x.s * 100)})${wasOpen || reduce ? `;width:${Math.max(2, x.s * 100)}%` : ""}"></i></div>
+    <div class="crit-sub"><span>Souhaité : ${target(x)} · importance ${x.w}${x.adapted ? ` · <span style="color:var(--thrust)" title="Intervalle ou importance adapté au site lunaire choisi">adapté</span>` : ""}</span><span class="mono">${Math.round(x.s * 100)}</span></div>
+    ${overlay ? `<div class="crit-sub moonline"><span>Lune · ${esc(m.name)}</span><span class="mono">${moonTxt(x.p, m)}</span></div>` : ""}
+    <div class="tip" role="tooltip" id="tip-${x.p}"><span>${esc(P[x.p].help)}</span><span><span class="k">Sur la Lune :</span> ${esc(P[x.p].moon)}</span><span><span class="k">Source :</span> ${esc(P[x.p].src)}</span></div>
+  </div>`).join("")}</div>`;
+}
+
+// Graphique de surface (radar) : un axe par critère, de la plus petite à la plus grande valeur du catalogue terrestre.
+function radarHtml(r, overlay) {
+  const m = refSite(), N = r.rows.length, cx = 230, cy = 175, R = 112;
+  const norm = (p, v) => Math.max(0, Math.min(1, toS(P[p], Math.max(P[p].lo, Math.min(P[p].hi, v))) / 1000));
+  const out = (p, v) => v < P[p].lo || v > P[p].hi;
+  const ang = i => -Math.PI / 2 + i * 2 * Math.PI / N;
+  const pt = (i, k) => [cx + Math.cos(ang(i)) * R * k, cy + Math.sin(ang(i)) * R * k];
+  const poly = ks => ks.map((k, i) => k == null ? null : pt(i, k).map(n => n.toFixed(1)).join(",")).filter(Boolean).join(" ");
+  const earthK = r.rows.map(x => norm(x.p, x.v));
+  const moonK = r.rows.map(x => { const v = moonVal(x.p, m); return v == null ? null : norm(x.p, v); });
+  const rings = [.25, .5, .75, 1].map(k => `<polygon class="rd-ring" points="${poly(r.rows.map(() => k))}"/>`).join("");
+  const axes = r.rows.map((x, i) => {
+    const [ex, ey] = pt(i, 1), lo = x.min == null ? 0 : norm(x.p, x.min), hi = x.max == null ? 1 : norm(x.p, x.max);
+    const [ax, ay] = pt(i, lo), [bx, by] = pt(i, hi), [lx, ly] = pt(i, 1.17), anchor = Math.abs(lx - cx) < 8 ? "middle" : lx > cx ? "start" : "end";
+    const lbl = P[x.p].label.length > 24 ? P[x.p].label.slice(0, 23) + "…" : P[x.p].label;
+    return `<line class="rd-axis" x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}"/><line class="rd-band" x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}"/>
+      <text class="rd-lbl" x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="middle"><title>${esc(P[x.p].label)} : ${esc(P[x.p].help)}</title>${esc(lbl)}</text>`;
+  }).join("");
+  const dots = (ks, cls, vals, who) => ks.map((k, i) => k == null ? "" : (() => { const [x, y] = pt(i, k), row = r.rows[i], v = vals[i];
+    return `<circle class="${cls}" cx="${x}" cy="${y}" r="4"><title>${who} · ${esc(P[row.p].label)} : ${fmt(v)}${unitOf(row.p)}${out(row.p, v) ? " (hors de l'échelle terrestre)" : ""}</title></circle>${out(row.p, v) ? `<text class="rd-out" x="${x}" y="${y - 8}" text-anchor="middle">▲</text>` : ""}`; })()).join("");
+  const moonVals = r.rows.map(x => moonVal(x.p, m));
+  const missing = r.rows.filter((x, i) => moonK[i] == null).map(x => P[x.p].label.toLowerCase());
+  return `<div class="radar">
+    <svg viewBox="0 0 460 350" role="img" aria-label="Graphique de surface des valeurs du site${overlay ? " et du site lunaire" : ""} par critère">
+      ${rings}${axes}
+      <polygon class="rd-earth" points="${poly(earthK)}"/>
+      ${overlay && moonK.filter(k => k != null).length >= 3 ? `<polygon class="rd-moon" points="${poly(moonK)}"/>` : ""}
+      ${dots(earthK, "rd-dot-e", r.rows.map(x => x.v), esc(r.site.name))}
+      ${overlay ? dots(moonK, "rd-dot-m", moonVals, esc(m.name)) : ""}
+    </svg>
+    <div class="rd-legend">
+      <span><i style="background:var(--accent)"></i>${esc(r.site.name)}</span>
+      ${overlay ? `<span><i style="background:var(--thrust)"></i>${esc(m.name)}</span>` : ""}
+      <span><i class="band"></i>Intervalle souhaité</span>
+    </div>
+    <p class="coords">Chaque axe va de la plus petite à la plus grande valeur possible sur Terre (échelle log pour séismes, volcans et relief). ▲ : valeur lunaire hors de l'échelle terrestre, posée au bord.${overlay && missing.length ? ` Sans équivalent lunaire : ${esc(missing.join(", "))}.` : ""} Survolez un point pour sa valeur.</p>
+  </div>`;
+}
+
 function countUp(el, to) {
   const t0 = performance.now(), d = 700;
   (function f(t) { const k = Math.min(1, (t - t0) / d); el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(f); })(t0);

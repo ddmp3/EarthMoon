@@ -44,7 +44,11 @@ flowchart LR
    - **Plage de compatibilité** : double curseur (pas de 5) et raccourcis *Toutes*, *Très proches · 70+*, *Partielles · 40–69*, *Faibles · <40*. La liste et la carte n'affichent que les sites dans la plage ; un compteur indique « X sites sur Y ».
    - Les sites exclus par le filtre végétation restent visibles, en fin de liste et en gris.
    - Survoler une ligne met en évidence le point sur la carte ; cliquer centre la carte sur le site (animation) et ouvre la fiche.
-3. **Fiche site** : jauge de note animée, usage possible, « correspond » (critère ≥ 0,7) et « ne correspond pas » (< 0,4), barre par critère. **Survoler ou toucher un critère** affiche une bulle : description, équivalent lunaire, source de la donnée. Rappel de ce que la Terre ne reproduit pas.
+3. **Fiche site** : jauge de note animée, usage possible, « correspond » (critère ≥ 0,7) et « ne correspond pas » (< 0,4). Rappel de ce que la Terre ne reproduit pas.
+   - **Valeurs par critère**, au choix :
+     - **Liste** : barre de note par critère ; survoler ou toucher un critère affiche une bulle (description, équivalent lunaire, source).
+     - **Graphique** de surface (radar) : un axe par critère, de la plus petite à la plus grande valeur possible sur Terre, avec l'intervalle souhaité en vert sur chaque axe. Il faut au moins 3 critères ; sinon la liste s'affiche.
+   - **Superposer le site lunaire** : la surface lunaire (orange, en pointillé, semi-transparente) se superpose à celle du site terrestre (bleu). En liste, la valeur lunaire s'ajoute sous chaque critère. Une valeur lunaire hors de l'échelle terrestre est posée au bord et marquée ▲. Les critères sans équivalent lunaire (température de l'air, altitude) sont indiqués.
 4. **Critères libres (scénario 4)** : paramètres regroupés en 5 thèmes repliables (relief, températures, atmosphère et climat, énergie et position, géologie), avec *Tout déplier / Tout replier*. Chaque thème indique combien de paramètres sont actifs ; seuls les thèmes qui en contiennent sont dépliés à l'ouverture.
    - Chaque paramètre est une carte avec un interrupteur. Un **double curseur** fixe l'intervalle souhaité ; une poignée laissée en butée signifie « sans minimum » ou « sans maximum ». La **marge** apparaît en hachures de part et d'autre de l'intervalle.
    - Sous le curseur, un point par site candidat ; il passe au vert quand le site entre dans l'intervalle (« 4 sites sur 11 dedans »).
