@@ -1,0 +1,641 @@
+<title>Maquettes Analogues Lune</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout : barre d'app fixe, puis une vue à la fois (accueil, carte + liste + fiche, critères libres). Palette « régolithe » + accent thermique Diviner. */
+:root {
+  --bg: #eceef2; --surface: #ffffff; --surface-2: #f5f6f9; --ink: #18202c; --muted: #5a6474; --line: #d4d8e0;
+  --accent: #c4561a; --accent-ink: #ffffff; --accent-soft: #fbe9df;
+  --good: #23835a; --mid: #b98512; --bad: #bf3b33; --off: #9aa2ae;
+  --map-bg: #dfe3ea;
+  --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0f1218; --surface: #171b23; --surface-2: #1d222c; --ink: #e4e7ec; --muted: #98a1b0; --line: #2a303b;
+  --accent: #f07a38; --accent-ink: #1a0c04; --accent-soft: #3a2216;
+  --good: #4cc08a; --mid: #e0b34a; --bad: #ef6b62; --off: #5d6573; --map-bg: #141820; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0f1218; --surface: #171b23; --surface-2: #1d222c; --ink: #e4e7ec; --muted: #98a1b0; --line: #2a303b;
+  --accent: #f07a38; --accent-ink: #1a0c04; --accent-soft: #3a2216;
+  --good: #4cc08a; --mid: #e0b34a; --bad: #ef6b62; --off: #5d6573; --map-bg: #141820; color-scheme: dark; }
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 15px; line-height: 1.5; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+p { margin: 0; }
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.eyebrow { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wrap { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Barre d'app */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 1001; background: var(--surface); }
+.appbar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 1000; background: var(--surface); border-bottom: 1px solid var(--line); }
+.appbar-in { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--f-display); font-weight: 800; font-size: 17px; letter-spacing: -.01em; }
+.brand-mark { width: 26px; height: 26px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, var(--surface-2) 0 30%, var(--off) 31% 34%, var(--surface-2) 35% 52%, var(--off) 53% 55%, var(--line) 56%); border: 1px solid var(--off); }
+.nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+.nav a { text-decoration: none; color: var(--muted); padding: 6px 10px; border-radius: 6px; font-weight: 500; }
+.nav a[aria-current="page"] { color: var(--ink); background: var(--surface-2); }
+.annot-toggle { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+
+/* Annotations API (pour François-Xavier) */
+.api { display: inline-block; font-family: var(--f-mono); font-size: 11px; padding: 1px 6px; border-radius: 4px; border: 1px dashed var(--accent); color: var(--accent); background: var(--accent-soft); white-space: nowrap; }
+body:not(.show-api) .api { display: none; }
+
+.view[hidden] { display: none !important; }
+
+/* Accueil */
+.home { padding-block: 40px 56px; display: grid; gap: 40px; max-width: 1120px; margin: 0 auto; }
+.hero { display: grid; gap: 14px; max-width: 760px; }
+.hero h1 { font-size: clamp(30px, 5vw, 48px); font-weight: 800; letter-spacing: -.02em; }
+.hero p { color: var(--muted); font-size: 17px; max-width: 62ch; }
+.target { display: inline-flex; gap: 8px; align-items: center; font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.target b { color: var(--ink); font-weight: 500; }
+.modes { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.mode-card { text-align: left; display: grid; gap: 10px; align-content: start; padding: 20px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); transition: border-color .15s, transform .15s; }
+.mode-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.mode-card .num { font-family: var(--f-mono); font-size: 12px; color: var(--accent); }
+.mode-card h2 { font-size: 20px; }
+.mode-card p { color: var(--muted); font-size: 14px; }
+.mode-card .who { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+.mode-card .go { font-weight: 600; color: var(--accent); font-size: 14px; }
+.limits { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 24px; padding: 24px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line); }
+.limits ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; color: var(--muted); }
+@media (max-width: 720px) { .limits { grid-template-columns: 1fr; } }
+
+/* Carte */
+.mapview { display: grid; grid-template-columns: 360px minmax(0, 1fr); height: calc(100vh - 57px); height: calc(100dvh - 57px - env(safe-area-inset-top, 0px)); }
+.side { display: flex; flex-direction: column; min-height: 0; background: var(--surface); border-right: 1px solid var(--line); }
+.side-head { padding: 16px; display: grid; gap: 12px; border-bottom: 1px solid var(--line); }
+.side-head select { width: 100%; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface-2); font-weight: 600; }
+.mode-q { font-size: 13px; color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 4px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.demo { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 12px; color: var(--muted); }
+.demo button { padding: 2px 8px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface-2); font-size: 12px; }
+.demo button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.list { overflow-y: auto; flex: 1; min-height: 0; }
+.list ol { list-style: none; margin: 0; padding: 0; }
+.row { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; padding: 12px 16px; border: 0; border-bottom: 1px solid var(--line); background: none; text-align: left; }
+.row:hover, .row[aria-current="true"] { background: var(--surface-2); }
+.row .rank { font-family: var(--f-mono); color: var(--muted); font-size: 13px; }
+.row .name { font-weight: 600; }
+.row .meta { font-size: 12px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.score { font-family: var(--f-mono); font-weight: 500; font-size: 15px; padding: 2px 8px; border-radius: 6px; min-width: 44px; text-align: center; }
+.s-good { color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
+.s-mid { color: var(--mid); background: color-mix(in srgb, var(--mid) 16%, transparent); }
+.s-bad { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); }
+.s-off { color: var(--off); background: color-mix(in srgb, var(--off) 14%, transparent); }
+.badge { font-size: 11px; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--line); white-space: nowrap; }
+.badge.new { border-color: var(--accent); color: var(--accent); }
+.excl-head { padding: 10px 16px; font-size: 12px; color: var(--muted); background: var(--surface-2); border-bottom: 1px solid var(--line); }
+.mapwrap { position: relative; min-width: 0; }
+#map { position: absolute; inset: 0; background: var(--map-bg); }
+.legend { position: absolute; z-index: 500; right: max(12px, env(safe-area-inset-right, 0px)); bottom: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; font-size: 12px; display: grid; gap: 4px; }
+.legend span { display: flex; gap: 8px; align-items: center; }
+.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.map-api { position: absolute; z-index: 500; left: 12px; top: 12px; }
+.state-box { padding: 24px 16px; display: grid; gap: 10px; color: var(--muted); }
+.state-box h3 { font-size: 16px; color: var(--ink); }
+.state-box button, .btn { justify-self: start; padding: 8px 14px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.src { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 12px; font-size: 13px; }
+.skel { height: 54px; margin: 0 16px 8px; border-radius: 6px; background: linear-gradient(90deg, var(--surface-2), var(--line), var(--surface-2)); background-size: 200% 100%; animation: sk 1.2s linear infinite; }
+@keyframes sk { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .skel { animation: none; } .mode-card { transition: none; } }
+
+/* Fiche site */
+.sheet { position: absolute; z-index: 600; top: 0; right: 0; bottom: 0; width: min(440px, 100%); background: var(--surface); border-left: 1px solid var(--line); overflow-y: auto; box-shadow: -12px 0 32px rgba(0,0,0,.12); }
+.sheet-in { padding: 20px; display: grid; gap: 20px; }
+.sheet-top { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: start; }
+.close { border: 1px solid var(--line); background: var(--surface-2); border-radius: 6px; padding: 4px 10px; }
+.bigscore { display: flex; align-items: baseline; gap: 10px; }
+.bigscore .n { font-family: var(--f-display); font-weight: 800; font-size: 52px; line-height: 1; }
+.bigscore .of { color: var(--muted); font-family: var(--f-mono); }
+.crit { display: grid; gap: 10px; }
+.crit-row { display: grid; gap: 4px; }
+.crit-line { display: flex; justify-content: space-between; gap: 8px; font-size: 14px; }
+.crit-line .v { font-family: var(--f-mono); font-size: 13px; white-space: nowrap; }
+.crit-sub { font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; gap: 8px; }
+.bar { height: 6px; border-radius: 3px; background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; }
+.bar i { display: block; height: 100%; }
+.match { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.match div { padding: 12px; border-radius: 8px; background: var(--surface-2); font-size: 13px; }
+.match h3 { font-size: 13px; font-family: var(--f-body); font-weight: 600; margin-bottom: 6px; }
+.match ul { margin: 0; padding-left: 16px; display: grid; gap: 2px; }
+.notmoon { padding: 12px; border-radius: 8px; border: 1px dashed var(--off); font-size: 13px; color: var(--muted); }
+.notmoon b { color: var(--ink); }
+.coords { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+
+@media (max-width: 820px) {
+  .mapview { grid-template-columns: 1fr; grid-template-rows: 45vh auto; height: auto; }
+  .mapwrap { order: -1; min-height: 45vh; }
+  .side { border-right: 0; }
+  .list { overflow: visible; }
+  .sheet { position: fixed; top: env(safe-area-inset-top, 0px); width: 100%; box-shadow: none; border-left: 0; z-index: 1100; }
+  .match { grid-template-columns: 1fr; }
+}
+
+/* Mode 4 */
+.free { max-width: 1120px; margin: 0 auto; padding-block: 28px 56px; display: grid; gap: 20px; }
+.free-head { display: grid; gap: 8px; }
+.free-head h1 { font-size: clamp(26px, 4vw, 36px); font-weight: 800; }
+.free-head p { color: var(--muted); max-width: 70ch; }
+.toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; padding: 12px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); }
+.toolbar label { display: flex; gap: 8px; align-items: center; font-size: 14px; }
+.toolbar select { padding: 6px 8px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface-2); }
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 760px; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
+th { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 500; background: var(--surface-2); }
+tr.off td:not(:first-child) { opacity: .45; }
+td .help { font-size: 12px; color: var(--muted); max-width: 46ch; }
+td input[type="number"] { width: 84px; padding: 5px 6px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface-2); font-family: var(--f-mono); font-size: 13px; }
+td input[type="range"] { width: 90px; accent-color: var(--accent); }
+td input[type="checkbox"], .toolbar input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+.unit { font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.free-foot { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.err { color: var(--bad); font-size: 14px; }
+</style>
+
+<style>
+/* Leaflet 1.9.4 : règles indispensables (les feuilles externes ne sont pas autorisées dans l'artefact) */
+.leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,.leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
+.leaflet-container{overflow:hidden;-webkit-tap-highlight-color:transparent;font-family:var(--f-body)}
+.leaflet-tile,.leaflet-marker-icon{user-select:none}
+.leaflet-tile{visibility:hidden;max-width:none!important}.leaflet-tile-loaded{visibility:inherit}
+.leaflet-container img.leaflet-tile{max-width:none!important;max-height:none!important}
+.leaflet-pane{z-index:400}.leaflet-tile-pane{z-index:200}.leaflet-overlay-pane{z-index:400}.leaflet-marker-pane{z-index:600}.leaflet-tooltip-pane{z-index:650}.leaflet-popup-pane{z-index:700}
+.leaflet-pane>svg path{pointer-events:none}.leaflet-pane>svg path.leaflet-interactive{pointer-events:visiblePainted;pointer-events:auto;cursor:pointer}
+.leaflet-control{position:relative;z-index:800;pointer-events:auto;float:left;clear:both}
+.leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}.leaflet-top{top:0}.leaflet-bottom{bottom:0}.leaflet-left{left:0}.leaflet-right{right:0}
+.leaflet-top .leaflet-control{margin-top:10px}.leaflet-left .leaflet-control{margin-left:10px}.leaflet-right .leaflet-control{margin-right:10px;float:right}.leaflet-bottom .leaflet-control{margin-bottom:6px}
+.leaflet-bar{border-radius:6px;border:1px solid var(--line);overflow:hidden}
+.leaflet-bar a{display:block;width:30px;height:30px;line-height:30px;text-align:center;text-decoration:none;color:var(--ink);background:var(--surface);border-bottom:1px solid var(--line);font-size:18px}
+.leaflet-bar a:last-child{border-bottom:0}
+.leaflet-control-attribution{background:color-mix(in srgb,var(--surface) 80%,transparent);color:var(--muted);font-size:10px;padding:0 5px;margin:0!important}
+.leaflet-control-attribution a{color:var(--muted)}
+.leaflet-tooltip{position:absolute;padding:4px 8px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:4px;white-space:nowrap;pointer-events:none;font-size:12px;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.leaflet-fade-anim .leaflet-pane{transition:opacity .2s linear}.leaflet-zoom-anim .leaflet-zoom-animated{transition:transform .25s cubic-bezier(0,0,.25,1)}
+.leaflet-zoom-animated{transform-origin:0 0}
+</style>
+
+<header class="appbar">
+  <div class="appbar-in wrap">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span>Analogues Lune</div>
+    <nav class="nav" aria-label="Écrans">
+      <a href="#accueil" data-view="accueil">Accueil</a>
+      <a href="#carte" data-view="carte">Carte</a>
+      <a href="#criteres" data-view="criteres">Critères libres</a>
+    </nav>
+    <label class="annot-toggle"><input type="checkbox" id="toggle-api" checked> Annotations API</label>
+  </div>
+</header>
+
+<!-- ÉCRAN 1 : ACCUEIL -->
+<main id="v-accueil" class="view wrap">
+  <div class="home">
+    <section class="hero">
+      <span class="eyebrow">NASA Space Apps 2026 · Cyber&amp;Space Montréal</span>
+      <h1>Où tester sur Terre ce qui partira au pôle Sud de la Lune ?</h1>
+      <p>Choisissez ce que vous voulez préparer. L'application compare des sites terrestres au pôle Sud lunaire avec des données ouvertes de la NASA et d'autres agences, puis les classe sur une carte.</p>
+      <span class="target">Site lunaire de référence : <b>pôle Sud, 89,9° S</b> <span class="api">GET /api/reference/moon</span></span>
+    </section>
+
+    <section aria-labelledby="h-modes" style="display:grid;gap:14px">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h2 id="h-modes" class="eyebrow" style="font-family:var(--f-mono);font-weight:500">Choisir un mode</h2><span class="api">GET /api/modes</span></div>
+      <div class="modes" id="mode-cards"></div>
+    </section>
+
+    <section class="limits" id="limites" aria-labelledby="h-lim">
+      <div style="display:grid;gap:8px;align-content:start">
+        <h2 id="h-lim" style="font-size:22px">Ce que la Terre ne reproduit pas</h2>
+        <p style="color:var(--muted);font-size:14px">Un site analogue ressemble à la Lune sur certains points seulement. Chaque fiche le rappelle.</p>
+      </div>
+      <ul>
+        <li><b style="color:var(--ink)">Gravité</b> : un sixième de la gravité terrestre sur la Lune. Un rover s'y comporte autrement.</li>
+        <li><b style="color:var(--ink)">Vide</b> : aucune atmosphère, donc ni vent, ni pluie, ni érosion.</li>
+        <li><b style="color:var(--ink)">Froid</b> : les cratères à l'ombre permanente descendent vers -230 °C. Aucun site terrestre n'en approche : on compare des tendances, pas des valeurs.</li>
+        <li><b style="color:var(--ink)">Rayonnement</b> : pas de champ magnétique ni d'atmosphère pour filtrer le rayonnement solaire et cosmique.</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<!-- ÉCRAN 2 : CARTE + LISTE + FICHE -->
+<main id="v-carte" class="view" hidden>
+  <div class="mapview">
+    <aside class="side" aria-label="Classement des sites">
+      <div class="side-head">
+        <label for="mode-select" class="eyebrow">Mode</label>
+        <select id="mode-select"></select>
+        <p class="mode-q" id="mode-q"></p>
+        <div id="instr-box" hidden style="display:grid;gap:6px">
+          <span class="eyebrow">Instruments à calibrer</span>
+          <div class="chips" id="instr-chips"></div>
+        </div>
+        <div class="demo" aria-label="États à démontrer"><span>État démo :</span>
+          <button data-state="normal" aria-pressed="true">Normal</button>
+          <button data-state="loading">Chargement</button>
+          <button data-state="error">Erreur</button>
+          <button data-state="empty">Aucun résultat</button>
+        </div>
+        <span class="api">POST /api/analyze { mode | criteria[] }</span>
+      </div>
+      <div class="list" id="list"></div>
+    </aside>
+    <div class="mapwrap">
+      <div id="map" role="region" aria-label="Carte des sites terrestres"></div>
+      <div class="map-api"><span class="api">Leaflet · fond OSM · couleur = score</span></div>
+      <div class="legend" aria-label="Légende">
+        <span><i class="dot" style="background:var(--good)"></i>Très proche (70 et plus)</span>
+        <span><i class="dot" style="background:var(--mid)"></i>Partiel (40 à 69)</span>
+        <span><i class="dot" style="background:var(--bad)"></i>Peu proche (moins de 40)</span>
+        <span><i class="dot" style="background:transparent;border:2px solid var(--off)"></i>Exclu : végétation</span>
+      </div>
+      <section class="sheet" id="sheet" hidden aria-label="Fiche du site"></section>
+    </div>
+  </div>
+</main>
+
+<!-- ÉCRAN 4 : CRITÈRES LIBRES -->
+<main id="v-criteres" class="view wrap" hidden>
+  <form class="free" id="free-form" novalidate>
+    <div class="free-head">
+      <span class="eyebrow">Mode 4</span>
+      <h1>Critères libres</h1>
+      <p>Cochez les paramètres qui comptent pour votre mission, indiquez les valeurs souhaitées, la marge acceptée et l'importance de chacun. Seuls les paramètres que nos sources fournissent sont proposés. <span class="api">GET /api/parameters</span></p>
+    </div>
+    <div class="toolbar">
+      <label for="prefill">Partir des réglages du
+        <select id="prefill">
+          <option value="">— aucun —</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="ndvi-filter" checked> Exclure les sites avec végétation (NDVI &gt; 0,1)</label>
+    </div>
+    <div class="tablebox">
+      <table>
+        <thead><tr>
+          <th scope="col">Utiliser</th><th scope="col">Paramètre</th>
+          <th scope="col">Minimum</th><th scope="col">Maximum</th>
+          <th scope="col" title="Au-delà de l'intervalle, le score baisse jusqu'à 0 sur cette distance">Marge</th>
+          <th scope="col">Importance</th>
+        </tr></thead>
+        <tbody id="free-rows"></tbody>
+      </table>
+    </div>
+    <div class="free-foot">
+      <button type="submit" class="btn">Analyser</button>
+      <span class="api">POST /api/analyze { criteria[], ndviFilter }</span>
+      <span class="err" id="free-err" role="alert"></span>
+    </div>
+  </form>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script>
+// ---------- Catalogue (docs/scenarios.md) : libellés grand public ----------
+const P = {
+  slope_mean:       { label: "Pente moyenne", unit: "°", lo: 0, hi: 45, help: "Inclinaison moyenne du terrain dans un rayon de 1 km." },
+  slope_max:        { label: "Pente la plus raide", unit: "°", lo: 0, hi: 70, help: "La pente la plus forte dans un rayon de 1 km." },
+  roughness:        { label: "Relief accidenté", unit: "m", lo: 0, hi: 200, help: "Écart d'altitude autour du site : plus c'est élevé, plus le terrain est bosselé." },
+  elevation:        { label: "Altitude", unit: "m", lo: -100, hi: 6000, help: "Hauteur au-dessus du niveau de la mer." },
+  ndvi:             { label: "Végétation", unit: "", lo: 0, hi: 1, help: "0 = sol nu, 1 = végétation dense. La Lune n'en a aucune." },
+  lst_day:          { label: "Température du sol, le jour", unit: "°C", lo: -60, hi: 70, help: "Mesurée par satellite (MODIS)." },
+  lst_night:        { label: "Température du sol, la nuit", unit: "°C", lo: -70, hi: 40, help: "Mesurée par satellite (MODIS)." },
+  lst_amplitude:    { label: "Écart jour-nuit du sol", unit: "°C", lo: 0, hi: 60, help: "Sur la Lune, l'écart dépasse 250 °C : on cherche les plus grands écarts terrestres." },
+  t2m_mean:         { label: "Température moyenne de l'air", unit: "°C", lo: -40, hi: 35, help: "Moyenne sur plusieurs décennies (NASA POWER)." },
+  t2m_min:          { label: "Température la plus basse de l'air", unit: "°C", lo: -60, hi: 25, help: "Utile pour tester le matériel au grand froid." },
+  t2m_max:          { label: "Température la plus haute de l'air", unit: "°C", lo: -20, hi: 50, help: "Moyenne des maximums (NASA POWER)." },
+  wind:             { label: "Vent moyen", unit: "m/s", lo: 0, hi: 15, help: "Il n'y a pas de vent sur la Lune : moins il y en a, plus c'est comparable." },
+  humidity:         { label: "Humidité de l'air", unit: "%", lo: 0, hi: 100, help: "La Lune n'a pas d'atmosphère : un air sec s'en rapproche." },
+  precipitation:    { label: "Pluie et neige", unit: "mm/j", lo: 0, hi: 10, help: "Un sol sec et meuble ressemble davantage au régolithe lunaire." },
+  solar:            { label: "Ensoleillement", unit: "kWh/m²/j", lo: 0, hi: 8, help: "Énergie solaire reçue par jour, utile pour alimenter une base." },
+  latitude_abs:     { label: "Proximité d'un pôle", unit: "°", lo: 0, hi: 90, help: "Latitude du site, nord ou sud. Près des pôles, le Soleil reste bas, comme au pôle Sud lunaire." },
+  quake_count:      { label: "Séismes à moins de 300 km", unit: "depuis 2000", lo: 0, hi: 2000, help: "Séismes de magnitude 2,5 et plus. La Lune tremble très peu." },
+  volcano_distance: { label: "Distance au volcan le plus proche", unit: "km", lo: 0, hi: 3000, help: "Près d'un volcan, on trouve du basalte et parfois des tubes de lave, comme sur la Lune." },
+};
+
+// ---------- Modes 1 à 3 (intervalles de docs/scenarios.md, à valider par Ouassim) ----------
+const MODES = [
+  { id: 1, name: "Validation robotique", q: "Où tester la mobilité d'un rover ou d'un robot avant de l'envoyer sur la Lune ?",
+    who: "Ingénieurs robotique", usage: "Essais de mobilité de rover",
+    criteria: [
+      { p: "slope_mean", min: 5, max: 15, t: 10, w: 3 }, { p: "slope_max", min: 15, max: 30, t: 10, w: 1 },
+      { p: "roughness", min: 5, max: 40, t: 30, w: 2 }, { p: "precipitation", min: null, max: 1, t: 1, w: 1 },
+      { p: "t2m_min", min: null, max: -20, t: 20, w: 1 }, { p: "lst_amplitude", min: 20, max: null, t: 15, w: 1 },
+      { p: "volcano_distance", min: null, max: 50, t: 100, w: 1 } ] },
+  { id: 2, name: "Calibration d'instruments", q: "Où calibrer un instrument (forage, vent, gaz, sismographe, thermique) dans des conditions proches de la Lune ?",
+    who: "Instrumentistes", usage: "Calibration",
+    criteria: [
+      { g: "Forage", p: "t2m_mean", min: null, max: 0, t: 10, w: 2 }, { g: "Forage", p: "volcano_distance", min: null, max: 50, t: 100, w: 1 },
+      { g: "Vent", p: "wind", min: null, max: 3, t: 3, w: 2 }, { g: "Gaz", p: "humidity", min: null, max: 40, t: 30, w: 2 },
+      { g: "Gaz", p: "precipitation", min: null, max: 0.5, t: 1, w: 1 }, { g: "Sismographe", p: "quake_count", min: null, max: 5, t: 20, w: 3 },
+      { g: "Thermique", p: "lst_amplitude", min: 25, max: null, t: 15, w: 2 }, { g: "Thermique", p: "t2m_min", min: null, max: -30, t: 20, w: 1 } ] },
+  { id: 3, name: "Colonie autosuffisante", q: "Quels sites réunissent l'eau, l'énergie, un terrain constructible et un abri, comme un bon site de base lunaire ?",
+    who: "Planificateurs de base, enseignants", usage: "Entraînement à la vie en base",
+    criteria: [
+      { g: "Eau", p: "t2m_mean", min: null, max: -5, t: 10, w: 3 }, { g: "Énergie", p: "latitude_abs", min: 65, max: null, t: 15, w: 2 },
+      { g: "Énergie", p: "solar", min: 2, max: null, t: 2, w: 1 }, { g: "Construction", p: "slope_mean", min: null, max: 5, t: 5, w: 3 },
+      { g: "Abri", p: "volcano_distance", min: null, max: 100, t: 200, w: 1 }, { g: "Stabilité", p: "quake_count", min: null, max: 10, t: 30, w: 2 },
+      { g: "Survie", p: "t2m_min", min: null, max: -30, t: 20, w: 1 } ] },
+  { id: 4, name: "Critères libres", q: "Vous choisissez les paramètres, les valeurs souhaitées et leur importance.",
+    who: "Tous publics", usage: "Correspond à vos critères", criteria: [] },
+];
+
+// ---------- Sites fictifs (valeurs plausibles, PAS issues des sources) ----------
+const S = (id, name, region, lat, lon, kind, v) => ({ id, name, region, lat, lon, kind, v: { ...v, latitude_abs: Math.abs(lat), lst_amplitude: v.lst_day - v.lst_night } });
+const SITES = [
+  S("atacama", "Désert d'Atacama", "Chili", -24.5, -69.25, "connu", { slope_mean: 6, slope_max: 22, roughness: 25, elevation: 2500, ndvi: .03, lst_day: 45, lst_night: 2, t2m_mean: 12, t2m_min: -2, t2m_max: 26, wind: 4.5, humidity: 18, precipitation: .05, solar: 7.2, quake_count: 120, volcano_distance: 40 }),
+  S("dry-valleys", "Vallées sèches de McMurdo", "Antarctique", -77.5, 161.8, "connu", { slope_mean: 9, slope_max: 28, roughness: 35, elevation: 1000, ndvi: 0, lst_day: -10, lst_night: -35, t2m_mean: -20, t2m_min: -40, t2m_max: -2, wind: 5.5, humidity: 55, precipitation: .1, solar: 3.1, quake_count: 0, volcano_distance: 95 }),
+  S("haughton", "Cratère Haughton", "Île Devon, Nunavut", 75.38, -89.67, "connu", { slope_mean: 7, slope_max: 24, roughness: 30, elevation: 200, ndvi: .05, lst_day: 5, lst_night: -25, t2m_mean: -14.4, t2m_min: -38, t2m_max: 6, wind: 4, humidity: 94, precipitation: .4, solar: 2.4, quake_count: 3, volcano_distance: 900 }),
+  S("mauna-kea", "Mauna Kea", "Hawaï", 19.82, -155.47, "connu", { slope_mean: 12, slope_max: 30, roughness: 40, elevation: 4000, ndvi: .02, lst_day: 25, lst_night: -3, t2m_mean: 3, t2m_min: -4, t2m_max: 10, wind: 6, humidity: 40, precipitation: 1.2, solar: 6.5, quake_count: 400, volcano_distance: 0 }),
+  S("svalbard", "Bockfjorden", "Svalbard, Norvège", 79.4, 13.4, "connu", { slope_mean: 10, slope_max: 32, roughness: 45, elevation: 300, ndvi: .08, lst_day: 4, lst_night: -18, t2m_mean: -6, t2m_min: -25, t2m_max: 7, wind: 5, humidity: 80, precipitation: .7, solar: 2.0, quake_count: 25, volcano_distance: 5 }),
+  S("islande", "Holuhraun", "Hauts plateaux, Islande", 64.87, -16.83, "connu", { slope_mean: 4, slope_max: 18, roughness: 12, elevation: 700, ndvi: .04, lst_day: 12, lst_night: -6, t2m_mean: .5, t2m_min: -15, t2m_max: 10, wind: 7, humidity: 82, precipitation: 2.2, solar: 2.5, quake_count: 900, volcano_distance: 10 }),
+  S("amazonie", "Forêt amazonienne", "Brésil", -3.4, -62.2, "temoin", { slope_mean: 2, slope_max: 9, roughness: 8, elevation: 60, ndvi: .85, lst_day: 31, lst_night: 23, t2m_mean: 27, t2m_min: 22, t2m_max: 32, wind: 1.2, humidity: 88, precipitation: 7.5, solar: 4.8, quake_count: 2, volcano_distance: 2400 }),
+  S("chang-tang", "Plateau du Chang Tang", "Tibet, Chine", 34.5, 85.5, "nouveau", { slope_mean: 6, slope_max: 20, roughness: 22, elevation: 5000, ndvi: .06, lst_day: 30, lst_night: -15, t2m_mean: -4, t2m_min: -28, t2m_max: 12, wind: 6, humidity: 35, precipitation: .4, solar: 6.0, quake_count: 30, volcano_distance: 60 }),
+  S("tanquary", "Fjord Tanquary", "Île d'Ellesmere, Nunavut", 81.4, -76.9, "nouveau", { slope_mean: 8, slope_max: 26, roughness: 33, elevation: 400, ndvi: .04, lst_day: 2, lst_night: -30, t2m_mean: -18, t2m_min: -42, t2m_max: 5, wind: 3, humidity: 70, precipitation: .2, solar: 2.2, quake_count: 4, volcano_distance: 1100 }),
+  S("khaybar", "Harrat Khaybar", "Arabie saoudite", 25.0, 39.9, "nouveau", { slope_mean: 5, slope_max: 25, roughness: 18, elevation: 1200, ndvi: .03, lst_day: 55, lst_night: 15, t2m_mean: 25, t2m_min: 8, t2m_max: 40, wind: 3.5, humidity: 22, precipitation: .1, solar: 6.8, quake_count: 2, volcano_distance: 0 }),
+  S("antofalla", "Salar d'Antofalla", "Puna, Argentine", -25.6, -67.6, "nouveau", { slope_mean: 11, slope_max: 29, roughness: 38, elevation: 4200, ndvi: .02, lst_day: 35, lst_night: -10, t2m_mean: 2, t2m_min: -18, t2m_max: 15, wind: 6, humidity: 25, precipitation: .2, solar: 7.0, quake_count: 60, volcano_distance: 15 }),
+  S("peary", "Terre de Peary", "Nord du Groenland", 82.5, -30, "nouveau", { slope_mean: 6, slope_max: 22, roughness: 20, elevation: 600, ndvi: .02, lst_day: 0, lst_night: -32, t2m_mean: -20, t2m_min: -40, t2m_max: 4, wind: 4, humidity: 75, precipitation: .15, solar: 2.0, quake_count: 1, volcano_distance: 1300 }),
+];
+const KIND = { connu: "Analogue connu", temoin: "Témoin négatif", nouveau: "Peu étudié" };
+
+// ---------- Moteur (formule du README) ----------
+function critScore(v, c) {
+  let d = 0;
+  if (c.min != null && v < c.min) d = c.min - v;
+  else if (c.max != null && v > c.max) d = v - c.max;
+  return Math.max(0, 1 - d / c.t);
+}
+console.assert(critScore(10, { min: 5, max: 15, t: 10 }) === 1 && critScore(20, { min: 5, max: 15, t: 10 }) === .5 && critScore(40, { min: null, max: 15, t: 10 }) === 0, "critScore");
+
+function analyze(criteria, ndviFilter) {
+  const W = criteria.reduce((a, c) => a + c.w, 0) || 1;
+  return SITES.map(s => {
+    const rows = criteria.map(c => ({ ...c, v: s.v[c.p], s: critScore(s.v[c.p], c) }));
+    const score = Math.round(100 * rows.reduce((a, r) => a + r.w * r.s, 0) / W);
+    return { site: s, rows, score, excluded: ndviFilter && s.v.ndvi > 0.1 };
+  }).sort((a, b) => (a.excluded - b.excluded) || (b.score - a.score));
+}
+
+// ---------- État ----------
+const state = { view: "accueil", modeId: 1, instr: new Set(["Forage", "Vent", "Gaz", "Sismographe", "Thermique"]), selected: null, demo: "normal", custom: null, ndvi: true };
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const tone = n => n >= 70 ? "good" : n >= 40 ? "mid" : "bad";
+const fmt = (v) => (Math.round(v * 100) / 100).toLocaleString("fr-CA");
+const unitOf = p => P[p].unit ? " " + P[p].unit : "";
+function target(c) {
+  if (c.min != null && c.max != null) return `${fmt(c.min)} à ${fmt(c.max)}${unitOf(c.p)}`;
+  if (c.max != null) return `≤ ${fmt(c.max)}${unitOf(c.p)}`;
+  if (c.min != null) return `≥ ${fmt(c.min)}${unitOf(c.p)}`;
+  return "toutes valeurs";
+}
+function currentCriteria() {
+  const m = MODES.find(m => m.id === state.modeId);
+  if (m.id === 4) return state.custom || [];
+  if (m.id === 2) return m.criteria.filter(c => state.instr.has(c.g));
+  return m.criteria;
+}
+
+// ---------- Accueil ----------
+$("#mode-cards").innerHTML = MODES.map(m => `
+  <button class="mode-card" data-mode="${m.id}">
+    <span class="num">Mode ${m.id}</span>
+    <h2>${esc(m.name)}</h2>
+    <p>${esc(m.q)}</p>
+    <span class="who">Pour : ${esc(m.who)}</span>
+    <span class="go">${m.id === 4 ? "Choisir mes critères →" : "Voir les sites →"}</span>
+  </button>`).join("");
+$("#mode-cards").addEventListener("click", e => {
+  const b = e.target.closest("[data-mode]"); if (!b) return;
+  const id = +b.dataset.mode;
+  if (id === 4) { go("criteres"); return; }
+  state.modeId = id; state.selected = null; go("carte");
+});
+
+// ---------- Carte ----------
+$("#mode-select").innerHTML = MODES.map(m => `<option value="${m.id}">${m.id}. ${esc(m.name)}</option>`).join("");
+$("#mode-select").addEventListener("change", e => {
+  const id = +e.target.value;
+  if (id === 4 && !state.custom) { go("criteres"); return; }
+  state.modeId = id; state.selected = null; renderMap();
+});
+$("#instr-chips").innerHTML = ["Forage", "Vent", "Gaz", "Sismographe", "Thermique"].map(g => `<button class="chip" data-g="${g}" aria-pressed="true">${g}</button>`).join("");
+$("#instr-chips").addEventListener("click", e => {
+  const b = e.target.closest("[data-g]"); if (!b) return;
+  const g = b.dataset.g;
+  if (state.instr.has(g)) { if (state.instr.size > 1) state.instr.delete(g); } else state.instr.add(g);
+  renderMap();
+});
+document.querySelector(".demo").addEventListener("click", e => {
+  const b = e.target.closest("[data-state]"); if (!b) return;
+  state.demo = b.dataset.state; renderMap();
+});
+
+let map, layer;
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function initMap() {
+  if (map || !window.L) return;
+  map = L.map("map", { worldCopyJump: true, zoomControl: true, minZoom: 1 }).setView([20, 0], 2);
+  // Fond de carte réel en local ; dans l'artefact les tuiles externes sont bloquées : on retombe sur la grille seule.
+  const tiles = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap", maxZoom: 18 });
+  let failed = false;
+  tiles.on("tileerror", () => { if (!failed) { failed = true; map.removeLayer(tiles); } }).addTo(map);
+  const grid = cssVar("--line");
+  for (let lat = -60; lat <= 60; lat += 30) L.polyline([[lat, -540], [lat, 540]], { color: grid, weight: 1, interactive: false }).addTo(map);
+  for (let lon = -540; lon <= 540; lon += 30) L.polyline([[-85, lon], [85, lon]], { color: grid, weight: 1, interactive: false }).addTo(map);
+  L.polyline([[0, -540], [0, 540]], { color: cssVar("--off"), weight: 1, dashArray: "4 4", interactive: false }).addTo(map);
+  layer = L.layerGroup().addTo(map);
+}
+
+function renderMap() {
+  const m = MODES.find(m => m.id === state.modeId);
+  $("#mode-select").value = m.id;
+  $("#mode-q").textContent = m.q;
+  $("#instr-box").hidden = m.id !== 2;
+  document.querySelectorAll("#instr-chips .chip").forEach(c => c.setAttribute("aria-pressed", state.instr.has(c.dataset.g)));
+  document.querySelectorAll(".demo [data-state]").forEach(b => b.setAttribute("aria-pressed", b.dataset.state === state.demo));
+  initMap();
+  if (layer) layer.clearLayers();
+  const list = $("#list");
+
+  if (state.demo === "loading") {
+    list.innerHTML = `<div class="state-box" aria-live="polite"><h3>Analyse en cours…</h3>
+      <div class="src"><span>NASA POWER (climat)</span><span class="mono" style="color:var(--good)">OK</span>
+      <span>Copernicus DEM (relief)</span><span class="mono" style="color:var(--good)">OK</span>
+      <span>MODIS (végétation, température du sol)</span><span class="mono" style="color:var(--mid)">2ᵉ essai…</span>
+      <span>USGS (séismes)</span><span class="mono">en attente</span></div>
+      <p style="font-size:13px">Les sources sont interrogées en direct : comptez jusqu'à 20 secondes la première fois.</p></div>
+      <div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
+    $("#sheet").hidden = true; return;
+  }
+  if (state.demo === "error") {
+    list.innerHTML = `<div class="state-box" role="alert"><h3>Les températures du sol sont indisponibles</h3>
+      <p>Le service MODIS (Microsoft Planetary Computer) ne répond pas après 3 essais. Réessayez dans une minute, ou continuez sans ce paramètre.</p>
+      <button type="button" data-state-go="normal">Réessayer</button>
+      <button type="button" class="btn ghost" data-state-go="normal">Continuer sans MODIS</button></div>`;
+    $("#sheet").hidden = true; return;
+  }
+  if (state.demo === "empty") {
+    list.innerHTML = `<div class="state-box"><h3>Aucun site ne correspond</h3>
+      <p>Tous les sites candidats sont exclus par le filtre végétation ou obtiennent 0 avec ces critères. Élargissez les valeurs souhaitées ou augmentez la marge.</p>
+      <button type="button" data-goto="criteres">Modifier les critères</button></div>`;
+    $("#sheet").hidden = true; return;
+  }
+
+  const criteria = currentCriteria();
+  const res = analyze(criteria, m.id === 4 ? state.ndvi : true);
+  const kept = res.filter(r => !r.excluded), out = res.filter(r => r.excluded);
+  const row = (r, i) => `<li><button class="row" data-site="${r.site.id}" aria-current="${state.selected === r.site.id}">
+      <span class="rank">${r.excluded ? "—" : i + 1}</span>
+      <span style="min-width:0"><span class="name">${esc(r.site.name)}</span>
+        <span class="meta">${esc(r.site.region)} <span class="badge ${r.site.kind === "nouveau" ? "new" : ""}">${KIND[r.site.kind]}</span></span></span>
+      <span class="score s-${r.excluded ? "off" : tone(r.score)}">${r.excluded ? "exclu" : r.score}</span></button></li>`;
+  list.innerHTML = `<ol>${kept.map(row).join("")}</ol>` +
+    (out.length ? `<div class="excl-head">Exclus : végétation (NDVI &gt; 0,1)</div><ol>${out.map(row).join("")}</ol>` : "");
+
+  if (layer) res.forEach(r => {
+    const col = r.excluded ? cssVar("--off") : cssVar("--" + tone(r.score));
+    const mk = L.circleMarker([r.site.lat, r.site.lon], {
+      radius: r.site.kind === "nouveau" ? 9 : 7, color: r.excluded ? col : cssVar("--surface"), weight: 2,
+      fillColor: col, fillOpacity: r.excluded ? 0 : .95,
+    }).bindTooltip(`${esc(r.site.name)} · ${r.excluded ? "exclu" : r.score + "/100"}`).on("click", () => select(r.site.id));
+    layer.addLayer(mk);
+  });
+  renderSheet(res);
+}
+$("#list").addEventListener("click", e => {
+  const s = e.target.closest("[data-site]"); if (s) { select(s.dataset.site); return; }
+  const g = e.target.closest("[data-state-go]"); if (g) { state.demo = g.dataset.stateGo; renderMap(); return; }
+  const t = e.target.closest("[data-goto]"); if (t) { state.demo = "normal"; go(t.dataset.goto); }
+});
+function select(id) {
+  state.selected = id; renderMap();
+  const s = SITES.find(s => s.id === id);
+  if (map) map.flyTo([s.lat, s.lon], Math.max(map.getZoom(), 4), { duration: .6 });
+}
+
+// ---------- Fiche site ----------
+function renderSheet(res) {
+  const sheet = $("#sheet");
+  const r = res.find(r => r.site.id === state.selected);
+  if (!r) { sheet.hidden = true; return; }
+  const m = MODES.find(m => m.id === state.modeId), s = r.site;
+  const ok = r.rows.filter(x => x.s >= .7), ko = r.rows.filter(x => x.s < .4);
+  let usage;
+  if (r.excluded) usage = "Exclu avant le calcul : le site est couvert de végétation, contrairement à la Lune.";
+  else if (!ok.length) usage = "Peu adapté à ce mode.";
+  else if (m.id === 2) {
+    const groups = [...new Set(r.rows.map(x => x.g))].filter(g => r.rows.filter(x => x.g === g).every(x => x.s >= .7));
+    usage = groups.length ? `Calibration conseillée pour : ${groups.join(", ")}.` : "Aucun instrument ne réunit toutes ses conditions ici.";
+  } else if (m.id === 3) {
+    const groups = [...new Set(ok.map(x => x.g))];
+    usage = `Entraînement à la vie en base. Besoins couverts : ${groups.join(", ")}.`;
+  } else usage = `${m.usage} : ${ok.map(x => P[x.p].label.toLowerCase()).join(", ")}.`;
+
+  sheet.innerHTML = `<div class="sheet-in">
+    <div class="sheet-top">
+      <div style="display:grid;gap:4px;min-width:0">
+        <span class="badge ${s.kind === "nouveau" ? "new" : ""}" style="justify-self:start">${KIND[s.kind]}</span>
+        <h2 style="font-size:24px">${esc(s.name)}</h2>
+        <span class="coords">${esc(s.region)} · ${fmt(Math.abs(s.lat))}° ${s.lat >= 0 ? "N" : "S"}, ${fmt(Math.abs(s.lon))}° ${s.lon >= 0 ? "E" : "O"}</span>
+        <span class="api">GET /api/sites/${s.id}</span>
+      </div>
+      <button class="close" id="close-sheet" aria-label="Fermer la fiche">✕</button>
+    </div>
+    <div class="bigscore"><span class="n" style="color:var(--${r.excluded ? "off" : tone(r.score)})">${r.excluded ? "—" : r.score}</span><span class="of">/ 100 · similarité, mode ${m.id}</span></div>
+    <p style="font-size:14px"><b>À quoi il peut servir.</b> ${esc(usage)}</p>
+    <div class="match">
+      <div><h3 style="color:var(--good)">Correspond (${ok.length})</h3>${ok.length ? `<ul>${ok.map(x => `<li>${esc(P[x.p].label)}</li>`).join("")}</ul>` : "Aucun critère"}</div>
+      <div><h3 style="color:var(--bad)">Ne correspond pas (${ko.length})</h3>${ko.length ? `<ul>${ko.map(x => `<li>${esc(P[x.p].label)}</li>`).join("")}</ul>` : "Aucun critère"}</div>
+    </div>
+    <div style="display:grid;gap:10px">
+      <h3 class="eyebrow" style="font-family:var(--f-mono);font-weight:500">Score par critère</h3>
+      <div class="crit">${r.rows.map(x => `<div class="crit-row">
+        <div class="crit-line"><span>${x.g ? `<span class="eyebrow" style="font-size:10px">${esc(x.g)}</span> ` : ""}${esc(P[x.p].label)}</span><span class="v">${fmt(x.v)}${unitOf(x.p)}</span></div>
+        <div class="bar" role="img" aria-label="Score ${Math.round(x.s * 100)} sur 100"><i style="width:${Math.max(2, x.s * 100)}%;background:var(--${tone(x.s * 100)})"></i></div>
+        <div class="crit-sub"><span>Souhaité : ${target(x)} · importance ${x.w}</span><span class="mono">${Math.round(x.s * 100)}</span></div>
+      </div>`).join("")}</div>
+    </div>
+    <div class="notmoon"><b>Ce que ce site ne reproduit pas :</b> la gravité lunaire (6 fois plus faible), le vide, l'absence de vent et le rayonnement. Le froid y reste très loin des -230 °C des cratères à l'ombre permanente.</div>
+    <p class="coords">Valeurs : NASA POWER, Copernicus DEM, MODIS, USGS, Smithsonian GVP. <b>Maquette : valeurs fictives.</b></p>
+  </div>`;
+  sheet.hidden = false;
+  $("#close-sheet").onclick = () => { state.selected = null; renderMap(); };
+}
+
+// ---------- Mode 4 : critères libres ----------
+$("#prefill").insertAdjacentHTML("beforeend", MODES.slice(0, 3).map(m => `<option value="${m.id}">mode ${m.id} · ${esc(m.name)}</option>`).join(""));
+function renderFree(fromMode) {
+  const base = fromMode ? MODES.find(m => m.id === fromMode).criteria : (state.custom || []);
+  $("#free-rows").innerHTML = Object.entries(P).filter(([id]) => id !== "ndvi").map(([id, p]) => {
+    const c = base.find(c => c.p === id);
+    const step = p.hi - p.lo <= 10 ? 0.1 : 1;
+    return `<tr class="${c ? "" : "off"}" data-p="${id}">
+      <td><input type="checkbox" id="f-${id}-on" aria-label="Utiliser ${esc(p.label)}" ${c ? "checked" : ""}></td>
+      <td><div style="font-weight:600">${esc(p.label)} <span class="unit">${esc(p.unit)}</span></div><div class="help">${esc(p.help)}</div></td>
+      <td><input type="number" id="f-${id}-min" step="${step}" placeholder="${p.lo}" value="${c && c.min != null ? c.min : ""}" aria-label="Minimum"></td>
+      <td><input type="number" id="f-${id}-max" step="${step}" placeholder="${p.hi}" value="${c && c.max != null ? c.max : ""}" aria-label="Maximum"></td>
+      <td><input type="number" id="f-${id}-t" step="${step}" min="0" value="${c ? c.t : Math.round((p.hi - p.lo) / 4)}" aria-label="Marge"></td>
+      <td><input type="range" id="f-${id}-w" min="1" max="3" value="${c ? Math.min(3, c.w) : 1}" aria-label="Importance"> <span class="mono" id="f-${id}-wl">${c ? Math.min(3, c.w) : 1}</span></td>
+    </tr>`;
+  }).join("");
+}
+$("#prefill").addEventListener("change", e => renderFree(+e.target.value || null));
+$("#free-rows").addEventListener("input", e => {
+  const tr = e.target.closest("tr"); if (!tr) return;
+  const id = tr.dataset.p;
+  if (e.target.type === "range") $(`#f-${id}-wl`).textContent = e.target.value;
+  if (e.target.type === "checkbox") tr.classList.toggle("off", !e.target.checked);
+  else if (!$(`#f-${id}-on`).checked) { $(`#f-${id}-on`).checked = true; tr.classList.remove("off"); }
+});
+$("#free-form").addEventListener("submit", e => {
+  e.preventDefault();
+  const num = id => { const v = $(id).value; return v === "" ? null : +v; };
+  const crit = [], errs = [];
+  document.querySelectorAll("#free-rows tr").forEach(tr => {
+    const id = tr.dataset.p; if (!$(`#f-${id}-on`).checked) return;
+    const c = { p: id, min: num(`#f-${id}-min`), max: num(`#f-${id}-max`), t: num(`#f-${id}-t`) || 1, w: +$(`#f-${id}-w`).value };
+    if (c.min == null && c.max == null) errs.push(`${P[id].label} : indiquez un minimum ou un maximum.`);
+    else if (c.min != null && c.max != null && c.min > c.max) errs.push(`${P[id].label} : le minimum dépasse le maximum.`);
+    crit.push(c);
+  });
+  if (!crit.length) errs.unshift("Choisissez au moins un paramètre.");
+  $("#free-err").textContent = errs[0] || "";
+  if (errs.length) return;
+  state.custom = crit; state.ndvi = $("#ndvi-filter").checked; state.modeId = 4; state.selected = null; state.demo = "normal";
+  go("carte");
+});
+
+// ---------- Navigation ----------
+const VIEWS = ["accueil", "carte", "criteres"];
+// show() direct : le changement de hash n'est pas fiable partout (aperçus data:, cadres).
+function go(v) { show(v); try { history.replaceState(null, "", "#" + v); } catch (_) {} }
+document.querySelector(".nav").addEventListener("click", e => { const a = e.target.closest("[data-view]"); if (a) { e.preventDefault(); go(a.dataset.view); } });
+function show(v) {
+  if (!VIEWS.includes(v)) v = "accueil";
+  state.view = v;
+  VIEWS.forEach(x => $("#v-" + x).hidden = x !== v);
+  document.querySelectorAll(".nav a").forEach(a => a.dataset.view === v ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  if (v === "carte") { if (state.modeId === 4 && !state.custom) state.modeId = 1; renderMap(); setTimeout(() => map && map.invalidateSize(), 0); }
+  if (v === "criteres" && !$("#free-rows").children.length) { $("#prefill").value = "1"; renderFree(1); }
+  window.scrollTo(0, 0);
+}
+addEventListener("hashchange", () => show(location.hash.slice(1)));
+$("#toggle-api").addEventListener("change", e => document.body.classList.toggle("show-api", e.target.checked));
+document.body.classList.add("show-api");
+show(location.hash.slice(1));
+</script>
