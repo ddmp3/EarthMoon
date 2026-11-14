@@ -30,8 +30,14 @@ flowchart LR
    - Les sites exclus par le filtre végétation restent visibles, en fin de liste et en gris.
    - Survoler une ligne met en évidence le point sur la carte ; cliquer centre la carte sur le site (animation) et ouvre la fiche.
 3. **Fiche site** : jauge de note animée, usage possible, « correspond » (critère ≥ 0,7) et « ne correspond pas » (< 0,4), barre par critère. **Survoler ou toucher un critère** affiche une bulle : description, équivalent lunaire, source de la donnée. Rappel de ce que la Terre ne reproduit pas.
-4. **Critères libres (scénario 4)** : tableau du catalogue (cartes empilées sur mobile) ; on coche un paramètre, puis minimum, maximum, marge et importance (1 à 3). On peut partir des réglages d'un scénario 1 à 3. Filtre végétation coché par défaut.
-5. **Aide** : sommaire fixe (pastilles défilantes sur mobile) qui suit la lecture.
+4. **Critères libres (scénario 4)** : paramètres regroupés en 5 thèmes repliables (relief, températures, atmosphère et climat, énergie et position, géologie), avec *Tout déplier / Tout replier*. Chaque thème indique combien de paramètres sont actifs ; seuls les thèmes qui en contiennent sont dépliés à l'ouverture.
+   - Chaque paramètre est une carte avec un interrupteur. Un **double curseur** fixe l'intervalle souhaité ; une poignée laissée en butée signifie « sans minimum » ou « sans maximum ». La **marge** apparaît en hachures de part et d'autre de l'intervalle.
+   - Sous le curseur, un point par site candidat ; il passe au vert quand le site entre dans l'intervalle (« 4 sites sur 11 dedans »).
+   - **Importance** en 3 niveaux (faible, moyenne, forte), choisie par boutons à barres.
+   - Échelle logarithmique pour les séismes, la distance au volcan et le relief accidenté, pour régler finement les petites valeurs.
+   - Barre collante en bas : nombre de critères actifs, aperçu en direct des 3 meilleurs sites, bouton *Lancer l'analyse*.
+   - On peut partir des réglages d'un scénario 1 à 3. Filtre végétation coché par défaut.
+5. **Aide** : sommaire fixe qui suit la lecture (grille de 6 boutons sur mobile, sans défilement).
    - *Prise en main* : les 4 étapes du parcours.
    - *Les scénarios* : question, public visé et critères de chaque scénario.
    - *Calcul de similarité* : filtre végétation, note par critère (courbe interactive avec un curseur), moyenne pondérée (formule et exemple chiffré du cratère Haughton), seuils de lecture.

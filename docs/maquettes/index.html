@@ -228,20 +228,78 @@ body:not(.show-api) .api { display: none; }
 .toolbar { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; padding: 14px 16px; }
 .toolbar label { display: flex; gap: 8px; align-items: center; font-size: 14px; flex-wrap: wrap; }
 .toolbar select { padding: 6px 8px; border: 1px solid var(--line-2); background: var(--panel-2); border-radius: 3px; }
+.toolbar input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+.toolbar .spacer { flex: 1; }
 .tablebox { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: middle; }
 th { font-family: var(--f-mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 400; }
-tr { transition: opacity .2s, background .2s; }
-tr.off td:not(:first-child) { opacity: .4; }
-tbody tr:hover { background: rgba(108,210,255,.04); }
-td .help { font-size: 12px; color: var(--muted); max-width: 48ch; }
-td input[type="number"] { width: 86px; padding: 6px; border: 1px solid var(--line-2); background: var(--panel-2); font-family: var(--f-mono); font-size: 13px; border-radius: 3px; }
-td input[type="range"] { width: 90px; accent-color: var(--accent); vertical-align: middle; }
-td input[type="checkbox"], .toolbar input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
 .unit { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
-.free-foot { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
 .err { color: var(--bad); font-size: 14px; }
+
+/* Thèmes repliables */
+.fams { display: grid; gap: 14px; }
+.fam-panel { overflow: visible; }
+.fam-h { width: 100%; display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 14px; align-items: center; padding: 16px 18px; background: none; border: 0; text-align: left; color: var(--ink); }
+.fam-h:hover .fam-name { color: var(--accent); }
+.fam-ico { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line-2); border-radius: 50%; color: var(--accent); background: var(--accent-soft); }
+.fam-ico svg { width: 20px; height: 20px; }
+.fam-name { font-family: var(--f-display); font-size: 22px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; transition: color .2s; display: block; }
+.fam-sub { font-size: 12.5px; color: var(--muted); }
+.fam-count { font-family: var(--f-mono); font-size: 11px; color: var(--muted); padding: 3px 8px; border: 1px solid var(--line-2); border-radius: 999px; white-space: nowrap; }
+.fam-count.has { color: var(--accent); border-color: var(--accent); }
+.chev { width: 18px; height: 18px; color: var(--muted); transition: transform .3s; }
+.fam-panel.closed .chev { transform: rotate(-90deg); }
+.fam-body { display: grid; grid-template-rows: 1fr; transition: grid-template-rows .35s cubic-bezier(.2,.8,.2,1); }
+.fam-panel.closed .fam-body { grid-template-rows: 0fr; }
+.fam-inner { overflow: hidden; min-height: 0; }
+.fam-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr)); gap: 12px; padding: 0 18px 18px; }
+
+/* Carte de paramètre */
+.pcard { display: grid; gap: 12px; align-content: start; padding: 16px; border: 1px solid var(--line); background: rgba(5,8,14,.55); border-radius: 4px; transition: border-color .25s, box-shadow .25s; }
+.pcard.on { border-color: rgba(108,210,255,.5); box-shadow: 0 0 24px rgba(108,210,255,.07), inset 0 0 0 1px rgba(108,210,255,.08); }
+.pbody { display: grid; gap: 12px; transition: opacity .25s; }
+.pcard:not(.on) .pbody { opacity: .42; }
+.phead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: start; }
+.pname { font-weight: 600; font-size: 15px; }
+.phelp { font-size: 12.5px; color: var(--muted); }
+.switch { position: relative; width: 40px; height: 22px; flex: none; border: 0; border-radius: 11px; background: var(--line-2); transition: background .2s; }
+.switch::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: var(--muted); transition: transform .25s cubic-bezier(.2,.8,.2,1), background .2s; }
+.switch[aria-checked="true"] { background: var(--accent); box-shadow: 0 0 12px rgba(108,210,255,.5); }
+.switch[aria-checked="true"]::after { transform: translateX(18px); background: var(--accent-ink); }
+.want { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.want-v { font-family: var(--f-mono); font-size: 17px; color: var(--accent); font-weight: 500; }
+.want-n { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.vslider { position: relative; height: 40px; }
+.vslider .vs-track { position: absolute; left: 8px; right: 8px; top: 13px; height: 4px; border-radius: 2px; background: var(--line-2); }
+.vslider .vs-tol { position: absolute; top: 12px; height: 6px; background: repeating-linear-gradient(45deg, rgba(245,196,81,.45) 0 3px, rgba(245,196,81,.12) 3px 6px); border-radius: 2px; pointer-events: none; transition: left .08s, width .08s; }
+.vslider .vs-fill { position: absolute; top: 11px; height: 8px; border-radius: 3px; background: var(--accent); box-shadow: 0 0 12px rgba(108,210,255,.55); pointer-events: none; }
+.vslider .vs-tick { position: absolute; top: 27px; width: 7px; height: 7px; margin-left: -3.5px; border-radius: 50%; background: var(--dim); transition: background .2s, transform .2s; }
+.vslider .vs-tick.in { background: var(--good); transform: scale(1.25); }
+.vslider input { position: absolute; left: 0; right: 0; top: 7px; width: 100%; height: 16px; margin: 0; background: none; pointer-events: none; -webkit-appearance: none; appearance: none; }
+.vslider input::-webkit-slider-thumb { -webkit-appearance: none; pointer-events: auto; width: 18px; height: 18px; border-radius: 50%; background: var(--ink); border: 4px solid var(--accent); box-shadow: 0 0 0 3px var(--void); cursor: grab; }
+.vslider input::-moz-range-thumb { pointer-events: auto; width: 12px; height: 12px; border-radius: 50%; background: var(--ink); border: 4px solid var(--accent); box-shadow: 0 0 0 3px var(--void); cursor: grab; }
+.vslider input::-moz-range-track { background: none; }
+.vslider input:active::-webkit-slider-thumb { cursor: grabbing; transform: scale(1.15); }
+.vs-scale { display: flex; justify-content: space-between; font-family: var(--f-mono); font-size: 10px; color: var(--dim); margin-top: -6px; }
+.pfoot { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 14px; align-items: center; }
+.marge { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+.marge input { width: 100%; accent-color: var(--mid); }
+.marge output { font-family: var(--f-mono); color: var(--mid); white-space: nowrap; }
+.imp { display: flex; gap: 3px; }
+.imp button { display: flex; gap: 2px; align-items: center; padding: 5px 7px; border: 1px solid var(--line-2); background: transparent; border-radius: 3px; font-size: 11px; color: var(--muted); }
+.imp button i { width: 5px; height: 12px; border-radius: 1px; background: var(--line-2); }
+.imp button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.imp button[aria-pressed="true"] i.f { background: var(--accent); }
+.imp-lbl { font-size: 11px; color: var(--dim); font-family: var(--f-mono); text-align: right; }
+
+/* Barre de lancement collante */
+.free-bar { position: sticky; bottom: 12px; z-index: 6; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 14px 18px; background: rgba(9,13,22,.94); backdrop-filter: blur(10px); box-shadow: 0 -10px 40px rgba(0,0,0,.5); }
+.free-bar .act { font-family: var(--f-display); font-size: 20px; letter-spacing: .06em; text-transform: uppercase; }
+.free-bar .act b { color: var(--accent); }
+.preview { font-size: 12.5px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.preview .pv { font-family: var(--f-mono); font-size: 11.5px; padding: 1px 7px; border: 1px solid var(--line-2); border-radius: 3px; color: var(--ink); animation: rowIn .3s both; }
+.preview .pv b { font-weight: 500; }
 
 /* ---------- Aide ---------- */
 .help-page { max-width: 1180px; margin: 0 auto; padding-block: 30px 64px; display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 36px; align-items: start; }
@@ -250,7 +308,7 @@ td input[type="checkbox"], .toolbar input[type="checkbox"] { width: 18px; height
 .toc a:hover { color: var(--ink); }
 .toc a.on { color: var(--accent); border-left-color: var(--accent); background: var(--accent-soft); }
 .help-body { display: grid; gap: 56px; min-width: 0; }
-.help-body section { display: grid; gap: 16px; scroll-margin-top: calc(var(--bar-h) + 16px); }
+.help-body section { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; scroll-margin-top: calc(var(--bar-h) + 16px); }
 .help-body h2 { font-size: 32px; text-transform: uppercase; letter-spacing: .04em; }
 .help-body h3 { font-size: 20px; text-transform: uppercase; letter-spacing: .05em; }
 .help-body p, .help-body li { color: var(--muted); max-width: 72ch; }
@@ -262,6 +320,8 @@ td input[type="checkbox"], .toolbar input[type="checkbox"] { width: 18px; height
 .scen-help { display: grid; gap: 12px; }
 .scen-help .hud { padding: 16px 18px; display: grid; gap: 8px; }
 .kv { display: flex; flex-wrap: wrap; gap: 6px; }
+.kv .badge { white-space: normal; }
+.scen-help { grid-template-columns: minmax(0, 1fr); }
 .formula { padding: 16px 18px; font-family: var(--f-mono); font-size: 14px; color: var(--ink); overflow-x: auto; white-space: nowrap; }
 .chart-box { padding: 16px; display: grid; gap: 12px; }
 .chart-box svg { width: 100%; height: auto; max-width: 100%; }
@@ -318,19 +378,21 @@ td input[type="checkbox"], .toolbar input[type="checkbox"] { width: 18px; height
   .map-api { display: none; }
   .sheet { top: 0; width: 100%; z-index: 50; border-left: 0; }
   .match { grid-template-columns: 1fr; }
-  .help-page { grid-template-columns: 1fr; gap: 20px; }
-  .toc { top: var(--bar-h); z-index: 5; display: flex; overflow-x: auto; gap: 6px; padding: 10px 0; background: rgba(4,6,11,.95); }
-  .toc a { border-left: 0; border: 1px solid var(--line-2); border-radius: 999px; white-space: nowrap; padding: 5px 12px; font-size: 13px; }
+  .help-page { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  /* Sommaire de l'aide : grille 3 × 2, sans défilement horizontal */
+  .toc { top: var(--bar-h); z-index: 5; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding: 10px 0; background: rgba(4,6,11,.95); }
+  .toc a { border: 1px solid var(--line-2); border-radius: 4px; padding: 6px 4px; font-size: 12.5px; text-align: center; line-height: 1.2; }
+  .toc a.on { border-color: var(--accent); }
   .thresholds { grid-template-columns: 1fr; }
-  table, tbody, tr, td { display: block; }
-  thead { display: none; }
-  tbody tr { display: grid; grid-template-columns: auto 1fr 1fr; gap: 8px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
-  td { border: 0; padding: 0; }
-  td:nth-child(2) { grid-column: 2 / -1; }
-  td:nth-child(n+3) { grid-column: span 1; }
-  td:nth-child(3) { grid-column: 2; }
-  td[data-label]::before { content: attr(data-label); display: block; font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); margin-bottom: 2px; }
-  td input[type="number"] { width: 100%; }
+  .fam-h { grid-template-columns: auto minmax(0, 1fr) auto; padding: 14px; gap: 10px; }
+  .fam-count { grid-column: 2; grid-row: 2; justify-self: start; }
+  .fam-sub { display: none; }
+  .fam-grid { padding: 0 12px 12px; }
+  .free-bar { bottom: 74px; gap: 10px; padding: 10px 12px; }
+  .free-bar .act { font-size: 16px; }
+  .free-bar .preview, .free-bar .api { display: none; }
+  .free-bar .btn { padding: 9px 12px; font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
@@ -480,26 +542,26 @@ td input[type="checkbox"], .toolbar input[type="checkbox"] { width: 18px; height
     <div class="page-head">
       <span class="eyebrow">Scénario 4</span>
       <h1>Critères libres</h1>
-      <p>Cochez les paramètres qui comptent pour votre mission, indiquez les valeurs souhaitées, la marge acceptée et l'importance de chacun. Seuls les paramètres que nos sources fournissent sont proposés. <span class="api">GET /api/parameters</span></p>
+      <p>Activez les paramètres qui comptent pour votre mission, puis faites glisser les poignées pour fixer les valeurs souhaitées. Les points sous chaque curseur sont les sites candidats : ils passent au vert quand ils entrent dans votre intervalle. <a href="#aide" data-goto="aide" data-section="h-calc">Comment le score est calculé</a> <span class="api">GET /api/parameters</span></p>
     </div>
     <div class="toolbar hud">
       <label for="prefill">Partir des réglages du <select id="prefill"><option value="">aucun scénario</option></select></label>
       <label><input type="checkbox" id="ndvi-filter" checked> Exclure les sites avec végétation (NDVI &gt; 0,1)</label>
+      <span class="spacer"></span>
+      <button type="button" class="ghost-btn" data-fold="open">Tout déplier</button>
+      <button type="button" class="ghost-btn" data-fold="close">Tout replier</button>
     </div>
-    <div class="tablebox hud">
-      <table>
-        <thead><tr>
-          <th scope="col">Utiliser</th><th scope="col">Paramètre</th><th scope="col">Minimum</th><th scope="col">Maximum</th>
-          <th scope="col">Marge</th><th scope="col">Importance</th>
-        </tr></thead>
-        <tbody id="free-rows"></tbody>
-      </table>
-    </div>
-    <div class="free-foot">
-      <button type="submit" class="btn">Lancer l'analyse</button>
-      <button type="button" class="btn ghost" data-goto="aide" data-section="h-calc">Comment le score est calculé</button>
-      <span class="api">POST /api/analyze { criteria[], ndviFilter }</span>
-      <span class="err" id="free-err" role="alert"></span>
+    <div class="fams" id="free-fams"></div>
+    <div class="free-bar hud">
+      <div style="display:grid;gap:6px;min-width:0">
+        <span class="act" id="act-count"></span>
+        <div class="preview" id="preview" aria-live="polite"></div>
+        <span class="err" id="free-err" role="alert"></span>
+      </div>
+      <div style="display:grid;gap:6px;justify-items:end">
+        <button type="submit" class="btn">Lancer l'analyse</button>
+        <span class="api">POST /api/analyze { criteria[], ndviFilter }</span>
+      </div>
     </div>
   </form>
 </main>
@@ -509,10 +571,10 @@ td input[type="checkbox"], .toolbar input[type="checkbox"] { width: 18px; height
   <div class="help-page">
     <nav class="toc" id="toc" aria-label="Sommaire de l'aide">
       <a href="#aide" data-sec="h-start">Prise en main</a>
-      <a href="#aide" data-sec="h-scen">Les scénarios</a>
-      <a href="#aide" data-sec="h-calc">Calcul de similarité</a>
-      <a href="#aide" data-sec="h-crit">Les critères</a>
-      <a href="#aide" data-sec="h-lim">Limites de l'analogie</a>
+      <a href="#aide" data-sec="h-scen">Scénarios</a>
+      <a href="#aide" data-sec="h-calc">Calcul du score</a>
+      <a href="#aide" data-sec="h-crit">Critères</a>
+      <a href="#aide" data-sec="h-lim">Limites</a>
       <a href="#aide" data-sec="h-glos">Glossaire</a>
     </nav>
     <div class="help-body">
@@ -966,43 +1028,144 @@ function countUp(el, to) {
 
 // ---------- Critères libres ----------
 $("#prefill").insertAdjacentHTML("beforeend", SCEN.slice(0, 3).map(m => `<option value="${m.id}">scénario ${m.id} · ${esc(m.name)}</option>`).join(""));
-function renderFree(fromScen) {
-  const base = fromScen ? SCEN.find(m => m.id === fromScen).criteria : (state.custom || []);
-  $("#free-rows").innerHTML = Object.entries(P).filter(([id]) => id !== "ndvi").map(([id, p]) => {
-    const c = base.find(c => c.p === id);
-    const step = p.hi - p.lo <= 10 ? 0.1 : 1;
-    return `<tr class="${c ? "" : "off"}" data-p="${id}">
-      <td><input type="checkbox" id="f-${id}-on" aria-label="Utiliser ${esc(p.label)}" ${c ? "checked" : ""}></td>
-      <td><div style="font-weight:600">${esc(p.label)} <span class="unit">${esc(p.unit)}</span></div><div class="help">${esc(p.help)}</div></td>
-      <td data-label="Minimum"><input type="number" id="f-${id}-min" step="${step}" placeholder="${p.lo}" value="${c && c.min != null ? c.min : ""}" aria-label="Minimum"></td>
-      <td data-label="Maximum"><input type="number" id="f-${id}-max" step="${step}" placeholder="${p.hi}" value="${c && c.max != null ? c.max : ""}" aria-label="Maximum"></td>
-      <td data-label="Marge"><input type="number" id="f-${id}-t" step="${step}" min="0" value="${c ? c.t : Math.round((p.hi - p.lo) / 4)}" aria-label="Marge"></td>
-      <td data-label="Importance"><input type="range" id="f-${id}-w" min="1" max="3" value="${c ? Math.min(3, c.w) : 1}" aria-label="Importance"> <span class="mono" id="f-${id}-wl">${c ? Math.min(3, c.w) : 1}</span></td>
-    </tr>`;
-  }).join("");
+// Curseurs sur 0..1000. Échelle logarithmique pour les grandeurs très étalées (on vise surtout les petites valeurs).
+["quake_count", "volcano_distance", "roughness"].forEach(id => P[id].log = true);
+const FAM_ICO = {
+  "Relief": '<path d="M3 19l6-10 4 6 3-4 5 8z"/>',
+  "Températures": '<path d="M10 14V5a2 2 0 1 1 4 0v9a4 4 0 1 1-4 0z"/><path d="M12 10v6"/>',
+  "Atmosphère et climat": '<path d="M3 9h11a3 3 0 1 0-3-3M3 15h15a3 3 0 1 1-3 3M3 12h8"/>',
+  "Énergie et position": '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/>',
+  "Géologie": '<path d="M2 12h4l2-6 3 12 3-9 2 3h6"/>',
+};
+const FAM_SUB = { "Relief": "Pentes et terrain, pour la mobilité et la construction", "Températures": "Froid, chaleur et écarts jour-nuit", "Atmosphère et climat": "Vent, humidité et précipitations", "Énergie et position": "Soleil et latitude", "Géologie": "Séismes et volcanisme" };
+const FREE_IDS = Object.keys(P).filter(id => id !== "ndvi");
+const IMP = ["Faible", "Moyenne", "Forte"];
+const toV = (p, s) => p.log ? p.lo + Math.expm1(s / 1000 * Math.log1p(p.hi - p.lo)) : p.lo + (p.hi - p.lo) * s / 1000;
+const toS = (p, v) => p.log ? 1000 * Math.log1p(Math.max(0, v - p.lo)) / Math.log1p(p.hi - p.lo) : 1000 * (v - p.lo) / (p.hi - p.lo);
+const snap = (p, v) => { const st = p.hi - p.lo <= 10 ? .1 : v >= 200 ? 10 : 1; return Math.round(v / st) * st; };
+const pos = s => `calc(8px + (100% - 16px) * ${Math.max(0, Math.min(1000, s)) / 1000})`;
+console.assert(Math.abs(toV(P.quake_count, toS(P.quake_count, 5)) - 5) < 1e-6, "échelle log");
+let free = {};
+
+function loadFree(fromScen) {
+  const base = fromScen ? SCEN.find(m => m.id === fromScen).criteria : (state.custom || SCEN[0].criteria);
+  free = {};
+  FREE_IDS.forEach(id => {
+    const p = P[id], c = base.find(c => c.p === id);
+    free[id] = c ? { on: true, min: c.min, max: c.max, t: c.t, w: Math.min(3, c.w) }
+                 : { on: false, min: snap(p, p.lo + (p.hi - p.lo) * .25), max: snap(p, p.lo + (p.hi - p.lo) * .75), t: snap(p, (p.hi - p.lo) / 8), w: 1 };
+  });
+  renderFams();
 }
-$("#prefill").addEventListener("change", e => renderFree(+e.target.value || null));
-$("#free-rows").addEventListener("input", e => {
-  const tr = e.target.closest("tr"); if (!tr) return;
-  const id = tr.dataset.p;
-  if (e.target.type === "range") $(`#f-${id}-wl`).textContent = e.target.value;
-  if (e.target.type === "checkbox") tr.classList.toggle("off", !e.target.checked);
-  else if (!$(`#f-${id}-on`).checked) { $(`#f-${id}-on`).checked = true; tr.classList.remove("off"); }
+function renderFams() {
+  $("#free-fams").innerHTML = FAMILIES.filter(f => FREE_IDS.some(id => P[id].fam === f)).map(f => {
+    const ids = FREE_IDS.filter(id => P[id].fam === f);
+    const open = ids.some(id => free[id].on);
+    return `<section class="fam-panel hud ${open ? "" : "closed"}" data-fam="${f}">
+      <button type="button" class="fam-h" aria-expanded="${open}">
+        <span class="fam-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${FAM_ICO[f]}</svg></span>
+        <span style="min-width:0"><span class="fam-name">${f}</span><span class="fam-sub">${FAM_SUB[f]}</span></span>
+        <span class="fam-count"></span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+      </button>
+      <div class="fam-body"><div class="fam-inner"><div class="fam-grid">${ids.map(cardHtml).join("")}</div></div></div>
+    </section>`;
+  }).join("");
+  FREE_IDS.forEach(updateCard); updateBar();
+}
+function cardHtml(id) {
+  const p = P[id], f = free[id];
+  return `<article class="pcard" data-p="${id}">
+    <div class="phead">
+      <div style="min-width:0"><div class="pname">${esc(p.label)} <span class="unit">${esc(p.unit)}</span></div><div class="phelp">${esc(p.help)}</div></div>
+      <button type="button" class="switch" role="switch" aria-checked="${f.on}" aria-label="Utiliser ${esc(p.label)}"></button>
+    </div>
+    <div class="pbody">
+      <div class="want"><span class="want-v"></span><span class="want-n"></span></div>
+      <div class="vslider">
+        <div class="vs-track"></div><div class="vs-tol l"></div><div class="vs-tol r"></div><div class="vs-fill"></div>
+        ${SITES.map(s => `<span class="vs-tick" data-s="${s.id}" title="${esc(s.name)} : ${fmt(s.v[id])}${unitOf(id)}"></span>`).join("")}
+        <input type="range" class="vs-min" min="0" max="1000" step="1" aria-label="${esc(p.label)} : minimum souhaité">
+        <input type="range" class="vs-max" min="0" max="1000" step="1" aria-label="${esc(p.label)} : maximum souhaité">
+      </div>
+      <div class="vs-scale"><span>${fmt(p.lo)}</span>${p.log ? `<span>échelle log</span>` : ""}<span>${fmt(p.hi)}${unitOf(id)}</span></div>
+      <div class="pfoot">
+        <label class="marge">Marge <input type="range" class="vs-t" min="0" max="1000" step="1" aria-label="Marge"><output></output></label>
+        <div style="display:grid;gap:3px"><div class="imp" role="group" aria-label="Importance">${[1, 2, 3].map(n => `<button type="button" data-w="${n}" aria-label="Importance ${IMP[n - 1].toLowerCase()}">${[1, 2, 3].map(k => `<i class="${k <= n ? "f" : ""}"></i>`).join("")}</button>`).join("")}</div><span class="imp-lbl"></span></div>
+      </div>
+    </div>
+  </article>`;
+}
+function updateCard(id) {
+  const p = P[id], f = free[id], card = document.querySelector(`.pcard[data-p="${id}"]`); if (!card) return;
+  const sMin = f.min == null ? 0 : toS(p, f.min), sMax = f.max == null ? 1000 : toS(p, f.max);
+  card.classList.toggle("on", f.on);
+  card.querySelector(".switch").setAttribute("aria-checked", f.on);
+  card.querySelector(".vs-min").value = sMin; card.querySelector(".vs-max").value = sMax;
+  const fill = card.querySelector(".vs-fill"); fill.style.left = pos(sMin); fill.style.width = `calc((100% - 16px) * ${(sMax - sMin) / 1000})`;
+  const tl = card.querySelector(".vs-tol.l"), tr = card.querySelector(".vs-tol.r");
+  tl.hidden = f.min == null; tr.hidden = f.max == null;
+  if (f.min != null) { const a = toS(p, Math.max(p.lo, f.min - f.t)); tl.style.left = pos(a); tl.style.width = `calc((100% - 16px) * ${(sMin - a) / 1000})`; }
+  if (f.max != null) { const b = toS(p, Math.min(p.hi, f.max + f.t)); tr.style.left = pos(sMax); tr.style.width = `calc((100% - 16px) * ${(b - sMax) / 1000})`; }
+  card.querySelector(".want-v").textContent = f.min == null && f.max == null ? "Aucune limite" : target({ p: id, min: f.min, max: f.max });
+  const pool = SITES.filter(s => !($("#ndvi-filter").checked && s.v.ndvi > .1));
+  let n = 0;
+  card.querySelectorAll(".vs-tick").forEach(t => {
+    const s = SITES.find(s => s.id === t.dataset.s), v = s.v[id], vis = pool.includes(s);
+    t.hidden = !vis; t.style.left = pos(toS(p, Math.max(p.lo, Math.min(p.hi, v))));
+    const inn = (f.min == null || v >= f.min) && (f.max == null || v <= f.max); t.classList.toggle("in", inn); if (vis && inn) n++;
+  });
+  card.querySelector(".want-n").textContent = `${n} site${n > 1 ? "s" : ""} sur ${pool.length} dedans`;
+  const tmax = (p.hi - p.lo) / 2;
+  card.querySelector(".vs-t").value = 1000 * f.t / tmax;
+  card.querySelector(".marge output").textContent = `± ${fmt(f.t)}${unitOf(id)}`;
+  card.querySelectorAll(".imp button").forEach(b => b.setAttribute("aria-pressed", +b.dataset.w === f.w));
+  card.querySelector(".imp-lbl").textContent = `Importance ${IMP[f.w - 1].toLowerCase()}`;
+  const panel = card.closest(".fam-panel"), ids = FREE_IDS.filter(i => P[i].fam === panel.dataset.fam), on = ids.filter(i => free[i].on).length;
+  const cnt = panel.querySelector(".fam-count"); cnt.textContent = `${on} / ${ids.length} actif${on > 1 ? "s" : ""}`; cnt.classList.toggle("has", on > 0);
+}
+function freeCriteria() { return FREE_IDS.filter(id => free[id].on).map(id => ({ p: id, ...free[id], t: free[id].t || (P[id].hi - P[id].lo) / 100 })); }
+function updateBar() {
+  const crit = freeCriteria();
+  $("#act-count").innerHTML = crit.length ? `<b>${crit.length}</b> critère${crit.length > 1 ? "s" : ""} actif${crit.length > 1 ? "s" : ""}` : "Aucun critère actif";
+  const valid = crit.filter(c => c.min != null || c.max != null);
+  if (!valid.length) { $("#preview").innerHTML = "Activez un paramètre pour voir un aperçu du classement."; return; }
+  const top = analyze(valid, $("#ndvi-filter").checked).filter(r => !r.excluded).slice(0, 3);
+  $("#preview").innerHTML = `Aperçu : ${top.map(r => `<span class="pv">${esc(r.site.name)} <b class="s-${tone(r.score)}">${r.score}</b></span>`).join("")}`;
+  $("#free-err").textContent = "";
+}
+$("#prefill").addEventListener("change", e => loadFree(+e.target.value || null));
+$("#ndvi-filter").addEventListener("change", () => { FREE_IDS.forEach(updateCard); updateBar(); });
+document.querySelector("[data-fold='open']").parentElement.addEventListener("click", e => {
+  const b = e.target.closest("[data-fold]"); if (!b) return;
+  document.querySelectorAll(".fam-panel").forEach(pn => { pn.classList.toggle("closed", b.dataset.fold === "close"); pn.querySelector(".fam-h").setAttribute("aria-expanded", b.dataset.fold === "open"); });
+});
+$("#free-fams").addEventListener("click", e => {
+  const h = e.target.closest(".fam-h");
+  if (h) { const pn = h.closest(".fam-panel"); const closed = pn.classList.toggle("closed"); h.setAttribute("aria-expanded", !closed); return; }
+  const card = e.target.closest(".pcard"); if (!card) return;
+  const id = card.dataset.p;
+  if (e.target.closest(".switch")) free[id].on = !free[id].on;
+  else if (e.target.closest("[data-w]")) { free[id].w = +e.target.closest("[data-w]").dataset.w; free[id].on = true; }
+  else return;
+  updateCard(id); updateBar();
+});
+$("#free-fams").addEventListener("input", e => {
+  const card = e.target.closest(".pcard"); if (!card) return;
+  const id = card.dataset.p, p = P[id], f = free[id], s = +e.target.value;
+  if (e.target.classList.contains("vs-min")) { const sm = Math.min(s, toS(p, f.max ?? p.hi)); f.min = sm <= 0 ? null : snap(p, toV(p, sm)); }
+  else if (e.target.classList.contains("vs-max")) { const sm = Math.max(s, toS(p, f.min ?? p.lo)); f.max = sm >= 1000 ? null : snap(p, toV(p, sm)); }
+  else if (e.target.classList.contains("vs-t")) f.t = snap(p, s / 1000 * (p.hi - p.lo) / 2);
+  f.on = true;
+  updateCard(id); updateBar();
 });
 $("#free-form").addEventListener("submit", e => {
   e.preventDefault();
-  const num = id => { const v = $(id).value; return v === "" ? null : +v; };
-  const crit = [], errs = [];
-  document.querySelectorAll("#free-rows tr").forEach(tr => {
-    const id = tr.dataset.p; if (!$(`#f-${id}-on`).checked) return;
-    const c = { p: id, min: num(`#f-${id}-min`), max: num(`#f-${id}-max`), t: num(`#f-${id}-t`) || 1, w: +$(`#f-${id}-w`).value };
-    if (c.min == null && c.max == null) errs.push(`${P[id].label} : indiquez un minimum ou un maximum.`);
-    else if (c.min != null && c.max != null && c.min > c.max) errs.push(`${P[id].label} : le minimum dépasse le maximum.`);
-    crit.push(c);
-  });
-  if (!crit.length) errs.unshift("Choisissez au moins un paramètre.");
-  $("#free-err").textContent = errs[0] || "";
-  if (errs.length) return;
+  const crit = freeCriteria();
+  const err = !crit.length ? "Activez au moins un paramètre."
+    : (crit.find(c => c.min == null && c.max == null) ? `${P[crit.find(c => c.min == null && c.max == null).p].label} : resserrez l'intervalle, il couvre toutes les valeurs.` : "");
+  $("#free-err").textContent = err;
+  if (err) return;
   state.custom = crit; state.ndvi = $("#ndvi-filter").checked; state.demo = "normal";
   startScenario(4);
 });
@@ -1079,7 +1242,7 @@ function show(v, sec) {
   $("#app").scrollTop = 0;
   if (v !== "carte") $("#sheet").hidden = true;
   if (v === "carte") { if (state.scen === 4 && !state.custom) state.scen = 1; renderMap(); setTimeout(() => map && map.invalidateSize(), 50); }
-  if (v === "criteres" && !$("#free-rows").children.length) { $("#prefill").value = "1"; renderFree(1); }
+  if (v === "criteres" && !$("#free-fams").children.length) { $("#prefill").value = state.custom ? "" : "1"; loadFree(state.custom ? null : 1); }
   if (sec) setTimeout(() => scrollToSec(sec), 60);
 }
 document.addEventListener("click", e => {
