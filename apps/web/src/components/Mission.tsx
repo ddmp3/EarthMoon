@@ -58,7 +58,7 @@ function CustomBuilder({ onRun, error }: { onRun: () => void; error: string | nu
                     key={parameter.id}
                     value={parameter.id}
                   >
-                    {parameter.labelEn}
+                    {parameter.label}
                   </option>
                 ))}
               </select>
@@ -111,7 +111,7 @@ interface Props {
   children: React.ReactNode
 }
 
-/** Écran de mission : bandeau, réglages, classement illustré, carte NASA, puis la fiche du site choisi. */
+/** Mission screen: banner, settings, illustrated ranking, NASA map, then the chosen site's card. */
 export function Mission({ mode, sites, selectedId, loading, error, builderError, manifest, onBack, onSelect, onRun, children }: Props) {
   const { t } = useT()
   const { bareSoilOnly, setBareSoilOnly, calibrationInstrument, setCalibrationInstrument } = useAppStore()

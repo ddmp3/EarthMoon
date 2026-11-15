@@ -21,7 +21,7 @@ def test_expected_by_mode():
 def test_check_mode_counts_only_expected_analogs():
     sites = [site("a", "validation", 90), site("c", "validation", 88), site("b", "candidate", 85),
              site("hot", "validation", 40, missing=2), site("neg", "negative", 0, excluded="vegetation")]
-    s = rk.check_mode(sites, expected={"a", "c"})      # « hot » n'est pas attendu dans ce mode : pas d'échec
+    s = rk.check_mode(sites, expected={"a", "c"})      # "hot" is not expected in this mode: no failure
     assert s["ranked"] == 4 and s["excluded"] == ["neg"] and s["negative_ok"]
     assert s["expected_met"] == ["a", "c"] and s["expected_missed"] == []
     assert s["top_candidates"][0] == ("b", "B", 85)

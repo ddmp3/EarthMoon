@@ -1,6 +1,6 @@
-# Test local complet (API + front) avant un déploiement Azure.
-#   docker compose up --build      puis ouvrir http://localhost:8080
-# L API interroge les vraies sources (NASA POWER, USGS, GVP) ; pente, rugosité et MODIS viennent de data/candidates-precomputed.json.
+# Full local test (API + front end) before an Azure deployment.
+#   docker compose up --build      then open http://localhost:8080
+# The API queries the real sources (NASA POWER, USGS, GVP); slope, roughness and MODIS come from data/candidates-precomputed.json.
 services:
   api:
     build:

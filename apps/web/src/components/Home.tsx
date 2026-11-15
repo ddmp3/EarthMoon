@@ -2,7 +2,7 @@ import { useT } from '../i18n'
 import { MISSION_ORDER, missionImage } from '../shared'
 import type { SelectedMode } from '../store'
 
-/** Accueil : photo d'Artemis II en plein cadre, puis les quatre missions en cartes. */
+/** Home: full-bleed Artemis II photo, then the four missions as cards. */
 export function Home({ onPick, siteCount }: { onPick: (mode: SelectedMode) => void; siteCount: number }) {
   const { t } = useT()
   const figures = [String(siteCount), '18', '8', '71,731']

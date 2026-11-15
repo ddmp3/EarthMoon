@@ -1,39 +1,356 @@
 [
-  {"id": "haughton", "name": "Cratère Haughton (île Devon, Nunavut)", "lat": 75.38, "lon": -89.67, "terrain": "impact", "role": "validation", "note": "Station HMP du réseau CARN de l'ASC (75°22'N, 89°41'W)", "known_for": ["robotics", "colony"], "known_for_note": "Haughton-Mars Project : essais de rovers et de sorties, station habitée", "name_en": "Haughton Crater (Devon Island, Nunavut)"},
-  {"id": "atacama", "name": "Désert d'Atacama (Chili)", "lat": -24.5, "lon": -69.25, "terrain": "desert", "role": "validation", "note": "Coordonnée des fixtures", "known_for": ["robotics", "calibration"], "known_for_note": "Essais NASA de rovers et de forage (ARADS)", "name_en": "Atacama Desert (Chile)"},
-  {"id": "dry-valleys", "name": "Vallées sèches de McMurdo, vallée Wright (Antarctique)", "lat": -77.52, "lon": 161.85, "terrain": "polar", "role": "validation", "known_for": ["calibration", "colony"], "known_for_note": "Désert froid : instruments, pergélisol et glace", "name_en": "McMurdo Dry Valleys, Wright Valley (Antarctica)"},
-  {"id": "mauna-kea", "name": "Mauna Kea, flancs supérieurs (Hawaï)", "lat": 19.8, "lon": -155.46, "terrain": "volcanic", "role": "validation", "note": "Site d'essais ISRU (PISCES)", "known_for": ["robotics"], "known_for_note": "PISCES : essais de rovers et d'ISRU", "name_en": "Mauna Kea, upper slopes (Hawaii)"},
-  {"id": "svalbard-bockfjorden", "name": "Bockfjorden, volcan Sverrefjellet (Svalbard)", "lat": 79.42, "lon": 13.35, "terrain": "polar", "role": "validation", "note": "Site des expéditions AMASE", "known_for": ["calibration"], "known_for_note": "AMASE : essais d'instruments", "name_en": "Bockfjorden, Sverrefjellet volcano (Svalbard)"},
-  {"id": "islande-holuhraun", "name": "Champ de lave d'Holuhraun (Islande)", "lat": 64.87, "lon": -16.83, "terrain": "volcanic", "role": "validation", "known_for": ["robotics"], "known_for_note": "NASA SAND-E : navigation de rovers sur coulée de lave", "name_en": "Holuhraun lava field (Iceland)"},
-  {"id": "death-valley", "name": "Bassin de Badwater, vallée de la Mort (Californie)", "lat": 36.25, "lon": -116.82, "terrain": "desert", "role": "validation", "note": "Cité dans l’énoncé du défi ; point sur le bassin salé (le premier point tombait sur l’oasis de Furnace Creek)", "known_for": [], "known_for_note": "Analogue de Mars cité dans l'énoncé ; aucun mode lunaire attendu", "name_en": "Badwater Basin, Death Valley (California)"},
-  {"id": "meteor-crater", "name": "Meteor Crater (Arizona)", "lat": 35.03, "lon": -111.02, "terrain": "impact", "role": "validation", "note": "Entraînement géologique des astronautes Apollo", "known_for": ["robotics"], "known_for_note": "Entraînement géologique de terrain des astronautes Apollo", "name_en": "Meteor Crater (Arizona)"},
-  {"id": "black-point", "name": "Coulée de Black Point (Arizona)", "lat": 35.69, "lon": -111.47, "terrain": "volcanic", "role": "validation", "note": "Essais NASA Desert RATS", "known_for": ["robotics"], "known_for_note": "NASA Desert RATS : essais de rovers et de sorties", "name_en": "Black Point Lava Flow (Arizona)"},
-  {"id": "amazonie", "name": "Amazonie (témoin négatif)", "lat": -3.47, "lon": -62.37, "terrain": "forest", "role": "negative", "name_en": "Amazon rainforest (negative control)"},
-  {"id": "mistastin", "name": "Structure d'impact de Mistastin, rive est (Labrador)", "lat": 55.88, "lon": -63.15, "terrain": "impact", "role": "candidate", "note": "Anorthosite : analogue des hautes terres du pôle Sud lunaire (vérification Wassim). Point à ~10 km à l'est du centre du lac, à valider", "name_en": "Mistastin impact structure, east shore (Labrador)"},
-  {"id": "tunnunik", "name": "Cratère Tunnunik (île Victoria, T.N.-O.)", "lat": 72.47, "lon": -113.97, "terrain": "impact", "role": "candidate", "note": "Programme SOAR de l'ASC (vérification Wassim)", "name_en": "Tunnunik Crater (Victoria Island, NWT)"},
-  {"id": "axel-heiberg", "name": "Station McGill, île Axel Heiberg (Nunavut)", "lat": 79.43, "lon": -90.77, "terrain": "polar", "role": "candidate", "note": "Réseau CARN de l'ASC (79°26'N, 90°46'W)", "name_en": "McGill Arctic Research Station, Axel Heiberg Island (Nunavut)"},
-  {"id": "pingualuit", "name": "Cratère des Pingualuit, rebord ouest (Nunavik, Québec)", "lat": 61.28, "lon": -73.69, "terrain": "impact", "role": "candidate", "note": "Point sur le rebord, à valider", "name_en": "Pingualuit Crater, west rim (Nunavik, Quebec)"},
-  {"id": "manicouagan", "name": "Île René-Levasseur, Manicouagan (Québec)", "lat": 51.4, "lon": -68.7, "terrain": "impact", "role": "candidate", "note": "Grand cratère d'impact ; forêt boréale probable (filtre NDVI)", "name_en": "René-Levasseur Island, Manicouagan (Quebec)"},
-  {"id": "peary-land", "name": "Terre de Peary (nord du Groenland)", "lat": 82.7, "lon": -31.0, "terrain": "polar", "role": "candidate", "note": "Désert polaire ; coordonnée approchée", "name_en": "Peary Land (North Greenland)"},
-  {"id": "popigai", "name": "Cratère de Popigaï (Sibérie)", "lat": 71.65, "lon": 111.18, "terrain": "impact", "role": "candidate", "name_en": "Popigai Crater (Siberia)"},
-  {"id": "elgygytgyn", "name": "Cratère d'El'gygytgyn, rebord est (Tchoukotka)", "lat": 67.5, "lon": 172.25, "terrain": "impact", "role": "candidate", "note": "Point à ~7 km à l'est du centre du lac, à valider", "name_en": "El'gygytgyn Crater, east rim (Chukotka)"},
-  {"id": "tolbachik", "name": "Tolbatchik (Kamtchatka)", "lat": 55.83, "lon": 160.33, "terrain": "volcanic", "role": "candidate", "note": "Essais du rover Lunokhod (années 1960-1970)", "name_en": "Tolbachik (Kamchatka)"},
-  {"id": "erebus", "name": "Mont Erebus, île de Ross (Antarctique)", "lat": -77.53, "lon": 167.15, "terrain": "volcanic", "role": "candidate", "name_en": "Mount Erebus, Ross Island (Antarctica)"},
-  {"id": "qaidam-lenghu", "name": "Yardangs de Lenghu, bassin du Qaidam (Chine)", "lat": 38.6, "lon": 93.2, "terrain": "desert", "role": "candidate", "note": "Coordonnée approchée", "name_en": "Lenghu yardangs, Qaidam Basin (China)"},
-  {"id": "changtang", "name": "Plateau du Changtang (Tibet)", "lat": 34.5, "lon": 85.0, "terrain": "plateau", "role": "candidate", "note": "Coordonnée approchée", "name_en": "Changtang Plateau (Tibet)"},
-  {"id": "gobi", "name": "Plaines de graviers du Gobi (Mongolie)", "lat": 42.5, "lon": 102.0, "terrain": "desert", "role": "candidate", "note": "Coordonnée approchée", "name_en": "Gobi gravel plains (Mongolia)"},
-  {"id": "uyuni", "name": "Salar d'Uyuni (Bolivie)", "lat": -20.13, "lon": -67.49, "terrain": "plateau", "role": "candidate", "name_en": "Salar de Uyuni (Bolivia)"},
-  {"id": "licancabur", "name": "Licancabur, Altiplano (Bolivie-Chili)", "lat": -22.83, "lon": -67.88, "terrain": "volcanic", "role": "candidate", "name_en": "Licancabur, Altiplano (Bolivia-Chile)"},
-  {"id": "payunia", "name": "Champ volcanique de la Payunia (Argentine)", "lat": -36.42, "lon": -69.24, "terrain": "volcanic", "role": "candidate", "name_en": "Payunia volcanic field (Argentina)"},
-  {"id": "namib-gobabeb", "name": "Plaines de graviers du Namib, Gobabeb (Namibie)", "lat": -23.56, "lon": 15.04, "terrain": "desert", "role": "candidate", "name_en": "Namib gravel plains, Gobabeb (Namibia)"},
-  {"id": "lut", "name": "Kaluts du désert de Lut (Iran)", "lat": 30.5, "lon": 59.0, "terrain": "desert", "role": "candidate", "note": "Coordonnée approchée", "name_en": "Lut Desert kaluts (Iran)"},
-  {"id": "dallol", "name": "Dallol, dépression du Danakil (Éthiopie)", "lat": 14.24, "lon": 40.3, "terrain": "volcanic", "role": "candidate", "name_en": "Dallol, Danakil Depression (Ethiopia)"},
-  {"id": "erta-ale", "name": "Erta Ale (Éthiopie)", "lat": 13.6, "lon": 40.67, "terrain": "volcanic", "role": "candidate", "name_en": "Erta Ale (Ethiopia)"},
-  {"id": "hoggar-atakor", "name": "Champ volcanique de l'Atakor, Hoggar (Algérie)", "lat": 23.3, "lon": 5.6, "terrain": "volcanic", "role": "candidate", "note": "Coordonnée approchée", "name_en": "Atakor volcanic field, Hoggar (Algeria)"},
-  {"id": "harrat-khaybar", "name": "Harrat Khaybar (Arabie saoudite)", "lat": 25.1, "lon": 39.92, "terrain": "volcanic", "role": "candidate", "note": "Tubes de lave ; coordonnée approchée", "name_en": "Harrat Khaybar (Saudi Arabia)"},
-  {"id": "aorounga", "name": "Cratère d'Aorounga (Tchad)", "lat": 19.1, "lon": 19.25, "terrain": "impact", "role": "candidate", "name_en": "Aorounga Crater (Chad)"},
-  {"id": "tenoumer", "name": "Cratère de Tenoumer (Mauritanie)", "lat": 22.92, "lon": -10.4, "terrain": "impact", "role": "candidate", "name_en": "Tenoumer Crater (Mauritania)"},
-  {"id": "wolfe-creek", "name": "Cratère de Wolfe Creek (Australie)", "lat": -19.17, "lon": 127.8, "terrain": "impact", "role": "candidate", "name_en": "Wolfe Creek Crater (Australia)"},
-  {"id": "gosses-bluff", "name": "Gosses Bluff (Australie)", "lat": -23.82, "lon": 132.31, "terrain": "impact", "role": "candidate", "name_en": "Gosses Bluff (Australia)"},
-  {"id": "craters-of-the-moon", "name": "Craters of the Moon (Idaho)", "lat": 43.42, "lon": -113.52, "terrain": "volcanic", "role": "candidate", "name_en": "Craters of the Moon (Idaho)"}
+  {
+    "id": "haughton",
+    "name": "Haughton Crater (Devon Island, Nunavut)",
+    "lat": 75.38,
+    "lon": -89.67,
+    "terrain": "impact",
+    "role": "validation",
+    "note": "CSA analog network (CARN) HMP station (75°22'N, 89°41'W)",
+    "known_for": [
+      "robotics",
+      "colony"
+    ],
+    "known_for_note": "Haughton-Mars Project: rover and spacewalk tests, inhabited station"
+  },
+  {
+    "id": "atacama",
+    "name": "Atacama Desert (Chile)",
+    "lat": -24.5,
+    "lon": -69.25,
+    "terrain": "desert",
+    "role": "validation",
+    "note": "Fixture coordinate",
+    "known_for": [
+      "robotics",
+      "calibration"
+    ],
+    "known_for_note": "NASA rover and drilling tests (ARADS)"
+  },
+  {
+    "id": "dry-valleys",
+    "name": "McMurdo Dry Valleys, Wright Valley (Antarctica)",
+    "lat": -77.52,
+    "lon": 161.85,
+    "terrain": "polar",
+    "role": "validation",
+    "known_for": [
+      "calibration",
+      "colony"
+    ],
+    "known_for_note": "Cold desert: instruments, permafrost and ice"
+  },
+  {
+    "id": "mauna-kea",
+    "name": "Mauna Kea, upper slopes (Hawaii)",
+    "lat": 19.8,
+    "lon": -155.46,
+    "terrain": "volcanic",
+    "role": "validation",
+    "note": "ISRU test site (PISCES)",
+    "known_for": [
+      "robotics"
+    ],
+    "known_for_note": "PISCES: rover and ISRU tests"
+  },
+  {
+    "id": "svalbard-bockfjorden",
+    "name": "Bockfjorden, Sverrefjellet volcano (Svalbard)",
+    "lat": 79.42,
+    "lon": 13.35,
+    "terrain": "polar",
+    "role": "validation",
+    "note": "AMASE expedition site",
+    "known_for": [
+      "calibration"
+    ],
+    "known_for_note": "AMASE: instrument tests"
+  },
+  {
+    "id": "iceland-holuhraun",
+    "name": "Holuhraun lava field (Iceland)",
+    "lat": 64.87,
+    "lon": -16.83,
+    "terrain": "volcanic",
+    "role": "validation",
+    "known_for": [
+      "robotics"
+    ],
+    "known_for_note": "NASA SAND-E: rover navigation on a lava flow"
+  },
+  {
+    "id": "death-valley",
+    "name": "Badwater Basin, Death Valley (California)",
+    "lat": 36.25,
+    "lon": -116.82,
+    "terrain": "desert",
+    "role": "validation",
+    "note": "Named in the challenge statement; point on the salt flat (the first point fell on the Furnace Creek oasis)",
+    "known_for": [],
+    "known_for_note": "Mars analog named in the challenge statement; no lunar mode expected"
+  },
+  {
+    "id": "meteor-crater",
+    "name": "Meteor Crater (Arizona)",
+    "lat": 35.03,
+    "lon": -111.02,
+    "terrain": "impact",
+    "role": "validation",
+    "note": "Apollo astronaut geology training",
+    "known_for": [
+      "robotics"
+    ],
+    "known_for_note": "Apollo astronaut field geology training"
+  },
+  {
+    "id": "black-point",
+    "name": "Black Point Lava Flow (Arizona)",
+    "lat": 35.69,
+    "lon": -111.47,
+    "terrain": "volcanic",
+    "role": "validation",
+    "note": "NASA Desert RATS tests",
+    "known_for": [
+      "robotics"
+    ],
+    "known_for_note": "NASA Desert RATS: rover and spacewalk tests"
+  },
+  {
+    "id": "amazon",
+    "name": "Amazon rainforest (negative control)",
+    "lat": -3.47,
+    "lon": -62.37,
+    "terrain": "forest",
+    "role": "negative"
+  },
+  {
+    "id": "mistastin",
+    "name": "Mistastin impact structure, east shore (Labrador)",
+    "lat": 55.88,
+    "lon": -63.15,
+    "terrain": "impact",
+    "role": "candidate",
+    "note": "Anorthosite: analog of the lunar south pole highlands (team fact-check). Point ~10 km east of the lake center, to be validated"
+  },
+  {
+    "id": "tunnunik",
+    "name": "Tunnunik Crater (Victoria Island, NWT)",
+    "lat": 72.47,
+    "lon": -113.97,
+    "terrain": "impact",
+    "role": "candidate",
+    "note": "CSA SOAR program (team fact-check)"
+  },
+  {
+    "id": "axel-heiberg",
+    "name": "McGill Arctic Research Station, Axel Heiberg Island (Nunavut)",
+    "lat": 79.43,
+    "lon": -90.77,
+    "terrain": "polar",
+    "role": "candidate",
+    "note": "CSA CARN network (79°26'N, 90°46'W)"
+  },
+  {
+    "id": "pingualuit",
+    "name": "Pingualuit Crater, west rim (Nunavik, Quebec)",
+    "lat": 61.28,
+    "lon": -73.69,
+    "terrain": "impact",
+    "role": "candidate",
+    "note": "Point on the rim, to be validated"
+  },
+  {
+    "id": "manicouagan",
+    "name": "René-Levasseur Island, Manicouagan (Quebec)",
+    "lat": 51.4,
+    "lon": -68.7,
+    "terrain": "impact",
+    "role": "candidate",
+    "note": "Large impact crater; boreal forest likely (NDVI filter)"
+  },
+  {
+    "id": "peary-land",
+    "name": "Peary Land (North Greenland)",
+    "lat": 82.7,
+    "lon": -31.0,
+    "terrain": "polar",
+    "role": "candidate",
+    "note": "Polar desert; approximate coordinate"
+  },
+  {
+    "id": "popigai",
+    "name": "Popigai Crater (Siberia)",
+    "lat": 71.65,
+    "lon": 111.18,
+    "terrain": "impact",
+    "role": "candidate"
+  },
+  {
+    "id": "elgygytgyn",
+    "name": "El'gygytgyn Crater, east rim (Chukotka)",
+    "lat": 67.5,
+    "lon": 172.25,
+    "terrain": "impact",
+    "role": "candidate",
+    "note": "Point ~7 km east of the lake center, to be validated"
+  },
+  {
+    "id": "tolbachik",
+    "name": "Tolbachik (Kamchatka)",
+    "lat": 55.83,
+    "lon": 160.33,
+    "terrain": "volcanic",
+    "role": "candidate",
+    "note": "Lunokhod rover tests (1960s-1970s)"
+  },
+  {
+    "id": "erebus",
+    "name": "Mount Erebus, Ross Island (Antarctica)",
+    "lat": -77.53,
+    "lon": 167.15,
+    "terrain": "volcanic",
+    "role": "candidate"
+  },
+  {
+    "id": "qaidam-lenghu",
+    "name": "Lenghu yardangs, Qaidam Basin (China)",
+    "lat": 38.6,
+    "lon": 93.2,
+    "terrain": "desert",
+    "role": "candidate",
+    "note": "Approximate coordinate"
+  },
+  {
+    "id": "changtang",
+    "name": "Changtang Plateau (Tibet)",
+    "lat": 34.5,
+    "lon": 85.0,
+    "terrain": "plateau",
+    "role": "candidate",
+    "note": "Approximate coordinate"
+  },
+  {
+    "id": "gobi",
+    "name": "Gobi gravel plains (Mongolia)",
+    "lat": 42.5,
+    "lon": 102.0,
+    "terrain": "desert",
+    "role": "candidate",
+    "note": "Approximate coordinate"
+  },
+  {
+    "id": "uyuni",
+    "name": "Salar de Uyuni (Bolivia)",
+    "lat": -20.13,
+    "lon": -67.49,
+    "terrain": "plateau",
+    "role": "candidate"
+  },
+  {
+    "id": "licancabur",
+    "name": "Licancabur, Altiplano (Bolivia-Chile)",
+    "lat": -22.83,
+    "lon": -67.88,
+    "terrain": "volcanic",
+    "role": "candidate"
+  },
+  {
+    "id": "payunia",
+    "name": "Payunia volcanic field (Argentina)",
+    "lat": -36.42,
+    "lon": -69.24,
+    "terrain": "volcanic",
+    "role": "candidate"
+  },
+  {
+    "id": "namib-gobabeb",
+    "name": "Namib gravel plains, Gobabeb (Namibia)",
+    "lat": -23.56,
+    "lon": 15.04,
+    "terrain": "desert",
+    "role": "candidate"
+  },
+  {
+    "id": "lut",
+    "name": "Lut Desert kaluts (Iran)",
+    "lat": 30.5,
+    "lon": 59.0,
+    "terrain": "desert",
+    "role": "candidate",
+    "note": "Approximate coordinate"
+  },
+  {
+    "id": "dallol",
+    "name": "Dallol, Danakil Depression (Ethiopia)",
+    "lat": 14.24,
+    "lon": 40.3,
+    "terrain": "volcanic",
+    "role": "candidate"
+  },
+  {
+    "id": "erta-ale",
+    "name": "Erta Ale (Ethiopia)",
+    "lat": 13.6,
+    "lon": 40.67,
+    "terrain": "volcanic",
+    "role": "candidate"
+  },
+  {
+    "id": "hoggar-atakor",
+    "name": "Atakor volcanic field, Hoggar (Algeria)",
+    "lat": 23.3,
+    "lon": 5.6,
+    "terrain": "volcanic",
+    "role": "candidate",
+    "note": "Approximate coordinate"
+  },
+  {
+    "id": "harrat-khaybar",
+    "name": "Harrat Khaybar (Saudi Arabia)",
+    "lat": 25.1,
+    "lon": 39.92,
+    "terrain": "volcanic",
+    "role": "candidate",
+    "note": "Lava tubes; approximate coordinate"
+  },
+  {
+    "id": "aorounga",
+    "name": "Aorounga Crater (Chad)",
+    "lat": 19.1,
+    "lon": 19.25,
+    "terrain": "impact",
+    "role": "candidate"
+  },
+  {
+    "id": "tenoumer",
+    "name": "Tenoumer Crater (Mauritania)",
+    "lat": 22.92,
+    "lon": -10.4,
+    "terrain": "impact",
+    "role": "candidate"
+  },
+  {
+    "id": "wolfe-creek",
+    "name": "Wolfe Creek Crater (Australia)",
+    "lat": -19.17,
+    "lon": 127.8,
+    "terrain": "impact",
+    "role": "candidate"
+  },
+  {
+    "id": "gosses-bluff",
+    "name": "Gosses Bluff (Australia)",
+    "lat": -23.82,
+    "lon": 132.31,
+    "terrain": "impact",
+    "role": "candidate"
+  },
+  {
+    "id": "craters-of-the-moon",
+    "name": "Craters of the Moon (Idaho)",
+    "lat": 43.42,
+    "lon": -113.52,
+    "terrain": "volcanic",
+    "role": "candidate"
+  }
 ]

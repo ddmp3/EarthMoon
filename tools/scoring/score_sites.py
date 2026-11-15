@@ -1,4 +1,4 @@
-"""Reference scorer in Python for the team contract (docs/contrats.md section 4-5, docs/scenarios.md).
+"""Reference scorer in Python for the team contract (docs/scenarios.md and apps/api/openapi.yaml).
 
 Compares each Earth site with the lunar criteria of a mode and returns the same shape as POST /api/analyze:
     {"mode": ..., "sites": [{id, name, lat, lon, role, total, criteria: [{param, value, score, verdict}]}]}

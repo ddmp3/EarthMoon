@@ -11,7 +11,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Sonde de santé (Azure Container Apps) */
+        /** Health probe (Azure Container Apps) */
         get: {
             parameters: {
                 query?: never;
@@ -21,7 +21,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description L'API répond */
+                /** @description The API is up */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -51,8 +51,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Modes 1 à 3 et leurs critères prédéfinis
-         * @description Le mode 4 (critères libres) n'a pas de présélection : il s'utilise avec `criteria` sur `POST /api/analyze`.
+         * Modes 1 to 3 and their predefined criteria
+         * @description Mode 4 (free criteria) has no preset: use `criteria` on `POST /api/analyze`.
          */
         get: {
             parameters: {
@@ -63,7 +63,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Liste des modes */
+                /** @description List of modes */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -91,7 +91,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Catalogue des paramètres (mode 4) */
+        /** Parameter catalog (mode 4) */
         get: {
             parameters: {
                 query?: never;
@@ -101,7 +101,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Paramètres disponibles */
+                /** @description Available parameters */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -130,8 +130,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Sources de données citées par l’application
-         * @description Toutes les sources (Terre et Lune), avec l’organisme, l’adresse et la mention à reproduire. `valueSources` de `GET /api/sites/{id}` renvoie l’`id` de ces sources.
+         * Data sources cited by the application
+         * @description All sources (Earth and Moon), with provider, URL and the attribution to reproduce. `valueSources` of `GET /api/sites/{id}` returns the `id` of these sources.
          */
         get: {
             parameters: {
@@ -142,7 +142,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Catalogue des sources */
+                /** @description Source catalog */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -171,8 +171,8 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Profil de référence lunaire (data/reference/moon-south-pole.json)
-         * @description Affiché dans la fiche d'un site pour comparer avec les valeurs terrestres. Le score, lui, utilise les critères des modes.
+         * Lunar reference profile (data/reference/moon-south-pole.json)
+         * @description Shown on a site card to compare with Earth values. The score itself uses the mode criteria.
          */
         get: {
             parameters: {
@@ -183,7 +183,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Profil lunaire (paramètres avec intervalle, unité et source) */
+                /** @description Lunar profile (parameters with range, unit and source) */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -223,10 +223,10 @@ export interface paths {
         get?: never;
         put?: never;
         /**
-         * Classer les sites candidats pour un mode ou des critères libres
-         * @description Envoyer soit `mode` (modes 1 à 3), soit `criteria` (mode 4), jamais les deux.
-         *     Le filtre « sol nu » (NDVI ≤ 0,2) est actif par défaut : un site végétalisé garde `total` 0, porte
-         *     `excluded: "vegetation"` et passe à la fin de la liste. Les autres sites sont triés par `total` décroissant.
+         * Rank the candidate sites for a mode or for free criteria
+         * @description Send either `mode` (modes 1 to 3) or `criteria` (mode 4), never both.
+         *     The "bare soil" filter (NDVI ≤ 0.2) is on by default: a vegetated site keeps `total` 0, carries
+         *     `excluded: "vegetation"` and goes to the end of the list. The other sites are sorted by descending `total`.
          */
         post: {
             parameters: {
@@ -241,7 +241,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description Sites classés */
+                /** @description Ranked sites */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -253,7 +253,7 @@ export interface paths {
                          *       "sites": [
                          *         {
                          *           "id": "haughton",
-                         *           "name": "Cratère Haughton (île Devon)",
+                         *           "name": "Haughton Crater (Devon Island, Nunavut)",
                          *           "lat": 75.38,
                          *           "lon": -89.67,
                          *           "role": "validation",
@@ -285,7 +285,7 @@ export interface paths {
                         "application/json": components["schemas"]["AnalyzeResponse"];
                     };
                 };
-                /** @description Requête invalide (mode inconnu, critère mal formé, corps JSON illisible…) */
+                /** @description Invalid request (unknown mode, malformed criterion, unreadable JSON body…) */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -303,7 +303,7 @@ export interface paths {
                         "application/json": components["schemas"]["Error"];
                     };
                 };
-                /** @description Trop de requêtes */
+                /** @description Too many requests */
                 429: {
                     headers: {
                         [name: string]: unknown;
@@ -337,13 +337,13 @@ export interface paths {
             cookie?: never;
         };
         /**
-         * Fiche détaillée d'un site
-         * @description Même objet que dans `POST /api/analyze`, plus toutes les valeurs brutes (`values`) et les sources interrogées.
+         * Detailed site card
+         * @description Same object as in `POST /api/analyze`, plus all raw values (`values`) and the sources queried.
          */
         get: {
             parameters: {
                 query?: {
-                    /** @description Mode utilisé pour calculer le score affiché (défaut `robotics`). */
+                    /** @description Mode used to compute the displayed score (default `robotics`). */
                     mode?: components["schemas"]["ModeId"];
                 };
                 header?: never;
@@ -354,7 +354,7 @@ export interface paths {
             };
             requestBody?: never;
             responses: {
-                /** @description Fiche du site */
+                /** @description Site card */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -363,7 +363,7 @@ export interface paths {
                         "application/json": components["schemas"]["SiteDetail"];
                     };
                 };
-                /** @description Mode inconnu */
+                /** @description Unknown mode */
                 400: {
                     headers: {
                         [name: string]: unknown;
@@ -372,7 +372,7 @@ export interface paths {
                         "application/json": components["schemas"]["Error"];
                     };
                 };
-                /** @description Site inconnu */
+                /** @description Unknown site */
                 404: {
                     headers: {
                         [name: string]: unknown;
@@ -400,18 +400,18 @@ export interface components {
         /** @enum {string} */
         ModeId: "robotics" | "calibration" | "colony";
         /**
-         * @description match : score ≥ 0,7 · partial : 0,4 à 0,7 · mismatch : < 0,4 · missing : valeur absente
+         * @description match: score ≥ 0.7 · partial: 0.4 to 0.7 · mismatch: < 0.4 · missing: no value
          * @enum {string}
          */
         Verdict: "match" | "partial" | "mismatch" | "missing";
-        /** @description Intervalle cible [min, max] ; score 1 dedans, décroissance linéaire jusqu'à 0 à `tolerance` de distance. */
+        /** @description Target interval [min, max]; score 1 inside, linear decrease to 0 at `tolerance` distance. */
         Criterion: {
             param: components["schemas"]["ParamId"];
             min?: number;
             max?: number;
             tolerance: number;
             weight: number;
-            /** @description Instrument (mode 2) ou besoin (mode 3), pour filtrer et grouper dans l'interface. */
+            /** @description Instrument (mode 2) or need (mode 3), to filter and group in the interface. */
             group?: string;
         };
         CriterionScore: {
@@ -438,10 +438,10 @@ export interface components {
         /** @description Soit `mode`, soit `criteria`. */
         AnalyzeRequest: {
             mode?: components["schemas"]["ModeId"];
-            /** @description Mode 4 : un paramètre au plus une fois ; chaque critère a min, max ou les deux. */
+            /** @description Mode 4: each parameter at most once; each criterion has min, max or both. */
             criteria?: components["schemas"]["Criterion"][];
             /**
-             * @description Filtre « sol nu » (NDVI ≤ 0,2). Désactivable en mode 4.
+             * @description Bare-soil filter (NDVI ≤ 0.2). Can be disabled in mode 4.
              * @default true
              */
             bareSoilOnly: boolean;
@@ -449,17 +449,15 @@ export interface components {
         AnalyzedSite: {
             id: string;
             name: string;
-            /** @description Nom anglais du site, quand il existe. */
-            nameEn?: string;
             lat: number;
             lon: number;
             /** @enum {string} */
             role: "validation" | "negative" | "candidate";
-            /** @description Score global sur 100 */
+            /** @description Overall score out of 100 */
             total: number;
             criteria: components["schemas"]["CriterionScore"][];
             /**
-             * @description Présent si le filtre « sol nu » écarte le site (total forcé à 0).
+             * @description Present if the bare-soil filter excludes the site (total forced to 0).
              * @enum {string}
              */
             excluded?: "vegetation";
@@ -472,16 +470,16 @@ export interface components {
         SiteDetail: components["schemas"]["AnalyzedSite"] & {
             terrain?: string;
             mode: components["schemas"]["ModeId"];
-            /** @description Valeurs brutes de tous les paramètres disponibles (null = source indisponible). */
+            /** @description Raw values of all available parameters (null = source unavailable). */
             values: {
                 [key: string]: number | null;
             };
             sources: string[];
-            /** @description Source de chaque valeur connue : id du catalogue `GET /api/sources` (ou `fixtures` en mode données d’exemple). */
+            /** @description Source of each known value: catalog id from `GET /api/sources` (or `fixtures` in sample-data mode). */
             valueSources: {
                 [key: string]: string;
             };
-            /** @description Référence lunaire (data/reference/moon-south-pole.json) de chaque paramètre sourcé, quel que soit le mode. Un paramètre sans référence est absent. */
+            /** @description Lunar reference (data/reference/moon-south-pole.json) of each sourced parameter, whatever the mode. A parameter without a reference is absent. */
             moon: {
                 [key: string]: components["schemas"]["MoonValue"];
             };
@@ -502,8 +500,6 @@ export interface components {
             body: "earth" | "moon";
             params: components["schemas"]["ParamId"][];
             terms: string;
-            termsEn?: string;
-            nameEn?: string;
         };
         Error: {
             error: string;

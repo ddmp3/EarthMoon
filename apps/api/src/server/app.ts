@@ -12,13 +12,13 @@ import { SOURCES, valueSources } from "../sources/catalog.js";
 import { PARAMETERS } from "./parameters.js";
 
 export type AppDeps = AnalyzeDeps & {
-  /** Noms des sources branchées, renvoyés par GET /api/sites/{id}. */
+  /** Names of the connected sources, returned by GET /api/sites/{id}. */
   sourceNames: string[];
-  /** Vrai si les valeurs viennent des données d'exemple (USE_FIXTURES) : les sources par valeur le disent. */
+  /** True if values come from the sample data (USE_FIXTURES): the per-value sources say so. */
   useFixtures?: boolean;
-  /** Contrat OpenAPI déjà parsé (servi sur /api/docs et /api/openapi.json). */
+  /** Parsed OpenAPI contract (served on /api/docs and /api/openapi.json). */
   openapi: Record<string, unknown>;
-  /** data/reference/moon-south-pole.json, si présent. */
+  /** data/reference/moon-south-pole.json, if present. */
   moonReference?: unknown;
   allowedOrigins?: string[];
   rateLimitPerMinute?: number;
@@ -30,7 +30,7 @@ export function createApp(deps: AppDeps): express.Express {
   const allowed = deps.allowedOrigins ?? [];
   const app = express();
   app.disable("x-powered-by");
-  app.set("trust proxy", 1); // Azure Container Apps : l'IP du client est dans X-Forwarded-For
+  app.set("trust proxy", 1); // Azure Container Apps: the client IP is in X-Forwarded-For
 
   app.use((_req, res, next) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
@@ -44,7 +44,7 @@ export function createApp(deps: AppDeps): express.Express {
     }),
   );
 
-  // Sonde de santé et documentation : avant la limitation de débit (les sondes Azure sont fréquentes).
+  // Health probe and docs: before the rate limiter (Azure probes are frequent).
   app.get("/api/health", (_req, res) => {
     res.json({ status: "ok" });
   });
@@ -60,7 +60,7 @@ export function createApp(deps: AppDeps): express.Express {
       limit: deps.rateLimitPerMinute ?? 120,
       standardHeaders: "draft-7",
       legacyHeaders: false,
-      message: { error: "Trop de requêtes, réessayez dans une minute" },
+      message: { error: "Too many requests, try again in a minute" },
     }),
   );
   app.use(express.json({ limit: "50kb" }));
@@ -79,7 +79,7 @@ export function createApp(deps: AppDeps): express.Express {
 
   app.get("/api/reference/moon", (_req, res) => {
     if (deps.moonReference === undefined) {
-      res.status(404).json({ error: "Profil lunaire de référence indisponible" });
+      res.status(404).json({ error: "Lunar reference profile unavailable" });
       return;
     }
     res.json(deps.moonReference);
@@ -93,20 +93,20 @@ export function createApp(deps: AppDeps): express.Express {
         res.status(400).json({ error: error.message });
         return;
       }
-      log("POST /api/analyze a échoué", error);
-      res.status(500).json({ error: "Erreur interne" });
+      log("POST /api/analyze failed", error);
+      res.status(500).json({ error: "Internal error" });
     }
   });
 
   app.get("/api/sites/:id", async (req, res) => {
     const site = deps.sites.find((s) => s.id === req.params.id);
     if (!site) {
-      res.status(404).json({ error: `Site inconnu : ${req.params.id}` });
+      res.status(404).json({ error: `Unknown site: ${req.params.id}` });
       return;
     }
     const mode = typeof req.query.mode === "string" ? req.query.mode : "robotics";
     if (!isModeId(mode)) {
-      res.status(400).json({ error: `Mode inconnu : ${mode}` });
+      res.status(400).json({ error: `Unknown mode: ${mode}` });
       return;
     }
     try {
@@ -116,7 +116,6 @@ export function createApp(deps: AppDeps): express.Express {
       res.json({
         id: site.id,
         name: site.name,
-        ...(site.nameEn ? { nameEn: site.nameEn } : {}),
         lat: site.lat,
         lon: site.lon,
         role: site.role,
@@ -131,32 +130,32 @@ export function createApp(deps: AppDeps): express.Express {
         moon: moonValues(deps.moonReference, PARAM_IDS),
       });
     } catch (error) {
-      log(`GET /api/sites/${site.id} a échoué`, error);
-      res.status(500).json({ error: "Erreur interne" });
+      log(`GET /api/sites/${site.id} failed`, error);
+      res.status(500).json({ error: "Internal error" });
     }
   });
 
   app.use("/api", (_req, res) => {
-    res.status(404).json({ error: "Route inconnue" });
+    res.status(404).json({ error: "Unknown route" });
   });
 
-  // Corps JSON invalide ou trop gros : erreur du client, pas du serveur.
+  // Invalid or oversized JSON body: client error, not a server error.
   app.use((error: unknown, _req: Request, res: Response, next: NextFunction) => {
     const type = (error as { type?: string } | null)?.type;
     if (type === "entity.parse.failed") {
-      res.status(400).json({ error: "Corps JSON invalide" });
+      res.status(400).json({ error: "Invalid JSON body" });
       return;
     }
     if (type === "entity.too.large") {
-      res.status(413).json({ error: "Corps trop volumineux" });
+      res.status(413).json({ error: "Body too large" });
       return;
     }
-    log("Erreur non gérée", error);
+    log("Unhandled error", error);
     if (res.headersSent) {
       next(error);
       return;
     }
-    res.status(500).json({ error: "Erreur interne" });
+    res.status(500).json({ error: "Internal error" });
   });
 
   return app;

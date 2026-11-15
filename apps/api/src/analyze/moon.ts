@@ -1,7 +1,7 @@
 import { PARAM_IDS } from "../scoring/index.js";
 import type { ParamId } from "../scoring/index.js";
 
-/** Valeur lunaire de référence d'un paramètre (data/reference/moon-south-pole.json, docs/contrats.md §2). */
+/** Lunar reference value of a parameter (data/reference/moon-south-pole.json). */
 export type MoonValue = { min?: number; max?: number; unit?: string; source?: string };
 
 const isObject = (v: unknown): v is Record<string, unknown> => typeof v === "object" && v !== null && !Array.isArray(v);
@@ -9,8 +9,8 @@ const num = (v: unknown): number | undefined => (typeof v === "number" && Number
 const str = (v: unknown): string | undefined => (typeof v === "string" ? v : undefined);
 
 /**
- * Valeurs lunaires des paramètres demandés, pour les afficher à côté des valeurs terrestres.
- * Un paramètre sans référence lunaire sourcée est absent (jamais inventé).
+ * Lunar values of the requested parameters, to show next to the Earth values.
+ * A parameter without a sourced lunar reference is absent (never invented).
  */
 export function moonValues(reference: unknown, params: readonly ParamId[]): Partial<Record<ParamId, MoonValue>> {
   const table = isObject(reference) && isObject(reference.params) ? reference.params : {};

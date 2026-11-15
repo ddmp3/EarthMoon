@@ -3,11 +3,11 @@ import { fetchJson } from "./http.js";
 import type { FetchJsonOptions } from "./http.js";
 
 /**
- * Smithsonian Global Volcanism Program (GVP), volcans holocènes, service WFS en GeoJSON (aucun compte requis).
- * La liste (~1 300 volcans) est téléchargée une fois puis gardée en mémoire ; la distance au plus proche est calculée
- * localement (formule de haversine). URL remplaçable par la variable d'environnement GVP_WFS_URL.
- * `srsName=EPSG:4326` (forme courte) demande l'ordre longitude, latitude ; on lit d'abord les attributs
- * Latitude / Longitude quand ils existent, ce qui évite toute ambiguïté d'axes.
+ * Smithsonian Global Volcanism Program (GVP), Holocene volcanoes, WFS service returning GeoJSON (no account required).
+ * The list (~1,300 volcanoes) is downloaded once and kept in memory; the distance to the nearest one is computed
+ * locally (haversine formula). URL overridable with the GVP_WFS_URL environment variable.
+ * `srsName=EPSG:4326` (short form) asks for longitude, latitude order; we read the Latitude / Longitude
+ * attributes first when they exist, which avoids any axis ambiguity.
  */
 export const GVP_WFS_URL =
   "https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows?service=WFS&version=2.0.0&request=GetFeature" +
@@ -29,10 +29,10 @@ export function haversineKm(lat1: number, lon1: number, lat2: number, lon2: numb
   return 2 * EARTH_RADIUS_KM * Math.asin(Math.min(1, Math.sqrt(a)));
 }
 
-/** GeoJSON FeatureCollection du WFS -> liste de volcans. Lance une erreur si rien d'exploitable. */
+/** WFS GeoJSON FeatureCollection -> list of volcanoes. Throws if nothing usable. */
 export function parseVolcanoes(body: unknown): Volcano[] {
   const features = (body as { type?: string; features?: unknown } | null)?.features;
-  if (!Array.isArray(features)) throw new Error("Réponse GVP inattendue (pas de FeatureCollection)");
+  if (!Array.isArray(features)) throw new Error("Unexpected GVP response (no FeatureCollection)");
   const out: Volcano[] = [];
   for (const f of features) {
     const props = ((f as { properties?: Record<string, unknown> } | null)?.properties ?? {}) as Record<string, unknown>;
@@ -46,7 +46,7 @@ export function parseVolcanoes(body: unknown): Volcano[] {
     const name = typeof props.Volcano_Name === "string" ? props.Volcano_Name : undefined;
     out.push(name ? { lat, lon, name } : { lat, lon });
   }
-  if (out.length === 0) throw new Error("Réponse GVP sans volcan exploitable");
+  if (out.length === 0) throw new Error("GVP response without any usable volcano");
   return out;
 }
 
@@ -59,8 +59,8 @@ export function nearestVolcanoKm(volcanoes: Volcano[], lat: number, lon: number)
 export type GvpOptions = FetchJsonOptions & { url?: string; ttlMs?: number; now?: () => number };
 
 /**
- * Connecteur volcano_distance (km). La liste est chargée au premier appel, partagée entre les appels simultanés
- * et rechargée après `ttlMs` (24 h par défaut). Un échec de chargement n'est pas mémorisé : l'appel suivant réessaie.
+ * volcano_distance connector (km). The list is loaded on the first call, shared between concurrent calls
+ * and reloaded after `ttlMs` (24 h by default). A load failure is not remembered: the next call retries.
  */
 export function createGvpConnector(options: GvpOptions = {}): Connector {
   const { url = process.env.GVP_WFS_URL ?? GVP_WFS_URL, ttlMs = 24 * 60 * 60 * 1000, now = Date.now, ...fetchOptions } = options;

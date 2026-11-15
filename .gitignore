@@ -15,7 +15,7 @@ node_modules/
 dist/
 coverage/
 
-# OS / éditeurs
+# OS / editors
 .DS_Store
 .vscode/
 .idea/

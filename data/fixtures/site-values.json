@@ -1,9 +1,9 @@
 {
-  "note": "Données d'exemple pour développer sans l'API (voir docs/contrats.md). Seules les valeurs NASA POWER et USGS de Haughton sont réelles (relevées le 2026-11-14) ; toutes les autres sont fictives.",
+  "note": "Sample data to develop without the API. Only the NASA POWER and USGS values of Haughton are real (recorded 2026-11-14); all others are fictional.",
   "sites": [
     {
       "id": "haughton",
-      "name": "Cratère Haughton (île Devon)",
+      "name": "Haughton Crater (Devon Island, Nunavut)",
       "lat": 75.38,
       "lon": -89.67,
       "terrain": "impact",
@@ -31,7 +31,7 @@
     },
     {
       "id": "atacama",
-      "name": "Désert d'Atacama",
+      "name": "Atacama Desert (Chile)",
       "lat": -24.5,
       "lon": -69.25,
       "terrain": "desert",
@@ -58,8 +58,8 @@
       }
     },
     {
-      "id": "amazonie",
-      "name": "Amazonie (témoin négatif)",
+      "id": "amazon",
+      "name": "Amazon rainforest (negative control)",
       "lat": -3.47,
       "lon": -62.37,
       "terrain": "forest",

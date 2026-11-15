@@ -1,18 +1,18 @@
-"""Vérifie les classements réels de l'API contre le classement attendu (docs/validation-classements.md).
+"""Checks the real API rankings against the expected ranking (docs/validation.md).
 
-Classement attendu (tâche « classement attendu par mode ») : chaque analogue connu (role = validation) porte dans
-data/candidates.json le champ known_for, les modes pour lesquels il est réellement utilisé (Desert RATS, PISCES, AMASE…).
-Un analogue n'a pas à bien sortir dans les autres modes : un désert chaud n'est pas un bon analogue de colonie polaire.
+Expected ranking: each known analog (role = validation) carries in data/candidates.json a known_for field,
+the modes it is really used for (Desert RATS, PISCES, AMASE...). An analog need not rank well in the other modes:
+a hot desert is not a good analog for a polar colony.
 
-Critères :
-  1. chaque analogue connu sort dans la moitié haute des modes de son known_for (au moins 75 % des attentes tenues) ;
-  2. le témoin négatif (role = negative) sort dernier ou est écarté par le filtre « sol nu » dans tous les modes ;
-  3. les meilleurs sites peu étudiés (role = candidate) sont listés comme découvertes possibles.
+Criteria:
+  1. each known analog ranks in the top half of the modes in its known_for (at least 75% of expectations met);
+  2. the negative control (role = negative) ranks last or is excluded by the bare-soil filter in every mode;
+  3. the best understudied sites (role = candidate) are listed as possible discoveries.
 
-Usage (API lancée, par exemple avec docker compose up) :
+Usage (API running, e.g. with docker compose up):
     python tools/validation/rankings.py
-    python tools/validation/rankings.py --api http://localhost:3001 --markdown docs/validation-classements.md
-Sortie : code 0 si les critères sont tenus, 1 sinon. Bibliothèque standard uniquement.
+    python tools/validation/rankings.py --api http://localhost:3001 --markdown docs/validation.md
+Exit code: 0 if the criteria are met, 1 otherwise. Standard library only.
 """
 from __future__ import annotations
 import argparse
@@ -35,7 +35,7 @@ def fetch_ranking(api: str, mode: str) -> list[dict]:
 
 
 def expected_by_mode(candidates: list[dict]) -> dict[str, set[str]]:
-    """Mode -> ids des analogues connus attendus dans la moitié haute (champ known_for)."""
+    """Mode -> ids of the known analogs expected in the top half (known_for field)."""
     out: dict[str, set[str]] = {m: set() for m in MODES}
     for s in candidates:
         for m in s.get("known_for", []):
@@ -44,7 +44,7 @@ def expected_by_mode(candidates: list[dict]) -> dict[str, set[str]]:
 
 
 def check_mode(sites: list[dict], expected: set[str]) -> dict:
-    """Résumé d'un classement (fonction pure, testée)."""
+    """Summary of a ranking (pure function, tested)."""
     ranked = [s for s in sites if not s.get("excluded")]
     n = len(ranked)
     rank = {s["id"]: i + 1 for i, s in enumerate(ranked)}
@@ -80,27 +80,27 @@ def overall(results: dict[str, dict]) -> dict:
 
 def to_markdown(results: dict[str, dict]) -> str:
     o = overall(results)
-    lines = [f"**Verdict : {'tenu' if o['passes'] else 'non tenu'}.** Attentes tenues : {o['met']}/{o['total']} "
-             f"({o['share']:.0%}, seuil {MIN_SHARE:.0%}). Témoin négatif écarté ou dernier dans tous les modes : "
-             f"{'oui' if o['negative_ok'] else 'non'}.", "",
-             "| Mode | Sites classés | Analogues attendus dans la moitié haute | Témoin négatif | Couverture moyenne des critères |",
+    lines = [f"**Verdict: {'met' if o['passes'] else 'not met'}.** Expectations met: {o['met']}/{o['total']} "
+             f"({o['share']:.0%}, threshold {MIN_SHARE:.0%}). Negative control excluded or last in every mode: "
+             f"{'yes' if o['negative_ok'] else 'no'}.", "",
+             "| Mode | Sites ranked | Expected analogs in the top half | Negative control | Mean criteria coverage |",
              "|---|---|---|---|---|"]
     for mode, s in results.items():
         exp = len(s["expected_met"]) + len(s["expected_missed"])
         lines.append(f"| {MODES[mode]} | {s['ranked']} | {len(s['expected_met'])}/{exp} | "
-                     f"{'écarté ou dernier' if s['negative_ok'] else '**pas dernier**'} | {s['mean_coverage']:.0%} |")
+                     f"{'excluded or last' if s['negative_ok'] else '**not last**'} | {s['mean_coverage']:.0%} |")
     for mode, s in results.items():
-        lines += ["", f"### {MODES[mode]}", "", "| Rang | Site | Rôle | Score |", "|---|---|---|---|"]
+        lines += ["", f"### {MODES[mode]}", "", "| Rank | Site | Role | Score |", "|---|---|---|---|"]
         lines += [f"| {r} | {i} | {role} | {t} |" for r, i, role, t in s["top"]]
-        lines += ["", f"Attendus dans la moitié haute (rang ≤ {s['half']}) et présents : "
-                  + (", ".join(s["expected_met"]) or "aucun") + "."]
+        lines += ["", f"Expected in the top half (rank ≤ {s['half']}) and present: "
+                  + (", ".join(s["expected_met"]) or "none") + "."]
         if s["expected_missed"]:
-            lines.append("Attendus mais plus bas : " + ", ".join(f"{i} ({r}ᵉ)" for i, r in s["expected_missed"]) + ".")
-        lines.append("Tous les analogues connus : " + ", ".join(
-            f"{i} ({'écarté' if r is None else f'{r}ᵉ'}, {t})" for r, i, t in s["validation"]) + ".")
-        lines.append("Meilleurs sites peu étudiés : " + ", ".join(f"{n} ({t})" for _, n, t in s["top_candidates"]) + ".")
+            lines.append("Expected but lower: " + ", ".join(f"{i} (#{r})" for i, r in s["expected_missed"]) + ".")
+        lines.append("All known analogs: " + ", ".join(
+            f"{i} ({'excluded' if r is None else f'#{r}'}, {t})" for r, i, t in s["validation"]) + ".")
+        lines.append("Best understudied sites: " + ", ".join(f"{n} ({t})" for _, n, t in s["top_candidates"]) + ".")
         if s["excluded"]:
-            lines.append("Écartés par le filtre « sol nu » (NDVI > 0,2) : " + ", ".join(s["excluded"]) + ".")
+            lines.append("Excluded by the bare-soil filter (NDVI > 0.2): " + ", ".join(s["excluded"]) + ".")
     return "\n".join(lines) + "\n"
 
 
@@ -108,7 +108,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--api", default="http://localhost:3001")
     ap.add_argument("--candidates", default=CANDIDATES)
-    ap.add_argument("--markdown", help="fichier Markdown où écrire le rapport (remplace le bloc entre les balises)")
+    ap.add_argument("--markdown", help="Markdown file to write the report into (replaces the block between the markers)")
     args = ap.parse_args(argv)
     with open(args.candidates, encoding="utf-8") as f:
         expected = expected_by_mode(json.load(f))
@@ -120,7 +120,7 @@ def main(argv=None) -> int:
         with open(args.markdown, encoding="utf-8") as f:
             doc = f.read()
         if start not in doc or end not in doc:
-            sys.exit(f"{args.markdown} : balises {start} et {end} absentes")
+            sys.exit(f"{args.markdown}: markers {start} and {end} not found")
         head, rest = doc.split(start, 1)
         _, tail = rest.split(end, 1)
         with open(args.markdown, "w", encoding="utf-8") as f:

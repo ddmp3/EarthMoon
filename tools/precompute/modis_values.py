@@ -1,20 +1,20 @@
-"""MODIS précalculé pour chaque site candidat : ndvi, lst_day, lst_night, lst_amplitude (docs/scenarios.md).
+"""MODIS precomputed for each candidate site : ndvi, lst_day, lst_night, lst_amplitude (docs/scenarios.md).
 
-Source : Microsoft Planetary Computer (STAC, jeton anonyme, aucun compte), lecture d'un seul pixel par image.
-    LST  : modis-11A2-061, actifs LST_Day_1km / LST_Night_1km (8 jours, 1 km)  -> °C
-    NDVI : modis-13A1-061, actif 500m_16_days_NDVI (16 jours, 500 m)
+Source: Microsoft Planetary Computer (STAC, anonymous token, no account), reading a single pixel per image.
+    LST  : modis-11A2-061, assets LST_Day_1km / LST_Night_1km (8 days, 1 km)  -> °C
+    NDVI : modis-13A1-061, asset 500m_16_days_NDVI (16 days, 500 m)
 
-Usage (après enrich_candidates.py, qui ajoute la géométrie) :
+Usage (after enrich_candidates.py, which adds the geometry):
     python modis_values.py ../../data/candidates-precomputed.json
     python modis_values.py ../../data/candidates.json -o ../../data/candidates-precomputed.json
-    python modis_values.py FICHIER --year 2024 --samples 12 --force
+    python modis_values.py FILE --year 2024 --samples 12 --force
 
-Le bloc "precomputed" de chaque site reçoit :
-    lst_day        moyenne des LST de jour (°C)
-    lst_night      moyenne des LST de nuit (°C)
-    lst_amplitude  moyenne de (jour - nuit) sur les compositions où les deux existent (°C)
-    ndvi           médiane du NDVI sur l'année (filtre « sol nu » : ndvi <= 0,2)
-Une valeur introuvable reste null (jamais inventée) ; l'erreur est notée dans "modis_error".
+The "precomputed" block of each site receives:
+    lst_day        mean daytime LST (°C)
+    lst_night      mean nighttime LST (°C)
+    lst_amplitude  mean of (day - night) over the composites where both exist (°C)
+    ndvi           median NDVI over the year ("bare soil" filter: ndvi <= 0.2)
+A value that cannot be found stays null (never invented); the error is recorded in "modis_error".
 """
 from __future__ import annotations
 import argparse
@@ -29,27 +29,27 @@ STAC_URL = "https://planetarycomputer.microsoft.com/api/stac/v1"
 LST_COLLECTION, LST_DAY, LST_NIGHT = "modis-11A2-061", "LST_Day_1km", "LST_Night_1km"
 NDVI_COLLECTION, NDVI_ASSET = "modis-13A1-061", "500m_16_days_NDVI"
 
-# Facteurs d'échelle MODIS (guides utilisateur MOD11 et MOD13).
-LST_SCALE, LST_VALID_MIN = 0.02, 7500        # 0 = valeur manquante ; plage valide 7500-65535
-NDVI_SCALE, NDVI_VALID = 0.0001, (-2000, 10000)  # -3000 = valeur manquante
+# MODIS scale factors (MOD11 and MOD13 user guides).
+LST_SCALE, LST_VALID_MIN = 0.02, 7500        # 0 = missing value; valid range 7500-65535
+NDVI_SCALE, NDVI_VALID = 0.0001, (-2000, 10000)  # -3000 = missing value
 KEYS = ("ndvi", "lst_day", "lst_night", "lst_amplitude")
-# En dessous de ce nombre de compositions valides, la moyenne annuelle n'est pas représentative
-# (ex. : seules quelques compositions d'hiver polaire) : la valeur reste null.
+# Below this number of valid composites, the annual mean is not representative
+# (e.g. only a few polar-winter composites): the value stays null.
 MIN_VALID = 6
 
-# Grille sinusoïdale MODIS (MODLAND) : tuiles de 1 111 950,5197 m, sphère de rayon 6 371 007,181 m.
+# MODIS sinusoidal grid (MODLAND): tiles of 1,111,950.5197 m, sphere of radius 6,371,007.181 m.
 SIN_RADIUS, SIN_TILE, SIN_X0, SIN_Y0 = 6371007.181, 1111950.5197, 20015109.354, 10007554.677
 
 
 def sinusoidal_tile(lat: float, lon: float) -> tuple[int, int]:
-    """(h, v) de la tuile MODIS qui contient le point. Les emprises STAC des tuiles se chevauchent :
-    une recherche par point renvoie des tuiles voisines (le pixel lu tombe alors hors de l'image)."""
+    """(h, v) of the MODIS tile containing the point. The STAC footprints of tiles overlap:
+    a point search returns neighboring tiles (the pixel read then falls outside the image)."""
     x = SIN_RADIUS * math.radians(lon) * math.cos(math.radians(lat))
     y = SIN_RADIUS * math.radians(lat)
     return int((x + SIN_X0) // SIN_TILE), int((SIN_Y0 - y) // SIN_TILE)
 
 
-# ----------------------------------------------------------------- conversions (pures, testées)
+# ----------------------------------------------------------------- conversions (pure, tested)
 def _finite(v) -> bool:
     return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
@@ -68,7 +68,7 @@ def ndvi_value(raw) -> float | None:
 
 
 def pick_evenly(items: list, n: int) -> list:
-    """n éléments répartis sur l'année (triés par date) pour limiter le nombre de lectures."""
+    """n items spread over the year (sorted by date) to limit the number of reads."""
     items = sorted(items, key=_item_date)
     if n <= 0 or len(items) <= n:
         return items
@@ -78,7 +78,7 @@ def pick_evenly(items: list, n: int) -> list:
 
 def aggregate(lst_pairs: list[tuple[float | None, float | None]], ndvi: list[float | None],
               min_valid: int = MIN_VALID) -> dict:
-    """lst_pairs : (jour, nuit) en °C par composition ; ndvi : valeurs par composition."""
+    """lst_pairs: (day, night) in °C per composite; ndvi: values per composite."""
     day = [d for d, _ in lst_pairs if d is not None]
     night = [n for _, n in lst_pairs if n is not None]
     amp = [d - n for d, n in lst_pairs if d is not None and n is not None]
@@ -93,7 +93,7 @@ def aggregate(lst_pairs: list[tuple[float | None, float | None]], ndvi: list[flo
     }
 
 
-# ----------------------------------------------------------------- accès réseau (remplaçable dans les tests)
+# ----------------------------------------------------------------- network access (replaceable in tests)
 def _item_date(item):
     dt = getattr(item, "datetime", None) or (getattr(item, "properties", {}) or {}).get("start_datetime")
     return str(dt)
@@ -105,7 +105,7 @@ def _href(item, key: str) -> str | None:
 
 
 class PlanetaryComputer:
-    """Recherche STAC + lecture d'un pixel. Nouvelles tentatives sur erreur (Planetary Computer renvoie parfois 502)."""
+    """STAC search + single-pixel read. Retries on error (Planetary Computer sometimes returns 502)."""
 
     def __init__(self, retries: int = 2, pause_s: float = 1.5):
         self.retries, self.pause_s = retries, pause_s
@@ -132,7 +132,7 @@ class PlanetaryComputer:
                                                              datetime=f"{start}/{end}").items()))
 
     def sample(self, href: str, lat: float, lon: float) -> float | None:
-        """Valeur brute (sans échelle) du pixel qui contient le point, ou None."""
+        """Raw value (unscaled) of the pixel containing the point, or None."""
         import rasterio
         from rasterio.warp import transform
         from rasterio.windows import Window
@@ -149,13 +149,13 @@ class PlanetaryComputer:
         return self._retry(read)
 
 
-# ----------------------------------------------------------------- calcul par site
+# ----------------------------------------------------------------- per-site computation
 def site_modis(lat: float, lon: float, io, year: int = 2024, samples: int = 12) -> dict:
     start, end = f"{year}-01-01", f"{year}-12-31"
     lst_items = pick_evenly(io.search(LST_COLLECTION, lat, lon, start, end), samples)
     ndvi_items = pick_evenly(io.search(NDVI_COLLECTION, lat, lon, start, end), samples)
     if not lst_items and not ndvi_items:
-        raise LookupError(f"aucune image MODIS pour ({lat}, {lon}) en {year}")
+        raise LookupError(f"no MODIS image for ({lat}, {lon}) in {year}")
     pairs = []
     for it in lst_items:
         d, n = _href(it, LST_DAY), _href(it, LST_NIGHT)
@@ -174,10 +174,10 @@ def enrich_modis(sites: list[dict], io=None, year: int = 2024, samples: int = 12
     for s in sites:
         for k in ("id", "lat", "lon"):
             if k not in s:
-                raise ValueError(f"site sans '{k}' : {s}")
+                raise ValueError(f"site without '{k}': {s}")
         pre = dict(s.get("precomputed") or {})
         if not force and all(pre.get(k) is not None for k in KEYS):
-            log(f"  skip  {s['id']} (MODIS déjà calculé)")
+            log(f"  skip  {s['id']} (MODIS already computed)")
             out.append(s)
             continue
         pre.pop("modis_error", None)
@@ -188,7 +188,7 @@ def enrich_modis(sites: list[dict], io=None, year: int = 2024, samples: int = 12
             if missing:
                 pre["modis_error"] = f"valeurs absentes : {', '.join(missing)}"
             log(f"  {'part' if missing else 'ok  '}  {s['id']}: " + " ".join(f"{k}={vals[k]}" for k in KEYS))
-        except Exception as e:  # le site garde des null, le lot continue
+        except Exception as e:  # the site keeps its nulls, the batch continues
             for k in KEYS:
                 pre.setdefault(k, None)
             pre["modis_error"] = f"{type(e).__name__}: {e}"
@@ -202,22 +202,22 @@ def enrich_modis(sites: list[dict], io=None, year: int = 2024, samples: int = 12
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("candidates")
-    ap.add_argument("-o", "--output", default=None, help="par défaut : réécrit le fichier d'entrée")
+    ap.add_argument("-o", "--output", default=None, help="default: rewrites the input file")
     ap.add_argument("--year", type=int, default=2024)
-    ap.add_argument("--samples", type=int, default=12, help="compositions lues par produit et par site")
+    ap.add_argument("--samples", type=int, default=12, help="composites read per product and per site")
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args(argv)
     with open(a.candidates, encoding="utf-8") as fh:
         data = json.load(fh)
     sites = data if isinstance(data, list) else data.get("sites")
     if not isinstance(sites, list):
-        sys.exit("le fichier doit être une liste de sites (ou { sites: [...] })")
+        sys.exit("the file must be a list of sites (or { sites: [...] })")
     out = enrich_modis(sites, year=a.year, samples=a.samples, force=a.force)
     with open(a.output or a.candidates, "w", encoding="utf-8") as fh:
         json.dump(out, fh, ensure_ascii=False, indent=2)
         fh.write("\n")
     bad = [s["id"] for s in out if "modis_error" in s.get("precomputed", {})]
-    print(f"{len(out) - len(bad)}/{len(out)} sites complets" + (f" | à vérifier : {bad}" if bad else ""))
+    print(f"{len(out) - len(bad)}/{len(out)} complete sites" + (f" | to check: {bad}" if bad else ""))
     return 1 if bad else 0
 
 

@@ -41,14 +41,14 @@ async function start(overrides: Partial<AppDeps> = {}, connectors?: Connector[])
 const post = (url: string, body: unknown, raw = false): Promise<Response> =>
   fetch(`${url}/api/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: raw ? (body as string) : JSON.stringify(body) });
 
-describe("serveur HTTP", () => {
+describe("HTTP server", () => {
   let api: Running;
   beforeAll(async () => {
     api = await start();
   });
   afterAll(async () => api.close());
 
-  it("GET /api/health répond ok", async () => {
+  it("GET /api/health answers ok", async () => {
     const res = await fetch(`${api.url}/api/health`);
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ status: "ok" });
@@ -56,19 +56,19 @@ describe("serveur HTTP", () => {
     expect(res.headers.get("x-content-type-options")).toBe("nosniff");
   });
 
-  it("GET /api/modes liste les 3 modes prédéfinis avec leurs critères", async () => {
+  it("GET /api/modes lists the 3 predefined modes with their criteria", async () => {
     const body = (await (await fetch(`${api.url}/api/modes`)).json()) as { modes: { id: string; criteria: unknown[] }[] };
     expect(body.modes.map((m) => m.id)).toEqual(["robotics", "calibration", "colony"]);
     expect(body.modes.every((m) => m.criteria.length > 0)).toBe(true);
   });
 
-  it("GET /api/parameters couvre tout le catalogue", async () => {
+  it("GET /api/parameters covers the whole catalog", async () => {
     const body = (await (await fetch(`${api.url}/api/parameters`)).json()) as { parameters: { id: string }[] };
     expect(body.parameters.map((p) => p.id).sort()).toEqual([...PARAM_IDS].sort());
     expect(PARAMETERS).toHaveLength(PARAM_IDS.length);
   });
 
-  it("GET /api/reference/moon renvoie le profil, et 404 s'il est absent", async () => {
+  it("GET /api/reference/moon returns the profile, and 404 if absent", async () => {
     expect(await (await fetch(`${api.url}/api/reference/moon`)).json()).toMatchObject({ id: "moon-south-pole" });
     const other = await start({ moonReference: undefined });
     const res = await fetch(`${other.url}/api/reference/moon`);
@@ -76,12 +76,12 @@ describe("serveur HTTP", () => {
     await other.close();
   });
 
-  it("POST /api/analyze (mode) : forme du contrat, tri par total décroissant, Amazonie écartée en dernier", async () => {
+  it("POST /api/analyze (mode): contract shape, sorted by descending total, Amazon excluded and last", async () => {
     const res = await post(api.url, { mode: "robotics" });
     expect(res.status).toBe(200);
     const body = (await res.json()) as { mode: string; sites: { id: string; total: number; excluded?: string; criteria: { param: string; value: number | null; score: number; verdict: string }[] }[] };
     expect(body.mode).toBe("robotics");
-    expect(body.sites.map((s) => s.id)).toEqual(["atacama", "haughton", "amazonie"]);
+    expect(body.sites.map((s) => s.id)).toEqual(["atacama", "haughton", "amazon"]);
     expect(body.sites.map((s) => s.total)).toEqual([93, 87, 0]);
     expect(body.sites[2]?.excluded).toBe("vegetation");
     for (const s of body.sites) {
@@ -90,7 +90,7 @@ describe("serveur HTTP", () => {
     }
   });
 
-  it("POST /api/analyze (critères libres, filtre désactivé) garde l'Amazonie dans le classement", async () => {
+  it("POST /api/analyze (free criteria, filter off) keeps the Amazon in the ranking", async () => {
     const res = await post(api.url, { criteria: [{ param: "humidity", max: 40, tolerance: 30, weight: 1 }], bareSoilOnly: false });
     const body = (await res.json()) as { mode: string; sites: { id: string; total: number; excluded?: string }[] };
     expect(body.mode).toBe("custom");
@@ -99,11 +99,11 @@ describe("serveur HTTP", () => {
   });
 
   it.each([
-    ["mode inconnu", { mode: "mars" }],
-    ["ni mode ni critères", {}],
-    ["mode et critères ensemble", { mode: "robotics", criteria: [{ param: "wind", max: 3, tolerance: 3, weight: 1 }] }],
-    ["critère sans intervalle", { criteria: [{ param: "wind", tolerance: 3, weight: 1 }] }],
-    ["paramètre inconnu", { criteria: [{ param: "gravite", max: 3, tolerance: 3, weight: 1 }] }],
+    ["unknown mode", { mode: "mars" }],
+    ["neither mode nor criteria", {}],
+    ["mode and criteria together", { mode: "robotics", criteria: [{ param: "wind", max: 3, tolerance: 3, weight: 1 }] }],
+    ["criterion without a range", { criteria: [{ param: "wind", tolerance: 3, weight: 1 }] }],
+    ["unknown parameter", { criteria: [{ param: "gravite", max: 3, tolerance: 3, weight: 1 }] }],
     ["poids nul", { criteria: [{ param: "wind", max: 3, tolerance: 3, weight: 0 }] }],
   ])("POST /api/analyze rejette en 400 : %s", async (_name, body) => {
     const res = await post(api.url, body);
@@ -111,15 +111,15 @@ describe("serveur HTTP", () => {
     expect(await res.json()).toEqual({ error: expect.any(String) });
   });
 
-  it("POST /api/analyze : JSON illisible → 400, corps énorme → 413", async () => {
+  it("POST /api/analyze: unreadable JSON → 400, huge body → 413", async () => {
     const bad = await post(api.url, "{pas du json", true);
     expect(bad.status).toBe(400);
-    expect(await bad.json()).toEqual({ error: "Corps JSON invalide" });
+    expect(await bad.json()).toEqual({ error: "Invalid JSON body" });
     const big = await post(api.url, JSON.stringify({ mode: "robotics", pad: "x".repeat(60_000) }), true);
     expect(big.status).toBe(413);
   });
 
-  it("une source en panne ne casse pas l'analyse : critères « missing » seulement", async () => {
+  it("a failing source does not break the analysis: only missing criteria", async () => {
     const down: Connector = async () => {
       throw new Error("source en panne");
     };
@@ -134,7 +134,7 @@ describe("serveur HTTP", () => {
     await flaky.close();
   });
 
-  it("GET /api/sites/{id} : fiche avec valeurs brutes et sources", async () => {
+  it("GET /api/sites/{id}: card with raw values and sources", async () => {
     const res = await fetch(`${api.url}/api/sites/haughton?mode=robotics`);
     expect(res.status).toBe(200);
     const body = (await res.json()) as { id: string; total: number; mode: string; values: Record<string, number>; sources: string[]; terrain?: string };
@@ -142,12 +142,12 @@ describe("serveur HTTP", () => {
     expect(body.values.t2m_min).toBe(-48.55);
   });
 
-  it("GET /api/sites/{id} : source de chaque valeur et référence lunaire des critères du mode", async () => {
+  it("GET /api/sites/{id}: source of each value and lunar reference of the mode's criteria", async () => {
     const moon = {
       params: {
         slope_mean: { min: 5.23, max: 12.89, unit: "°", source: "LOLA" },
-        wind: { min: 0, max: 0, unit: "m/s", source: "pas d'atmosphère" },
-        roughness: { unit: "m", source: "sans valeur" },
+        wind: { min: 0, max: 0, unit: "m/s", source: "no atmosphere" },
+        roughness: { unit: "m", source: "no value" },
       },
     };
     const real = await start({ moonReference: moon, useFixtures: false });
@@ -156,10 +156,10 @@ describe("serveur HTTP", () => {
       moon: Record<string, unknown>;
     };
     expect(body.valueSources).toMatchObject({ t2m_min: "nasa-power", slope_mean: "copernicus-dem", quake_count: "usgs-comcat" });
-    // Tous les paramètres sourcés, quel que soit le mode (le front affiche ceux de ses critères) ; roughness n'a pas de valeur.
+    // All sourced parameters, whatever the mode (the front end shows those of its criteria); roughness has no value.
     expect(body.moon).toEqual({
       slope_mean: { min: 5.23, max: 12.89, unit: "°", source: "LOLA" },
-      wind: { min: 0, max: 0, unit: "m/s", source: "pas d'atmosphère" },
+      wind: { min: 0, max: 0, unit: "m/s", source: "no atmosphere" },
     });
     await real.close();
     const fixtures = await start({ useFixtures: true });
@@ -168,30 +168,30 @@ describe("serveur HTTP", () => {
     await fixtures.close();
   });
 
-  it("GET /api/sources : chaque paramètre du catalogue a une source terrestre nommée", async () => {
+  it("GET /api/sources: every catalog parameter has a named Earth source", async () => {
     const { sources } = (await (await fetch(`${api.url}/api/sources`)).json()) as {
       sources: { id: string; name: string; url: string; body: string; params: string[]; terms: string }[];
     };
     const earth = sources.filter((s) => s.body === "earth").flatMap((s) => s.params);
     expect([...earth].sort()).toEqual([...PARAM_IDS].sort());
-    expect(new Set(earth).size).toBe(earth.length); // une seule source par paramètre
+    expect(new Set(earth).size).toBe(earth.length); // one source per parameter
     for (const s of sources) expect(s.name && s.url.startsWith("https://") && s.terms).toBeTruthy();
   });
 
-  it("GET /api/sites/{id} : Amazonie écartée ; 404 site inconnu ; 400 mode inconnu", async () => {
-    const amazon = (await (await fetch(`${api.url}/api/sites/amazonie`)).json()) as { total: number; excluded?: string };
+  it("GET /api/sites/{id}: Amazon excluded; 404 unknown site; 400 unknown mode", async () => {
+    const amazon = (await (await fetch(`${api.url}/api/sites/amazon`)).json()) as { total: number; excluded?: string };
     expect(amazon).toMatchObject({ total: 0, excluded: "vegetation" });
     expect((await fetch(`${api.url}/api/sites/nope`)).status).toBe(404);
     expect((await fetch(`${api.url}/api/sites/haughton?mode=mars`)).status).toBe(400);
   });
 
-  it("route inconnue → 404 JSON", async () => {
+  it("unknown route → 404 JSON", async () => {
     const res = await fetch(`${api.url}/api/nimporte`);
     expect(res.status).toBe(404);
-    expect(await res.json()).toEqual({ error: "Route inconnue" });
+    expect(await res.json()).toEqual({ error: "Unknown route" });
   });
 
-  it("CORS : seule l'origine du front est autorisée", async () => {
+  it("CORS: only the front-end origin is allowed", async () => {
     const ok = await fetch(`${api.url}/api/modes`, { headers: { Origin: ORIGIN } });
     expect(ok.headers.get("access-control-allow-origin")).toBe(ORIGIN);
     const ko = await fetch(`${api.url}/api/modes`, { headers: { Origin: "https://autre.example.org" } });
@@ -207,7 +207,7 @@ describe("serveur HTTP", () => {
     expect(await docs.text()).toContain("swagger");
   });
 
-  it("limite de débit : 429 après dépassement, mais /api/health reste disponible", async () => {
+  it("rate limit: 429 when exceeded, but /api/health stays available", async () => {
     const limited = await start({ rateLimitPerMinute: 3 });
     const codes: number[] = [];
     for (let i = 0; i < 5; i++) codes.push((await fetch(`${limited.url}/api/modes`)).status);
@@ -217,21 +217,21 @@ describe("serveur HTTP", () => {
   });
 });
 
-describe("contrat openapi.yaml ↔ réponses réelles", () => {
-  it("les chemins décrits sont exactement ceux que le serveur expose", async () => {
+describe("openapi.yaml contract ↔ real responses", () => {
+  it("the documented paths are exactly the ones the server exposes", async () => {
     const spec = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { paths: Record<string, Record<string, unknown>> };
     expect(Object.keys(spec.paths).sort()).toEqual(["/api/analyze", "/api/health", "/api/modes", "/api/parameters", "/api/reference/moon", "/api/sites/{id}", "/api/sources"]);
     expect(Object.keys(spec.paths["/api/analyze"] ?? {})).toEqual(["post"]);
   });
 
-  it("l'énumération ParamId du contrat est celle du catalogue", async () => {
+  it("the contract's ParamId enum is the catalog's", async () => {
     const spec = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { components: { schemas: { ParamId: { enum: string[] } } } };
     expect([...spec.components.schemas.ParamId.enum].sort()).toEqual([...PARAM_IDS].sort());
   });
 });
 
-describe("chargement des sites", () => {
-  it("parseSites écarte les entrées invalides et garde les autres", () => {
+describe("site loading", () => {
+  it("parseSites drops invalid entries and keeps the others", () => {
     const notes: string[] = [];
     const sites = parseSites(
       [
@@ -239,32 +239,32 @@ describe("chargement des sites", () => {
         { id: "Mauvais Id", name: "x", lat: 0, lon: 0 },
         { id: "ok", name: "doublon", lat: 0, lon: 0 },
         { id: "lat", name: "x", lat: 95, lon: 0 },
-        { id: "sans-role", name: "S", lat: 1, lon: 2 },
+        { id: "no-role", name: "S", lat: 1, lon: 2 },
       ],
       (n) => notes.push(n),
     );
-    expect(sites.map((s) => s.id)).toEqual(["ok", "sans-role"]);
+    expect(sites.map((s) => s.id)).toEqual(["ok", "no-role"]);
     expect(sites[1]?.role).toBe("candidate");
     expect(notes).toHaveLength(3);
   });
 
-  it("parseSites accepte { sites: [...] } et refuse le reste", () => {
+  it("parseSites accepts { sites: [...] } and rejects the rest", () => {
     expect(parseSites({ sites: [{ id: "a", name: "A", lat: 0, lon: 0 }] })).toHaveLength(1);
     expect(() => parseSites("nope")).toThrow();
   });
 
-  it("loadSites se rabat sur les fixtures quand candidates.json est absent", async () => {
+  it("loadSites falls back to the fixtures when candidates.json is missing", async () => {
     const notes: string[] = [];
     const dir = await mkdtemp(path.join(tmpdir(), "cyberspace-data-"));
     await mkdir(path.join(dir, "fixtures"));
     await copyFile(path.join(DATA, "fixtures", "site-values.json"), path.join(dir, "fixtures", "site-values.json"));
     const sites = await loadSites(dir, (n) => notes.push(n));
-    expect(sites.map((s) => s.id)).toEqual(["haughton", "atacama", "amazonie"]);
-    expect(notes[0]).toContain("candidates.json absent");
+    expect(sites.map((s) => s.id)).toEqual(["haughton", "atacama", "amazon"]);
+    expect(notes[0]).toContain("candidates.json missing");
     await rm(dir, { recursive: true });
   });
 
-  it("data/candidates.json du dépôt : tous les sites sont valides, avec un témoin négatif", async () => {
+  it("repository data/candidates.json: all sites are valid, with a negative control", async () => {
     const notes: string[] = [];
     const sites = await loadSites(DATA, (n) => notes.push(n));
     expect(notes).toEqual([]);

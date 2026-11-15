@@ -122,7 +122,7 @@
     "match_share": 0.606
    }
   },
-  "islande-holuhraun": {
+  "iceland-holuhraun": {
    "photo": {
     "source": "sentinel-2",
     "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
@@ -206,7 +206,7 @@
     "match_share": 0.424
    }
   },
-  "amazonie": {
+  "amazon": {
    "photo": {
     "source": "landsat-weld",
     "credit": "Landsat WELD true color, annual composite 2000, NASA GIBS"

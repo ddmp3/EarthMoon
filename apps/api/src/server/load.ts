@@ -7,35 +7,34 @@ import { API_ROOT } from "./config.js";
 
 const ROLES = ["validation", "negative", "candidate"] as const;
 
-/** Valide une liste de sites (docs/contrats.md §1). Les entrées invalides sont ignorées et signalées. */
+/** Validates a list of sites (see docs/architecture.md, data files). Invalid entries are skipped and reported. */
 export function parseSites(raw: unknown, onSkip?: (reason: string) => void): Site[] {
   const list = Array.isArray(raw) ? raw : (raw as { sites?: unknown } | null)?.sites;
-  if (!Array.isArray(list)) throw new Error("La liste de sites doit être un tableau (ou { sites: [...] })");
+  if (!Array.isArray(list)) throw new Error("The site list must be an array (or { sites: [...] })");
   const sites: Site[] = [];
   const seen = new Set<string>();
   list.forEach((entry: unknown, index) => {
     const s = entry as Partial<Site> | null;
     const problem =
       typeof s?.id !== "string" || !/^[a-z0-9-]+$/.test(s.id)
-        ? "id manquant ou invalide"
+        ? "missing or invalid id"
         : seen.has(s.id)
-          ? "id en double"
+          ? "duplicate id"
           : typeof s.name !== "string"
-            ? "name manquant"
+            ? "missing name"
             : typeof s.lat !== "number" || s.lat < -90 || s.lat > 90
-              ? "lat invalide"
+              ? "invalid lat"
               : typeof s.lon !== "number" || s.lon < -180 || s.lon > 180
-                ? "lon invalide"
+                ? "invalid lon"
                 : undefined;
     if (problem || !s || typeof s.id !== "string" || typeof s.name !== "string") {
-      onSkip?.(`site #${index} ignoré : ${problem ?? "invalide"}`);
+      onSkip?.(`site #${index} skipped: ${problem ?? "invalid"}`);
       return;
     }
     seen.add(s.id);
     sites.push({
       id: s.id,
       name: s.name,
-      ...(typeof (s as { name_en?: unknown }).name_en === "string" ? { nameEn: (s as { name_en: string }).name_en } : {}),
       lat: s.lat as number,
       lon: s.lon as number,
       ...(typeof s.terrain === "string" ? { terrain: s.terrain } : {}),
@@ -46,8 +45,8 @@ export function parseSites(raw: unknown, onSkip?: (reason: string) => void): Sit
 }
 
 /**
- * Sites interrogés : data/candidates.json (Wassim) s'il existe, sinon les sites de data/fixtures/ (coordonnées seulement :
- * les valeurs viennent toujours des connecteurs).
+ * Sites queried: data/candidates.json if it exists, otherwise the sites in data/fixtures/ (coordinates only:
+ * values always come from the connectors).
  */
 export async function loadSites(dataDir: string, onNote?: (message: string) => void): Promise<Site[]> {
   const candidates = path.join(dataDir, "candidates.json");
@@ -56,14 +55,14 @@ export async function loadSites(dataDir: string, onNote?: (message: string) => v
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code !== "ENOENT") throw error;
   }
-  onNote?.("data/candidates.json absent : repli sur les 3 sites de data/fixtures/site-values.json");
+  onNote?.("data/candidates.json missing: falling back to the 3 sites in data/fixtures/site-values.json");
   const fixtures = await loadFixtures(path.join(dataDir, "fixtures", "site-values.json"));
   return parseSites(fixtures.sites, onNote);
 }
 
 export async function loadOpenApi(file = path.join(API_ROOT, "openapi.yaml")): Promise<Record<string, unknown>> {
   const doc: unknown = parse(await readFile(file, "utf8"));
-  if (typeof doc !== "object" || doc === null) throw new Error(`openapi.yaml invalide : ${file}`);
+  if (typeof doc !== "object" || doc === null) throw new Error(`invalid openapi.yaml : ${file}`);
   return doc as Record<string, unknown>;
 }
 

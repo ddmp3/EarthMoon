@@ -1,12 +1,12 @@
 [
   {
     "id": "haughton",
-    "name": "Cratère Haughton (île Devon, Nunavut)",
+    "name": "Haughton Crater (Devon Island, Nunavut)",
     "lat": 75.38,
     "lon": -89.67,
     "terrain": "impact",
     "role": "validation",
-    "note": "Station HMP du réseau CARN de l'ASC (75°22'N, 89°41'W)",
+    "note": "CSA analog network (CARN) HMP station (75°22'N, 89°41'W)",
     "precomputed": {
       "elevation": 134.3,
       "slope_mean": 3.52,
@@ -29,16 +29,16 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:01:44+00:00"
     },
-    "name_en": "Haughton Crater (Devon Island, Nunavut)"
+    "known_for_note": "Haughton-Mars Project: rover and spacewalk tests, inhabited station"
   },
   {
     "id": "atacama",
-    "name": "Désert d'Atacama (Chili)",
+    "name": "Atacama Desert (Chile)",
     "lat": -24.5,
     "lon": -69.25,
     "terrain": "desert",
     "role": "validation",
-    "note": "Coordonnée des fixtures",
+    "note": "Fixture coordinate",
     "precomputed": {
       "elevation": 2652.8,
       "slope_mean": 7.97,
@@ -61,11 +61,11 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:01:59+00:00"
     },
-    "name_en": "Atacama Desert (Chile)"
+    "known_for_note": "NASA rover and drilling tests (ARADS)"
   },
   {
     "id": "dry-valleys",
-    "name": "Vallées sèches de McMurdo, vallée Wright (Antarctique)",
+    "name": "McMurdo Dry Valleys, Wright Valley (Antarctica)",
     "lat": -77.52,
     "lon": 161.85,
     "terrain": "polar",
@@ -93,16 +93,16 @@
       "modis_computed_at": "2026-11-15T05:15:29+00:00",
       "modis_error": "valeurs absentes : ndvi"
     },
-    "name_en": "McMurdo Dry Valleys, Wright Valley (Antarctica)"
+    "known_for_note": "Cold desert: instruments, permafrost and ice"
   },
   {
     "id": "mauna-kea",
-    "name": "Mauna Kea, flancs supérieurs (Hawaï)",
+    "name": "Mauna Kea, upper slopes (Hawaii)",
     "lat": 19.8,
     "lon": -155.46,
     "terrain": "volcanic",
     "role": "validation",
-    "note": "Site d'essais ISRU (PISCES)",
+    "note": "ISRU test site (PISCES)",
     "precomputed": {
       "elevation": 3729.5,
       "slope_mean": 11.56,
@@ -125,16 +125,16 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:02:24+00:00"
     },
-    "name_en": "Mauna Kea, upper slopes (Hawaii)"
+    "known_for_note": "PISCES: rover and ISRU tests"
   },
   {
     "id": "svalbard-bockfjorden",
-    "name": "Bockfjorden, volcan Sverrefjellet (Svalbard)",
+    "name": "Bockfjorden, Sverrefjellet volcano (Svalbard)",
     "lat": 79.42,
     "lon": 13.35,
     "terrain": "polar",
     "role": "validation",
-    "note": "Site des expéditions AMASE",
+    "note": "AMASE expedition site",
     "precomputed": {
       "elevation": 72.2,
       "slope_mean": 9.74,
@@ -157,11 +157,11 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:02:41+00:00"
     },
-    "name_en": "Bockfjorden, Sverrefjellet volcano (Svalbard)"
+    "known_for_note": "AMASE: instrument tests"
   },
   {
-    "id": "islande-holuhraun",
-    "name": "Champ de lave d'Holuhraun (Islande)",
+    "id": "iceland-holuhraun",
+    "name": "Holuhraun lava field (Iceland)",
     "lat": 64.87,
     "lon": -16.83,
     "terrain": "volcanic",
@@ -188,16 +188,16 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:00+00:00"
     },
-    "name_en": "Holuhraun lava field (Iceland)"
+    "known_for_note": "NASA SAND-E: rover navigation on a lava flow"
   },
   {
     "id": "death-valley",
-    "name": "Bassin de Badwater, vallée de la Mort (Californie)",
+    "name": "Badwater Basin, Death Valley (California)",
     "lat": 36.25,
     "lon": -116.82,
     "terrain": "desert",
     "role": "validation",
-    "note": "Cité dans l’énoncé du défi ; point sur le bassin salé (le premier point tombait sur l’oasis de Furnace Creek)",
+    "note": "Named in the challenge statement; point on the salt flat (the first point fell on the Furnace Creek oasis)",
     "precomputed": {
       "elevation": -85.5,
       "slope_mean": 0.3,
@@ -220,7 +220,7 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:15:54+00:00"
     },
-    "name_en": "Badwater Basin, Death Valley (California)"
+    "known_for_note": "Mars analog named in the challenge statement; no lunar mode expected"
   },
   {
     "id": "meteor-crater",
@@ -229,7 +229,7 @@
     "lon": -111.02,
     "terrain": "impact",
     "role": "validation",
-    "note": "Entraînement géologique des astronautes Apollo",
+    "note": "Apollo astronaut geology training",
     "precomputed": {
       "elevation": 1592.3,
       "slope_mean": 12.9,
@@ -252,16 +252,16 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:37+00:00"
     },
-    "name_en": "Meteor Crater (Arizona)"
+    "known_for_note": "Apollo astronaut field geology training"
   },
   {
     "id": "black-point",
-    "name": "Coulée de Black Point (Arizona)",
+    "name": "Black Point Lava Flow (Arizona)",
     "lat": 35.69,
     "lon": -111.47,
     "terrain": "volcanic",
     "role": "validation",
-    "note": "Essais NASA Desert RATS",
+    "note": "NASA Desert RATS tests",
     "precomputed": {
       "elevation": 1557.0,
       "slope_mean": 2.6,
@@ -284,11 +284,11 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:39+00:00"
     },
-    "name_en": "Black Point Lava Flow (Arizona)"
+    "known_for_note": "NASA Desert RATS: rover and spacewalk tests"
   },
   {
-    "id": "amazonie",
-    "name": "Amazonie (témoin négatif)",
+    "id": "amazon",
+    "name": "Amazon rainforest (negative control)",
     "lat": -3.47,
     "lon": -62.37,
     "terrain": "forest",
@@ -314,17 +314,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:58+00:00"
-    },
-    "name_en": "Amazon rainforest (negative control)"
+    }
   },
   {
     "id": "mistastin",
-    "name": "Structure d'impact de Mistastin, rive est (Labrador)",
+    "name": "Mistastin impact structure, east shore (Labrador)",
     "lat": 55.88,
     "lon": -63.15,
     "terrain": "impact",
     "role": "candidate",
-    "note": "Anorthosite : analogue des hautes terres du pôle Sud lunaire (vérification Wassim). Point à ~10 km à l'est du centre du lac, à valider",
+    "note": "Anorthosite: analog of the lunar south pole highlands (team fact-check). Point ~10 km east of the lake center, to be validated",
     "precomputed": {
       "elevation": 361.0,
       "slope_mean": 3.19,
@@ -346,17 +345,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:04:16+00:00"
-    },
-    "name_en": "Mistastin impact structure, east shore (Labrador)"
+    }
   },
   {
     "id": "tunnunik",
-    "name": "Cratère Tunnunik (île Victoria, T.N.-O.)",
+    "name": "Tunnunik Crater (Victoria Island, NWT)",
     "lat": 72.47,
     "lon": -113.97,
     "terrain": "impact",
     "role": "candidate",
-    "note": "Programme SOAR de l'ASC (vérification Wassim)",
+    "note": "CSA SOAR program (team fact-check)",
     "precomputed": {
       "elevation": 72.4,
       "slope_mean": 4.08,
@@ -378,17 +376,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:04:35+00:00"
-    },
-    "name_en": "Tunnunik Crater (Victoria Island, NWT)"
+    }
   },
   {
     "id": "axel-heiberg",
-    "name": "Station McGill, île Axel Heiberg (Nunavut)",
+    "name": "McGill Arctic Research Station, Axel Heiberg Island (Nunavut)",
     "lat": 79.43,
     "lon": -90.77,
     "terrain": "polar",
     "role": "candidate",
-    "note": "Réseau CARN de l'ASC (79°26'N, 90°46'W)",
+    "note": "CSA CARN network (79°26'N, 90°46'W)",
     "precomputed": {
       "elevation": 429.9,
       "slope_mean": 17.25,
@@ -411,17 +408,16 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:16:17+00:00",
       "modis_error": "valeurs absentes : ndvi"
-    },
-    "name_en": "McGill Arctic Research Station, Axel Heiberg Island (Nunavut)"
+    }
   },
   {
     "id": "pingualuit",
-    "name": "Cratère des Pingualuit, rebord ouest (Nunavik, Québec)",
+    "name": "Pingualuit Crater, west rim (Nunavik, Quebec)",
     "lat": 61.28,
     "lon": -73.69,
     "terrain": "impact",
     "role": "candidate",
-    "note": "Point sur le rebord, à valider",
+    "note": "Point on the rim, to be validated",
     "precomputed": {
       "elevation": 567.5,
       "slope_mean": 7.02,
@@ -443,17 +439,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:09+00:00"
-    },
-    "name_en": "Pingualuit Crater, west rim (Nunavik, Quebec)"
+    }
   },
   {
     "id": "manicouagan",
-    "name": "Île René-Levasseur, Manicouagan (Québec)",
+    "name": "René-Levasseur Island, Manicouagan (Quebec)",
     "lat": 51.4,
     "lon": -68.7,
     "terrain": "impact",
     "role": "candidate",
-    "note": "Grand cratère d'impact ; forêt boréale probable (filtre NDVI)",
+    "note": "Large impact crater; boreal forest likely (NDVI filter)",
     "precomputed": {
       "elevation": 576.6,
       "slope_mean": 6.52,
@@ -475,17 +470,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:26+00:00"
-    },
-    "name_en": "René-Levasseur Island, Manicouagan (Quebec)"
+    }
   },
   {
     "id": "peary-land",
-    "name": "Terre de Peary (nord du Groenland)",
+    "name": "Peary Land (North Greenland)",
     "lat": 82.7,
     "lon": -31.0,
     "terrain": "polar",
     "role": "candidate",
-    "note": "Désert polaire ; coordonnée approchée",
+    "note": "Polar desert; approximate coordinate",
     "precomputed": {
       "elevation": 807.6,
       "slope_mean": 10.54,
@@ -507,12 +501,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:43+00:00"
-    },
-    "name_en": "Peary Land (North Greenland)"
+    }
   },
   {
     "id": "popigai",
-    "name": "Cratère de Popigaï (Sibérie)",
+    "name": "Popigai Crater (Siberia)",
     "lat": 71.65,
     "lon": 111.18,
     "terrain": "impact",
@@ -538,17 +531,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:01+00:00"
-    },
-    "name_en": "Popigai Crater (Siberia)"
+    }
   },
   {
     "id": "elgygytgyn",
-    "name": "Cratère d'El'gygytgyn, rebord est (Tchoukotka)",
+    "name": "El'gygytgyn Crater, east rim (Chukotka)",
     "lat": 67.5,
     "lon": 172.25,
     "terrain": "impact",
     "role": "candidate",
-    "note": "Point à ~7 km à l'est du centre du lac, à valider",
+    "note": "Point ~7 km east of the lake center, to be validated",
     "precomputed": {
       "elevation": 544.9,
       "slope_mean": 11.32,
@@ -570,17 +562,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:24+00:00"
-    },
-    "name_en": "El'gygytgyn Crater, east rim (Chukotka)"
+    }
   },
   {
     "id": "tolbachik",
-    "name": "Tolbatchik (Kamtchatka)",
+    "name": "Tolbachik (Kamchatka)",
     "lat": 55.83,
     "lon": 160.33,
     "terrain": "volcanic",
     "role": "candidate",
-    "note": "Essais du rover Lunokhod (années 1960-1970)",
+    "note": "Lunokhod rover tests (1960s-1970s)",
     "precomputed": {
       "elevation": 3453.7,
       "slope_mean": 37.74,
@@ -602,12 +593,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:38+00:00"
-    },
-    "name_en": "Tolbachik (Kamchatka)"
+    }
   },
   {
     "id": "erebus",
-    "name": "Mont Erebus, île de Ross (Antarctique)",
+    "name": "Mount Erebus, Ross Island (Antarctica)",
     "lat": -77.53,
     "lon": 167.15,
     "terrain": "volcanic",
@@ -634,17 +624,16 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:16:28+00:00",
       "modis_error": "valeurs absentes : ndvi"
-    },
-    "name_en": "Mount Erebus, Ross Island (Antarctica)"
+    }
   },
   {
     "id": "qaidam-lenghu",
-    "name": "Yardangs de Lenghu, bassin du Qaidam (Chine)",
+    "name": "Lenghu yardangs, Qaidam Basin (China)",
     "lat": 38.6,
     "lon": 93.2,
     "terrain": "desert",
     "role": "candidate",
-    "note": "Coordonnée approchée",
+    "note": "Approximate coordinate",
     "precomputed": {
       "elevation": 2746.8,
       "slope_mean": 0.19,
@@ -666,17 +655,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:59+00:00"
-    },
-    "name_en": "Lenghu yardangs, Qaidam Basin (China)"
+    }
   },
   {
     "id": "changtang",
-    "name": "Plateau du Changtang (Tibet)",
+    "name": "Changtang Plateau (Tibet)",
     "lat": 34.5,
     "lon": 85.0,
     "terrain": "plateau",
     "role": "candidate",
-    "note": "Coordonnée approchée",
+    "note": "Approximate coordinate",
     "precomputed": {
       "elevation": 5452.6,
       "slope_mean": 7.41,
@@ -698,17 +686,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:07:15+00:00"
-    },
-    "name_en": "Changtang Plateau (Tibet)"
+    }
   },
   {
     "id": "gobi",
-    "name": "Plaines de graviers du Gobi (Mongolie)",
+    "name": "Gobi gravel plains (Mongolia)",
     "lat": 42.5,
     "lon": 102.0,
     "terrain": "desert",
     "role": "candidate",
-    "note": "Coordonnée approchée",
+    "note": "Approximate coordinate",
     "precomputed": {
       "elevation": 1158.6,
       "slope_mean": 0.7,
@@ -730,12 +717,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:07:39+00:00"
-    },
-    "name_en": "Gobi gravel plains (Mongolia)"
+    }
   },
   {
     "id": "uyuni",
-    "name": "Salar d'Uyuni (Bolivie)",
+    "name": "Salar de Uyuni (Bolivia)",
     "lat": -20.13,
     "lon": -67.49,
     "terrain": "plateau",
@@ -761,12 +747,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:03+00:00"
-    },
-    "name_en": "Salar de Uyuni (Bolivia)"
+    }
   },
   {
     "id": "licancabur",
-    "name": "Licancabur, Altiplano (Bolivie-Chili)",
+    "name": "Licancabur, Altiplano (Bolivia-Chile)",
     "lat": -22.83,
     "lon": -67.88,
     "terrain": "volcanic",
@@ -792,12 +777,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:11+00:00"
-    },
-    "name_en": "Licancabur, Altiplano (Bolivia-Chile)"
+    }
   },
   {
     "id": "payunia",
-    "name": "Champ volcanique de la Payunia (Argentine)",
+    "name": "Payunia volcanic field (Argentina)",
     "lat": -36.42,
     "lon": -69.24,
     "terrain": "volcanic",
@@ -823,12 +807,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:34+00:00"
-    },
-    "name_en": "Payunia volcanic field (Argentina)"
+    }
   },
   {
     "id": "namib-gobabeb",
-    "name": "Plaines de graviers du Namib, Gobabeb (Namibie)",
+    "name": "Namib gravel plains, Gobabeb (Namibia)",
     "lat": -23.56,
     "lon": 15.04,
     "terrain": "desert",
@@ -854,17 +837,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:51+00:00"
-    },
-    "name_en": "Namib gravel plains, Gobabeb (Namibia)"
+    }
   },
   {
     "id": "lut",
-    "name": "Kaluts du désert de Lut (Iran)",
+    "name": "Lut Desert kaluts (Iran)",
     "lat": 30.5,
     "lon": 59.0,
     "terrain": "desert",
     "role": "candidate",
-    "note": "Coordonnée approchée",
+    "note": "Approximate coordinate",
     "precomputed": {
       "elevation": 552.1,
       "slope_mean": 0.22,
@@ -886,12 +868,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:11+00:00"
-    },
-    "name_en": "Lut Desert kaluts (Iran)"
+    }
   },
   {
     "id": "dallol",
-    "name": "Dallol, dépression du Danakil (Éthiopie)",
+    "name": "Dallol, Danakil Depression (Ethiopia)",
     "lat": 14.24,
     "lon": 40.3,
     "terrain": "volcanic",
@@ -917,12 +898,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:29+00:00"
-    },
-    "name_en": "Dallol, Danakil Depression (Ethiopia)"
+    }
   },
   {
     "id": "erta-ale",
-    "name": "Erta Ale (Éthiopie)",
+    "name": "Erta Ale (Ethiopia)",
     "lat": 13.6,
     "lon": 40.67,
     "terrain": "volcanic",
@@ -948,17 +928,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:31+00:00"
-    },
-    "name_en": "Erta Ale (Ethiopia)"
+    }
   },
   {
     "id": "hoggar-atakor",
-    "name": "Champ volcanique de l'Atakor, Hoggar (Algérie)",
+    "name": "Atakor volcanic field, Hoggar (Algeria)",
     "lat": 23.3,
     "lon": 5.6,
     "terrain": "volcanic",
     "role": "candidate",
-    "note": "Coordonnée approchée",
+    "note": "Approximate coordinate",
     "precomputed": {
       "elevation": 2284.6,
       "slope_mean": 11.83,
@@ -980,17 +959,16 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:52+00:00"
-    },
-    "name_en": "Atakor volcanic field, Hoggar (Algeria)"
+    }
   },
   {
     "id": "harrat-khaybar",
-    "name": "Harrat Khaybar (Arabie saoudite)",
+    "name": "Harrat Khaybar (Saudi Arabia)",
     "lat": 25.1,
     "lon": 39.92,
     "terrain": "volcanic",
     "role": "candidate",
-    "note": "Tubes de lave ; coordonnée approchée",
+    "note": "Lava tubes; approximate coordinate",
     "precomputed": {
       "elevation": 1078.5,
       "slope_mean": 1.28,
@@ -1012,12 +990,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:10:14+00:00"
-    },
-    "name_en": "Harrat Khaybar (Saudi Arabia)"
+    }
   },
   {
     "id": "aorounga",
-    "name": "Cratère d'Aorounga (Tchad)",
+    "name": "Aorounga Crater (Chad)",
     "lat": 19.1,
     "lon": 19.25,
     "terrain": "impact",
@@ -1043,12 +1020,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:10:39+00:00"
-    },
-    "name_en": "Aorounga Crater (Chad)"
+    }
   },
   {
     "id": "tenoumer",
-    "name": "Cratère de Tenoumer (Mauritanie)",
+    "name": "Tenoumer Crater (Mauritania)",
     "lat": 22.92,
     "lon": -10.4,
     "terrain": "impact",
@@ -1074,12 +1050,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:02+00:00"
-    },
-    "name_en": "Tenoumer Crater (Mauritania)"
+    }
   },
   {
     "id": "wolfe-creek",
-    "name": "Cratère de Wolfe Creek (Australie)",
+    "name": "Wolfe Creek Crater (Australia)",
     "lat": -19.17,
     "lon": 127.8,
     "terrain": "impact",
@@ -1105,12 +1080,11 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:21+00:00"
-    },
-    "name_en": "Wolfe Creek Crater (Australia)"
+    }
   },
   {
     "id": "gosses-bluff",
-    "name": "Gosses Bluff (Australie)",
+    "name": "Gosses Bluff (Australia)",
     "lat": -23.82,
     "lon": 132.31,
     "terrain": "impact",
@@ -1136,8 +1110,7 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:52+00:00"
-    },
-    "name_en": "Gosses Bluff (Australia)"
+    }
   },
   {
     "id": "craters-of-the-moon",
@@ -1167,7 +1140,6 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:12:20+00:00"
-    },
-    "name_en": "Craters of the Moon (Idaho)"
+    }
   }
 ]

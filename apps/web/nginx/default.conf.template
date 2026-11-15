@@ -1,4 +1,4 @@
-# Front statique (build Vite). API_ORIGIN est remplacé au démarrage du conteneur (gabarits de l image nginx officielle).
+# Static front end (Vite build). API_ORIGIN is substituted when the container starts (official nginx image templates).
 server_tokens off;
 
 server {

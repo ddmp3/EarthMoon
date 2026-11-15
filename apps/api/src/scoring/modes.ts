@@ -1,8 +1,8 @@
 import type { Criterion } from "./types.js";
 
 /**
- * Modes 1 à 3 : critères prédéfinis, recopiés de docs/scenarios.md.
- * Toute modification d'intervalle doit aussi être faite dans scenarios.md, avec sa source.
+ * Modes 1 to 3: predefined criteria, copied from docs/scenarios.md.
+ * Any change to a range must also be made in scenarios.md, with its source.
  */
 
 export type ModeId = "robotics" | "calibration" | "colony";
@@ -18,8 +18,8 @@ export const MODES: Record<ModeId, Mode> = {
     id: "robotics",
     name: "Validation robotique",
     criteria: [
-      // Pente moyenne et rugosité : intervalle interquartile du pôle Sud lunaire (LRO LOLA, fenêtres de 1 km,
-      // tools/precompute/lunar_reference.py). Pente max : limites des rovers (docs/verification-modes-1-2.md).
+      // Mean slope and roughness: interquartile range at the lunar south pole (LRO LOLA, 1 km windows,
+      // tools/precompute/lunar_reference.py). Max slope: rover limits (docs/scenarios.md).
       { param: "slope_mean", min: 5, max: 13, tolerance: 10, weight: 3 },
       { param: "slope_max", min: 15, max: 30, tolerance: 10, weight: 1 },
       { param: "roughness", min: 22, max: 65, tolerance: 30, weight: 2 },

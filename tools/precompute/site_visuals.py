@@ -1,18 +1,18 @@
-"""Images réelles de chaque site candidat et de son « jumeau lunaire », à la même échelle (12 km, maille de 40 m).
+"""Real images of each candidate site and of its "lunar twin", at the same scale (12 km, 40 m grid).
 
-Pour chaque site de data/candidates.json, écrit dans apps/web/public/sites/<id>/ :
-    earth.jpg         vue satellite réelle (Sentinel-2 sans nuages 2016 ; à défaut Landsat WELD, NASA GIBS ; absente si aucune n’est assez fine)
-    earth-relief.jpg  relief ombré du site (Copernicus DEM GLO-30 rééchantillonné à 40 m)
-    earth-match.png   calque ambre transparent : pixels dont la pente est dans l'intervalle typique du pôle Sud lunaire
-    moon-relief.jpg   relief ombré du jumeau lunaire (LRO LOLA LDEM_85S_40M)
-    moon-match.png    même calque, côté Lune
-et apps/web/public/sites/manifest.json (sources, coordonnées du jumeau, part de pentes concordantes).
+For each site of data/candidates.json, writes to apps/web/public/sites/<id>/:
+    earth.jpg         real satellite view (cloudless Sentinel-2 2016; else Landsat WELD, NASA GIBS; absent if none is fine enough)
+    earth-relief.jpg  shaded relief of the site (Copernicus DEM GLO-30 resampled to 40 m)
+    earth-match.png   transparent amber overlay: pixels whose slope is in the typical lunar south pole range
+    moon-relief.jpg   shaded relief of the lunar twin (LRO LOLA LDEM_85S_40M)
+    moon-match.png    same overlay, Moon side
+and apps/web/public/sites/manifest.json (sources, twin coordinates, share of matching slopes).
 
-Jumeau lunaire : la fenêtre de 1 km du pôle Sud (au sud de 85°S) dont la pente moyenne et la rugosité sont les plus
-proches de celles du site (distance normalisée par l'intervalle interquartile lunaire), entourée de 12 km de contexte.
-Les deux reliefs sont ombrés avec le même éclairage : la comparaison montre le relief, pas la lumière réelle.
+Lunar twin: the 1 km window of the south pole (south of 85°S) whose mean slope and roughness are closest
+to the site's (distance normalized by the lunar interquartile range), surrounded by 12 km of context.
+Both reliefs are shaded with the same lighting: the comparison shows relief, not real light.
 
-Usage :
+Usage:
     python site_visuals.py ../../data/candidates-precomputed.json ~/data/lola/ldem_85s_40m.img
     python site_visuals.py ... --only haughton,tunnunik --force
 """
@@ -48,16 +48,16 @@ PHOTO_SOURCES = [
 ]
 
 
-# ----------------------------------------------------------------- fonctions pures (testées)
+# ----------------------------------------------------------------- pure functions (tested)
 def bbox_square(lat: float, lon: float, extent_m: float = EXTENT_M) -> tuple[float, float, float, float]:
-    """(ouest, sud, est, nord) d'un carré de extent_m centré sur le point."""
+    """(west, south, east, north) of a square of extent_m centered on the point."""
     dlat = math.degrees(extent_m / 2 / R_EARTH)
     dlon = dlat / max(math.cos(math.radians(lat)), 0.02)
     return lon - dlon, lat - dlat, lon + dlon, lat + dlat
 
 
 def hillshade(z: np.ndarray, pixel_m: float, azimuth: float = 315.0, altitude: float = 35.0) -> np.ndarray:
-    """Relief ombré 0-255 (uint8). NaN -> 0."""
+    """Shaded relief 0-255 (uint8). NaN -> 0."""
     zf = np.where(np.isfinite(z), z, np.nanmean(z) if np.isfinite(z).any() else 0.0)
     gy, gx = np.gradient(zf, pixel_m)
     slope = np.arctan(np.hypot(gx, gy))
@@ -68,14 +68,14 @@ def hillshade(z: np.ndarray, pixel_m: float, azimuth: float = 315.0, altitude: f
 
 
 def match_mask(z: np.ndarray, pixel_m: float, lo: float, hi: float) -> np.ndarray:
-    """Vrai là où la pente locale (°) est dans [lo, hi]."""
+    """True where the local slope (°) is within [lo, hi]."""
     s = slope_deg(np.asarray(z, dtype="float64"), pixel_m, pixel_m)
     return np.isfinite(s) & (s >= lo) & (s <= hi)
 
 
 def find_twin(slope_mean: np.ndarray, roughness: np.ndarray, valid: np.ndarray, site_slope: float, site_rough: float,
               iqr_slope: float, iqr_rough: float) -> tuple[int, int, float]:
-    """Indice (ligne, colonne) de la fenêtre lunaire la plus proche du site, et la distance normalisée."""
+    """Index (row, column) of the lunar window closest to the site, and the normalized distance."""
     d = ((slope_mean - site_slope) / iqr_slope) ** 2 + ((roughness - site_rough) / iqr_rough) ** 2
     d = np.where(valid, d, np.inf)
     i = int(np.argmin(d))
@@ -84,16 +84,16 @@ def find_twin(slope_mean: np.ndarray, roughness: np.ndarray, valid: np.ndarray, 
 
 
 def polar_latlon(row: float, col: float, size: int, pixel_m: float, radius_m: float = MOON_RADIUS_M) -> tuple[float, float]:
-    """(lat, lon) d'un pixel d'une grille stéréographique polaire Sud centrée sur le pôle (convention LOLA)."""
+    """(lat, lon) of a pixel of a south polar stereographic grid centered on the pole (LOLA convention)."""
     offset = (size - 1) / 2.0
     x, y = (col - offset) * pixel_m, (offset - row) * pixel_m
     lat = math.degrees(2 * math.atan(math.hypot(x, y) / (2 * radius_m)) - math.pi / 2)
     return lat, math.degrees(math.atan2(x, y))
 
 
-# ----------------------------------------------------------------- accès réseau
+# ----------------------------------------------------------------- network access
 def fetch_photo(lat: float, lon: float, px: int = 800) -> tuple[bytes, str, str] | None:
-    """Première source qui renvoie une vraie image (non vide) : (jpeg, id de la source, mention)."""
+    """First source that returns a real (non-empty) image: (jpeg, source id, credit)."""
     from PIL import Image
 
     w, s, e, n = bbox_square(lat, lon)
@@ -109,13 +109,13 @@ def fetch_photo(lat: float, lon: float, px: int = 800) -> tuple[bytes, str, str]
             arr = np.asarray(Image.open(io.BytesIO(raw)).convert("L"), dtype="float32")
         except Exception:
             continue
-        if arr.std() >= 4.0 and (arr > 8).mean() > 0.9:      # ni uni, ni troué de noir
+        if arr.std() >= 4.0 and (arr > 8).mean() > 0.9:      # neither uniform nor full of black holes
             return raw, key, credit
     return None
 
 
 def read_earth_dem(lat: float, lon: float) -> np.ndarray:
-    """Altitudes (m) Copernicus DEM sur le carré de 12 km, grille N x N (40 m). Assemble jusqu'à 4 tuiles."""
+    """Copernicus DEM elevations (m) over the 12 km square, N x N grid (40 m). Stitches up to 4 tiles."""
     import rasterio
     from rasterio.errors import RasterioIOError
     from rasterio.transform import from_bounds
@@ -133,18 +133,18 @@ def read_earth_dem(lat: float, lon: float) -> np.ndarray:
                           resampling=Resampling.bilinear, dst_nodata=np.nan)
                 out = np.where(np.isfinite(out), out, part)
         except RasterioIOError:
-            continue          # tuile absente (océan)
+            continue          # tile missing (ocean)
     return out
 
 
-# ----------------------------------------------------------------- écriture des images
+# ----------------------------------------------------------------- writing the images
 def save_relief(z: np.ndarray, path: str) -> None:
     from PIL import Image
     Image.fromarray(hillshade(z, PIXEL_M)).resize((OUT_PX, OUT_PX), Image.BICUBIC).save(path, quality=84, optimize=True)
 
 
 def save_mask(mask: np.ndarray, path: str) -> None:
-    """Calque ambre transparent à la maille d'origine (300 px, quelques Ko) : le navigateur l'agrandit en lissant."""
+    """Transparent amber overlay at the original grid (300 px, a few KB): the browser upscales it smoothly."""
     from PIL import Image
     rgba = np.zeros((*mask.shape, 4), dtype="uint8")
     rgba[..., :3] = HIGHLIGHT
@@ -154,12 +154,12 @@ def save_mask(mask: np.ndarray, path: str) -> None:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("candidates", help="data/candidates-precomputed.json (avec slope_mean et roughness)")
+    ap.add_argument("candidates", help="data/candidates-precomputed.json (with slope_mean and roughness)")
     ap.add_argument("ldem", help="ldem_85s_40m.img (LRO LOLA, PDS)")
     ap.add_argument("--out", default=os.path.join(os.path.dirname(__file__), "..", "..", "apps", "web", "public", "sites"))
-    ap.add_argument("--only", default="", help="ids séparés par des virgules")
+    ap.add_argument("--only", default="", help="comma-separated ids")
     ap.add_argument("--force", action="store_true")
-    ap.add_argument("--refetch-photos", action="store_true", help="retélécharge aussi les vues satellite")
+    ap.add_argument("--refetch-photos", action="store_true", help="also re-downloads the satellite views")
     args = ap.parse_args(argv)
 
     with open(args.candidates, encoding="utf-8") as f:
@@ -186,13 +186,13 @@ def main(argv=None) -> int:
     in_region = sm[valid]
     iqr_s = float(np.percentile(in_region, 75) - np.percentile(in_region, 25))
     iqr_r = float(np.percentile(rg[valid], 75) - np.percentile(rg[valid], 25))
-    # Intervalle typique de la pente locale (par pixel de 40 m) au sud de 85°S : sert au calque des deux côtés.
+    # Typical local slope range (per 40 m pixel) south of 85°S: used for the overlay on both sides.
     pixel_slope = slope_deg(moon[::2, ::2].astype("float64"), PIXEL_M * 2, PIXEL_M * 2)[south[::2, ::2]]
     lo, hi = (round(float(np.percentile(pixel_slope, p)), 1) for p in (25, 75))
     manifest.update({"extent_km": EXTENT_M / 1000, "pixel_m": PIXEL_M, "slope_band_deg": [lo, hi],
                      "moon_source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node)",
                      "earth_relief_source": "Copernicus DEM GLO-30 (ESA / European Union), resampled to 40 m"})
-    print(f"Pente locale typique du pôle Sud : {lo} à {hi}°", file=sys.stderr)
+    print(f"Typical local slope at the south pole: {lo} to {hi}°", file=sys.stderr)
 
     for s in sites:
         sid = s["id"]
@@ -204,7 +204,7 @@ def main(argv=None) -> int:
             continue
         pre = s.get("precomputed") or {}
         if pre.get("slope_mean") is None or pre.get("roughness") is None:
-            print(f"  FAIL  {sid}: pas de relief précalculé")
+            print(f"  FAIL  {sid}: no precomputed relief")
             continue
         os.makedirs(folder, exist_ok=True)
         entry: dict = {}
@@ -212,7 +212,7 @@ def main(argv=None) -> int:
             previous = manifest["sites"].get(sid, {}).get("photo")
             photo_path = os.path.join(folder, "earth.jpg")
             if previous and os.path.exists(photo_path) and not args.refetch_photos:
-                entry["photo"] = previous          # photo déjà téléchargée : on ne refait que le relief et les masques
+                entry["photo"] = previous          # photo already downloaded: only the relief and the masks are redone
                 photo = None
             else:
                 photo = fetch_photo(float(s["lat"]), float(s["lon"]))
@@ -222,7 +222,7 @@ def main(argv=None) -> int:
                 entry["photo"] = {"source": photo[1], "credit": photo[2]}
             z = read_earth_dem(float(s["lat"]), float(s["lon"]))
             if np.isfinite(z).mean() < 0.5:
-                raise ValueError("relief terrestre indisponible sur plus de la moitié du carré")
+                raise ValueError("Earth relief unavailable over more than half of the square")
             save_relief(z, os.path.join(folder, "earth-relief.jpg"))
             earth_mask = match_mask(z, PIXEL_M, lo, hi)
             save_mask(earth_mask, os.path.join(folder, "earth-match.png"))
@@ -250,7 +250,7 @@ def main(argv=None) -> int:
     with open(manifest_path, "w", encoding="utf-8") as f:
         json.dump(manifest, f, ensure_ascii=False, indent=1)
         f.write("\n")
-    print(f"{len(manifest['sites'])} sites dans {manifest_path}", file=sys.stderr)
+    print(f"{len(manifest['sites'])} sites in {manifest_path}", file=sys.stderr)
     return 0
 
 

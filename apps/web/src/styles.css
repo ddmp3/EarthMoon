@@ -1,5 +1,5 @@
-/* Direction : noir d'espace, photographie NASA en plein cadre, accent ambre (régolithe au soleil).
-   Mise en page : bandeau photo, cartes de mission au format carte à jouer, puis classement + carte + fiche. */
+/* Direction: space black, full-bleed NASA photography, amber accent (sunlit regolith).
+   Layout: photo banner, playing-card mission cards, then ranking + map + site card. */
 :root {
   --bg: #05070d;
   --panel: #0c101a;
@@ -243,7 +243,7 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .radar-shape { fill: color-mix(in srgb, var(--accent) 22%, transparent); stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
 .radar-dot { fill: var(--tone); stroke: var(--panel-2); stroke-width: 2; }
 
-/* ------------------------------------------------------------------ crédits */
+/* ------------------------------------------------------------------ credits */
 .credits { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; padding: 32px var(--gutter); border-top: 1px solid var(--line); color: var(--muted); font-size: 0.82rem; }
 .credits h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 10px; }
 .credits ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }

@@ -30,7 +30,7 @@ function formatMoon(value: MoonValue | undefined, fallbackUnit: string): string 
   return `≤ ${formatNumber(value.max as number)}${u}`
 }
 
-// Noms courts pour le tableau ; le nom complet et la mention sont dans la liste des sources en bas de page.
+// Short names for the table; the full name and attribution are in the source list at the bottom of the page.
 const SHORT_SOURCES: Record<string, string> = {
   coordinates: 'Site coordinates',
   'nasa-power': 'NASA POWER',
@@ -44,14 +44,14 @@ const SHORT_SOURCES: Record<string, string> = {
 function sourceName(id: string | undefined, sources: DataSource[]): string {
   if (!id) return '—'
   const found = sources.find((source) => source.id === id)
-  return SHORT_SOURCES[id] ?? (found ? (found.nameEn ?? found.name) : id)
+  return SHORT_SOURCES[id] ?? (found ? found.name : id)
 }
 
-/** Fondu Terre ↔ Lune à la même échelle, avec les pentes de type lunaire surlignées. */
+/** Earth ↔ Moon crossfade at the same scale, with lunar-like slopes highlighted. */
 function Comparator({ siteId, visual, manifest, children }: { siteId: string; visual: SiteVisual; manifest: VisualManifest; children?: React.ReactNode }) {
   const { t } = useT()
   const hasPhoto = Boolean(visual.photo)
-  // ?fade=60 dans l'adresse fixe le fondu de départ (liens de démonstration).
+  // ?fade=60 in the URL sets the initial crossfade (demo links).
   const [fade, setFade] = useState(() => {
     const wanted = Number(new URLSearchParams(window.location.search).get('fade'))
     return Number.isFinite(wanted) ? Math.min(Math.max(wanted, 0), 100) : 0
@@ -146,11 +146,11 @@ function Comparator({ siteId, visual, manifest, children }: { siteId: string; vi
   )
 }
 
-/** Profil de concordance : un axe par critère, anneau extérieur = concordance parfaite. */
+/** Match profile: one axis per criterion, outer ring = perfect match. */
 function Radar({ site }: { site: SiteResult }) {
   const criteria = site.criteria
   const n = criteria.length
-  // Marges latérales larges : les libellés longs (« Minimum air temperature ») restent dans le cadre.
+  // Wide side margins: long labels ("Minimum air temperature") stay inside the frame.
   const width = 520
   const height = 330
   const cx = width / 2
@@ -309,7 +309,7 @@ export function SiteDetail({ site, rank, detail, detailError, visual, manifest, 
                     </th>
                   </tr>
                   {limits.map((limit) => {
-                    const text = limit.en ?? limit
+                    const text = limit
                     return (
                       <tr key={limit.id}>
                         <th scope="row">

@@ -8,9 +8,9 @@ export type CacheOptions = {
 };
 
 /**
- * Cache mémoire d'un connecteur (aucune base de données, voir docs/architecture.md).
- * Clé : coordonnées arrondies à ~100 m. Les requêtes identiques simultanées partagent un seul appel.
- * Un échec n'est jamais mis en cache : la prochaine requête réessaie.
+ * In-memory cache for a connector (no database, see docs/architecture.md).
+ * Key: coordinates rounded to ~100 m. Identical concurrent requests share a single call.
+ * A failure is never cached: the next request retries.
  */
 export function withCache(connector: Connector, options: CacheOptions = {}): Connector {
   const { ttlMs = 6 * 60 * 60 * 1000, maxEntries = 1000, now = Date.now } = options;
@@ -37,7 +37,7 @@ export function withCache(connector: Connector, options: CacheOptions = {}): Con
   };
 }
 
-/** Précharge le cache avant la démo (docs/plan-projet.md, « cache préchauffé »). */
+/** Warms the cache before the demo. */
 export async function warmUp(connectors: Connector[], sites: { lat: number; lon: number }[]): Promise<void> {
   await Promise.allSettled(sites.flatMap((site) => connectors.map((c) => c(site))));
 }

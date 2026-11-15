@@ -3,7 +3,7 @@ import { fetchJson } from "./http.js";
 import type { FetchJsonOptions } from "./http.js";
 
 /**
- * USGS Earthquake Catalog (FDSN), nombre de séismes M ≥ 2,5 à moins de 300 km depuis 2000 :
+ * USGS Earthquake Catalog (FDSN), number of M ≥ 2.5 earthquakes within 300 km since 2000:
  * https://earthquake.usgs.gov/fdsnws/event/1/
  */
 export const USGS_COUNT_URL = "https://earthquake.usgs.gov/fdsnws/event/1/count";
@@ -21,7 +21,7 @@ export function usgsUrl(lat: number, lon: number): string {
 export function parseUsgsCount(body: unknown): number {
   const count = (body as { count?: unknown } | null)?.count;
   if (typeof count !== "number" || !Number.isInteger(count) || count < 0) {
-    throw new Error("Réponse USGS inattendue");
+    throw new Error("Unexpected USGS response");
   }
   return count;
 }
