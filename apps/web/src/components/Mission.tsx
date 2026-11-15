@@ -9,6 +9,7 @@ import {
   type SiteResult,
   type VisualManifest,
 } from '../api'
+import { StabilityDots } from './Stability'
 import { useT } from '../i18n'
 import { useAppStore, type SelectedMode } from '../store'
 import { missionImage, scoreTone, siteName } from '../shared'
@@ -189,6 +190,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                   {ranked} {t.sitesRanked}
                 </span>
               </div>
+              <p className="screening-note">{t.screeningNote}</p>
               <ol>
                 {sites.map((site, index) => {
                   const tone = scoreTone(site.total, Boolean(site.excluded))
@@ -206,7 +208,10 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                         {thumb ? <img alt="" loading="lazy" src={thumb} /> : <span className="rank-thumb-empty" />}
                         <span className="rank-copy">
                           <strong>{siteName(site)}</strong>
-                          <small>{site.excluded ? t.excluded : t.roles[site.role]}</small>
+                          <small>
+                            {site.excluded ? t.excluded : t.roles[site.role]}
+                            {!site.excluded && <StabilityDots rank={index + 1} site={site} total={ranked} />}
+                          </small>
                         </span>
                         <span className={`rank-score tone-${tone}`}>{site.excluded ? '—' : Math.round(site.total)}</span>
                       </button>

@@ -229,7 +229,7 @@ components:
         min: { type: number }
         max: { type: number }
         tolerance: { type: number, minimum: 0 }
-        weight: { type: number, exclusiveMinimum: true, minimum: 0 }
+        weight: { type: number, exclusiveMinimum: 0, minimum: 0 }
         group:
           type: string
           description: Instrument (mode 2) or need (mode 3), to filter and group in the interface.
@@ -273,7 +273,7 @@ components:
         bareSoilOnly:
           type: boolean
           default: true
-          description: Bare-soil filter (NDVI ≤ 0.2). Can be disabled in mode 4.
+          description: Bare-soil filter. No penalty up to NDVI 0.2, linear penalty down to 0 at NDVI 0.6 (excluded). Can be disabled in mode 4.
       oneOf:
         - required: [mode]
         - required: [criteria]
@@ -295,10 +295,34 @@ components:
         excluded:
           type: string
           enum: [vegetation]
-          description: Present if the bare-soil filter excludes the site (total forced to 0).
+          description: Present if the bare-soil filter excludes the site (dense vegetation, NDVI ≥ 0.6; total forced to 0).
+        vegetationFactor:
+          type: number
+          exclusiveMinimum: 0
+          maximum: 1
+          description: Present if the bare-soil filter lowered the total (NDVI between 0.2 and 0.6). The total is multiplied by this factor.
+        stability:
+          $ref: "#/components/schemas/Stability"
+    Stability:
+      type: object
+      description: Rank of the site when weights, tolerances and interval bounds are perturbed (see AnalyzeResponse.sensitivity). Absent for excluded sites.
+      required: [rankP10, rankMedian, rankP90, topHalfShare]
+      properties:
+        rankP10: { type: integer, minimum: 1, description: "Best-case rank (10th percentile of the scenarios)." }
+        rankMedian: { type: integer, minimum: 1 }
+        rankP90: { type: integer, minimum: 1, description: "Worst-case rank (90th percentile of the scenarios)." }
+        topHalfShare: { type: number, minimum: 0, maximum: 1, description: Share of scenarios where the site stays in the top half of the ranked sites. }
+    Sensitivity:
+      type: object
+      description: How the stability of the ranks was computed.
+      required: [runs, seed, perturbation]
+      properties:
+        runs: { type: integer }
+        seed: { type: integer, description: Fixed seed, so the same data always gives the same answer. }
+        perturbation: { type: string }
     AnalyzeResponse:
       type: object
-      required: [mode, sites]
+      required: [mode, sites, sensitivity]
       properties:
         mode:
           type: string
@@ -306,6 +330,8 @@ components:
         sites:
           type: array
           items: { $ref: "#/components/schemas/AnalyzedSite" }
+        sensitivity:
+          $ref: "#/components/schemas/Sensitivity"
     SiteDetail:
       allOf:
         - $ref: "#/components/schemas/AnalyzedSite"

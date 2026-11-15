@@ -40,16 +40,18 @@ function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
   })
 }
 
+/** Shareable address: #mission or #mission/site (for example #colony/tunnunik). */
+function parseHash(): { mode: SelectedMode | null; site: string | null } {
+  const [mode, site] = window.location.hash.replace(/^#/, '').split('/')
+  return MISSION_ORDER.includes(mode as SelectedMode) ? { mode: mode as SelectedMode, site: site || null } : { mode: null, site: null }
+}
+
 function App() {
   const { t } = useT()
   const { criteriaDraft, bareSoilOnly, calibrationInstrument } = useAppStore()
-  // Adresse partageable : #mission ou #mission/site (ex. #colony/tunnunik).
-  const [initialMode, initialSite] = window.location.hash.replace(/^#/, '').split('/')
-  const [mode, setMode] = useState<SelectedMode | null>(
-    MISSION_ORDER.includes(initialMode as SelectedMode) ? (initialMode as SelectedMode) : null,
-  )
+  const [mode, setMode] = useState<SelectedMode | null>(() => parseHash().mode)
   const [sites, setSites] = useState<SiteResult[]>([])
-  const [selectedId, setSelectedId] = useState<string | null>(initialSite || null)
+  const [selectedId, setSelectedId] = useState<string | null>(() => parseHash().site)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [builderError, setBuilderError] = useState<string | null>(null)
@@ -122,10 +124,37 @@ function App() {
     return () => controller.abort()
   }, [selectedId])
 
+  // State -> address. Changing screen (home <-> mission) adds a history entry, so the browser Back button
+  // returns to the missions; selecting another site only replaces the current entry.
   useEffect(() => {
     const hash = mode ? `#${mode}${selectedId ? `/${selectedId}` : ''}` : ''
-    if (window.location.hash !== hash) window.history.replaceState(null, '', hash || window.location.pathname)
+    if (window.location.hash === hash) return
+    const url = hash || window.location.pathname + window.location.search
+    if (parseHash().mode !== mode) window.history.pushState(null, '', url)
+    else window.history.replaceState(null, '', url)
   }, [mode, selectedId])
+
+  // Address -> state: Back and Forward buttons, a pasted link, a bookmark opened in the same tab.
+  useEffect(() => {
+    const onAddressChange = () => {
+      const next = parseHash()
+      setMode((current) => {
+        if (current !== next.mode) {
+          setSites([])
+          setError(null)
+          setBuilderError(null)
+        }
+        return next.mode
+      })
+      setSelectedId(next.site)
+    }
+    window.addEventListener('hashchange', onAddressChange)
+    window.addEventListener('popstate', onAddressChange)
+    return () => {
+      window.removeEventListener('hashchange', onAddressChange)
+      window.removeEventListener('popstate', onAddressChange)
+    }
+  }, [])
 
   const pick = (next: SelectedMode) => {
     setSites([])
@@ -175,6 +204,7 @@ function App() {
                 limits={limits}
                 manifest={manifest}
                 rank={sites.findIndex((site) => site.id === selected.id) + 1}
+                rankedTotal={sites.filter((site) => !site.excluded).length}
                 site={selected}
                 sources={sources}
                 visual={manifest?.sites[selected.id]}

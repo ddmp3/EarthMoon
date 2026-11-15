@@ -3,8 +3,14 @@ import type { Criterion, CriterionScore, ParamValues, SiteScore, Verdict } from 
 export const MATCH_THRESHOLD = 0.7;
 export const PARTIAL_THRESHOLD = 0.4;
 
-/** Threshold of the common "bare soil" filter (docs/scenarios.md). */
+/** Threshold of the common "bare soil" filter (docs/scenarios.md): up to here, no penalty. */
 export const NDVI_BARE_SOIL_MAX = 0.2;
+
+/**
+ * NDVI at which the penalty reaches 100%: dense vegetation by the usual remote-sensing convention
+ * (sparse vegetation ~0.2-0.5, dense > 0.6). Between the two the penalty is linear, like any tolerance.
+ */
+export const NDVI_DENSE_VEGETATION = 0.6;
 
 /**
  * Score of a value for a criterion: 1 inside the [min, max] interval,
@@ -36,25 +42,43 @@ export function scoreCriterion(values: ParamValues, criterion: Criterion): Crite
 }
 
 /**
- * Overall site score: weighted mean of the criteria, out of 100.
- * A criterion with no value (source down) is excluded from the total so as not to
+ * Unrounded weighted mean of the criteria, between 0 and 100.
+ * A criterion with no value (source down) is excluded from the mean so as not to
  * penalize the site because of a source; it stays visible with the "missing" verdict.
  */
-export function scoreSite(values: ParamValues, criteria: Criterion[]): SiteScore {
-  const scored = criteria.map((c) => scoreCriterion(values, c));
+export function weightedTotal(values: ParamValues, criteria: Criterion[]): number {
   let weighted = 0;
   let weights = 0;
-  scored.forEach((s, i) => {
-    if (s.verdict === "missing") return;
-    weighted += criteria[i].weight * s.score;
-    weights += criteria[i].weight;
-  });
-  const total = weights > 0 ? Math.round((100 * weighted) / weights) : 0;
-  return { total, criteria: scored };
+  for (const criterion of criteria) {
+    const s = scoreCriterion(values, criterion);
+    if (s.verdict === "missing") continue;
+    weighted += criterion.weight * s.score;
+    weights += criterion.weight;
+  }
+  return weights > 0 ? (100 * weighted) / weights : 0;
+}
+
+/** Overall site score: weighted mean of the criteria, out of 100, rounded. */
+export function scoreSite(values: ParamValues, criteria: Criterion[]): SiteScore {
+  return {
+    total: Math.round(weightedTotal(values, criteria)),
+    criteria: criteria.map((c) => scoreCriterion(values, c)),
+  };
 }
 
 /** Common filter: true if the site is vegetated (NDVI known and > 0.2). */
 export function isVegetated(values: ParamValues): boolean {
   const ndvi = values.ndvi;
   return typeof ndvi === "number" && ndvi > NDVI_BARE_SOIL_MAX;
+}
+
+/**
+ * Multiplier applied to the total of a vegetated site: 1 up to NDVI 0.2, linear decrease to 0 at NDVI 0.6.
+ * A single-point NDVI can misrepresent a large site (ring lake, forested rim), so the filter degrades the score
+ * gradually instead of dropping the site; only dense vegetation (factor 0) is excluded.
+ */
+export function vegetationFactor(values: ParamValues): number {
+  const ndvi = values.ndvi;
+  if (typeof ndvi !== "number" || !Number.isFinite(ndvi)) return 1;
+  return scoreValue(ndvi, { param: "ndvi", max: NDVI_BARE_SOIL_MAX, tolerance: NDVI_DENSE_VEGETATION - NDVI_BARE_SOIL_MAX, weight: 1 });
 }

@@ -11,6 +11,7 @@ import {
   type SiteVisual,
   type VisualManifest,
 } from '../api'
+import { ConfidenceNotes } from './Stability'
 import { formatNumber, useT } from '../i18n'
 import { scoreTone, siteName } from '../shared'
 
@@ -193,6 +194,8 @@ function Radar({ site }: { site: SiteResult }) {
 interface Props {
   site: SiteResult
   rank: number
+  /** Number of ranked (non-excluded) sites, to read the rank range. */
+  rankedTotal: number
   detail: SiteDetailData | null
   detailError: string | null
   visual: SiteVisual | undefined
@@ -201,7 +204,7 @@ interface Props {
   limits: EarthLimit[]
 }
 
-export function SiteDetail({ site, rank, detail, detailError, visual, manifest, sources, limits }: Props) {
+export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visual, manifest, sources, limits }: Props) {
   const { t } = useT()
   const evaluated = site.criteria.filter((criterion) => criterion.verdict !== 'missing').length
   const count = (verdict: string) => site.criteria.filter((criterion) => criterion.verdict === verdict).length
@@ -228,6 +231,7 @@ export function SiteDetail({ site, rank, detail, detailError, visual, manifest, 
             </small>
           </span>
         </div>
+        <ConfidenceNotes rank={rank} site={site} total={rankedTotal} />
         <ul className="verdict-summary">
           {(['match', 'partial', 'mismatch', 'missing'] as const).map((verdict) =>
             count(verdict) > 0 ? (
@@ -283,20 +287,20 @@ export function SiteDetail({ site, rank, detail, detailError, visual, manifest, 
                         {info.label}
                         <small>{info.help}</small>
                       </th>
-                      <td className="num">{formatValue(criterion.value, info.unit)}</td>
-                      <td className="num moon-cell">
+                      <td className="num" data-label={t.colEarth}>{formatValue(criterion.value, info.unit)}</td>
+                      <td className="num moon-cell" data-label={t.colMoon}>
                         {moon ?? <span className="moon-note">{MOON_NOTES[criterion.param] ?? t.noLunarRef}</span>}
                       </td>
-                      <td>
+                      <td className="match-cell" data-label={t.colMatch}>
                         <span className="match-bar">
                           <i className={`tone-${criterion.verdict}`} style={{ width: `${Math.round(criterion.score * 100)}%` }} />
                         </span>
                         <span className="num match-value">{Math.round(criterion.score * 100)}%</span>
                       </td>
-                      <td>
+                      <td data-label={t.colVerdict}>
                         <span className={`pill tone-${criterion.verdict}`}>{t.verdicts[criterion.verdict]}</span>
                       </td>
-                      <td className="source-cell">{sourceName(detail?.valueSources[criterion.param], sources)}</td>
+                      <td className="source-cell" data-label={t.colSource}>{sourceName(detail?.valueSources[criterion.param], sources)}</td>
                     </tr>
                   )
                 })}
@@ -316,15 +320,15 @@ export function SiteDetail({ site, rank, detail, detailError, visual, manifest, 
                           {text.label}
                           <small>{text.effect}</small>
                         </th>
-                        <td>{text.earth}</td>
-                        <td className="moon-cell">{text.moon}</td>
-                        <td>
+                        <td data-label={t.colEarth}>{text.earth}</td>
+                        <td className="moon-cell" data-label={t.colMoon}>{text.moon}</td>
+                        <td className="cell-empty">
                           <span className="match-bar match-bar-none" />
                         </td>
-                        <td>
+                        <td data-label={t.colVerdict}>
                           <span className="pill tone-limit">{t.limitsVerdict}</span>
                         </td>
-                        <td className="source-cell">{limit.source.split(' — ')[0]}</td>
+                        <td className="source-cell" data-label={t.colSource}>{limit.source.split(' — ')[0]}</td>
                       </tr>
                     )
                   })}

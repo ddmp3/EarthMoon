@@ -78,6 +78,42 @@ describe("collectValues", () => {
   });
 });
 
+describe("analyze: graded vegetation filter and stability", () => {
+  const sites: Site[] = [
+    { id: "bare", name: "Bare", lat: 0, lon: 0, role: "validation" },
+    { id: "sparse", name: "Sparse", lat: 1, lon: 1, role: "candidate" },
+    { id: "dense", name: "Dense", lat: 2, lon: 2, role: "negative" },
+  ];
+  const ndvi: Record<string, number> = { bare: 0.05, sparse: 0.4, dense: 0.8 };
+  const connector: Connector = async ({ lat }) => ({ ndvi: Object.values(ndvi)[lat] as number, wind: 1 });
+  const body = { criteria: [{ param: "wind", max: 3, tolerance: 3, weight: 1 }] };
+
+  it("degrades a moderately vegetated site instead of dropping it, and excludes only dense vegetation", async () => {
+    const r = await analyze(body, { sites, connectors: [connector] });
+    const byId = Object.fromEntries(r.sites.map((s) => [s.id, s]));
+    expect(byId.bare).toMatchObject({ total: 100 });
+    expect(byId.bare.vegetationFactor).toBeUndefined();
+    expect(byId.sparse).toMatchObject({ total: 50, vegetationFactor: 0.5 });
+    expect(byId.sparse.excluded).toBeUndefined();
+    expect(byId.dense).toMatchObject({ total: 0, excluded: "vegetation" });
+    expect(r.sites.map((s) => s.id)).toEqual(["bare", "sparse", "dense"]);
+  });
+
+  it("applies no penalty when the filter is off", async () => {
+    const r = await analyze({ ...body, bareSoilOnly: false }, { sites, connectors: [connector] });
+    expect(r.sites.every((s) => s.total === 100 && s.vegetationFactor === undefined && !s.excluded)).toBe(true);
+  });
+
+  it("adds a rank range for ranked sites, none for excluded ones, and describes the method", async () => {
+    const r = await analyze(body, { sites, connectors: [connector] });
+    expect(r.sensitivity.runs).toBeGreaterThan(0);
+    expect(r.sensitivity.perturbation).toMatch(/weights/);
+    expect(r.sites.find((s) => s.id === "dense")?.stability).toBeUndefined();
+    const bare = r.sites.find((s) => s.id === "bare")?.stability;
+    expect(bare).toMatchObject({ rankP10: 1, rankMedian: 1, rankP90: 1, topHalfShare: 1 });
+  });
+});
+
 describe("analyze on the fixtures", () => {
   it.each(["robotics", "calibration", "colony"] as const)(
     "mode %s: Haughton ahead, Amazon excluded and last",

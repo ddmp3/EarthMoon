@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isVegetated, MODES, scoreCriterion, scoreSite, scoreValue, verdictFor } from "../src/scoring/index.js";
+import { isVegetated, MODES, scoreCriterion, scoreSite, scoreValue, vegetationFactor, verdictFor, weightedTotal } from "../src/scoring/index.js";
 import type { Criterion } from "../src/scoring/index.js";
 
 const range: Criterion = { param: "slope_mean", min: 5, max: 15, tolerance: 10, weight: 1 };
@@ -101,6 +101,39 @@ describe("isVegetated", () => {
     expect(isVegetated({ ndvi: 0.24 })).toBe(true);
     expect(isVegetated({ ndvi: null })).toBe(false);
     expect(isVegetated({})).toBe(false);
+  });
+});
+
+describe("vegetationFactor", () => {
+  it("is 1 up to NDVI 0.2, linear down to 0 at NDVI 0.6", () => {
+    expect(vegetationFactor({ ndvi: -0.02 })).toBe(1);
+    expect(vegetationFactor({ ndvi: 0.2 })).toBe(1);
+    expect(vegetationFactor({ ndvi: 0.4 })).toBeCloseTo(0.5);
+    expect(vegetationFactor({ ndvi: 0.6 })).toBe(0);
+    expect(vegetationFactor({ ndvi: 0.85 })).toBe(0);
+  });
+
+  it("keeps a moderately vegetated site mostly intact (impact craters of the candidate list)", () => {
+    expect(vegetationFactor({ ndvi: 0.24 })).toBeCloseTo(0.9); // Popigai, Gosses Bluff
+    expect(vegetationFactor({ ndvi: 0.325 })).toBeCloseTo(0.69, 1); // Wolfe Creek
+    expect(vegetationFactor({ ndvi: 0.551 })).toBeLessThan(0.15); // Manicouagan
+  });
+
+  it("is 1 when NDVI is unknown", () => {
+    expect(vegetationFactor({})).toBe(1);
+    expect(vegetationFactor({ ndvi: null })).toBe(1);
+  });
+});
+
+describe("weightedTotal", () => {
+  it("is the unrounded weighted mean and ignores missing criteria", () => {
+    const criteria: Criterion[] = [
+      { param: "slope_mean", min: 5, max: 15, tolerance: 10, weight: 1 },
+      { param: "wind", max: 3, tolerance: 3, weight: 2 },
+      { param: "humidity", max: 40, tolerance: 30, weight: 5 },
+    ];
+    expect(weightedTotal({ slope_mean: 0, wind: 4.5 }, criteria)).toBeCloseTo((100 * (0.5 + 2 * 0.5)) / 3);
+    expect(weightedTotal({}, criteria)).toBe(0);
   });
 });
 

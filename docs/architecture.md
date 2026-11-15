@@ -37,7 +37,7 @@ Contract: [`apps/api/openapi.yaml`](../apps/api/openapi.yaml), live docs on `/ap
 
 ## Data files
 
-- `data/candidates.json`: `{ id, name, lat, lon, terrain, role, note?, known_for? }`. `role` is `validation` (known analog), `negative` (control) or `candidate` (understudied site).
+- `data/candidates.json`: `{ id, name, lat, lon, terrain, role, note?, known_for? }`. `role` is `validation` (known analog), `negative` (control) or `candidate` (site to validate).
 - `data/reference/moon-south-pole.json`: lunar reference values with sources, plus `earth_limits` (what Earth cannot reproduce).
 - `data/candidates-precomputed.json`: candidates with a `precomputed` block (terrain geometry and MODIS values). Regenerate with `tools/precompute/` after changing `candidates.json`, then run `tools/validation/rankings.py` and `tools/validation/e2e.py`.
 

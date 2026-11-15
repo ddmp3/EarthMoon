@@ -104,7 +104,8 @@ a { color: var(--accent); }
 .mission-banner-robotics img { object-position: 50% 47%; }
 .mission-banner-calibration img { object-position: 50% 52%; }
 .mission-banner-colony img { object-position: 50% 74%; }
-.mission-banner-custom img { object-position: 50% 50%; }
+/* Zoomed in so the mosaic's own longitude labels (90°W, 90°E) stay outside the frame. */
+.mission-banner-custom img { object-position: 50% 50%; transform: scale(1.3); }
 .mission-banner-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 7, 13, 0.9) 0%, rgba(5, 7, 13, 0.45) 60%, rgba(5, 7, 13, 0.1) 100%), linear-gradient(0deg, var(--bg) 0%, rgba(5, 7, 13, 0) 45%); }
 .mission-banner-copy { position: relative; display: grid; gap: 8px; padding: 0 var(--gutter) 30px; max-width: 720px; }
 .mission-banner-copy h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.05; }
@@ -129,7 +130,8 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .builder-rows { display: grid; gap: 12px; }
 .builder-row { display: grid; grid-template-columns: minmax(180px, 1.6fr) repeat(4, minmax(80px, 1fr)) auto; gap: 10px; align-items: end; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
 .builder-row label { display: grid; gap: 4px; font-size: 0.74rem; color: var(--muted); }
-.builder-row select, .builder-number input { width: 100%; }
+.builder-row select, .builder-number input { width: 100%; height: 40px; }
+.builder-row .ghost { height: 40px; padding: 0 14px; }
 .builder-help { grid-column: 1 / -1; color: var(--muted); font-size: 0.8rem; }
 .builder-actions { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 
@@ -208,6 +210,7 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: var(--accent); margin-right: 8px; vertical-align: -1px; }
 .twin-facts { display: grid; gap: 12px; }
 .twin-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+.twin-table td { white-space: nowrap; }
 .twin-table th, .twin-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: right; font-variant-numeric: tabular-nums; }
 .twin-table th[scope="row"] { text-align: left; font-weight: 500; color: var(--muted); }
 .twin-table thead th { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
@@ -219,7 +222,9 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .scorecard thead th { text-align: left; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 0 12px 10px 0; border-bottom: 1px solid var(--line); white-space: nowrap; }
 .scorecard thead th:nth-child(2) { color: var(--earth); }
 .scorecard td, .scorecard tbody th { padding: 12px 12px 12px 0; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
-.scorecard tbody th { font-weight: 600; width: 34%; min-width: 260px; }
+.scorecard tbody th { font-weight: 600; width: 30%; min-width: 240px; }
+.scorecard td:nth-child(2) { width: 15%; }
+.scorecard td:nth-child(3) { width: 24%; }
 .scorecard tbody th small { display: block; font-weight: 400; color: var(--muted); font-size: 0.76rem; margin-top: 2px; }
 .scorecard td.num { white-space: nowrap; font-size: 0.98rem; }
 .moon-cell { color: #dfe3ee; }
@@ -229,7 +234,7 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .match-bar-none { background: repeating-linear-gradient(135deg, var(--panel-2) 0 5px, color-mix(in srgb, var(--limit) 45%, transparent) 5px 7px); }
 .match-value { font-size: 0.82rem; color: var(--muted); }
 .pill { display: inline-block; font-size: 0.74rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; color: var(--tone); background: color-mix(in srgb, var(--tone) 16%, transparent); }
-.source-cell { color: var(--muted); font-size: 0.8rem; white-space: nowrap; }
+.source-cell { color: var(--muted); font-size: 0.8rem; max-width: 210px; }
 .group-row th { padding-top: 26px !important; font-family: var(--font-display); font-size: 1rem !important; color: var(--limit); max-width: none !important; }
 
 .radar-figure { margin: 6px 0 0; max-width: 560px; display: grid; gap: 8px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel-2); }
@@ -267,4 +272,39 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 @media (prefers-reduced-motion: reduce) {
   .mission-card, .mission-card img { transition: none; }
   .spinner { animation: none; }
+}
+
+/* Rank stability (sensitivity analysis) and screening note */
+.stab { display: inline-flex; gap: 3px; margin-left: 8px; vertical-align: middle; }
+.stab i { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+.stab i.on { background: var(--sc, var(--muted)); }
+.stab-high { --sc: var(--good); }
+.stab-medium { --sc: var(--mid); }
+.stab-low { --sc: var(--low); }
+.stab-text { color: var(--sc); }
+.screening-note { margin: 0 0 8px; padding: 0 10px; color: var(--muted); font-size: 0.78rem; max-width: 60ch; }
+.confidence { grid-column: 1 / -1; display: grid; gap: 4px; color: var(--muted); font-size: 0.85rem; max-width: 78ch; }
+.confidence p { margin: 0; }
+.confidence small { display: block; font-size: 0.75rem; opacity: 0.8; }
+
+/* Phone: the scorecard becomes one block per criterion, each value with its column name,
+   so nothing has to be scrolled sideways. */
+@media (max-width: 640px) {
+  .table-scroll { overflow-x: visible; }
+  .scorecard { min-width: 0; }
+  .scorecard thead { display: none; }
+  .scorecard, .scorecard tbody, .scorecard tr, .scorecard td, .scorecard tbody th { display: block; width: auto; min-width: 0; max-width: none; }
+  .scorecard td:nth-child(2), .scorecard td:nth-child(3) { width: auto; }
+  .scorecard tr { padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .scorecard td, .scorecard tbody th { border-bottom: 0; padding: 0; }
+  .scorecard tbody th { margin-bottom: 8px; }
+  .scorecard td { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 10px; align-items: baseline; padding: 3px 0; white-space: normal; }
+  .scorecard td.num { white-space: normal; }
+  .scorecard td::before { content: attr(data-label); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .scorecard td.cell-empty { display: none; }
+  .scorecard td.match-cell { grid-template-columns: 8.5rem auto minmax(0, 1fr); align-items: center; }
+  .scorecard td .pill { justify-self: start; }
+  .moon-note { max-width: none; }
+  .source-cell { max-width: none; }
+  .group-row { padding-bottom: 0 !important; border-bottom: 0 !important; }
 }
