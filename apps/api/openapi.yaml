@@ -1,0 +1,313 @@
+openapi: 3.0.3
+info:
+  title: Cyber&Space — API des sites analogues Terre ↔ Lune
+  version: 0.1.0
+  description: |
+    Classe des sites terrestres selon leur ressemblance avec des conditions lunaires (docs/scenarios.md).
+    Le contrat suit docs/contrats.md (sections 3 à 5). Les valeurs absentes (source en panne) valent `null`
+    et le critère reçoit le verdict `missing` : une source en panne ne provoque jamais d'erreur globale.
+    Le moteur de score est dans `apps/api/src/scoring/`, les connecteurs de sources dans `apps/api/src/sources/`.
+servers:
+  - url: /
+tags:
+  - name: Analyse
+  - name: Catalogue
+  - name: Santé
+paths:
+  /api/health:
+    get:
+      tags: [Santé]
+      summary: Sonde de santé (Azure Container Apps)
+      responses:
+        "200":
+          description: L'API répond
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status: { type: string, example: ok }
+  /api/modes:
+    get:
+      tags: [Catalogue]
+      summary: Modes 1 à 3 et leurs critères prédéfinis
+      description: "Le mode 4 (critères libres) n'a pas de présélection : il s'utilise avec `criteria` sur `POST /api/analyze`."
+      responses:
+        "200":
+          description: Liste des modes
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [modes]
+                properties:
+                  modes:
+                    type: array
+                    items: { $ref: "#/components/schemas/Mode" }
+  /api/parameters:
+    get:
+      tags: [Catalogue]
+      summary: Catalogue des paramètres (mode 4)
+      responses:
+        "200":
+          description: Paramètres disponibles
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [parameters]
+                properties:
+                  parameters:
+                    type: array
+                    items: { $ref: "#/components/schemas/ParameterInfo" }
+  /api/reference/moon:
+    get:
+      tags: [Catalogue]
+      summary: Profil de référence lunaire (data/reference/moon-south-pole.json)
+      description: Affiché dans la fiche d'un site pour comparer avec les valeurs terrestres. Le score, lui, utilise les critères des modes.
+      responses:
+        "200":
+          description: Profil lunaire (paramètres avec intervalle, unité et source)
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        "404":
+          description: Profil indisponible
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+  /api/analyze:
+    post:
+      tags: [Analyse]
+      summary: Classer les sites candidats pour un mode ou des critères libres
+      description: |
+        Envoyer soit `mode` (modes 1 à 3), soit `criteria` (mode 4), jamais les deux.
+        Le filtre « sol nu » (NDVI ≤ 0,1) est actif par défaut : un site végétalisé garde `total` 0, porte
+        `excluded: "vegetation"` et passe à la fin de la liste. Les autres sites sont triés par `total` décroissant.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AnalyzeRequest" }
+            examples:
+              mode:
+                summary: Mode prédéfini
+                value: { mode: robotics }
+              criteres_libres:
+                summary: Mode 4, critères libres
+                value:
+                  criteria:
+                    - { param: slope_mean, min: 5, max: 15, tolerance: 10, weight: 3 }
+                    - { param: t2m_min, max: -20, tolerance: 20, weight: 1 }
+                  bareSoilOnly: true
+      responses:
+        "200":
+          description: Sites classés
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AnalyzeResponse" }
+              example:
+                mode: robotics
+                sites:
+                  - id: haughton
+                    name: Cratère Haughton (île Devon)
+                    lat: 75.38
+                    lon: -89.67
+                    role: validation
+                    total: 90
+                    criteria:
+                      - { param: slope_mean, value: 7.5, score: 1, verdict: match }
+                      - { param: t2m_min, value: -48.55, score: 1, verdict: match }
+                      - { param: volcano_distance, value: null, score: 0, verdict: missing }
+        "400":
+          description: Requête invalide (mode inconnu, critère mal formé, corps JSON illisible…)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "413":
+          description: Corps trop volumineux
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "429":
+          description: Trop de requêtes
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "500":
+          description: Erreur interne
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+  /api/sites/{id}:
+    get:
+      tags: [Analyse]
+      summary: Fiche détaillée d'un site
+      description: Même objet que dans `POST /api/analyze`, plus toutes les valeurs brutes (`values`) et les sources interrogées.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string, example: haughton }
+        - name: mode
+          in: query
+          required: false
+          description: Mode utilisé pour calculer le score affiché (défaut `robotics`).
+          schema: { $ref: "#/components/schemas/ModeId" }
+      responses:
+        "200":
+          description: Fiche du site
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SiteDetail" }
+        "400":
+          description: Mode inconnu
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+        "404":
+          description: Site inconnu
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Error" }
+components:
+  schemas:
+    ParamId:
+      type: string
+      enum:
+        - slope_mean
+        - slope_max
+        - roughness
+        - elevation
+        - ndvi
+        - lst_day
+        - lst_night
+        - lst_amplitude
+        - t2m_mean
+        - t2m_min
+        - t2m_max
+        - wind
+        - humidity
+        - precipitation
+        - solar
+        - latitude_abs
+        - quake_count
+        - volcano_distance
+    ModeId:
+      type: string
+      enum: [robotics, calibration, colony]
+    Verdict:
+      type: string
+      description: "match : score ≥ 0,7 · partial : 0,4 à 0,7 · mismatch : < 0,4 · missing : valeur absente"
+      enum: [match, partial, mismatch, missing]
+    Criterion:
+      type: object
+      description: Intervalle cible [min, max] ; score 1 dedans, décroissance linéaire jusqu'à 0 à `tolerance` de distance.
+      required: [param, tolerance, weight]
+      properties:
+        param: { $ref: "#/components/schemas/ParamId" }
+        min: { type: number }
+        max: { type: number }
+        tolerance: { type: number, minimum: 0 }
+        weight: { type: number, exclusiveMinimum: true, minimum: 0 }
+        group:
+          type: string
+          description: Instrument (mode 2) ou besoin (mode 3), pour filtrer et grouper dans l'interface.
+    CriterionScore:
+      type: object
+      required: [param, value, score, verdict]
+      properties:
+        param: { $ref: "#/components/schemas/ParamId" }
+        value: { type: number, nullable: true, description: "null = source indisponible" }
+        score: { type: number, minimum: 0, maximum: 1 }
+        verdict: { $ref: "#/components/schemas/Verdict" }
+    Mode:
+      type: object
+      required: [id, name, criteria]
+      properties:
+        id: { $ref: "#/components/schemas/ModeId" }
+        name: { type: string }
+        criteria:
+          type: array
+          items: { $ref: "#/components/schemas/Criterion" }
+    ParameterInfo:
+      type: object
+      required: [id, label, unit, source, lunar]
+      properties:
+        id: { $ref: "#/components/schemas/ParamId" }
+        label: { type: string }
+        unit: { type: string }
+        source: { type: string, description: Source terrestre }
+        lunar: { type: string, description: Équivalent lunaire }
+    AnalyzeRequest:
+      type: object
+      description: Soit `mode`, soit `criteria`.
+      properties:
+        mode: { $ref: "#/components/schemas/ModeId" }
+        criteria:
+          type: array
+          minItems: 1
+          maxItems: 18
+          description: "Mode 4 : un paramètre au plus une fois ; chaque critère a min, max ou les deux."
+          items: { $ref: "#/components/schemas/Criterion" }
+        bareSoilOnly:
+          type: boolean
+          default: true
+          description: Filtre « sol nu » (NDVI ≤ 0,1). Désactivable en mode 4.
+      oneOf:
+        - required: [mode]
+        - required: [criteria]
+    AnalyzedSite:
+      type: object
+      required: [id, name, lat, lon, role, total, criteria]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        lat: { type: number }
+        lon: { type: number }
+        role:
+          type: string
+          enum: [validation, negative, candidate]
+        total: { type: integer, minimum: 0, maximum: 100, description: Score global sur 100 }
+        criteria:
+          type: array
+          items: { $ref: "#/components/schemas/CriterionScore" }
+        excluded:
+          type: string
+          enum: [vegetation]
+          description: Présent si le filtre « sol nu » écarte le site (total forcé à 0).
+    AnalyzeResponse:
+      type: object
+      required: [mode, sites]
+      properties:
+        mode:
+          type: string
+          enum: [robotics, calibration, colony, custom]
+        sites:
+          type: array
+          items: { $ref: "#/components/schemas/AnalyzedSite" }
+    SiteDetail:
+      allOf:
+        - $ref: "#/components/schemas/AnalyzedSite"
+        - type: object
+          required: [mode, values, sources]
+          properties:
+            terrain: { type: string }
+            mode: { $ref: "#/components/schemas/ModeId" }
+            values:
+              type: object
+              description: Valeurs brutes de tous les paramètres disponibles (null = source indisponible).
+              additionalProperties:
+                type: number
+                nullable: true
+            sources:
+              type: array
+              items: { type: string }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: { type: string }
