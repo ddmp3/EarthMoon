@@ -14,7 +14,7 @@ Ce guide dit **comment appeler l'API et ce dont elle a besoin**, pour que chacun
 ```bash
 cd apps/api
 npm install
-npm test            # 98 tests
+npm test            # 108 tests
 npm run typecheck
 npm run dev         # vraies sources, http://localhost:3001/api/docs
 ```
@@ -26,7 +26,7 @@ USE_FIXTURES=1 npm run dev          # macOS / Linux
 $env:USE_FIXTURES=1; npm run dev    # Windows PowerShell
 ```
 
-Vérifier les vraies sources depuis sa machine (appelle NASA POWER et USGS pour Haughton) :
+Vérifier les vraies sources depuis sa machine (NASA POWER et USGS pour Haughton, Smithsonian GVP pour Mauna Kea) :
 
 ```bash
 npm run check:sources
@@ -44,6 +44,7 @@ Production : `npm run build` puis `npm start`.
 | `DATA_DIR` | `<racine du dépôt>/data` | Dossier des candidats, fixtures et profil lunaire |
 | `USE_FIXTURES` | non | `1` : valeurs d'exemple au lieu des vraies sources |
 | `RATE_LIMIT_PER_MINUTE` | `120` | Requêtes par minute et par IP |
+| `GVP_WFS_URL` | service WFS du Smithsonian | Autre adresse pour la liste des volcans, si la par défaut change |
 | `NODE_ENV` | — | Hors `production`, `http://localhost:5173` est aussi autorisé par CORS |
 
 Bonus (pas encore codé) : l'explication d'un site par Claude demandera une clé, à mettre dans un **secret de la Container App**, jamais dans le dépôt.
@@ -159,11 +160,11 @@ Chaque site reçoit un bloc :
 | USGS Earthquake Catalog | `quake_count` | Branché ; même remarque |
 | Copernicus DEM | `slope_mean`, `slope_max`, `roughness`, `elevation` | Précalculé (`tools/precompute/enrich_candidates.py`) ; attend `data/candidates-precomputed.json` |
 | MODIS (Planetary Computer) | `ndvi`, `lst_day`, `lst_night`, `lst_amplitude` | Précalculé (`tools/precompute/modis_values.py`) ; testé hors ligne, **à vérifier en réel** |
-| Smithsonian GVP | `volcano_distance` | **À faire** |
+| Smithsonian GVP | `volcano_distance` | Branché : liste des volcans holocènes chargée une fois (24 h), distance calculée localement ; **à vérifier en réel** (`check:sources` teste Mauna Kea) |
 
 Tant que `data/candidates-precomputed.json` ne contient pas MODIS, il n'y a pas de `ndvi` : le filtre « sol nu » n'écarte aucun site en mode réel (l'Amazonie n'est pas exclue). Les journaux de démarrage le signalent.
 
-## Ajouter un connecteur (GVP…)
+## Ajouter un connecteur
 
 Un connecteur est une fonction `({ lat, lon }) => Promise<ParamValues>` (`docs/contrats.md` §3).
 
