@@ -1,0 +1,11 @@
+# Contexte de build Docker = racine du dépôt (apps/api/Dockerfile) : ne pas envoyer ce qui est inutile à l image de l API
+.git
+**/node_modules
+**/dist
+**/.pytest_cache
+**/__pycache__
+apps/web
+docs
+tools
+infra
+contexte-david

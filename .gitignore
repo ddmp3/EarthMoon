@@ -22,3 +22,6 @@ coverage/
 
 # Maquettes de brainstorming (outil local)
 .superpowers/
+
+.pytest_cache/
+__pycache__/

@@ -116,6 +116,27 @@ function verdictLabel(verdict: SiteResult['criteria'][number]['verdict']) {
   return 'Donnée manquante'
 }
 
+/** Nombre de critères dont la valeur est connue (un critère « missing » est exclu du total). */
+function evaluatedCount(site: SiteView) {
+  return site.criteria.filter((criterion) => criterion.verdict !== 'missing').length
+}
+
+function hasMissingCriteria(site: SiteView) {
+  return site.criteria.length > 0 && evaluatedCount(site) < site.criteria.length
+}
+
+function coverageLabel(site: SiteView) {
+  if (site.criteria.length === 0) return ''
+  return ` · ${evaluatedCount(site)}/${site.criteria.length} critères`
+}
+
+/** Noms des sources renvoyés par GET /api/sites/{id} (tableau de chaînes). */
+function sourceNames(sources: unknown): string[] {
+  return Array.isArray(sources)
+    ? sources.filter((source): source is string => typeof source === 'string')
+    : []
+}
+
 function toFixtureResult(site: FixtureSite): SiteView {
   return {
     id: site.id,
@@ -671,6 +692,7 @@ function App() {
                       <strong>{site.name}</strong>
                       <small>
                         {site.excluded ? 'Exclu : végétation' : roleLabel(site.role)}
+                        {!site.excluded && coverageLabel(site)}
                       </small>
                     </span>
                     {site.excluded ? (
@@ -707,6 +729,14 @@ function App() {
                 <p className="exclusion-notice">
                   Ce site est exclu du classement parce que son indice de végétation
                   dépasse le seuil autorisé.
+                </p>
+              )}
+              {!selectedSite.excluded && hasMissingCriteria(selectedSite) && (
+                <p className="coverage-notice" role="status">
+                  Score calculé sur {evaluatedCount(selectedSite)} critère
+                  {evaluatedCount(selectedSite) > 1 ? 's' : ''} sur{' '}
+                  {selectedSite.criteria.length} : les autres valeurs sont
+                  indisponibles pour ce site.
                 </p>
               )}
               {!selectedSite.excluded && selectedSite.criteria.length > 0 ? (
@@ -751,17 +781,24 @@ function App() {
                   Fiche détaillée indisponible : {detailError}
                 </p>
               ) : !isPreview && siteDetail ? (
-                <div className="raw-values">
-                  {Object.entries(siteDetail.values).map(([paramId, value]) => {
-                    const parameter = parameterCatalog.find((item) => item.id === paramId)
-                    return (
-                      <div className="raw-value" key={paramId}>
-                        <span>{parameter?.label ?? paramId}</span>
-                        <strong>{formatValue(value, parameter?.unit)}</strong>
-                      </div>
-                    )
-                  })}
-                </div>
+                <>
+                  <div className="raw-values">
+                    {Object.entries(siteDetail.values).map(([paramId, value]) => {
+                      const parameter = parameterCatalog.find((item) => item.id === paramId)
+                      return (
+                        <div className="raw-value" key={paramId}>
+                          <span>{parameter?.label ?? paramId}</span>
+                          <strong>{formatValue(value, parameter?.unit)}</strong>
+                        </div>
+                      )
+                    })}
+                  </div>
+                  {sourceNames(siteDetail.sources).length > 0 && (
+                    <p className="data-sources">
+                      Sources : {sourceNames(siteDetail.sources).join(', ')}
+                    </p>
+                  )}
+                </>
               ) : (
                 <p className="no-site-data">Aucune valeur brute n’a été renvoyée pour ce site.</p>
               )}

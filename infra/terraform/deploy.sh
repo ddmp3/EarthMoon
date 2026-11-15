@@ -33,7 +33,7 @@ WEB_URL=$(terraform output -raw web_url)
 IMAGE="$ACR_SERVER/analogues-api:$TAG"
 
 az acr login --name "$ACR_NAME"
-docker build --platform linux/amd64 -t "$IMAGE" "$ROOT_DIR/apps/api"
+docker build --platform linux/amd64 -f "$ROOT_DIR/apps/api/Dockerfile" -t "$IMAGE" "$ROOT_DIR"  # contexte = racine (l'image embarque data/)
 docker push "$IMAGE"
 az containerapp update --name "$APP_NAME" --resource-group "$RG" --image "$IMAGE"
 
