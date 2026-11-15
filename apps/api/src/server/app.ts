@@ -116,6 +116,7 @@ export function createApp(deps: AppDeps): express.Express {
       res.json({
         id: site.id,
         name: site.name,
+        ...(site.nameEn ? { nameEn: site.nameEn } : {}),
         lat: site.lat,
         lon: site.lon,
         role: site.role,

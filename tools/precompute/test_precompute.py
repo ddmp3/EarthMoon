@@ -199,3 +199,40 @@ def test_main_writes_file(tmp_path, monkeypatch):
     assert mv.main([str(f), "-o", str(tmp_path / "out.json")]) == 0
     out = json.loads((tmp_path / "out.json").read_text(encoding="utf-8"))
     assert out[0]["precomputed"]["ndvi"] == 0.05
+
+
+# ------------------------------------------------------------------ site_visuals
+def test_visuals_bbox_is_a_square_in_metres():
+    import site_visuals as sv
+    w, s, e, n = sv.bbox_square(75.38, -89.67)
+    height_m = math.radians(n - s) * sv.R_EARTH
+    width_m = math.radians(e - w) * sv.R_EARTH * math.cos(math.radians(75.38))
+    assert height_m == pytest.approx(12_000, rel=1e-6) and width_m == pytest.approx(12_000, rel=1e-6)
+
+
+def test_visuals_hillshade_and_match_mask():
+    import site_visuals as sv
+    flat = np.zeros((20, 20))
+    assert sv.hillshade(flat, 40.0).std() == 0                       # plat : éclairage uniforme
+    x = np.arange(20) * 40.0
+    slope10 = np.tile(x * math.tan(math.radians(10)), (20, 1))
+    assert sv.match_mask(slope10, 40.0, 4.5, 13.3).all()             # 10° est dans l intervalle lunaire
+    assert not sv.match_mask(flat, 40.0, 4.5, 13.3).any()
+    assert sv.hillshade(np.full((5, 5), np.nan), 40.0).shape == (5, 5)
+
+
+def test_visuals_find_twin_picks_closest_valid_window():
+    import site_visuals as sv
+    slope = np.array([[2.0, 8.0], [12.0, 8.1]])
+    rough = np.array([[5.0, 40.0], [60.0, 41.0]])
+    valid = np.array([[True, False], [True, True]])
+    r, c, dist = sv.find_twin(slope, rough, valid, 8.0, 40.0, 7.0, 40.0)
+    assert (r, c) == (1, 1) and dist < 0.05                           # (0, 1) est exact mais hors zone valide
+
+
+def test_visuals_polar_latlon():
+    import site_visuals as sv
+    lat, _ = sv.polar_latlon(3791.5, 3791.5, 7584, 40.0)
+    assert lat == pytest.approx(-90.0, abs=1e-6)
+    lat, lon = sv.polar_latlon(3791.5, 7583, 7584, 40.0)              # bord droit : 85°S, longitude 90°E
+    assert lat == pytest.approx(-85.0, abs=0.01) and lon == pytest.approx(90.0, abs=0.01)

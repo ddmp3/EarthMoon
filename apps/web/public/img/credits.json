@@ -1,0 +1,42 @@
+{
+  "hero": {
+    "nasa_id": "art002e021278",
+    "title": "A Breathtaking Earthset from Orion",
+    "date": "2026-04-06",
+    "center": "JSC",
+    "credit": "NASA",
+    "url": "https://images.nasa.gov/details/art002e021278"
+  },
+  "robotics": {
+    "nasa_id": "as15-86-11603",
+    "title": "Astronaut James Irwin works at Lunar Roving Vehicle during Apollo 15 EVA",
+    "date": "1971-07-31",
+    "center": "JSC",
+    "credit": "NASA",
+    "url": "https://images.nasa.gov/details/as15-86-11603"
+  },
+  "calibration": {
+    "nasa_id": "as14-67-09362",
+    "title": "View of the Passive Seismic Experiment deployed on Moon by Apollo 14",
+    "date": "1971-02-05",
+    "center": "JSC",
+    "credit": "NASA",
+    "url": "https://images.nasa.gov/details/as14-67-09362"
+  },
+  "colony": {
+    "nasa_id": "as17-134-20382",
+    "title": "Apollo 17 Mission image - station Lunar Module (LM),LM,LRV,Flag, LMP",
+    "date": "1972-12-13",
+    "center": "JSC",
+    "credit": "NASA",
+    "url": "https://images.nasa.gov/details/as17-134-20382"
+  },
+  "custom": {
+    "nasa_id": "PIA00001",
+    "title": "South Pole Region of the Moon as Seen by Clementine",
+    "date": "1996-06-03",
+    "center": "JPL",
+    "credit": "NASA / NASA/JPL/USGS",
+    "url": "https://images.nasa.gov/details/PIA00001"
+  }
+}

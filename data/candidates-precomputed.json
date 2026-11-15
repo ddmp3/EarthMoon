@@ -28,7 +28,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:01:44+00:00"
-    }
+    },
+    "name_en": "Haughton Crater (Devon Island, Nunavut)"
   },
   {
     "id": "atacama",
@@ -59,7 +60,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:01:59+00:00"
-    }
+    },
+    "name_en": "Atacama Desert (Chile)"
   },
   {
     "id": "dry-valleys",
@@ -90,7 +92,8 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:15:29+00:00",
       "modis_error": "valeurs absentes : ndvi"
-    }
+    },
+    "name_en": "McMurdo Dry Valleys, Wright Valley (Antarctica)"
   },
   {
     "id": "mauna-kea",
@@ -121,7 +124,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:02:24+00:00"
-    }
+    },
+    "name_en": "Mauna Kea, upper slopes (Hawaii)"
   },
   {
     "id": "svalbard-bockfjorden",
@@ -152,7 +156,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:02:41+00:00"
-    }
+    },
+    "name_en": "Bockfjorden, Sverrefjellet volcano (Svalbard)"
   },
   {
     "id": "islande-holuhraun",
@@ -182,7 +187,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:00+00:00"
-    }
+    },
+    "name_en": "Holuhraun lava field (Iceland)"
   },
   {
     "id": "death-valley",
@@ -213,7 +219,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:15:54+00:00"
-    }
+    },
+    "name_en": "Badwater Basin, Death Valley (California)"
   },
   {
     "id": "meteor-crater",
@@ -244,7 +251,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:37+00:00"
-    }
+    },
+    "name_en": "Meteor Crater (Arizona)"
   },
   {
     "id": "black-point",
@@ -275,7 +283,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:39+00:00"
-    }
+    },
+    "name_en": "Black Point Lava Flow (Arizona)"
   },
   {
     "id": "amazonie",
@@ -305,7 +314,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:58+00:00"
-    }
+    },
+    "name_en": "Amazon rainforest (negative control)"
   },
   {
     "id": "mistastin",
@@ -336,7 +346,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:04:16+00:00"
-    }
+    },
+    "name_en": "Mistastin impact structure, east shore (Labrador)"
   },
   {
     "id": "tunnunik",
@@ -367,7 +378,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:04:35+00:00"
-    }
+    },
+    "name_en": "Tunnunik Crater (Victoria Island, NWT)"
   },
   {
     "id": "axel-heiberg",
@@ -399,7 +411,8 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:16:17+00:00",
       "modis_error": "valeurs absentes : ndvi"
-    }
+    },
+    "name_en": "McGill Arctic Research Station, Axel Heiberg Island (Nunavut)"
   },
   {
     "id": "pingualuit",
@@ -430,7 +443,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:09+00:00"
-    }
+    },
+    "name_en": "Pingualuit Crater, west rim (Nunavik, Quebec)"
   },
   {
     "id": "manicouagan",
@@ -461,7 +475,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:26+00:00"
-    }
+    },
+    "name_en": "René-Levasseur Island, Manicouagan (Quebec)"
   },
   {
     "id": "peary-land",
@@ -492,7 +507,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:43+00:00"
-    }
+    },
+    "name_en": "Peary Land (North Greenland)"
   },
   {
     "id": "popigai",
@@ -522,7 +538,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:01+00:00"
-    }
+    },
+    "name_en": "Popigai Crater (Siberia)"
   },
   {
     "id": "elgygytgyn",
@@ -553,7 +570,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:24+00:00"
-    }
+    },
+    "name_en": "El'gygytgyn Crater, east rim (Chukotka)"
   },
   {
     "id": "tolbachik",
@@ -584,7 +602,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:38+00:00"
-    }
+    },
+    "name_en": "Tolbachik (Kamchatka)"
   },
   {
     "id": "erebus",
@@ -615,7 +634,8 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:16:28+00:00",
       "modis_error": "valeurs absentes : ndvi"
-    }
+    },
+    "name_en": "Mount Erebus, Ross Island (Antarctica)"
   },
   {
     "id": "qaidam-lenghu",
@@ -646,7 +666,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:59+00:00"
-    }
+    },
+    "name_en": "Lenghu yardangs, Qaidam Basin (China)"
   },
   {
     "id": "changtang",
@@ -677,7 +698,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:07:15+00:00"
-    }
+    },
+    "name_en": "Changtang Plateau (Tibet)"
   },
   {
     "id": "gobi",
@@ -708,7 +730,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:07:39+00:00"
-    }
+    },
+    "name_en": "Gobi gravel plains (Mongolia)"
   },
   {
     "id": "uyuni",
@@ -738,7 +761,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:03+00:00"
-    }
+    },
+    "name_en": "Salar de Uyuni (Bolivia)"
   },
   {
     "id": "licancabur",
@@ -768,7 +792,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:11+00:00"
-    }
+    },
+    "name_en": "Licancabur, Altiplano (Bolivia-Chile)"
   },
   {
     "id": "payunia",
@@ -798,7 +823,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:34+00:00"
-    }
+    },
+    "name_en": "Payunia volcanic field (Argentina)"
   },
   {
     "id": "namib-gobabeb",
@@ -828,7 +854,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:51+00:00"
-    }
+    },
+    "name_en": "Namib gravel plains, Gobabeb (Namibia)"
   },
   {
     "id": "lut",
@@ -859,7 +886,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:11+00:00"
-    }
+    },
+    "name_en": "Lut Desert kaluts (Iran)"
   },
   {
     "id": "dallol",
@@ -889,7 +917,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:29+00:00"
-    }
+    },
+    "name_en": "Dallol, Danakil Depression (Ethiopia)"
   },
   {
     "id": "erta-ale",
@@ -919,7 +948,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:31+00:00"
-    }
+    },
+    "name_en": "Erta Ale (Ethiopia)"
   },
   {
     "id": "hoggar-atakor",
@@ -950,7 +980,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:52+00:00"
-    }
+    },
+    "name_en": "Atakor volcanic field, Hoggar (Algeria)"
   },
   {
     "id": "harrat-khaybar",
@@ -981,7 +1012,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:10:14+00:00"
-    }
+    },
+    "name_en": "Harrat Khaybar (Saudi Arabia)"
   },
   {
     "id": "aorounga",
@@ -1011,7 +1043,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:10:39+00:00"
-    }
+    },
+    "name_en": "Aorounga Crater (Chad)"
   },
   {
     "id": "tenoumer",
@@ -1041,7 +1074,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:02+00:00"
-    }
+    },
+    "name_en": "Tenoumer Crater (Mauritania)"
   },
   {
     "id": "wolfe-creek",
@@ -1071,7 +1105,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:21+00:00"
-    }
+    },
+    "name_en": "Wolfe Creek Crater (Australia)"
   },
   {
     "id": "gosses-bluff",
@@ -1101,7 +1136,8 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:52+00:00"
-    }
+    },
+    "name_en": "Gosses Bluff (Australia)"
   },
   {
     "id": "craters-of-the-moon",
@@ -1131,6 +1167,7 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:12:20+00:00"
-    }
+    },
+    "name_en": "Craters of the Moon (Idaho)"
   }
 ]

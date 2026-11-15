@@ -136,6 +136,21 @@ def run(web: str, api: str) -> None:
         code, _, b = http(f"{api}/api/docs/")
         assert code == 200 and b"swagger" in b.lower()
 
+    def visuals():
+        code, _, b = http(f"{web}/sites/manifest.json")
+        assert code == 200, f"manifest HTTP {code}"
+        m = json.loads(b)
+        assert len(m["sites"]) >= 30 and len(m["slope_band_deg"]) == 2, "manifest incomplet"
+        sid = next(iter(m["sites"]))
+        for path in (f"/sites/{sid}/earth-relief.jpg", f"/sites/{sid}/moon-relief.jpg", f"/sites/{sid}/moon-match.png",
+                     "/img/hero.jpg", "/img/robotics.jpg", "/img/calibration.jpg", "/img/colony.jpg", "/img/custom.jpg"):
+            code, h, body = http(f"{web}{path}")
+            kind = {k.lower(): v for k, v in h.items()}.get("content-type", "")
+            assert code == 200 and kind.startswith("image/") and len(body) > 5000, f"{path} : HTTP {code} {kind}"
+        twins = [v["twin"] for v in m["sites"].values()]
+        assert all(t["lat"] <= -85 for t in twins), "jumeau lunaire hors du pôle Sud"
+        return f"{len(m['sites'])} sites illustrés, {sum(1 for v in m['sites'].values() if v.get('photo'))} vues satellite"
+
     check("TF-01", "Le front se charge et vise la bonne API", front_loads)
     check("TF-02", "Sonde de santé de l'API", health)
     check("TF-03", "CORS : origine du front acceptée, origine inconnue refusée", cors)
@@ -148,6 +163,7 @@ def run(web: str, api: str) -> None:
     check("TF-10", "Catalogue des sources complet", sources)
     check("TF-11", "Profil lunaire sourcé et limites de la Terre", moon_reference)
     check("TF-12", "Documentation de l'API", docs)
+    check("TF-13", "Images réelles : photos NASA, vues des sites, jumeaux lunaires", visuals)
 
 
 def main(argv=None) -> int:

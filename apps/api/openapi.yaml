@@ -283,6 +283,7 @@ components:
       properties:
         id: { type: string }
         name: { type: string }
+        nameEn: { type: string, description: "Nom anglais du site, quand il existe." }
         lat: { type: number }
         lon: { type: number }
         role:
@@ -351,6 +352,8 @@ components:
           type: array
           items: { $ref: "#/components/schemas/ParamId" }
         terms: { type: string }
+        termsEn: { type: string }
+        nameEn: { type: string }
     Error:
       type: object
       required: [error]

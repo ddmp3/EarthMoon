@@ -1,6 +1,6 @@
 # Tests fonctionnels
 
-Plan de test du MVP Terre ↔ Lune. Les tests TF-01 à TF-12 sont automatisés ([`tools/validation/e2e.py`](../tools/validation/e2e.py)) ; les tests TV-01 à TV-08 se font à la main dans un navigateur (Yann).
+Plan de test du MVP Terre ↔ Lune. Les tests TF-01 à TF-13 sont automatisés ([`tools/validation/e2e.py`](../tools/validation/e2e.py)) ; les tests TV-01 à TV-08 se font à la main dans un navigateur (Yann).
 
 ## Lancer les tests
 
@@ -34,13 +34,14 @@ python -m pytest -q tools/precompute tools/validation
 | TF-10 | Sources | Chaque source a un nom, une adresse `https://` et sa mention ou ses conditions |
 | TF-11 | Profil lunaire | Chaque paramètre lunaire est sourcé ; les limites de la Terre (gravité, vide, rayonnement) sont présentes |
 | TF-12 | Documentation | Swagger UI sur `/api/docs` |
+| TF-13 | Images réelles | Photos NASA des missions, manifeste des sites, relief terrestre et jumeau lunaire servis ; tous les jumeaux sont au sud de 85°S |
 
 ## Vérifications à la main (navigateur)
 
 | Id | Parcours | Attendu |
 |---|---|---|
-| TV-01 | Ouvrir le site, choisir chaque mode, lancer l'analyse | La carte affiche les sites colorés selon le score ; la liste est triée ; aucune erreur affichée |
-| TV-02 | Ouvrir la fiche d'un site du haut et d'un site du bas | Score par critère, verdict, valeur lunaire à côté de la valeur terrestre, source de chaque valeur, bloc « Ce que la Terre ne peut pas reproduire » |
+| TV-01 | Ouvrir le site, choisir chaque carte de mission | Les photos des cartes s'affichent ; la carte NASA affiche les sites colorés selon le score ; la liste est triée ; aucune erreur affichée |
+| TV-02 | Ouvrir la fiche d'un site du haut et d'un site du bas | Fondu Terre ↔ Lune (curseur, satellite ou relief, surlignage des pentes), tableau unique (valeur terrestre, référence lunaire, concordance, verdict, source, puis les non-conformités), radar |
 | TV-03 | Mode 2 : filtrer par instrument (sismographe, par exemple) | Seuls les critères de cet instrument sont utilisés |
 | TV-04 | Mode 4 : ajouter trois critères, changer intervalles et poids, désactiver le filtre « sol nu » | Le classement change ; l'Amazonie revient dans la liste ; chaque paramètre affiche son texte d'aide |
 | TV-05 | Mode 4 : saisir un intervalle vide ou un paramètre en double | Message d'erreur clair, pas d'appel bloqué |

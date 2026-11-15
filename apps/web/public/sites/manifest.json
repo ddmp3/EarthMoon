@@ -1,0 +1,781 @@
+{
+ "sites": {
+  "haughton": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 3.52,
+    "slope_max": 14.38,
+    "roughness": 11.45,
+    "match_share": 0.355
+   },
+   "twin": {
+    "lat": -86.292,
+    "lon": -128.372,
+    "slope_mean": 3.52,
+    "slope_max": 13.03,
+    "roughness": 11.44,
+    "distance": 0.0,
+    "match_share": 0.46
+   }
+  },
+  "dry-valleys": {
+   "earth": {
+    "slope_mean": 2.18,
+    "slope_max": 11.29,
+    "roughness": 8.37,
+    "match_share": 0.302
+   },
+   "twin": {
+    "lat": -86.027,
+    "lon": 152.41,
+    "slope_mean": 2.19,
+    "slope_max": 7.9,
+    "roughness": 8.28,
+    "distance": 0.002,
+    "match_share": 0.42
+   }
+  },
+  "hoggar-atakor": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 11.83,
+    "slope_max": 38.97,
+    "roughness": 57.52,
+    "match_share": 0.471
+   },
+   "twin": {
+    "lat": -87.409,
+    "lon": -100.87,
+    "slope_mean": 11.83,
+    "slope_max": 25.68,
+    "roughness": 57.46,
+    "distance": 0.001,
+    "match_share": 0.616
+   }
+  },
+  "atacama": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 7.97,
+    "slope_max": 16.64,
+    "roughness": 40.57,
+    "match_share": 0.588
+   },
+   "twin": {
+    "lat": -88.655,
+    "lon": 136.987,
+    "slope_mean": 7.97,
+    "slope_max": 15.68,
+    "roughness": 40.58,
+    "distance": 0.0,
+    "match_share": 0.77
+   }
+  },
+  "mauna-kea": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 11.56,
+    "slope_max": 30.42,
+    "roughness": 42.64,
+    "match_share": 0.53
+   },
+   "twin": {
+    "lat": -87.29,
+    "lon": -0.823,
+    "slope_mean": 11.56,
+    "slope_max": 20.12,
+    "roughness": 43.3,
+    "distance": 0.015,
+    "match_share": 0.474
+   }
+  },
+  "svalbard-bockfjorden": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 9.74,
+    "slope_max": 28.53,
+    "roughness": 51.75,
+    "match_share": 0.226
+   },
+   "twin": {
+    "lat": -86.415,
+    "lon": 82.508,
+    "slope_mean": 9.76,
+    "slope_max": 16.0,
+    "roughness": 51.77,
+    "distance": 0.003,
+    "match_share": 0.606
+   }
+  },
+  "islande-holuhraun": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 2.38,
+    "slope_max": 13.79,
+    "roughness": 6.45,
+    "match_share": 0.101
+   },
+   "twin": {
+    "lat": -85.046,
+    "lon": -66.815,
+    "slope_mean": 2.38,
+    "slope_max": 9.55,
+    "roughness": 6.45,
+    "distance": 0.0,
+    "match_share": 0.449
+   }
+  },
+  "death-valley": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 0.3,
+    "slope_max": 1.05,
+    "roughness": 0.19,
+    "match_share": 0.055
+   },
+   "twin": {
+    "lat": -85.128,
+    "lon": 115.147,
+    "slope_mean": 1.25,
+    "slope_max": 6.92,
+    "roughness": 1.92,
+    "distance": 0.13,
+    "match_share": 0.29
+   }
+  },
+  "meteor-crater": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 12.9,
+    "slope_max": 49.91,
+    "roughness": 60.66,
+    "match_share": 0.032
+   },
+   "twin": {
+    "lat": -87.414,
+    "lon": 172.808,
+    "slope_mean": 12.92,
+    "slope_max": 23.63,
+    "roughness": 60.69,
+    "distance": 0.003,
+    "match_share": 0.639
+   }
+  },
+  "black-point": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 2.6,
+    "slope_max": 17.11,
+    "roughness": 10.86,
+    "match_share": 0.093
+   },
+   "twin": {
+    "lat": -87.104,
+    "lon": 178.813,
+    "slope_mean": 2.61,
+    "slope_max": 8.32,
+    "roughness": 10.83,
+    "distance": 0.002,
+    "match_share": 0.424
+   }
+  },
+  "amazonie": {
+   "photo": {
+    "source": "landsat-weld",
+    "credit": "Landsat WELD true color, annual composite 2000, NASA GIBS"
+   },
+   "earth": {
+    "slope_mean": 3.85,
+    "slope_max": 14.01,
+    "roughness": 3.2,
+    "match_share": 0.142
+   },
+   "twin": {
+    "lat": -85.361,
+    "lon": 138.744,
+    "slope_mean": 3.83,
+    "slope_max": 15.26,
+    "roughness": 4.33,
+    "distance": 0.026,
+    "match_share": 0.355
+   }
+  },
+  "mistastin": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 3.19,
+    "slope_max": 16.0,
+    "roughness": 7.12,
+    "match_share": 0.307
+   },
+   "twin": {
+    "lat": -85.194,
+    "lon": -98.606,
+    "slope_mean": 3.19,
+    "slope_max": 13.06,
+    "roughness": 7.13,
+    "distance": 0.001,
+    "match_share": 0.457
+   }
+  },
+  "tunnunik": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 4.08,
+    "slope_max": 19.75,
+    "roughness": 7.75,
+    "match_share": 0.236
+   },
+   "twin": {
+    "lat": -87.86,
+    "lon": -55.041,
+    "slope_mean": 4.09,
+    "slope_max": 30.22,
+    "roughness": 7.77,
+    "distance": 0.001,
+    "match_share": 0.538
+   }
+  },
+  "axel-heiberg": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 17.25,
+    "slope_max": 43.23,
+    "roughness": 56.52,
+    "match_share": 0.303
+   },
+   "twin": {
+    "lat": -87.863,
+    "lon": 133.75,
+    "slope_mean": 17.42,
+    "slope_max": 29.07,
+    "roughness": 55.46,
+    "distance": 0.033,
+    "match_share": 0.53
+   }
+  },
+  "pingualuit": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 7.02,
+    "slope_max": 34.75,
+    "roughness": 31.36,
+    "match_share": 0.051
+   },
+   "twin": {
+    "lat": -86.972,
+    "lon": -58.356,
+    "slope_mean": 7.01,
+    "slope_max": 13.26,
+    "roughness": 31.37,
+    "distance": 0.001,
+    "match_share": 0.657
+   }
+  },
+  "manicouagan": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 6.52,
+    "slope_max": 37.55,
+    "roughness": 23.63,
+    "match_share": 0.391
+   },
+   "twin": {
+    "lat": -88.064,
+    "lon": 46.822,
+    "slope_mean": 6.49,
+    "slope_max": 20.6,
+    "roughness": 23.61,
+    "distance": 0.004,
+    "match_share": 0.334
+   }
+  },
+  "peary-land": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 10.54,
+    "slope_max": 20.76,
+    "roughness": 40.89,
+    "match_share": 0.602
+   },
+   "twin": {
+    "lat": -86.595,
+    "lon": 95.456,
+    "slope_mean": 10.58,
+    "slope_max": 17.94,
+    "roughness": 41.24,
+    "distance": 0.009,
+    "match_share": 0.655
+   }
+  },
+  "popigai": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 1.58,
+    "slope_max": 4.82,
+    "roughness": 5.42,
+    "match_share": 0.049
+   },
+   "twin": {
+    "lat": -85.151,
+    "lon": -136.553,
+    "slope_mean": 1.61,
+    "slope_max": 4.0,
+    "roughness": 5.54,
+    "distance": 0.004,
+    "match_share": 0.335
+   }
+  },
+  "elgygytgyn": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 11.32,
+    "slope_max": 32.54,
+    "roughness": 36.86,
+    "match_share": 0.31
+   },
+   "twin": {
+    "lat": -85.325,
+    "lon": 91.139,
+    "slope_mean": 11.45,
+    "slope_max": 31.0,
+    "roughness": 37.48,
+    "distance": 0.022,
+    "match_share": 0.38
+   }
+  },
+  "tolbachik": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 37.74,
+    "slope_max": 56.43,
+    "roughness": 182.96,
+    "match_share": 0.232
+   },
+   "twin": {
+    "lat": -89.836,
+    "lon": -166.244,
+    "slope_mean": 33.46,
+    "slope_max": 39.94,
+    "roughness": 192.37,
+    "distance": 0.599,
+    "match_share": 0.183
+   }
+  },
+  "erebus": {
+   "earth": {
+    "slope_mean": 21.19,
+    "slope_max": 51.65,
+    "roughness": 57.89,
+    "match_share": 0.283
+   },
+   "twin": {
+    "lat": -87.339,
+    "lon": -34.907,
+    "slope_mean": 21.6,
+    "slope_max": 35.0,
+    "roughness": 62.95,
+    "distance": 0.128,
+    "match_share": 0.63
+   }
+  },
+  "qaidam-lenghu": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 0.19,
+    "slope_max": 0.68,
+    "roughness": 0.41,
+    "match_share": 0.0
+   },
+   "twin": {
+    "lat": -85.128,
+    "lon": 115.147,
+    "slope_mean": 1.25,
+    "slope_max": 6.92,
+    "roughness": 1.92,
+    "distance": 0.143,
+    "match_share": 0.29
+   }
+  },
+  "changtang": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 7.41,
+    "slope_max": 14.7,
+    "roughness": 18.86,
+    "match_share": 0.589
+   },
+   "twin": {
+    "lat": -89.713,
+    "lon": 116.035,
+    "slope_mean": 7.47,
+    "slope_max": 26.12,
+    "roughness": 19.08,
+    "distance": 0.009,
+    "match_share": 0.148
+   }
+  },
+  "gobi": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 0.7,
+    "slope_max": 1.77,
+    "roughness": 1.91,
+    "match_share": 0.0
+   },
+   "twin": {
+    "lat": -85.128,
+    "lon": 115.147,
+    "slope_mean": 1.25,
+    "slope_max": 6.92,
+    "roughness": 1.92,
+    "distance": 0.072,
+    "match_share": 0.29
+   }
+  },
+  "uyuni": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 0.0,
+    "slope_max": 0.0,
+    "roughness": 0.0,
+    "match_share": 0.0
+   },
+   "twin": {
+    "lat": -85.128,
+    "lon": 115.147,
+    "slope_mean": 1.25,
+    "slope_max": 6.92,
+    "roughness": 1.92,
+    "distance": 0.169,
+    "match_share": 0.29
+   }
+  },
+  "licancabur": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 32.03,
+    "slope_max": 47.91,
+    "roughness": 168.37,
+    "match_share": 0.457
+   },
+   "twin": {
+    "lat": -89.868,
+    "lon": 72.834,
+    "slope_mean": 31.21,
+    "slope_max": 38.8,
+    "roughness": 173.31,
+    "distance": 0.157,
+    "match_share": 0.173
+   }
+  },
+  "payunia": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 16.17,
+    "slope_max": 43.16,
+    "roughness": 40.64,
+    "match_share": 0.453
+   },
+   "twin": {
+    "lat": -85.07,
+    "lon": 67.113,
+    "slope_mean": 16.37,
+    "slope_max": 25.41,
+    "roughness": 42.65,
+    "distance": 0.053,
+    "match_share": 0.571
+   }
+  },
+  "namib-gobabeb": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 2.18,
+    "slope_max": 10.94,
+    "roughness": 6.45,
+    "match_share": 0.136
+   },
+   "twin": {
+    "lat": -85.847,
+    "lon": -80.321,
+    "slope_mean": 2.18,
+    "slope_max": 10.46,
+    "roughness": 6.43,
+    "distance": 0.001,
+    "match_share": 0.499
+   }
+  },
+  "lut": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 0.22,
+    "slope_max": 0.55,
+    "roughness": 0.46,
+    "match_share": 0.041
+   },
+   "twin": {
+    "lat": -85.128,
+    "lon": 115.147,
+    "slope_mean": 1.25,
+    "slope_max": 6.92,
+    "roughness": 1.92,
+    "distance": 0.139,
+    "match_share": 0.29
+   }
+  },
+  "dallol": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 1.5,
+    "slope_max": 7.86,
+    "roughness": 2.84,
+    "match_share": 0.006
+   },
+   "twin": {
+    "lat": -86.621,
+    "lon": -94.376,
+    "slope_mean": 1.53,
+    "slope_max": 11.28,
+    "roughness": 2.86,
+    "distance": 0.004,
+    "match_share": 0.595
+   }
+  },
+  "erta-ale": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 5.8,
+    "slope_max": 37.64,
+    "roughness": 17.48,
+    "match_share": 0.201
+   },
+   "twin": {
+    "lat": -85.812,
+    "lon": 133.724,
+    "slope_mean": 5.8,
+    "slope_max": 14.43,
+    "roughness": 17.45,
+    "distance": 0.001,
+    "match_share": 0.653
+   }
+  },
+  "harrat-khaybar": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 1.28,
+    "slope_max": 5.28,
+    "roughness": 2.33,
+    "match_share": 0.023
+   },
+   "twin": {
+    "lat": -86.433,
+    "lon": -170.863,
+    "slope_mean": 1.27,
+    "slope_max": 5.4,
+    "roughness": 2.72,
+    "distance": 0.009,
+    "match_share": 0.332
+   }
+  },
+  "aorounga": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 6.76,
+    "slope_max": 32.62,
+    "roughness": 19.66,
+    "match_share": 0.309
+   },
+   "twin": {
+    "lat": -85.566,
+    "lon": 109.464,
+    "slope_mean": 6.79,
+    "slope_max": 20.0,
+    "roughness": 19.67,
+    "distance": 0.004,
+    "match_share": 0.505
+   }
+  },
+  "tenoumer": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 6.98,
+    "slope_max": 30.75,
+    "roughness": 29.42,
+    "match_share": 0.018
+   },
+   "twin": {
+    "lat": -87.226,
+    "lon": 139.338,
+    "slope_mean": 6.98,
+    "slope_max": 19.49,
+    "roughness": 29.44,
+    "distance": 0.001,
+    "match_share": 0.471
+   }
+  },
+  "wolfe-creek": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 3.84,
+    "slope_max": 33.53,
+    "roughness": 13.86,
+    "match_share": 0.003
+   },
+   "twin": {
+    "lat": -85.964,
+    "lon": 119.249,
+    "slope_mean": 3.85,
+    "slope_max": 9.16,
+    "roughness": 13.78,
+    "distance": 0.003,
+    "match_share": 0.376
+   }
+  },
+  "gosses-bluff": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 2.34,
+    "slope_max": 32.67,
+    "roughness": 5.52,
+    "match_share": 0.037
+   },
+   "twin": {
+    "lat": -85.483,
+    "lon": 137.366,
+    "slope_mean": 2.34,
+    "slope_max": 14.01,
+    "roughness": 5.51,
+    "distance": 0.001,
+    "match_share": 0.369
+   }
+  },
+  "craters-of-the-moon": {
+   "photo": {
+    "source": "sentinel-2",
+    "credit": "Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0"
+   },
+   "earth": {
+    "slope_mean": 6.23,
+    "slope_max": 29.24,
+    "roughness": 22.95,
+    "match_share": 0.091
+   },
+   "twin": {
+    "lat": -87.612,
+    "lon": -94.61,
+    "slope_mean": 6.23,
+    "slope_max": 13.66,
+    "roughness": 23.03,
+    "distance": 0.002,
+    "match_share": 0.619
+   }
+  }
+ },
+ "extent_km": 12.0,
+ "pixel_m": 40.0,
+ "slope_band_deg": [
+  4.5,
+  13.3
+ ],
+ "moon_source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node)",
+ "earth_relief_source": "Copernicus DEM GLO-30 (ESA / European Union), resampled to 40 m"
+}

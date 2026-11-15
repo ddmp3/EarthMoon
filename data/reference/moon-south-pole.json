@@ -91,7 +91,27 @@
       "moon": "1,62 m/s²",
       "earth": "9,81 m/s²",
       "effect": "Mobilité, ancrage, forage et poussière se comportent autrement : aucun site terrestre ne reproduit la gravité lunaire (environ 1/6).",
-      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+      "en": {
+        "label": "Gravity",
+        "moon": "1.62 m/s²",
+        "earth": "9.81 m/s²",
+        "effect": "Mobility, anchoring, drilling and dust behave differently: no Earth site reproduces lunar gravity (about one sixth)."
+      }
+    },
+    {
+      "id": "oxygen",
+      "label": "Oxygène et atmosphère",
+      "moon": "aucune atmosphère respirable : pas d’oxygène libre, pas de pression",
+      "earth": "21 % d’oxygène dans un air à environ 1 bar",
+      "effect": "Sur Terre, moteurs, feu, sons, refroidissement par l’air et respiration fonctionnent ; sur la Lune, tout système doit apporter son oxygène et dissiper sa chaleur par rayonnement.",
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+      "en": {
+        "label": "Oxygen and atmosphere",
+        "moon": "no breathable atmosphere: no free oxygen, no pressure",
+        "earth": "21% oxygen in air at about 1 bar",
+        "effect": "On Earth, engines, fire, sound, air cooling and breathing all work; on the Moon every system must bring its own oxygen and reject heat by radiation."
+      }
     },
     {
       "id": "vacuum",
@@ -99,7 +119,13 @@
       "moon": "pression de surface d’environ 3 × 10⁻¹⁵ bar (exosphère)",
       "earth": "environ 1 bar",
       "effect": "Pas de convection, pas de vent, pas d’érosion par l’air : les critères vent, humidité et précipitations sont des proxys d’un environnement sec et calme.",
-      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+      "en": {
+        "label": "Vacuum",
+        "moon": "surface pressure of about 3 × 10⁻¹⁵ bar (exosphere)",
+        "earth": "about 1 bar",
+        "effect": "No convection, no wind, no erosion by air: wind, humidity and precipitation criteria are proxies for a dry, calm environment."
+      }
     },
     {
       "id": "radiation",
@@ -107,7 +133,13 @@
       "moon": "ni atmosphère ni champ magnétique global : surface exposée aux rayons cosmiques et aux particules solaires",
       "earth": "atmosphère et magnétosphère protectrices",
       "effect": "Aucun site terrestre ne reproduit l’environnement radiatif lunaire.",
-      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
+      "en": {
+        "label": "Radiation",
+        "moon": "no atmosphere and no global magnetic field: surface exposed to cosmic rays and solar particles",
+        "earth": "protective atmosphere and magnetosphere",
+        "effect": "No Earth site reproduces the lunar radiation environment."
+      }
     },
     {
       "id": "cold",
@@ -115,7 +147,13 @@
       "moon": "29 à 50 K dans les zones en ombre permanente (Diviner)",
       "earth": "au plus froid, environ -90 °C (≈ 180 K) en Antarctique",
       "effect": "Les critères de température sont des proxys de tendance (froid, amplitude), jamais des valeurs absolues.",
-      "source": "Paige et al. 2010, Science 330:479 ; EPSC2013-386 (vérification de Wassim, docs/verification-modes-1-2.md)"
+      "source": "Paige et al. 2010, Science 330:479 ; EPSC2013-386 (vérification de Wassim, docs/verification-modes-1-2.md)",
+      "en": {
+        "label": "Extreme cold",
+        "moon": "29 to 50 K in permanently shadowed regions (Diviner)",
+        "earth": "about -90 °C (≈ 180 K) at the coldest, in Antarctica",
+        "effect": "Temperature criteria are trend proxies (cold, day-night swing), never absolute values."
+      }
     },
     {
       "id": "regolith",
@@ -123,7 +161,13 @@
       "moon": "croûte des hautes terres (anorthosite) au pôle Sud, régolithe non altéré par l’eau ni la vie",
       "earth": "sols altérés par l’eau, l’air et la vie",
       "effect": "Le basalte terrestre sert de substitut pour la mécanique des roches ; l’anorthosite (Mistastin, Labrador) est le meilleur jumeau rocheux.",
-      "source": "Moriarty et Petro, EPSC2022-295 (vérification de Wassim)"
+      "source": "Moriarty et Petro, EPSC2022-295 (vérification de Wassim)",
+      "en": {
+        "label": "Regolith and geology",
+        "moon": "highland crust (anorthosite) at the south pole, regolith unaltered by water or life",
+        "earth": "soils altered by water, air and life",
+        "effect": "Earth basalt stands in for rock mechanics; anorthosite (Mistastin, Labrador) is the closest rock twin."
+      }
     }
   ],
   "context": {
