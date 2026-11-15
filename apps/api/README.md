@@ -14,7 +14,7 @@ Ce guide dit **comment appeler l'API et ce dont elle a besoin**, pour que chacun
 ```bash
 cd apps/api
 npm install
-npm test            # 96 tests
+npm test            # 98 tests
 npm run typecheck
 npm run dev         # vraies sources, http://localhost:3001/api/docs
 ```
@@ -110,22 +110,32 @@ Format de `docs/contrats.md` §1 : un tableau de `{ id, name, lat, lon, terrain,
 - Une entrée invalide est **ignorée** et signalée dans les journaux ; les autres sont gardées.
 - Tant que le fichier n'existe pas, l'API utilise les 3 sites de `data/fixtures/site-values.json`.
 
-### Jesus — `data/candidates-geometry.json` (pente, rugosité, altitude)
+### Jesus — `data/candidates-precomputed.json` (Copernicus DEM + MODIS)
 
-Calculé hors ligne à partir du Copernicus DEM, une fois la liste de sites prête :
+Valeurs calculées **hors ligne** en Python (`tools/precompute/`), une fois la liste de sites prête. Aucune clé ni compte : Copernicus DEM est sur AWS en accès libre, MODIS passe par Planetary Computer avec un jeton anonyme.
 
 ```bash
-pip install numpy rasterio
-python tools/precompute/enrich_candidates.py data/candidates.json -o data/candidates-geometry.json
+pip install -r tools/precompute/requirements.txt
+cd tools/precompute
+python enrich_candidates.py ../../data/candidates.json -o ../../data/candidates-precomputed.json   # pente, rugosité, altitude
+python modis_values.py ../../data/candidates-precomputed.json                                      # ndvi, lst_day, lst_night, lst_amplitude
+python -m pytest -q                                                                                 # tests hors ligne
 ```
 
-Le script est sur la branche `search-engine-geolocalization` (`tools/precompute/`). Il recopie chaque site et ajoute :
+Chaque site reçoit un bloc :
 
 ```json
-"precomputed": { "elevation": 173.0, "slope_mean": 7.5, "slope_max": 24.0, "roughness": 18.0 }
+"precomputed": {
+  "elevation": 173.0, "slope_mean": 7.5, "slope_max": 24.0, "roughness": 18.0,
+  "lst_day": 4.1, "lst_night": -22.3, "lst_amplitude": 26.4, "ndvi": 0.04,
+  "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024"
+}
 ```
 
-Sans ce fichier, `slope_mean`, `slope_max`, `roughness` et `elevation` sont `missing`.
+- MODIS : 12 compositions réparties sur l'année 2024 (`--year`, `--samples`). LST en °C (moyenne), amplitude = moyenne de (jour − nuit), NDVI = médiane.
+- Une valeur introuvable reste `null` (jamais inventée) ; la raison est dans `error` (DEM) ou `modis_error` (MODIS).
+- Relancer un script ne recalcule que les sites incomplets (`--force` pour tout refaire). Les deux scripts conservent les valeurs de l'autre.
+- Sans ce fichier, ces 8 paramètres sont `missing`.
 
 ### David — déploiement
 
@@ -147,13 +157,13 @@ Sans ce fichier, `slope_mean`, `slope_max`, `roughness` et `elevation` sont `mis
 | Coordonnées | `latitude_abs` | Branché |
 | NASA POWER | `t2m_mean`, `t2m_min`, `t2m_max`, `wind`, `humidity`, `precipitation`, `solar` | Branché ; testé avec des réponses simulées, **à vérifier en réel** (`npm run check:sources`) |
 | USGS Earthquake Catalog | `quake_count` | Branché ; même remarque |
-| Copernicus DEM | `slope_mean`, `slope_max`, `roughness`, `elevation` | Précalculé ; attend `data/candidates-geometry.json` |
-| MODIS (Planetary Computer) | `ndvi`, `lst_day`, `lst_night`, `lst_amplitude` | **À faire** |
+| Copernicus DEM | `slope_mean`, `slope_max`, `roughness`, `elevation` | Précalculé (`tools/precompute/enrich_candidates.py`) ; attend `data/candidates-precomputed.json` |
+| MODIS (Planetary Computer) | `ndvi`, `lst_day`, `lst_night`, `lst_amplitude` | Précalculé (`tools/precompute/modis_values.py`) ; testé hors ligne, **à vérifier en réel** |
 | Smithsonian GVP | `volcano_distance` | **À faire** |
 
-Conséquence tant que MODIS manque : pas de `ndvi`, donc le filtre « sol nu » n'écarte aucun site en mode réel (l'Amazonie n'est pas exclue).
+Tant que `data/candidates-precomputed.json` ne contient pas MODIS, il n'y a pas de `ndvi` : le filtre « sol nu » n'écarte aucun site en mode réel (l'Amazonie n'est pas exclue). Les journaux de démarrage le signalent.
 
-## Ajouter un connecteur (MODIS, GVP…)
+## Ajouter un connecteur (GVP…)
 
 Un connecteur est une fonction `({ lat, lon }) => Promise<ParamValues>` (`docs/contrats.md` §3).
 
