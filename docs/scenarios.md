@@ -1,6 +1,7 @@
 # Modes et paramètres (MVP Terre ↔ Lune)
 
 > **Statut : première proposition.** Les intervalles et poids sont des ordres de grandeur à valider par l'équipe (Wassim pour la robotique et les instruments, avec références). Chaque valeur modifiée doit citer sa source.
+>> **Vérification de Wassim (modes 1 et 2)** : voir [verification-modes-1-2.md](verification-modes-1-2.md). Toutes les lignes de température sont des **proxys** : aucun site terrestre n’approche le froid des zones en ombre permanente (29 à 50 K) ni l’amplitude jour-nuit lunaire (environ 300 K à basse latitude). Le pôle Sud lunaire est en croûte des hautes terres (anorthosite), pas en basalte de mer (Moriarty et Petro, EPSC2022-295).
 
 ## Catalogue des paramètres
 
@@ -22,7 +23,7 @@ Seuls ces paramètres existent dans l'application : ce sont ceux que nos sources
 | `solar` | ensoleillement | kWh/m²/jour | NASA POWER | éclairage quasi continu sur certaines crêtes polaires |
 | `latitude_abs` | latitude absolue | ° | coordonnées | régime d'éclairage polaire |
 | `quake_count` | séismes M ≥ 2,5 à moins de 300 km depuis 2000 | nombre | USGS Earthquake Catalog | séismes lunaires faibles |
-| `volcano_distance` | distance au volcan holocène le plus proche | km | Smithsonian GVP | mers basaltiques, tubes de lave |
+| `volcano_distance` | distance au volcan holocène le plus proche | km | Smithsonian GVP | aucun volcanisme récent au pôle Sud (croûte des hautes terres) ; le basalte sert de substitut terrestre |
 
 **Filtre commun à tous les modes** : `ndvi ≤ 0,1` (sol nu). Les sites végétalisés sont exclus avant le calcul du score.
 
@@ -45,7 +46,7 @@ Objectif : tester sur Terre la mobilité d'un rover ou d'un robot avant son envo
 | `precipitation` | ≤ 1 mm/j | 1 | 1 | sol sec et meuble, proche du régolithe |
 | `t2m_min` | ≤ -20 °C | 20 °C | 1 | test des composants au froid |
 | `lst_amplitude` | ≥ 20 °C | 15 °C | 1 | cycles thermiques |
-| `volcano_distance` | ≤ 50 km | 100 km | 1 | substrat basaltique |
+| `volcano_distance` | ≤ 50 km | 100 km | 1 | le basalte sert de substitut terrestre pour la mécanique des roches et du régolithe (le pôle Sud est en hautes terres) |
 
 ## Mode 2 — Calibration d'instruments
 
@@ -54,7 +55,7 @@ Objectif : calibrer sur Terre des instruments (forage, vent, gaz, sismographe, t
 | Instrument | Paramètre | Intervalle cible | Tolérance | Poids | Justification |
 |---|---|---|---|---|---|
 | Forage | `t2m_mean` | ≤ 0 °C | 10 °C | 2 | sol gelé, proxy du régolithe glacé |
-| Forage | `volcano_distance` | ≤ 50 km | 100 km | 1 | roche basaltique |
+| Forage | `volcano_distance` | ≤ 50 km | 100 km | 1 | basalte : substitut terrestre (le pôle Sud est en hautes terres d’northosite) |
 | Vent | `wind` | ≤ 3 m/s | 3 m/s | 2 | ligne de base calme (pas de vent sur la Lune) |
 | Gaz | `humidity` | ≤ 40 % | 30 % | 2 | atmosphère sèche |
 | Gaz | `precipitation` | ≤ 0,5 mm/j | 1 | 1 | environnement sec |
