@@ -14,17 +14,15 @@ export interface CriterionDraft {
 const initialCriterion: CriterionDraft = {
   param: 'slope_mean',
   min: '5',
-  max: '15',
+  max: '13',
   tolerance: '10',
   weight: '1',
 }
 
 interface AppStore {
-  selectedMode: SelectedMode
   criteriaDraft: CriterionDraft[]
   bareSoilOnly: boolean
   calibrationInstrument: CalibrationInstrument | 'all'
-  setSelectedMode: (mode: SelectedMode) => void
   setBareSoilOnly: (bareSoilOnly: boolean) => void
   setCalibrationInstrument: (instrument: CalibrationInstrument | 'all') => void
   updateCriterion: (index: number, updates: Partial<CriterionDraft>) => void
@@ -33,14 +31,11 @@ interface AppStore {
 }
 
 export const useAppStore = create<AppStore>((set) => ({
-  selectedMode: 'robotics',
   criteriaDraft: [initialCriterion],
   bareSoilOnly: true,
   calibrationInstrument: 'all',
-  setSelectedMode: (selectedMode) => set({ selectedMode }),
   setBareSoilOnly: (bareSoilOnly) => set({ bareSoilOnly }),
-  setCalibrationInstrument: (calibrationInstrument) =>
-    set({ calibrationInstrument }),
+  setCalibrationInstrument: (calibrationInstrument) => set({ calibrationInstrument }),
   updateCriterion: (index, updates) =>
     set((state) => ({
       criteriaDraft: state.criteriaDraft.map((criterion, criterionIndex) =>
@@ -50,31 +45,18 @@ export const useAppStore = create<AppStore>((set) => ({
   addCriterion: () =>
     set((state) => {
       const nextParameter = parameterCatalog.find(
-        (parameter) =>
-          !state.criteriaDraft.some(
-            (criterion) => criterion.param === parameter.id,
-          ),
+        (parameter) => !state.criteriaDraft.some((criterion) => criterion.param === parameter.id),
       )
       if (!nextParameter) return state
-
       return {
         criteriaDraft: [
           ...state.criteriaDraft,
-          {
-            ...initialCriterion,
-            param: nextParameter.id,
-            min: '',
-            max: '',
-            tolerance: '1',
-            weight: '1',
-          },
+          { param: nextParameter.id, min: '', max: '', tolerance: '1', weight: '1' },
         ],
       }
     }),
   removeCriterion: (index) =>
     set((state) => ({
-      criteriaDraft: state.criteriaDraft.filter(
-        (_, criterionIndex) => criterionIndex !== index,
-      ),
+      criteriaDraft: state.criteriaDraft.filter((_, criterionIndex) => criterionIndex !== index),
     })),
 }))

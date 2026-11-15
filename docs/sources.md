@@ -99,3 +99,19 @@ Pistes relevées par Wassim ([verification-modes-1-2.md](verification-modes-1-2.
 - **RADARSAT-1** (archive ouverte depuis 2019) et **RCM** (produits archivés ouverts via EODMS de RNCan, licence du gouvernement ouvert) : radar à synthèse d’ouverture, voit à travers les nuages et la nuit polaire. Comparaison possible avec LRO Mini-RF sur un ou deux sites, sans l’intégrer au score (longueurs d’onde différentes).
 - **Réseau d’analogues de l’ASC (CARN)** : station HMP (Haughton), station McGill (île Axel Heiberg) ; missions à Mistastin depuis 2010 ; cratère Tunnunik (programme SOAR). Ces sites sont dans `data/candidates.json`.
 - **Jeu de données de navigation de rover de l’île Devon** (Université de Toronto, subvention CARN) : données réelles de conduite pour valider les intervalles de pente et de rugosité du mode 1.
+
+## Images de l’interface (aucune image générée par IA)
+
+| Image | Source | Mention |
+|---|---|---|
+| Bandeau d’accueil | NASA, Artemis II, `art002e021278` (6 avril 2026) | NASA |
+| Carte « Rover mobility » | NASA, Apollo 15, `AS15-86-11603` (1971) | NASA |
+| Carte « Instrument calibration » | NASA, Apollo 14, `AS14-67-9362` (1971) | NASA |
+| Carte « Self-sufficient base » | NASA, Apollo 17, `AS17-134-20382` (1972) | NASA |
+| Carte « Free criteria » | Mosaïque Clementine du pôle Sud lunaire, `PIA00001` | NASA/JPL/USGS |
+| Vue satellite de chaque site | Sentinel-2 cloudless 2016, EOX IT Services GmbH (données Copernicus Sentinel modifiées 2016) ; à défaut Landsat WELD (NASA GIBS) | CC BY 4.0 pour Sentinel-2 cloudless 2016 |
+| Relief de chaque site | Copernicus DEM GLO-30, rééchantillonné à 40 m | ESA / Union européenne |
+| Jumeau lunaire de chaque site | LRO LOLA LDEM_85S_40M | NASA PDS |
+| Fond de carte | Blue Marble Shaded Relief and Bathymetry, NASA GIBS | NASA |
+
+Détail des photos NASA : `apps/web/public/img/credits.json`. Images des sites : `tools/precompute/site_visuals.py` et `apps/web/public/sites/manifest.json`.

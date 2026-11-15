@@ -225,7 +225,7 @@ export interface paths {
         /**
          * Classer les sites candidats pour un mode ou des critères libres
          * @description Envoyer soit `mode` (modes 1 à 3), soit `criteria` (mode 4), jamais les deux.
-         *     Le filtre « sol nu » (NDVI ≤ 0,1) est actif par défaut : un site végétalisé garde `total` 0, porte
+         *     Le filtre « sol nu » (NDVI ≤ 0,2) est actif par défaut : un site végétalisé garde `total` 0, porte
          *     `excluded: "vegetation"` et passe à la fin de la liste. Les autres sites sont triés par `total` décroissant.
          */
         post: {
@@ -441,7 +441,7 @@ export interface components {
             /** @description Mode 4 : un paramètre au plus une fois ; chaque critère a min, max ou les deux. */
             criteria?: components["schemas"]["Criterion"][];
             /**
-             * @description Filtre « sol nu » (NDVI ≤ 0,1). Désactivable en mode 4.
+             * @description Filtre « sol nu » (NDVI ≤ 0,2). Désactivable en mode 4.
              * @default true
              */
             bareSoilOnly: boolean;
@@ -449,6 +449,8 @@ export interface components {
         AnalyzedSite: {
             id: string;
             name: string;
+            /** @description Nom anglais du site, quand il existe. */
+            nameEn?: string;
             lat: number;
             lon: number;
             /** @enum {string} */
@@ -500,6 +502,8 @@ export interface components {
             body: "earth" | "moon";
             params: components["schemas"]["ParamId"][];
             terms: string;
+            termsEn?: string;
+            nameEn?: string;
         };
         Error: {
             error: string;
