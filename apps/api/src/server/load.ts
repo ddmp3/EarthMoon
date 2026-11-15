@@ -35,6 +35,7 @@ export function parseSites(raw: unknown, onSkip?: (reason: string) => void): Sit
     sites.push({
       id: s.id,
       name: s.name,
+      ...(typeof (s as { name_en?: unknown }).name_en === "string" ? { nameEn: (s as { name_en: string }).name_en } : {}),
       lat: s.lat as number,
       lon: s.lon as number,
       ...(typeof s.terrain === "string" ? { terrain: s.terrain } : {}),

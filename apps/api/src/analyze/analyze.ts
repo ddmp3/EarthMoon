@@ -6,6 +6,8 @@ import { resolveRequest } from "./validate.js";
 export type Site = {
   id: string;
   name: string;
+  /** Nom anglais (champ name_en de data/candidates.json), pour l’interface en anglais. */
+  nameEn?: string;
   lat: number;
   lon: number;
   terrain?: string;
@@ -15,7 +17,7 @@ export type Site = {
 /** Connecteur de source (docs/contrats.md §3). */
 export type Connector = (site: { lat: number; lon: number }) => Promise<ParamValues>;
 
-export type AnalyzedSite = Pick<Site, "id" | "name" | "lat" | "lon" | "role"> & {
+export type AnalyzedSite = Pick<Site, "id" | "name" | "nameEn" | "lat" | "lon" | "role"> & {
   total: number;
   criteria: CriterionScore[];
   /** Présent si le site est écarté par le filtre « sol nu » (total forcé à 0). */
@@ -72,7 +74,7 @@ export async function analyze(body: unknown, deps: AnalyzeDeps): Promise<Analyze
   const analyzed = await mapWithConcurrency(deps.sites, deps.concurrency ?? 8, async (site): Promise<AnalyzedSite> => {
     const values = await collectValues(site, deps.connectors, deps.onConnectorError);
     const { total, criteria } = scoreSite(values, request.criteria);
-    const base = { id: site.id, name: site.name, lat: site.lat, lon: site.lon, role: site.role, criteria };
+    const base = { id: site.id, name: site.name, ...(site.nameEn ? { nameEn: site.nameEn } : {}), lat: site.lat, lon: site.lon, role: site.role, criteria };
     if (request.bareSoilOnly && isVegetated(values)) {
       return { ...base, total: 0, excluded: "vegetation" };
     }
