@@ -10,6 +10,7 @@ import type { FetchLike } from "../src/sources/http.js";
 import { buildSources } from "../src/sources/index.js";
 import { createPowerConnector, parsePower, powerUrl } from "../src/sources/power.js";
 import { createUsgsConnector, parseUsgsCount, usgsUrl } from "../src/sources/usgs.js";
+import { createGvpConnector, GVP_WFS_URL, haversineKm, nearestVolcanoKm, parseVolcanoes } from "../src/sources/gvp.js";
 import { REPO_ROOT } from "../src/server/config.js";
 
 const ok = (body: unknown): ReturnType<FetchLike> => Promise.resolve({ ok: true, status: 200, json: async () => body });
@@ -231,8 +232,7 @@ describe("buildSources", () => {
   it("mode réel sans fichier précalculé : POWER + USGS, et note ce qui manque", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "data-"));
     const set = await buildSources(dir, false);
-    expect(set.names).toEqual(["coordonnées", "NASA POWER", "USGS Earthquake Catalog"]);
-    expect(set.notes.join(" ")).toMatch(/GVP/);
+    expect(set.names).toEqual(["coordonnées", "NASA POWER", "USGS Earthquake Catalog", "Smithsonian GVP"]);
     expect(set.notes.join(" ")).toMatch(/candidates-precomputed\.json absent/);
   });
 
@@ -241,7 +241,7 @@ describe("buildSources", () => {
     await writeFile(path.join(dir, "candidates-precomputed.json"), JSON.stringify([{ id: "a", lat: 1, lon: 2, precomputed: { slope_mean: 4 } }]));
     const set = await buildSources(dir, false);
     expect(set.names).toContain("Copernicus DEM (précalculé)");
-    expect(set.connectors).toHaveLength(4);
+    expect(set.connectors).toHaveLength(5);
     expect(set.notes.join(" ")).toMatch(/sans MODIS/);
   });
 
@@ -251,5 +251,76 @@ describe("buildSources", () => {
     const set = await buildSources(dir, false);
     expect(set.names).toContain("Copernicus DEM + MODIS (précalculé)");
     expect(set.notes.join(" ")).not.toMatch(/sans MODIS/);
+  });
+});
+
+describe("Smithsonian GVP (volcano_distance)", () => {
+  const WFS = {
+    type: "FeatureCollection",
+    features: [
+      // Attributs Latitude/Longitude présents : ils priment sur la géométrie
+      { type: "Feature", geometry: { type: "Point", coordinates: [-155.47, 19.82] }, properties: { Volcano_Name: "Mauna Kea", Latitude: 19.82, Longitude: -155.47 } },
+      // Pas d'attributs : géométrie lue en [lon, lat]
+      { type: "Feature", geometry: { type: "Point", coordinates: [-67.73, -23.37] }, properties: { Volcano_Name: "Lascar" } },
+      { type: "Feature", geometry: null, properties: { Volcano_Name: "sans position" } },
+      { type: "Feature", geometry: { type: "Point", coordinates: [500, 500] }, properties: {} },
+    ],
+  };
+
+  it("haversine : 1° de longitude à l'équateur ≈ 111,2 km ; même point = 0", () => {
+    expect(haversineKm(0, 0, 0, 1)).toBeCloseTo(111.19, 1);
+    expect(haversineKm(45, 7, 45, 7)).toBe(0);
+    expect(haversineKm(0, 179.5, 0, -179.5)).toBeCloseTo(111.19, 1); // passe l'antiméridien
+  });
+
+  it("lit les volcans du GeoJSON et ignore les entrées sans position valide", () => {
+    const v = parseVolcanoes(WFS);
+    expect(v).toEqual([
+      { lat: 19.82, lon: -155.47, name: "Mauna Kea" },
+      { lat: -23.37, lon: -67.73, name: "Lascar" },
+    ]);
+  });
+
+  it.each([[{}], [{ features: [] }], [{ features: [{ geometry: null }] }], [null]])("refuse %j", (body) => {
+    expect(() => parseVolcanoes(body)).toThrow();
+  });
+
+  it("distance au volcan le plus proche", () => {
+    const v = parseVolcanoes(WFS);
+    expect(nearestVolcanoKm(v, 19.82, -155.47)).toBe(0);
+    expect(nearestVolcanoKm(v, -24.5, -69.25)).toBeGreaterThan(150);
+    expect(nearestVolcanoKm(v, -24.5, -69.25)).toBeLessThan(220);
+  });
+
+  it("le connecteur charge la liste une seule fois et arrondit à 0,1 km", async () => {
+    const impl = vi.fn<FetchLike>(() => ok(WFS));
+    const conn = createGvpConnector({ fetchImpl: impl, url: GVP_WFS_URL });
+    const [a, b] = await Promise.all([conn({ lat: 19.82, lon: -155.47 }), conn({ lat: -24.5, lon: -69.25 })]);
+    expect(a).toEqual({ volcano_distance: 0 });
+    expect(Number.isInteger((b.volcano_distance as number) * 10)).toBe(true);
+    await conn({ lat: 0, lon: 0 });
+    expect(impl).toHaveBeenCalledTimes(1);
+  });
+
+  it("un échec de chargement n'est pas mémorisé, et la liste est rechargée après le TTL", async () => {
+    let t = 0;
+    let fail = true;
+    const impl = vi.fn<FetchLike>(() => (fail ? status(404) : ok(WFS)));
+    const conn = createGvpConnector({ fetchImpl: impl, ttlMs: 1000, now: () => t, backoffMs: 0 });
+    await expect(conn({ lat: 0, lon: 0 })).rejects.toThrow();
+    fail = false;
+    await conn({ lat: 0, lon: 0 });
+    await conn({ lat: 1, lon: 1 });
+    expect(impl).toHaveBeenCalledTimes(2);
+    t = 1001;
+    await conn({ lat: 0, lon: 0 });
+    expect(impl).toHaveBeenCalledTimes(3);
+  });
+
+  it("l'URL par défaut demande les volcans holocènes en GeoJSON, ordre lon/lat", () => {
+    const url = new URL(GVP_WFS_URL);
+    expect(url.searchParams.get("typeName")).toBe("GVP-VOTW:Smithsonian_VOTW_Holocene_Volcanoes");
+    expect(url.searchParams.get("outputFormat")).toBe("application/json");
+    expect(url.searchParams.get("srsName")).toBe("EPSG:4326");
   });
 });
