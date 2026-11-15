@@ -91,6 +91,7 @@ const en = {
     duplicate: 'A parameter can only be used once.',
     range: 'Each criterion needs a minimum, a maximum, or both.',
     number: 'Ranges, tolerance and weight must be numbers; tolerance and weight above zero.',
+    order: 'The minimum must be less than or equal to the maximum.',
   },
   missions: {
     robotics: {
@@ -215,6 +216,7 @@ const fr: Texts = {
     duplicate: 'Un paramètre ne peut servir qu’une fois.',
     range: 'Chaque critère doit avoir un minimum, un maximum, ou les deux.',
     number: 'Intervalles, tolérance et poids doivent être des nombres ; tolérance et poids supérieurs à zéro.',
+    order: 'Le minimum doit être inférieur ou égal au maximum.',
   },
   missions: {
     robotics: {
