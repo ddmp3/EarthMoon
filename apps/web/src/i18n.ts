@@ -5,7 +5,7 @@ export type Lang = 'en' | 'fr'
 /** Interface texts. English is the default (Space Apps submission requirement); French is a visitor choice. */
 const en = {
   languageSwitch: 'Language',
-  brand: 'Cyber&Space Montréal',
+  brand: 'Cyber&Space 🛰️ Montréal',
   tagline: 'NASA Space Apps Challenge 2026',
   heroEyebrow: 'Earth analogs for the lunar south pole',
   heroTitle: 'Find the Moon on Earth.',
@@ -126,7 +126,7 @@ const comma = (n: number, digits: number) => n.toFixed(digits).replace('.', ',')
 
 const fr: Texts = {
   languageSwitch: 'Langue',
-  brand: 'Cyber&Space Montréal',
+  brand: 'Cyber&Space 🛰️ Montréal',
   tagline: 'NASA Space Apps Challenge 2026',
   heroEyebrow: 'Analogues terrestres du pôle Sud lunaire',
   heroTitle: 'Trouver la Lune sur Terre.',
