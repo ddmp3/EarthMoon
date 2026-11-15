@@ -1,0 +1,10 @@
+.git
+**/node_modules
+**/dist
+**/.pytest_cache
+**/__pycache__
+apps/api
+docs
+tools
+infra
+contexte-david
