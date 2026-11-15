@@ -6,6 +6,8 @@
 
 A web application that ranks Earth sites as analogs of the lunar south pole for a chosen mission: rover mobility testing, instrument calibration, self-sufficient colony, or free criteria. Each site is scored criterion by criterion with open data (NASA POWER, MODIS, Copernicus DEM, USGS, Smithsonian GVP) against lunar reference values (LRO LOLA slope and roughness computed with the same 1 km method as on Earth, LRO Diviner). Every site card shows what matches, what does not, the lunar value next to the Earth value, the source of each number, and what Earth cannot reproduce (gravity, vacuum, radiation).
 
+**Live:** https://jolly-rock-05f5cb20f.3.azurestaticapps.net (API and OpenAPI docs: https://ca-api-rtzkc5ya.bluesky-19c5e80c.canadacentral.azurecontainerapps.io/api/docs).
+
 Run it locally (Docker): `docker compose up --build`, then open http://localhost:8080 (API and docs: http://localhost:3001/api/docs). End-to-end tests: `python3 tools/validation/e2e.py`.
 
 Data sources and terms: `GET /api/sources` and [docs/sources.md](docs/sources.md). Validation against known analogs: [docs/validation-classements.md](docs/validation-classements.md).

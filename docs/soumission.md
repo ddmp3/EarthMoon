@@ -17,8 +17,8 @@ Source : guide officiel *Project Submission Guide* (https://www.spaceappschallen
 
 ## Points d'attention pour l'équipe
 
-1. **L'application et le dépôt sont en français.** Le guide exige l'anglais pour les éléments liés. Il faut soit traduire l'interface avant la soumission, soit lier le dépôt (avec la présentation anglaise en tête du README) et une démo en anglais. Décision : David.
-2. Le site doit être en ligne et public avant de soumettre son lien (déploiement Azure, avec l'accord de David). Le guide recommande de demander une classification FortiGuard pour qu'un nouveau site ne soit pas bloqué chez les juges (facultatif).
+1. **L'interface est en anglais** depuis la refonte du 15/11, et le README s'ouvre sur une présentation en anglais. La documentation interne (`docs/`) reste en français.
+2. Le site est en ligne et public : https://jolly-rock-05f5cb20f.3.azurestaticapps.net. Le guide recommande de demander une classification FortiGuard pour qu'un nouveau site ne soit pas bloqué chez les juges (facultatif).
 3. Démo : vidéo de 30 secondes **ou** 7 diapositives. Script et plan dans [presentation.md](presentation.md).
 
 ## Brouillons des champs du formulaire (en anglais)
@@ -37,7 +37,7 @@ We built a web application that searches Earth for places that can stand in for 
 
 ### Link to Final Project
 
-*(URL du site déployé sur Azure, ou https://github.com/ddmp3/nasa-space-app-challenge-2026-cyber-space)*
+https://jolly-rock-05f5cb20f.3.azurestaticapps.net (dépôt : https://github.com/ddmp3/nasa-space-app-challenge-2026-cyber-space)
 
 ### Detailed Project Description
 

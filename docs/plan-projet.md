@@ -17,13 +17,13 @@ Une application web **déployée sur Azure** où l'on choisit un des 4 modes et 
 
 ## Définition de « terminé » (MVP)
 
-- [ ] Les 4 modes fonctionnent de bout en bout sur le site **déployé**. *Fait en local (docker compose, tests TF-04 à TF-07) ; reste le déploiement.*
+- [x] Les 4 modes fonctionnent de bout en bout sur le site **déployé** : https://jolly-rock-05f5cb20f.3.azurestaticapps.net (13 tests de bout en bout passés en ligne le 15/11).
 - [x] Au moins 4 sources réelles branchées : NASA POWER, Copernicus DEM, MODIS (LST + NDVI), USGS séismes, plus Smithsonian GVP. Côté Lune : LRO LOLA (calculé), Diviner (publié).
 - [x] Les analogues connus sortent dans le haut des modes où ils sont utilisés, l'Amazonie est écartée : 9 attentes tenues sur 11 ([validation-classements.md](validation-classements.md)).
 - [x] Au moins 3 sites peu étudiés mis en avant, avec leur fiche : Tunnunik, Mistastin, Atakor (proposition, à confirmer par Wassim).
 - [x] Contrat OpenAPI publié (`/api/docs`).
 - [x] Toutes les sources nommées : `GET /api/sources`, source de chaque valeur dans la fiche.
-- [ ] Interface, dépôt, page de projet et démo en anglais.
+- [ ] Interface, dépôt, page de projet et démo en anglais. *Fait : interface et présentation du README. Reste : page de projet et démo.*
 - [ ] Présentation, démo et soumission prêtes (brouillons : [presentation.md](presentation.md), [soumission.md](soumission.md)).
 
 ## Calendrier (dimanche)
@@ -59,7 +59,8 @@ Toutes les PR (#38, #47, #48, #49, #50) et les branches de Jesus sont fusionnée
 | Front | Modes, carte, fiche site (valeur lunaire, source, limites de la Terre), mode 4 avec aide, liste des sources ; types générés depuis OpenAPI |
 | Tests | API 111, Python 22, bout en bout 12/12, classements tenus |
 | Sécurité | 0 vulnérabilité npm, aucun secret, en-têtes de sécurité sur l'API et le front |
-| Déploiement | `deploy.sh` corrigé ; **pas encore lancé** (accord de David requis) |
+| Déploiement | En ligne sur Azure (souscription `dev`) depuis le 15/11 : https://jolly-rock-05f5cb20f.3.azurestaticapps.net |
+| Interface | Refonte fusionnée (#60) : photos NASA, vues satellite et jumeau lunaire par site, tableau unique, radar, en anglais |
 
 ## Décisions d'équipe en attente
 
@@ -86,8 +87,9 @@ Changements de réglage déjà faits, à relire en équipe :
 - [x] Route `POST /api/analyze` (#4, faite dans #50).
 - [x] Revue et fusion des PR, intégration complète, `docker compose` local.
 - [ ] Profil lunaire (#5). *Fait : relief LOLA, froid, gravité, vide, rayonnement, séismes. Reste : température de jour des crêtes éclairées (Diviner) et ensoleillement (LOLA).*
-- [ ] Préparer le poste de déploiement : installer `terraform` dans WSL (demande sudo), `az login` (#52). **Nouveau.**
-- [ ] Déploiement Azure avec `infra/terraform/deploy.sh` (#3), puis `python3 tools/validation/e2e.py --web <front> --api <api>`.
+- [x] Préparer le poste de déploiement (#52) : terraform installé dans `~/.local/bin` (WSL), souscription `dev`.
+- [x] Déploiement Azure (#3), le 15/11 : front https://jolly-rock-05f5cb20f.3.azurestaticapps.net, API https://ca-api-rtzkc5ya.bluesky-19c5e80c.canadacentral.azurecontainerapps.io. Tests en ligne : 13/13.
+- [ ] Supprimer les ressources Azure après le jugement (`terraform -chdir=infra/terraform destroy`) : elles coûtent tant qu'elles existent. **Nouveau.**
 - [ ] Décisions d’équipe ci-dessus (#51).
 - [ ] Partager la page de suivi avec l'équipe (menu Partager de la page, #53). **Nouveau.**
 - [ ] Mettre à jour `contexte-david/` (branche `david/contexte`) avant de passer sur le Mac portable (#54). **Nouveau.**
