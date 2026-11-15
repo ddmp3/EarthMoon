@@ -137,7 +137,8 @@ resource "azurerm_container_app" "api" {
   }
 
   lifecycle {
-    ignore_changes = [template[0].container[0].image]
+    # Image: pushed by deploy.sh. Workload profile: set to "Consumption" by Azure, not by this file.
+    ignore_changes = [template[0].container[0].image, workload_profile_name]
   }
 
   tags = local.tags
