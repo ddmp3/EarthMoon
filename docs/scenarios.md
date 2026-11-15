@@ -1,7 +1,8 @@
 # Modes et paramètres (MVP Terre ↔ Lune)
 
 > **Statut : première proposition.** Les intervalles et poids sont des ordres de grandeur à valider par l'équipe (Wassim pour la robotique et les instruments, avec références). Chaque valeur modifiée doit citer sa source.
->> **Vérification de Wassim (modes 1 et 2)** : voir [verification-modes-1-2.md](verification-modes-1-2.md). Toutes les lignes de température sont des **proxys** : aucun site terrestre n’approche le froid des zones en ombre permanente (29 à 50 K) ni l’amplitude jour-nuit lunaire (environ 300 K à basse latitude). Le pôle Sud lunaire est en croûte des hautes terres (anorthosite), pas en basalte de mer (Moriarty et Petro, EPSC2022-295).
+>
+> **Vérification de Wassim (modes 1 et 2)** : voir [verification-modes-1-2.md](verification-modes-1-2.md). Toutes les lignes de température sont des **proxys** : aucun site terrestre n’approche le froid des zones en ombre permanente (29 à 50 K) ni l’amplitude jour-nuit lunaire (environ 300 K à basse latitude). Le pôle Sud lunaire est en croûte des hautes terres (anorthosite), pas en basalte de mer (Moriarty et Petro, EPSC2022-295).
 
 ## Catalogue des paramètres
 
@@ -55,7 +56,7 @@ Objectif : calibrer sur Terre des instruments (forage, vent, gaz, sismographe, t
 | Instrument | Paramètre | Intervalle cible | Tolérance | Poids | Justification |
 |---|---|---|---|---|---|
 | Forage | `t2m_mean` | ≤ 0 °C | 10 °C | 2 | sol gelé, proxy du régolithe glacé |
-| Forage | `volcano_distance` | ≤ 50 km | 100 km | 1 | basalte : substitut terrestre (le pôle Sud est en hautes terres d’northosite) |
+| Forage | `volcano_distance` | ≤ 50 km | 100 km | 1 | basalte : substitut terrestre (le pôle Sud est en hautes terres, en anorthosite) |
 | Vent | `wind` | ≤ 3 m/s | 3 m/s | 2 | ligne de base calme (pas de vent sur la Lune) |
 | Gaz | `humidity` | ≤ 40 % | 30 % | 2 | atmosphère sèche |
 | Gaz | `precipitation` | ≤ 0,5 mm/j | 1 | 1 | environnement sec |
