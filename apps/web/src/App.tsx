@@ -17,7 +17,8 @@ import {
 import { Home } from './components/Home'
 import { Mission } from './components/Mission'
 import { SiteDetail } from './components/SiteDetail'
-import { useT, type Texts } from './i18n'
+import { FR_SOURCES } from './content-fr'
+import { useT, type Lang, type Texts } from './i18n'
 import { MISSION_ORDER } from './shared'
 import { useAppStore, type CriterionDraft, type SelectedMode } from './store'
 
@@ -47,8 +48,12 @@ function parseHash(): { mode: SelectedMode | null; site: string | null } {
 }
 
 function App() {
-  const { t } = useT()
-  const { criteriaDraft, bareSoilOnly, calibrationInstrument } = useAppStore()
+  const { t, lang } = useT()
+  const { criteriaDraft, bareSoilOnly, calibrationInstrument, setLang } = useAppStore()
+
+  useEffect(() => {
+    document.documentElement.lang = lang
+  }, [lang])
   const [mode, setMode] = useState<SelectedMode | null>(() => parseHash().mode)
   const [sites, setSites] = useState<SiteResult[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(() => parseHash().site)
@@ -178,7 +183,16 @@ function App() {
             <small>{t.tagline}</small>
           </span>
         </button>
-        <span className="topbar-target">{t.target}</span>
+        <div className="topbar-right">
+          <span className="topbar-target">{t.target}</span>
+          <div aria-label={t.languageSwitch} className="lang-switch" role="group">
+            {(['en', 'fr'] as Lang[]).map((code) => (
+              <button aria-pressed={lang === code} key={code} lang={code} onClick={() => setLang(code)} type="button">
+                {code.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
       </header>
 
       <main>
@@ -221,9 +235,10 @@ function App() {
                 {sources.map((source) => (
                   <li key={source.id}>
                     <a href={source.url} rel="noopener noreferrer" target="_blank">
-                      {source.name}
+                      {(lang === 'fr' ? FR_SOURCES[source.id]?.name : undefined) ?? source.name}
                     </a>{' '}
-                    · {source.provider} · {source.body === 'moon' ? t.moon : t.earth}. <small>{source.terms}</small>
+                    · {source.provider} · {source.body === 'moon' ? t.moon : t.earth}.{' '}
+                    <small>{(lang === 'fr' ? FR_SOURCES[source.id]?.terms : undefined) ?? source.terms}</small>
                   </li>
                 ))}
               </ul>

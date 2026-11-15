@@ -1,4 +1,5 @@
 import type { components } from './api-schema'
+import { FR_MOON_NOTES, FR_PARAMS } from './content-fr'
 import type { Lang } from './i18n'
 
 // Plain-language help for each parameter (what it measures, and what it means for the Moon).
@@ -75,10 +76,16 @@ export const MOON_NOTES: Partial<Record<ParamId, string>> = {
 }
 
 /** Label, unit and help text of a parameter. */
-export function paramInfo(id: string, _lang: Lang = 'en'): { label: string; unit: string; help: string } {
+export function paramInfo(id: string, lang: Lang = 'en'): { label: string; unit: string; help: string } {
   const p = parameterCatalog.find((item) => item.id === id)
   if (!p) return { label: id, unit: '', help: '' }
-  return { label: p.label, unit: p.unit, help: p.help }
+  const fr = lang === 'fr' ? FR_PARAMS[id] : undefined
+  return fr ? { label: fr.label, unit: fr.unit ?? p.unit, help: fr.help } : { label: p.label, unit: p.unit, help: p.help }
+}
+
+/** Lunar meaning of a parameter without a numeric lunar range, in the interface language. */
+export function moonNote(id: ParamId, lang: Lang = 'en'): string | undefined {
+  return (lang === 'fr' ? FR_MOON_NOTES[id] : undefined) ?? MOON_NOTES[id]
 }
 
 export type CalibrationInstrument = 'drill' | 'wind' | 'gas' | 'seismograph' | 'thermal'

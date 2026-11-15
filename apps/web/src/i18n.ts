@@ -1,7 +1,10 @@
-export type Lang = 'en'
+import { useAppStore } from './store'
 
-/** Textes de l'interface, en anglais. */
+export type Lang = 'en' | 'fr'
+
+/** Interface texts. English is the default (Space Apps submission requirement); French is a visitor choice. */
 const en = {
+  languageSwitch: 'Language',
   brand: 'Cyber&Space Montréal',
   tagline: 'NASA Space Apps Challenge 2026',
   heroEyebrow: 'Earth analogs for the lunar south pole',
@@ -41,6 +44,7 @@ const en = {
   twinAt: (lat: number, lon: number) => `${Math.abs(lat).toFixed(2)}°S, ${Math.abs(lon).toFixed(1)}°${lon < 0 ? 'W' : 'E'}`,
   terrainShare: 'Terrain in the lunar slope range',
   noPhoto: 'No sharp satellite image for this site: relief shown instead.',
+  reliefCredit: 'Relief: Copernicus DEM GLO-30 (ESA / European Union), resampled to 40 m. Lunar twin: LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node).',
   scaleBar: '2 km',
   scorecard: 'Analog scorecard',
   scorecardLead: 'One table: what was measured on Earth, the lunar reference, how well they match, and where each number comes from.',
@@ -118,11 +122,135 @@ const en = {
 
 export type Texts = typeof en
 
-/** English-only interface (Space Apps submission requirement). */
-export function useT(): { t: Texts; lang: Lang } {
-  return { t: en, lang: "en" }
+const comma = (n: number, digits: number) => n.toFixed(digits).replace('.', ',')
+
+const fr: Texts = {
+  languageSwitch: 'Langue',
+  brand: 'Cyber&Space Montréal',
+  tagline: 'NASA Space Apps Challenge 2026',
+  heroEyebrow: 'Analogues terrestres du pôle Sud lunaire',
+  heroTitle: 'Trouver la Lune sur Terre.',
+  heroLead:
+    'Avant de partir vers le pôle Sud lunaire, un rover, un instrument ou un habitat se teste sur Terre. Choisissez une mission : nous classons de vrais sites terrestres face à de vraies données lunaires, et nous montrons ce qui concorde, ce qui ne concorde pas, et pourquoi.',
+  heroCredit: 'Coucher de Terre vu d’Orion, Artemis II, 6 avril 2026 · NASA',
+  chooseMission: 'Choisissez votre mission',
+  chooseMissionLead: 'Chaque mission note les mêmes sites terrestres face à un jeu différent de conditions lunaires.',
+  target: 'Terre ↔ Lune',
+  marsSoon: 'Mars : phase suivante',
+  launch: 'Lancer la mission',
+  stats: ['sites terrestres comparés', 'paramètres par site', 'sources de données ouvertes', 'fenêtres de terrain lunaire mesurées (LRO LOLA)'],
+  backToMissions: 'Toutes les missions',
+  ranking: 'Classement',
+  sitesRanked: 'sites classés',
+  excluded: 'Écarté : végétation',
+  excludedShort: 'Écarté',
+  loading: 'Interrogation de NASA POWER, de l’USGS et du Smithsonian…',
+  loadingHint: 'La première analyse prend quelques secondes ; les suivantes sont immédiates.',
+  errorTitle: 'L’analyse n’a pas pu se lancer',
+  retry: 'Réessayer',
+  roles: { validation: 'Analogue connu', candidate: 'Candidat à valider', negative: 'Témoin négatif' },
+  verdicts: { match: 'Concorde', partial: 'Concorde en partie', mismatch: 'Ne concorde pas', missing: 'Pas de donnée' },
+  score: 'Score d’analogie',
+  criteriaEvaluated: 'critères évalués',
+  seeTheMatch: 'Voir la concordance',
+  seeTheMatchLead:
+    'Même échelle, même maille de 40 m, même éclairage : le site terrestre et le morceau du pôle Sud lunaire dont le relief lui ressemble le plus.',
+  earth: 'Terre',
+  moon: 'Lune',
+  satellite: 'Satellite',
+  relief: 'Relief',
+  highlight: 'Surligner les pentes de type lunaire',
+  highlightHint: (lo: number, hi: number) => `Pentes entre ${comma(lo, 1)}° et ${comma(hi, 1)}°, l’intervalle typique du pôle Sud lunaire`,
+  lunarTwin: 'Jumeau lunaire',
+  twinAt: (lat: number, lon: number) => `${comma(Math.abs(lat), 2)}°S, ${comma(Math.abs(lon), 1)}°${lon < 0 ? 'O' : 'E'}`,
+  terrainShare: 'Terrain dans l’intervalle de pente lunaire',
+  noPhoto: 'Pas d’image satellite assez nette pour ce site : le relief est affiché.',
+  reliefCredit: 'Relief : Copernicus DEM GLO-30 (ESA / Union européenne), rééchantillonné à 40 m. Jumeau lunaire : LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node).',
+  scaleBar: '2 km',
+  scorecard: 'Fiche d’analogie',
+  scorecardLead: 'Un seul tableau : la mesure sur Terre, la référence lunaire, leur concordance et la source de chaque valeur.',
+  colParameter: 'Paramètre',
+  colEarth: 'Site terrestre',
+  colMoon: 'Pôle Sud lunaire',
+  colMatch: 'Concordance',
+  colVerdict: 'Verdict',
+  colSource: 'Source',
+  noLunarRef: 'pas de valeur sourcée',
+  limitsTitle: 'Impossible à reproduire sur Terre',
+  limitsVerdict: 'Non reproductible',
+  radarTitle: 'Profil de concordance',
+  radarLead: 'Chaque axe est un critère. L’anneau extérieur est une concordance parfaite avec la cible lunaire.',
+  sourcesTitle: 'Sources des données',
+  imagesTitle: 'Crédits des images',
+  imagesText:
+    'Photographies des missions : NASA (Apollo 14, 15 et 17 ; Artemis II ; mosaïque Clementine NASA/JPL/USGS). Images des sites : Sentinel-2 cloudless 2016 par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées 2016), CC BY 4.0 ; Landsat WELD, NASA GIBS. Relief : Copernicus DEM GLO-30 et LRO LOLA. Fond de carte : NASA Blue Marble, NASA GIBS.',
+  footer: 'Un projet du NASA Space Apps Challenge 2026 · Une partie de ce projet a été réalisée avec l’aide d’IA (Claude, Microsoft Copilot).',
+  bareSoil: 'Pénaliser les sites végétalisés',
+  bareSoilHint: 'Un NDVI supérieur à 0,2 abaisse le score ; la végétation dense (0,6 et plus) est écartée',
+  screeningNote:
+    'Un outil de présélection : les scores classent les sites qui méritent une étude, ils ne valident pas une mission. Les poids et les intervalles sont des estimations d’experts, donc chaque rang est accompagné d’une lecture de sa stabilité.',
+  stabilityTitle: 'Stabilité du rang',
+  stabilityLevels: { high: 'Stable', medium: 'Modérée', low: 'Fragile' },
+  stabilityLine: (rank: number, low: number, high: number) =>
+    low === high
+      ? `Classé n° ${rank} ; il reste n° ${rank} dans 80 % des scénarios.`
+      : `Classé n° ${rank} ; dans 80 % des scénarios, il se place entre le n° ${low} et le n° ${high}.`,
+  stabilityHint: 'Scénarios : poids ±50 %, tolérances ±25 %, bornes des intervalles ±10 %, 500 tirages.',
+  vegetationNote: (pct: number) =>
+    `La végétation ramène ce score à ${pct} % de sa valeur (NDVI supérieur à 0,2). Un NDVI mesuré en un seul point peut mal représenter un grand site.`,
+  instrument: 'Instrument',
+  allInstruments: 'Tous les instruments',
+  instruments: { drill: 'Forage', wind: 'Vent', gas: 'Gaz', seismograph: 'Sismomètre', thermal: 'Thermique' },
+  customTitle: 'Vos critères',
+  customLead: 'Choisissez les paramètres, l’intervalle visé, la tolérance et le poids.',
+  parameter: 'Paramètre',
+  min: 'Min',
+  max: 'Max',
+  tolerance: 'Tolérance',
+  weight: 'Poids',
+  addCriterion: 'Ajouter un critère',
+  remove: 'Retirer',
+  run: 'Lancer l’analyse',
+  customErrors: {
+    duplicate: 'Un paramètre ne peut servir qu’une fois.',
+    range: 'Chaque critère doit avoir un minimum, un maximum, ou les deux.',
+    number: 'Intervalles, tolérance et poids doivent être des nombres ; tolérance et poids supérieurs à zéro.',
+  },
+  missions: {
+    robotics: {
+      title: 'Mobilité des rovers',
+      text: 'Où tester un rover sur des pentes et un sol accidenté comme au pôle Sud lunaire.',
+      tags: ['Pente', 'Rugosité', 'Sol sec', 'Froid'],
+      credit: 'Rover lunaire d’Apollo 15, 1971 · NASA',
+    },
+    calibration: {
+      title: 'Calibration d’instruments',
+      text: 'Où calibrer foreuses, sismomètres et capteurs dans un milieu sec, calme et froid.',
+      tags: ['Calme sismique', 'Air sec', 'Sans vent', 'Sol gelé'],
+      credit: 'Sismomètre passif d’Apollo 14, 1971 · NASA',
+    },
+    colony: {
+      title: 'Base autosuffisante',
+      text: 'Là où la Terre s’approche le plus des besoins d’une base lunaire : glace, lumière polaire, sol plat et stable.',
+      tags: ['Sol gelé', 'Lumière polaire', 'Terrain plat', 'Stabilité'],
+      credit: 'Site d’alunissage d’Apollo 17, 1972 · NASA',
+    },
+    custom: {
+      title: 'Critères libres',
+      text: 'Composez votre mission : choisissez les paramètres, leurs intervalles et leurs poids.',
+      tags: ['18 paramètres', 'Vos intervalles', 'Vos poids'],
+      credit: 'Pôle Sud lunaire, mosaïque Clementine · NASA/JPL/USGS',
+    },
+  },
 }
 
-export function formatNumber(value: number, _lang: Lang = "en", digits = 2): string {
-  return value.toLocaleString("en-CA", { maximumFractionDigits: digits })
+const TEXTS: Record<Lang, Texts> = { en, fr }
+
+export function useT(): { t: Texts; lang: Lang } {
+  const lang = useAppStore((state) => state.lang)
+  return { t: TEXTS[lang], lang }
+}
+
+export function formatNumber(value: number, lang: Lang = 'en', digits = 2): string {
+  return value.toLocaleString(lang === 'fr' ? 'fr-CA' : 'en-CA', { maximumFractionDigits: digits })
 }

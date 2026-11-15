@@ -33,7 +33,7 @@ function FlyTo({ site }: { site: SiteResult | null }) {
 }
 
 function CustomBuilder({ onRun, error }: { onRun: () => void; error: string | null }) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const { criteriaDraft, updateCriterion, addCriterion, removeCriterion } = useAppStore()
   return (
     <section className="builder">
@@ -59,7 +59,7 @@ function CustomBuilder({ onRun, error }: { onRun: () => void; error: string | nu
                     key={parameter.id}
                     value={parameter.id}
                   >
-                    {parameter.label}
+                    {paramInfo(parameter.id, lang).label}
                   </option>
                 ))}
               </select>
@@ -68,7 +68,7 @@ function CustomBuilder({ onRun, error }: { onRun: () => void; error: string | nu
               <label className="builder-number" key={field}>
                 <span>
                   {t[field]}
-                  {field !== 'weight' && paramInfo(criterion.param, 'en').unit ? ` (${paramInfo(criterion.param, 'en').unit})` : ''}
+                  {field !== 'weight' && paramInfo(criterion.param, lang).unit ? ` (${paramInfo(criterion.param, lang).unit})` : ''}
                 </span>
                 <input
                   id={`criterion-${field}-${index}`}
@@ -81,7 +81,7 @@ function CustomBuilder({ onRun, error }: { onRun: () => void; error: string | nu
             <button className="ghost" disabled={criteriaDraft.length === 1} onClick={() => removeCriterion(index)} type="button">
               {t.remove}
             </button>
-            <small className="builder-help">{paramInfo(criterion.param, 'en').help}</small>
+            <small className="builder-help">{paramInfo(criterion.param, lang).help}</small>
           </div>
         ))}
       </div>
@@ -114,7 +114,7 @@ interface Props {
 
 /** Mission screen: banner, settings, illustrated ranking, NASA map, then the chosen site's card. */
 export function Mission({ mode, sites, selectedId, loading, error, builderError, manifest, onBack, onSelect, onRun, children }: Props) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const { bareSoilOnly, setBareSoilOnly, calibrationInstrument, setCalibrationInstrument } = useAppStore()
   const mission = t.missions[mode]
   const selected = sites.find((site) => site.id === selectedId) ?? null
@@ -207,7 +207,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                         <span className="rank-number">{String(index + 1).padStart(2, '0')}</span>
                         {thumb ? <img alt="" loading="lazy" src={thumb} /> : <span className="rank-thumb-empty" />}
                         <span className="rank-copy">
-                          <strong>{siteName(site)}</strong>
+                          <strong>{siteName(site, lang)}</strong>
                           <small>
                             {site.excluded ? t.excluded : t.roles[site.role]}
                             {!site.excluded && <StabilityDots rank={index + 1} site={site} total={ranked} />}
@@ -242,7 +242,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                       radius={active ? 11 : 7}
                     >
                       <Tooltip direction="top" offset={[0, -6]}>
-                        {siteName(site)} · {site.excluded ? t.excludedShort : Math.round(site.total)}
+                        {siteName(site, lang)} · {site.excluded ? t.excludedShort : Math.round(site.total)}
                       </Tooltip>
                     </CircleMarker>
                   )

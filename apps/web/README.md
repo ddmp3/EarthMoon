@@ -1,6 +1,6 @@
 # Web front end
 
-React + TypeScript + Vite + Leaflet + zustand. English-only interface (Space Apps submission requirement).
+React + TypeScript + Vite + Leaflet + zustand. The interface opens in English (Space Apps submission requirement); an EN | FR switch in the top bar offers French. The choice is kept in the browser, and `?lang=fr` in the address selects French. French texts live in `src/i18n.ts` (interface) and `src/content-fr.ts` (site names, parameters, limits, sources); the API and the data stay in English.
 
 ```bash
 npm ci

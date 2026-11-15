@@ -56,6 +56,28 @@ async function run(name, viewport, mobile) {
   await overflow(page, `${name} home`);
   await shot("01-home");
 
+  // --- French interface: switch, content, memory of the choice, then back to English (the default)
+  if ((await page.locator("html").getAttribute("lang")) !== "en") defect(name, "the site does not open in English by default");
+  await page.locator(".lang-switch button", { hasText: "FR" }).click();
+  if (!(await page.locator(".hero-copy h1").textContent())?.includes("Trouver la Lune")) defect(name, "FR switch: the home title is not in French");
+  if ((await page.locator("html").getAttribute("lang")) !== "fr") defect(name, "FR switch: <html lang> is not fr");
+  await overflow(page, `${name} home (fr)`);
+  await page.locator(".mission-card").nth(2).click();
+  await page.locator(".rank-row").first().waitFor({ timeout: 60000 });
+  await page.waitForLoadState("networkidle");
+  const frText = await page.locator("main").innerText();
+  for (const english of ["Ranking", "Analog score", "Matches", "Earth site", "Lunar south pole", "Known analog", "Candidate to validate",
+    "Rank stability", "See the match", "Cannot be reproduced", "Not reproducible", "Mean slope", "Gravity", "Data sources", "All missions"]) {
+    if (frText.includes(english)) defect(name, `French interface still shows "${english}"`);
+  }
+  if (!frText.includes("Vallées sèches de McMurdo")) defect(name, "French interface: site names are not translated");
+  await overflow(page, `${name} colony (fr)`);
+  await shot("06-colony-fr");
+  await page.reload({ waitUntil: "networkidle" });
+  if ((await page.locator("html").getAttribute("lang")) !== "fr") defect(name, "the language choice is not remembered after a reload");
+  await page.locator(".lang-switch button", { hasText: "EN" }).click();
+  if (!(await page.locator("main").innerText()).includes("Ranking")) defect(name, "EN switch does not bring English back");
+
   // --- Each preset mission
   for (const [index, mode] of ["robotics", "calibration", "colony"].entries()) {
     await page.goto(`${WEB}/`, { waitUntil: "networkidle" });

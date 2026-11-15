@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  MOON_NOTES,
+  moonNote,
   paramInfo,
   siteImage,
   type DataSource,
@@ -12,23 +12,24 @@ import {
   type VisualManifest,
 } from '../api'
 import { ConfidenceNotes } from './Stability'
-import { formatNumber, useT } from '../i18n'
+import { FR_LIMITS, FR_SOURCES } from '../content-fr'
+import { formatNumber, useT, type Lang } from '../i18n'
 import { scoreTone, siteName } from '../shared'
 
-function formatValue(value: number | null | undefined, unit: string): string {
+function formatValue(value: number | null | undefined, unit: string, lang: Lang): string {
   if (value === null || value === undefined) return '—'
-  return `${formatNumber(value)}${unit ? ` ${unit}` : ''}`
+  return `${formatNumber(value, lang)}${unit ? ` ${unit}` : ''}`
 }
 
-function formatMoon(value: MoonValue | undefined, fallbackUnit: string): string | null {
+function formatMoon(value: MoonValue | undefined, fallbackUnit: string, lang: Lang): string | null {
   if (!value) return null
   const unit = value.unit === '°C' || value.unit === '°' || value.unit === 'm' || value.unit === '%' ? value.unit : fallbackUnit
   const u = unit ? ` ${unit}` : ''
   if (value.min !== undefined && value.max !== undefined) {
-    return value.min === value.max ? `${formatNumber(value.min)}${u}` : `${formatNumber(value.min)} – ${formatNumber(value.max)}${u}`
+    return value.min === value.max ? `${formatNumber(value.min, lang)}${u}` : `${formatNumber(value.min, lang)} – ${formatNumber(value.max, lang)}${u}`
   }
-  if (value.min !== undefined) return `≥ ${formatNumber(value.min)}${u}`
-  return `≤ ${formatNumber(value.max as number)}${u}`
+  if (value.min !== undefined) return `≥ ${formatNumber(value.min, lang)}${u}`
+  return `≤ ${formatNumber(value.max as number, lang)}${u}`
 }
 
 // Short names for the table; the full name and attribution are in the source list at the bottom of the page.
@@ -42,15 +43,15 @@ const SHORT_SOURCES: Record<string, string> = {
   fixtures: 'Sample data (not for demo)',
 }
 
-function sourceName(id: string | undefined, sources: DataSource[]): string {
+function sourceName(id: string | undefined, sources: DataSource[], lang: Lang): string {
   if (!id) return '—'
   const found = sources.find((source) => source.id === id)
-  return SHORT_SOURCES[id] ?? (found ? found.name : id)
+  return (lang === 'fr' ? FR_SOURCES[id]?.short : undefined) ?? SHORT_SOURCES[id] ?? (found ? found.name : id)
 }
 
 /** Earth ↔ Moon crossfade at the same scale, with lunar-like slopes highlighted. */
 function Comparator({ siteId, visual, manifest, children }: { siteId: string; visual: SiteVisual; manifest: VisualManifest; children?: React.ReactNode }) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const hasPhoto = Boolean(visual.photo)
   // ?fade=60 in the URL sets the initial crossfade (demo links).
   const [fade, setFade] = useState(() => {
@@ -113,19 +114,19 @@ function Comparator({ siteId, visual, manifest, children }: { siteId: string; vi
           </thead>
           <tbody>
             <tr>
-              <th scope="row">{paramInfo('slope_mean', 'en').label}</th>
-              <td>{formatValue(visual.earth.slope_mean, '°')}</td>
-              <td>{formatValue(visual.twin.slope_mean, '°')}</td>
+              <th scope="row">{paramInfo('slope_mean', lang).label}</th>
+              <td>{formatValue(visual.earth.slope_mean, '°', lang)}</td>
+              <td>{formatValue(visual.twin.slope_mean, '°', lang)}</td>
             </tr>
             <tr>
-              <th scope="row">{paramInfo('slope_max', 'en').label}</th>
-              <td>{formatValue(visual.earth.slope_max, '°')}</td>
-              <td>{formatValue(visual.twin.slope_max, '°')}</td>
+              <th scope="row">{paramInfo('slope_max', lang).label}</th>
+              <td>{formatValue(visual.earth.slope_max, '°', lang)}</td>
+              <td>{formatValue(visual.twin.slope_max, '°', lang)}</td>
             </tr>
             <tr>
-              <th scope="row">{paramInfo('roughness', 'en').label}</th>
-              <td>{formatValue(visual.earth.roughness, 'm')}</td>
-              <td>{formatValue(visual.twin.roughness, 'm')}</td>
+              <th scope="row">{paramInfo('roughness', lang).label}</th>
+              <td>{formatValue(visual.earth.roughness, 'm', lang)}</td>
+              <td>{formatValue(visual.twin.roughness, 'm', lang)}</td>
             </tr>
             <tr>
               <th scope="row">{t.terrainShare}</th>
@@ -139,7 +140,7 @@ function Comparator({ siteId, visual, manifest, children }: { siteId: string; vi
         </p>
         <p className="note">
           {visual.photo ? `${visual.photo.credit}. ` : ''}
-          {manifest.earth_relief_source}. {manifest.moon_source}.
+          {t.reliefCredit}
         </p>
         {children}
       </div>
@@ -149,6 +150,7 @@ function Comparator({ siteId, visual, manifest, children }: { siteId: string; vi
 
 /** Match profile: one axis per criterion, outer ring = perfect match. */
 function Radar({ site }: { site: SiteResult }) {
+  const { lang } = useT()
   const criteria = site.criteria
   const n = criteria.length
   // Wide side margins: long labels ("Minimum air temperature") stay inside the frame.
@@ -177,7 +179,7 @@ function Radar({ site }: { site: SiteResult }) {
           <g key={criterion.param}>
             <line className="radar-axis" x1={cx} x2={x} y1={cy} y2={y} />
             <text className="radar-label" dominantBaseline="middle" textAnchor={anchor} x={lx} y={ly}>
-              {paramInfo(criterion.param, 'en').label}
+              {paramInfo(criterion.param, lang).label}
             </text>
           </g>
         )
@@ -205,7 +207,7 @@ interface Props {
 }
 
 export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visual, manifest, sources, limits }: Props) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const evaluated = site.criteria.filter((criterion) => criterion.verdict !== 'missing').length
   const count = (verdict: string) => site.criteria.filter((criterion) => criterion.verdict === verdict).length
   const tone = scoreTone(site.total, Boolean(site.excluded))
@@ -217,9 +219,9 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
           <span className="eyebrow">
             #{rank} · {site.excluded ? t.excluded : t.roles[site.role]}
           </span>
-          <h2>{siteName(site)}</h2>
+          <h2>{siteName(site, lang)}</h2>
           <p className="coords">
-            {Math.abs(site.lat).toFixed(2)}°{site.lat < 0 ? 'S' : 'N'}, {Math.abs(site.lon).toFixed(2)}°{site.lon < 0 ? 'W' : 'E'}
+            {Math.abs(site.lat).toFixed(2)}°{site.lat < 0 ? 'S' : 'N'}, {Math.abs(site.lon).toFixed(2)}°{site.lon < 0 ? (lang === 'fr' ? 'O' : 'W') : 'E'}
           </p>
         </div>
         <div className={`score-block tone-${tone}`}>
@@ -279,17 +281,17 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
               </thead>
               <tbody>
                 {site.criteria.map((criterion) => {
-                  const info = paramInfo(criterion.param, 'en')
-                  const moon = formatMoon(detail?.moon[criterion.param], info.unit)
+                  const info = paramInfo(criterion.param, lang)
+                  const moon = formatMoon(detail?.moon[criterion.param], info.unit, lang)
                   return (
                     <tr key={criterion.param}>
                       <th scope="row" title={info.help}>
                         {info.label}
                         <small>{info.help}</small>
                       </th>
-                      <td className="num" data-label={t.colEarth}>{formatValue(criterion.value, info.unit)}</td>
+                      <td className="num" data-label={t.colEarth}>{formatValue(criterion.value, info.unit, lang)}</td>
                       <td className="num moon-cell" data-label={t.colMoon}>
-                        {moon ?? <span className="moon-note">{MOON_NOTES[criterion.param] ?? t.noLunarRef}</span>}
+                        {moon ?? <span className="moon-note">{moonNote(criterion.param, lang) ?? t.noLunarRef}</span>}
                       </td>
                       <td className="match-cell" data-label={t.colMatch}>
                         <span className="match-bar">
@@ -300,7 +302,7 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
                       <td data-label={t.colVerdict}>
                         <span className={`pill tone-${criterion.verdict}`}>{t.verdicts[criterion.verdict]}</span>
                       </td>
-                      <td className="source-cell" data-label={t.colSource}>{sourceName(detail?.valueSources[criterion.param], sources)}</td>
+                      <td className="source-cell" data-label={t.colSource}>{sourceName(detail?.valueSources[criterion.param], sources, lang)}</td>
                     </tr>
                   )
                 })}
@@ -313,7 +315,7 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
                     </th>
                   </tr>
                   {limits.map((limit) => {
-                    const text = limit
+                    const text = (lang === 'fr' ? FR_LIMITS[limit.id] : undefined) ?? limit
                     return (
                       <tr key={limit.id}>
                         <th scope="row">
