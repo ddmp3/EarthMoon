@@ -53,6 +53,11 @@ a { color: var(--accent); }
 .brand small { display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
 .topbar-target { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 999px; padding: 5px 12px; backdrop-filter: blur(6px); }
 .app { position: relative; }
+.topbar-right { display: flex; align-items: center; gap: 12px; }
+.lang-switch { display: inline-flex; border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 999px; overflow: hidden; backdrop-filter: blur(6px); }
+.lang-switch button { background: none; border: 0; padding: 5px 11px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.75); }
+.lang-switch button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.lang-switch button:not([aria-pressed="true"]):hover { color: #fff; }
 
 /* ------------------------------------------------------------------ accueil */
 .hero { position: relative; height: clamp(440px, 62vh, 640px); overflow: hidden; display: flex; align-items: flex-end; }

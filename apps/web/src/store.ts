@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { parameterCatalog, type CalibrationInstrument, type ModeId, type ParamId } from './api'
+import type { Lang } from './i18n'
 
 export type SelectedMode = ModeId | 'custom'
 
@@ -19,7 +20,25 @@ const initialCriterion: CriterionDraft = {
   weight: '1',
 }
 
+/**
+ * English by default (Space Apps submission requirement). A visitor's choice is kept in the browser;
+ * ?lang=fr in the address also selects French (shareable link).
+ */
+function initialLang(): Lang {
+  const fromAddress = new URLSearchParams(window.location.search).get('lang')
+  if (fromAddress === 'fr' || fromAddress === 'en') return fromAddress
+  try {
+    const saved = localStorage.getItem('lang')
+    if (saved === 'fr' || saved === 'en') return saved
+  } catch {
+    // storage unavailable (private browsing): keep the default
+  }
+  return 'en'
+}
+
 interface AppStore {
+  lang: Lang
+  setLang: (lang: Lang) => void
   criteriaDraft: CriterionDraft[]
   bareSoilOnly: boolean
   calibrationInstrument: CalibrationInstrument | 'all'
@@ -31,6 +50,15 @@ interface AppStore {
 }
 
 export const useAppStore = create<AppStore>((set) => ({
+  lang: initialLang(),
+  setLang: (lang) => {
+    try {
+      localStorage.setItem('lang', lang)
+    } catch {
+      // without storage the choice lasts for the session
+    }
+    set({ lang })
+  },
   criteriaDraft: [initialCriterion],
   bareSoilOnly: true,
   calibrationInstrument: 'all',

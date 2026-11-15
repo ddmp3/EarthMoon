@@ -1,9 +1,12 @@
+import { FR_SITES } from "./content-fr"
+import type { Lang } from "./i18n"
 import type { SelectedMode } from "./store"
 
 export const MISSION_ORDER: SelectedMode[] = ["robotics", "calibration", "colony", "custom"]
 export const missionImage = (mode: SelectedMode) => `${import.meta.env.BASE_URL}img/${mode}.jpg`
 
-export const siteName = (site: { name: string }) => site.name
+/** Site name in the interface language (the data files are in English). */
+export const siteName = (site: { id: string; name: string }, lang: Lang = "en") => (lang === "fr" ? FR_SITES[site.id] : undefined) ?? site.name
 
 /** Semantic color of a score out of 100 (independent of the accent). */
 export function scoreTone(total: number, excluded = false): "good" | "mid" | "low" | "off" {
