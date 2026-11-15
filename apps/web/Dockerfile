@@ -1,4 +1,4 @@
-# Front servi par nginx. Contexte de build = RACINE du dépôt (le front importe data/fixtures) :
+# Front end served by nginx. Build context = repository ROOT (the front end imports data/fixtures):
 #   docker build -f apps/web/Dockerfile --build-arg VITE_API_URL=http://localhost:3001 -t analogues-web .
 FROM node:22-slim AS build
 ARG VITE_API_URL=http://localhost:3001
@@ -10,7 +10,7 @@ COPY apps/web ./
 RUN VITE_API_URL="$VITE_API_URL" npm run build
 
 FROM nginx:1.27-alpine
-# Origine de l API autorisée par la politique de sécurité du contenu (connect-src).
+# API origin allowed by the content security policy (connect-src).
 ENV API_ORIGIN=http://localhost:3001
 COPY apps/web/nginx/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=build /repo/apps/web/dist /usr/share/nginx/html

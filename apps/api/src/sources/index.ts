@@ -18,19 +18,19 @@ const exists = (p: string): Promise<boolean> =>
   );
 
 /**
- * Assemble les connecteurs.
- * - Mode normal : NASA POWER + USGS (avec cache), plus Copernicus DEM et MODIS précalculés si
- *   data/candidates-precomputed.json existe (produit par tools/precompute/).
- * - useFixtures : uniquement data/fixtures/site-values.json (valeurs surtout fictives, jamais pour la démo).
- * Smithsonian GVP (volcano_distance) : liste des volcans chargée une fois, distance calculée localement.
+ * Assembles the connectors.
+ * - Normal mode: NASA POWER + USGS (cached), plus precomputed Copernicus DEM and MODIS if
+ *   data/candidates-precomputed.json exists (produced by tools/precompute/).
+ * - useFixtures: only data/fixtures/site-values.json (mostly fictional values, never for the demo).
+ * Smithsonian GVP (volcano_distance): volcano list loaded once, distance computed locally.
  */
 export async function buildSources(dataDir: string, useFixtures: boolean): Promise<SourceSet> {
   if (useFixtures) {
     const fixtures = await loadFixtures(path.join(dataDir, "fixtures", "site-values.json"));
     return {
       connectors: [coordinatesConnector, createFixtureConnector(fixtures)],
-      names: ["coordonnées", "fixtures (valeurs d'exemple)"],
-      notes: ["USE_FIXTURES actif : valeurs d'exemple, pas pour la démo"],
+      names: ["coordinates", "fixtures (sample values)"],
+      notes: ["USE_FIXTURES is on: sample values, not for the demo"],
     };
   }
   const connectors: Connector[] = [
@@ -39,7 +39,7 @@ export async function buildSources(dataDir: string, useFixtures: boolean): Promi
     withCache(createUsgsConnector()),
     withCache(createGvpConnector()),
   ];
-  const names = ["coordonnées", "NASA POWER", "USGS Earthquake Catalog", "Smithsonian GVP"];
+  const names = ["coordinates", "NASA POWER", "USGS Earthquake Catalog", "Smithsonian GVP"];
   const notes: string[] = [];
   const precomputedFile = path.join(dataDir, PRECOMPUTED_FILE);
   if (await exists(precomputedFile)) {
@@ -47,10 +47,10 @@ export async function buildSources(dataDir: string, useFixtures: boolean): Promi
     connectors.push(createPrecomputedConnector(sites));
     const has = (keys: readonly string[]): boolean => sites.some((s) => keys.some((k) => typeof s.precomputed?.[k] === "number"));
     const parts = [has(PRECOMPUTED_PARAMS.slice(0, 4)) ? "Copernicus DEM" : null, has(PRECOMPUTED_PARAMS.slice(4)) ? "MODIS" : null].filter(Boolean);
-    names.push(`${parts.length ? parts.join(" + ") : "valeurs"} (précalculé)`);
-    if (!parts.includes("MODIS")) notes.push(`${PRECOMPUTED_FILE} sans MODIS : ndvi et lst_* seront « missing », le filtre « sol nu » n'écarte rien`);
+    names.push(`${parts.length ? parts.join(" + ") : "values"} (precomputed)`);
+    if (!parts.includes("MODIS")) notes.push(`${PRECOMPUTED_FILE} has no MODIS: ndvi and lst_* will be "missing", the "bare soil" filter excludes nothing`);
   } else {
-    notes.push(`${precomputedFile} absent : pente, rugosité, altitude, ndvi et lst_* seront « missing » (lancer tools/precompute/)`);
+    notes.push(`${precomputedFile} is missing: slope, roughness, elevation, ndvi and lst_* will be "missing" (run tools/precompute/)`);
   }
   return { connectors, names, notes };
 }

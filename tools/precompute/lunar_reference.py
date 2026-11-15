@@ -1,17 +1,16 @@
-"""Relief du pôle Sud lunaire mesuré comme sur Terre : pente moyenne, pente max et rugosité en fenêtres de 1 km.
+"""Lunar south pole relief measured like on Earth: mean slope, max slope and roughness over 1 km windows.
 
-Source : LRO LOLA, modèle d'élévation polaire LDEM_85S_40M (NASA PDS Geosciences Node), 40 m/pixel,
-projection stéréographique polaire centrée sur -90°, de 85°S au pôle :
+Source: LRO LOLA polar elevation model LDEM_85S_40M (NASA PDS Geosciences Node), 40 m/pixel,
+polar stereographic projection centered on -90°, from 85°S to the pole:
     https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/ldem_85s_40m.img
-    (étiquette : ldem_85s_40m.lbl ; entiers 16 bits petit-boutistes, hauteur = DN x 0,5 m)
+    (label: ldem_85s_40m.lbl; 16-bit little-endian integers, height = DN x 0.5 m)
 
-Même méthode que point_geometry.py pour la Terre (Copernicus DEM, ~30 m) : gradient par différences centrées,
-puis, par fenêtre de 1 km, moyenne et maximum de la pente et écart-type de l'altitude. Le DEM lunaire (40 m) est un
-peu plus grossier : la pente lunaire est donc légèrement lissée par rapport à la pente terrestre (voir
-docs/verification-modes-1-2.md, point 5).
+Same method as point_geometry.py for Earth (Copernicus DEM, ~30 m): gradient by central differences,
+then, per 1 km window, mean and maximum slope and standard deviation of elevation. The lunar DEM (40 m) is slightly
+coarser, so lunar slope is a little smoother than Earth slope (see docs/scenarios.md).
 
-Usage :
-    python lunar_reference.py ~/data/lola/ldem_85s_40m.img            # imprime le bloc JSON
+Usage:
+    python lunar_reference.py ~/data/lola/ldem_85s_40m.img            # prints the JSON block
     python lunar_reference.py ~/data/lola/ldem_85s_40m.img --write ../../data/reference/moon-south-pole.json
 """
 from __future__ import annotations
@@ -26,7 +25,7 @@ from point_geometry import slope_deg
 
 MOON_RADIUS_M = 1_737_400.0
 SOURCE = ("LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S ; "
-          "pente et rugosité calculées en fenêtres de 1 km comme pour la Terre (tools/precompute/lunar_reference.py)")
+          "slope and roughness computed over 1 km windows like on Earth (tools/precompute/lunar_reference.py)")
 PERCENTILES = (10, 25, 50, 75, 90)
 
 
@@ -34,13 +33,13 @@ def read_ldem(path: str, size: int = 7584, scale: float = 0.5) -> np.ndarray:
     """Hauteurs (m) d'un LDEM polaire LOLA (entiers 16 bits petit-boutistes, LINES = LINE_SAMPLES = size)."""
     dn = np.fromfile(path, dtype="<i2")
     if dn.size != size * size:
-        raise ValueError(f"{path} : {dn.size} valeurs, {size * size} attendues (LINES x LINE_SAMPLES de l'étiquette)")
+        raise ValueError(f"{path}: {dn.size} values, {size * size} expected (LINES x LINE_SAMPLES of the label)")
     return dn.reshape(size, size).astype("float32") * scale
 
 
 def latitude_grid(size: int, pixel_m: float, radius_m: float = MOON_RADIUS_M) -> np.ndarray:
-    """Latitude (°, négative) au centre de chaque pixel d'une grille stéréographique polaire Sud centrée sur le pôle.
-    Stéréographique : r = 2R tan(pi/4 + lat/2), donc lat = 2 atan(r / 2R) - pi/2."""
+    """Latitude (°, negative) at the center of each pixel of a south polar stereographic grid centered on the pole.
+    Stereographic: r = 2R tan(pi/4 + lat/2), so lat = 2 atan(r / 2R) - pi/2."""
     offset = (size - 1) / 2.0
     idx = (np.arange(size, dtype="float64") - offset) * pixel_m
     r = np.hypot(idx[None, :], idx[:, None])
@@ -48,8 +47,8 @@ def latitude_grid(size: int, pixel_m: float, radius_m: float = MOON_RADIUS_M) ->
 
 
 def window_stats(z: np.ndarray, pixel_m: float, window_m: float = 1000.0, mask: np.ndarray | None = None) -> dict:
-    """slope_mean, slope_max, roughness pour chaque fenêtre carrée de window_m, sans recouvrement.
-    Une fenêtre n'est gardée que si tous ses pixels sont dans `mask` (ex. : au sud de 85°S)."""
+    """slope_mean, slope_max, roughness for each square window of window_m, without overlap.
+    A window is kept only if all its pixels are inside `mask` (e.g. south of 85°S)."""
     n = max(int(round(window_m / pixel_m)), 2)
     s = slope_deg(z.astype("float64"), pixel_m, pixel_m)
     rows, cols = (z.shape[0] // n) * n, (z.shape[1] // n) * n
@@ -86,7 +85,7 @@ def lunar_reference(path: str, pixel_m: float = 40.0, size: int = 7584, window_m
 
 
 def apply_to_profile(profile: dict, summary: dict) -> dict:
-    """Écrit pente et rugosité (intervalle interquartile p25-p75) dans le profil lunaire de référence."""
+    """Writes slope and roughness (interquartile range p25-p75) into the lunar reference profile."""
     params = profile.setdefault("params", {})
     units = {"slope_mean": "°", "slope_max": "°", "roughness": "m"}
     for key, unit in units.items():
@@ -94,7 +93,7 @@ def apply_to_profile(profile: dict, summary: dict) -> dict:
         params[key] = {
             "min": d["p25"], "max": d["p75"], "unit": unit,
             "distribution": d,
-            "source": f"{SOURCE} ; intervalle interquartile (p25-p75) de {summary['windows']} fenêtres de "
+            "source": f"{SOURCE}; interquartile range (p25-p75) of {summary['windows']} windows of "
                       f"{summary['window_m']:.0f} m",
         }
     profile["todo"] = [t for t in profile.get("todo", []) if not t.startswith("slope_mean, slope_max, roughness")]
@@ -104,7 +103,7 @@ def apply_to_profile(profile: dict, summary: dict) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("ldem")
-    ap.add_argument("--write", help="profil lunaire JSON à mettre à jour (data/reference/moon-south-pole.json)")
+    ap.add_argument("--write", help="lunar profile JSON to update (data/reference/moon-south-pole.json)")
     args = ap.parse_args(argv)
     summary = lunar_reference(args.ldem)
     print(json.dumps(summary, indent=1))
@@ -114,7 +113,7 @@ def main(argv=None) -> int:
         with open(args.write, "w", encoding="utf-8") as f:
             json.dump(apply_to_profile(profile, summary), f, ensure_ascii=False, indent=2)
             f.write("\n")
-        print(f"écrit : {args.write}", file=sys.stderr)
+        print(f"written: {args.write}", file=sys.stderr)
     return 0
 
 

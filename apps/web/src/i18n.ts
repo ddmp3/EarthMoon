@@ -110,7 +110,7 @@ const en = {
 
 export type Texts = typeof en
 
-/** Interface en anglais uniquement (exigence de la soumission Space Apps). */
+/** English-only interface (Space Apps submission requirement). */
 export function useT(): { t: Texts; lang: Lang } {
   return { t: en, lang: "en" }
 }

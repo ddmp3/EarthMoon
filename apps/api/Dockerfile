@@ -1,6 +1,6 @@
-# Contexte de build = RACINE du dépôt :
+# Build context = repository ROOT:
 #   docker build -f apps/api/Dockerfile -t analogues-api .
-# (l'image embarque data/ : candidats, fixtures, profil lunaire)
+# (the image embeds data/: candidates, fixtures, lunar profile)
 FROM node:22-slim AS build
 WORKDIR /repo/apps/api
 COPY apps/api/package.json apps/api/package-lock.json ./

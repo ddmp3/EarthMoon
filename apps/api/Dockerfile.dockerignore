@@ -1,4 +1,4 @@
-# Contexte de build Docker = racine du dépôt (apps/api/Dockerfile) : ne pas envoyer ce qui est inutile à l image de l API
+# Docker build context = repository root (apps/api/Dockerfile): do not send what the API image does not need
 .git
 **/node_modules
 **/dist

@@ -1,4 +1,4 @@
-"""Tests hors ligne de tools/precompute (aucun appel réseau) :  python -m pytest tools/precompute -q"""
+"""Offline tests of tools/precompute (no network call) :  python -m pytest tools/precompute -q"""
 import json
 import math
 import os
@@ -17,14 +17,14 @@ import point_geometry as pg  # noqa: E402
 def test_lunar_latitude_grid():
     import lunar_reference as lr
     lat = lr.latitude_grid(7584, 40.0)
-    assert lat[3791, 3791] < -89.99                               # centre = pôle Sud
-    assert lat[3791, 0] == pytest.approx(-85.0, abs=0.01)         # bord de la grille LDEM_85S = 85°S
+    assert lat[3791, 3791] < -89.99                               # center = south pole
+    assert lat[3791, 0] == pytest.approx(-85.0, abs=0.01)         # edge of the LDEM_85S grid = 85°S
 
 
 def test_lunar_window_stats_on_inclined_plane():
     import lunar_reference as lr
     x = np.arange(100) * 40.0
-    z = np.tile(x * math.tan(math.radians(10)), (100, 1))         # plan incliné à 10°
+    z = np.tile(x * math.tan(math.radians(10)), (100, 1))         # plane tilted at 10°
     st = lr.window_stats(z, 40.0, 1000.0)
     assert st["window_px"] == 25 and st["slope_mean"].size == 16
     assert np.allclose(st["slope_mean"], 10, atol=0.01) and np.allclose(st["slope_max"], 10, atol=0.01)
@@ -49,7 +49,7 @@ def test_tile_names():
 
 
 def test_point_tile_on_integer_latitude():
-    # 25,0°N est le bord supérieur du tile N24 (le tile N25 ne le contient pas : échec observé à Harrat Khaybar).
+    # 25.0°N is the top edge of tile N24 (tile N25 does not contain it: failure observed at Harrat Khaybar).
     assert "N24_00_E039" in pg.point_tile_url(25.0, 39.92)
     assert "S25_00_W070" in pg.point_tile_url(-24.0, -69.5)
     assert "N25_00_E039" in pg.point_tile_url(25.1, 39.92)
@@ -101,15 +101,15 @@ def test_ndvi_conversion():
 
 def test_sinusoidal_tile():
     # Tuiles MODIS connues : Atacama h11v11 ; Haughton h15v01 (STAC renvoie aussi h14 et h16) ;
-    # Changtang h25v05 (STAC ne renvoie que h24v05 pour une recherche par point).
+    # Changtang h25v05 (STAC only returns h24v05 for a point search).
     assert mv.sinusoidal_tile(-24.5, -69.25) == (11, 11)
     assert mv.sinusoidal_tile(75.38, -89.67) == (15, 1)
     assert mv.sinusoidal_tile(34.5, 85.0) == (25, 5)
-    assert mv.sinusoidal_tile(0.5, 0.5) == (18, 8)    # juste au nord-est de (0°, 0°), coin des tuiles h17/h18 v8/v9
+    assert mv.sinusoidal_tile(0.5, 0.5) == (18, 8)    # just north-east of (0°, 0°), corner of tiles h17/h18 v8/v9
 
 
 def test_aggregate_needs_enough_valid_values():
-    # 2 compositions valides sur 12 (hiver polaire) : pas de moyenne annuelle.
+    # 2 valid composites out of 12 (polar winter): no annual mean.
     pairs = [(-40.0, -42.0), (-41.0, -43.0)] + [(None, None)] * 10
     r = mv.aggregate(pairs, [0.05] * 5)
     assert all(r[k] is None for k in mv.KEYS)
@@ -119,8 +119,8 @@ def test_aggregate_needs_enough_valid_values():
 def test_aggregate():
     r = mv.aggregate([(30.0, 10.0), (20.0, None), (None, 0.0), (40.0, 20.0)], [0.02, None, 0.04, 0.9], min_valid=1)
     assert r["lst_day"] == 30.0 and r["lst_night"] == 10.0
-    assert r["lst_amplitude"] == 20.0          # (20 + 20) / 2, seulement les paires complètes
-    assert r["ndvi"] == 0.04                    # médiane de 0.02, 0.04, 0.9
+    assert r["lst_amplitude"] == 20.0          # (20 + 20) / 2, complete pairs only
+    assert r["ndvi"] == 0.04                    # median of 0.02, 0.04, 0.9
     assert r["modis_samples"] == {"lst": 4, "lst_valid_pairs": 2, "ndvi": 4, "ndvi_valid": 3}
     empty = mv.aggregate([], [])
     assert all(empty[k] is None for k in mv.KEYS)
@@ -130,13 +130,13 @@ def test_pick_evenly():
     class It:
         def __init__(self, d):
             self.datetime = d
-    items = [It(f"2024-{m:02d}-01") for m in range(12, 0, -1)] * 4  # 48 éléments, désordonnés
+    items = [It(f"2024-{m:02d}-01") for m in range(12, 0, -1)] * 4  # 48 items, unordered
     picked = mv.pick_evenly(items, 12)
     assert len(picked) == 12 and [str(p.datetime) for p in picked] == sorted(str(p.datetime) for p in picked)
     assert mv.pick_evenly(items[:3], 12) == sorted(items[:3], key=mv._item_date)
 
 
-# ------------------------------------------------------------------ modis_values : bout en bout avec un faux Planetary Computer
+# ------------------------------------------------------------------ modis_values : end to end with a fake Planetary Computer
 class Asset:
     def __init__(self, href):
         self.href = href
@@ -149,7 +149,7 @@ class Item:
 
 
 class FakePC:
-    """Désert : LST jour 40 °C, nuit 10 °C, NDVI 0,05. Forêt (lat entre -10 et 0) : NDVI 0,85. Océan (lon > 170) : rien."""
+    """Desert: day LST 40 °C, night 10 °C, NDVI 0.05. Forest (lat between -10 and 0): NDVI 0.85. Ocean (lon > 170): nothing."""
 
     def __init__(self):
         self.calls = 0
@@ -171,16 +171,16 @@ class FakePC:
 def test_enrich_modis_end_to_end():
     pc = FakePC()
     sites = [{"id": "desert", "name": "D", "lat": -24.5, "lon": -69.25, "precomputed": {"slope_mean": 6}},
-             {"id": "foret", "name": "F", "lat": -3.47, "lon": -62.37},
+             {"id": "forest", "name": "F", "lat": -3.47, "lon": -62.37},
              {"id": "ocean", "name": "O", "lat": 0, "lon": 175}]
     out = {s["id"]: s["precomputed"] for s in mv.enrich_modis(sites, io=pc, log=lambda m: None)}
     d = out["desert"]
-    assert d["slope_mean"] == 6                                  # la géométrie est conservée
+    assert d["slope_mean"] == 6                                  # the geometry is kept
     assert d["lst_day"] == pytest.approx(40, abs=0.01) and d["lst_night"] == pytest.approx(10, abs=0.01)
     assert d["lst_amplitude"] == pytest.approx(30, abs=0.01) and d["ndvi"] == 0.05
     assert "modis_error" not in d and "Planetary Computer" in d["modis_source"]
-    assert out["foret"]["ndvi"] == 0.85                          # sera écartée par le filtre « sol nu »
-    assert all(out["ocean"][k] is None for k in mv.KEYS) and "aucune image" in out["ocean"]["modis_error"]
+    assert out["forest"]["ndvi"] == 0.85                          # will be excluded by the bare-soil filter
+    assert all(out["ocean"][k] is None for k in mv.KEYS) and "no MODIS image" in out["ocean"]["modis_error"]
 
 
 def test_enrich_modis_skips_done_sites_unless_forced():
@@ -213,10 +213,10 @@ def test_visuals_bbox_is_a_square_in_metres():
 def test_visuals_hillshade_and_match_mask():
     import site_visuals as sv
     flat = np.zeros((20, 20))
-    assert sv.hillshade(flat, 40.0).std() == 0                       # plat : éclairage uniforme
+    assert sv.hillshade(flat, 40.0).std() == 0                       # flat: uniform lighting
     x = np.arange(20) * 40.0
     slope10 = np.tile(x * math.tan(math.radians(10)), (20, 1))
-    assert sv.match_mask(slope10, 40.0, 4.5, 13.3).all()             # 10° est dans l intervalle lunaire
+    assert sv.match_mask(slope10, 40.0, 4.5, 13.3).all()             # 10° is in the lunar range
     assert not sv.match_mask(flat, 40.0, 4.5, 13.3).any()
     assert sv.hillshade(np.full((5, 5), np.nan), 40.0).shape == (5, 5)
 
@@ -227,7 +227,7 @@ def test_visuals_find_twin_picks_closest_valid_window():
     rough = np.array([[5.0, 40.0], [60.0, 41.0]])
     valid = np.array([[True, False], [True, True]])
     r, c, dist = sv.find_twin(slope, rough, valid, 8.0, 40.0, 7.0, 40.0)
-    assert (r, c) == (1, 1) and dist < 0.05                           # (0, 1) est exact mais hors zone valide
+    assert (r, c) == (1, 1) and dist < 0.05                           # (0, 1) is exact but outside the valid area
 
 
 def test_visuals_polar_latlon():

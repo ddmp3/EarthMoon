@@ -36,7 +36,7 @@ locals {
 }
 
 variable "api_image" {
-  description = "Image de l'API. Valeur initiale : image de démonstration, remplacée par deploy.sh."
+  description = "API image. Initial value: a placeholder image, replaced by deploy.sh."
   type        = string
   default     = "mcr.microsoft.com/azuredocs/containerapps-helloworld:latest"
 }

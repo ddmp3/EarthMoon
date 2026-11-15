@@ -13,7 +13,7 @@ async function main(): Promise<void> {
   const sites = await loadSites(config.dataDir, (note) => log(note));
   const sources = await buildSources(config.dataDir, config.useFixtures);
   sources.notes.forEach((note) => log(note));
-  if (sites.length === 0) log("Aucun site chargé : /api/analyze renverra une liste vide");
+  if (sites.length === 0) log("No site loaded: /api/analyze will return an empty list");
 
   const app = createApp({
     sites,
@@ -24,7 +24,7 @@ async function main(): Promise<void> {
     moonReference: await loadMoonReference(config.dataDir),
     allowedOrigins: config.allowedOrigins,
     rateLimitPerMinute: config.rateLimitPerMinute,
-    onConnectorError: (error, site) => log(`connecteur en échec pour ${site.id}`, error),
+    onConnectorError: (error, site) => log(`connector failed for ${site.id}`, error),
     log,
   });
 
@@ -40,6 +40,6 @@ async function main(): Promise<void> {
 }
 
 main().catch((error: unknown) => {
-  log("Démarrage impossible", error);
+  log("Cannot start", error);
   process.exit(1);
 });

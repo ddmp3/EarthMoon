@@ -6,10 +6,10 @@ export type FetchLike = (url: string, init?: { signal?: AbortSignal; headers?: R
 
 export type FetchJsonOptions = {
   fetchImpl?: FetchLike;
-  /** Nouvelles tentatives après le premier essai (502 de Planetary Computer, coupures réseau). */
+  /** Retries after the first attempt (Planetary Computer 502s, network drops). */
   retries?: number;
   timeoutMs?: number;
-  /** Pause avant la tentative n : backoffMs * n. Mettre 0 dans les tests. */
+  /** Pause before attempt n: backoffMs * n. Use 0 in tests. */
   backoffMs?: number;
   headers?: Record<string, string>;
 };
@@ -26,7 +26,7 @@ export class HttpError extends Error {
 
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
-/** GET JSON avec délai maximal et nouvelles tentatives sur erreur réseau ou 5xx. Une erreur 4xx n'est pas retentée. */
+/** GET JSON with a timeout and retries on network errors or 5xx. A 4xx error is not retried. */
 export async function fetchJson(url: string, options: FetchJsonOptions = {}): Promise<unknown> {
   const { retries = 2, timeoutMs = 15_000, backoffMs = 800 } = options;
   const doFetch: FetchLike = options.fetchImpl ?? ((u, init) => fetch(u, init));
@@ -38,7 +38,7 @@ export async function fetchJson(url: string, options: FetchJsonOptions = {}): Pr
     try {
       const response = await doFetch(url, { signal: controller.signal, headers: options.headers });
       if (response.ok) return await response.json();
-      lastError = new HttpError(`HTTP ${response.status} pour ${new URL(url).host}`, response.status);
+      lastError = new HttpError(`HTTP ${response.status} for ${new URL(url).host}`, response.status);
       if (response.status < 500) throw lastError;
     } catch (error) {
       if (error instanceof HttpError && error.status < 500) throw error;
@@ -47,5 +47,5 @@ export async function fetchJson(url: string, options: FetchJsonOptions = {}): Pr
       clearTimeout(timer);
     }
   }
-  throw lastError instanceof Error ? lastError : new Error("Échec de la requête");
+  throw lastError instanceof Error ? lastError : new Error("Request failed");
 }

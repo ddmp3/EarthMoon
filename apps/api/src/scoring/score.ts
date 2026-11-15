@@ -3,12 +3,12 @@ import type { Criterion, CriterionScore, ParamValues, SiteScore, Verdict } from 
 export const MATCH_THRESHOLD = 0.7;
 export const PARTIAL_THRESHOLD = 0.4;
 
-/** Seuil du filtre commun « sol nu » (docs/scenarios.md). */
+/** Threshold of the common "bare soil" filter (docs/scenarios.md). */
 export const NDVI_BARE_SOIL_MAX = 0.2;
 
 /**
- * Score d'une valeur pour un critère : 1 dans l'intervalle [min, max],
- * puis décroissance linéaire jusqu'à 0 à `tolerance` de distance.
+ * Score of a value for a criterion: 1 inside the [min, max] interval,
+ * then a linear decrease down to 0 at `tolerance` distance.
  */
 export function scoreValue(value: number, criterion: Criterion): number {
   const { min, max, tolerance } = criterion;
@@ -36,9 +36,9 @@ export function scoreCriterion(values: ParamValues, criterion: Criterion): Crite
 }
 
 /**
- * Score global d'un site : moyenne pondérée des critères, sur 100.
- * Un critère sans valeur (source en panne) est exclu du total pour ne pas
- * pénaliser le site à cause d'une source ; il reste visible avec le verdict « missing ».
+ * Overall site score: weighted mean of the criteria, out of 100.
+ * A criterion with no value (source down) is excluded from the total so as not to
+ * penalize the site because of a source; it stays visible with the "missing" verdict.
  */
 export function scoreSite(values: ParamValues, criteria: Criterion[]): SiteScore {
   const scored = criteria.map((c) => scoreCriterion(values, c));
@@ -53,7 +53,7 @@ export function scoreSite(values: ParamValues, criteria: Criterion[]): SiteScore
   return { total, criteria: scored };
 }
 
-/** Filtre commun : vrai si le site est végétalisé (NDVI connu et > 0,2). */
+/** Common filter: true if the site is vegetated (NDVI known and > 0.2). */
 export function isVegetated(values: ParamValues): boolean {
   const ndvi = values.ndvi;
   return typeof ndvi === "number" && ndvi > NDVI_BARE_SOIL_MAX;

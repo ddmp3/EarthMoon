@@ -4,9 +4,9 @@ import { fetchJson } from "./http.js";
 import type { FetchJsonOptions } from "./http.js";
 
 /**
- * NASA POWER, climatologie par point (aucun compte requis) :
+ * NASA POWER, point climatology (no account required):
  * https://power.larc.nasa.gov/docs/services/api/
- * Paramètre POWER -> identifiant du catalogue (docs/scenarios.md).
+ * POWER parameter -> catalog identifier (docs/scenarios.md).
  */
 export const POWER_PARAMETERS = {
   T2M: "t2m_mean",
@@ -18,7 +18,7 @@ export const POWER_PARAMETERS = {
   ALLSKY_SFC_SW_DWN: "solar",
 } as const satisfies Record<string, ParamId>;
 
-/** Valeur « donnée absente » de NASA POWER. */
+/** NASA POWER "no data" value. */
 const POWER_FILL = -999;
 
 export const POWER_BASE_URL = "https://power.larc.nasa.gov/api/temporal/climatology/point";
@@ -28,11 +28,11 @@ export function powerUrl(lat: number, lon: number): string {
   return `${POWER_BASE_URL}?parameters=${params}&community=RE&longitude=${lon}&latitude=${lat}&format=JSON`;
 }
 
-/** Extrait les moyennes annuelles (clé ANN) de la réponse POWER. Lance une erreur si la forme est inattendue. */
+/** Extracts the annual means (ANN key) from the POWER response. Throws if the shape is unexpected. */
 export function parsePower(body: unknown): ParamValues {
   const parameter = (body as { properties?: { parameter?: Record<string, Record<string, unknown>> } } | null)?.properties
     ?.parameter;
-  if (!parameter || typeof parameter !== "object") throw new Error("Réponse NASA POWER inattendue");
+  if (!parameter || typeof parameter !== "object") throw new Error("Unexpected NASA POWER response");
   const out: ParamValues = {};
   for (const [powerName, id] of Object.entries(POWER_PARAMETERS)) {
     const raw = parameter[powerName]?.ANN;

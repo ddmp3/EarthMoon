@@ -1,6 +1,6 @@
 /**
- * Types partagés du moteur de score (docs/contrats.md §3 et §4).
- * Le moteur ne connaît que le catalogue des paramètres, jamais les sources.
+ * Shared types of the scoring engine.
+ * The engine only knows the parameter catalog, never the sources.
  */
 
 export const PARAM_IDS = [
@@ -26,7 +26,7 @@ export const PARAM_IDS = [
 
 export type ParamId = (typeof PARAM_IDS)[number];
 
-/** Valeurs d'un site ; `null` = source indisponible. */
+/** Values of a site; `null` = source unavailable. */
 export type ParamValues = Partial<Record<ParamId, number | null>>;
 
 export type Criterion = {
@@ -35,7 +35,7 @@ export type Criterion = {
   max?: number;
   tolerance: number;
   weight: number;
-  /** Instrument (mode 2) ou besoin (mode 3), pour filtrer et grouper dans l'interface. */
+  /** Instrument (mode 2) or need (mode 3), to filter and group in the interface. */
   group?: string;
 };
 
@@ -44,13 +44,13 @@ export type Verdict = "match" | "partial" | "mismatch" | "missing";
 export type CriterionScore = {
   param: ParamId;
   value: number | null;
-  /** Entre 0 et 1. */
+  /** Between 0 and 1. */
   score: number;
   verdict: Verdict;
 };
 
 export type SiteScore = {
-  /** Sur 100, arrondi à l'entier. */
+  /** Out of 100, rounded to an integer. */
   total: number;
   criteria: CriterionScore[];
 };

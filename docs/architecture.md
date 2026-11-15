@@ -1,62 +1,61 @@
 # Architecture
 
-Même modèle que meteormadness (NASA Space Apps 2025) : front statique, API conteneurisée, infrastructure Terraform sur Azure.
+Static front end, containerized API, Terraform infrastructure on Azure. No database: sources are read live by the API (in-memory cache) or precomputed offline.
 
 ```
-Navigateur ──► Azure Static Web App (React)
-                   │  appels HTTPS (VITE_API_URL)
-                   ▼
-              Azure Container App (API Node/TS, OpenAPI)
-                   │  cache mémoire, aucune base de données
-                   ▼
-   NASA POWER · Copernicus DEM (COG) · Planetary Computer (MODIS)
-   USGS Earthquakes · Smithsonian GVP · (fonds de carte : Moon Trek WMTS, appelé par le navigateur)
+Browser ──► Azure Static Web App (React)
+                │  HTTPS (VITE_API_URL)
+                ▼
+           Azure Container App (Node/TypeScript API, OpenAPI)
+                │  in-memory cache, no database
+                ▼
+   NASA POWER · USGS Earthquakes · Smithsonian GVP   (live)
+   Copernicus DEM · MODIS (Planetary Computer)       (precomputed offline in tools/precompute)
 ```
 
-## Arborescence cible du repo
+## Repository layout
 
 ```
-apps/
-  api/          API Node.js + TypeScript + Express (ES modules), Dockerfile, openapi.yaml
-  web/          Front React + TypeScript + Vite + Tailwind + Leaflet
-data/
-  reference/moon-south-pole.json   profil de référence lunaire (paramètres)
-  candidates.json                  points candidats du MVP
-docs/           sources, scénarios, architecture, plan projet
-infra/terraform Infrastructure Azure (Terraform) + deploy.sh
+apps/api/         API (Express, ES modules), scoring engine, source connectors, openapi.yaml
+apps/web/         React + TypeScript + Vite + Tailwind + Leaflet
+data/             candidates.json, candidates-precomputed.json, reference/moon-south-pole.json, fixtures/
+docs/             this documentation
+infra/terraform/  Azure infrastructure + deploy.sh
+tools/            precompute (offline data), validation (e2e + rankings), scoring (Python reference scorer)
 ```
 
-## API (contrat OpenAPI à écrire en premier)
+## Design rules
 
-| Méthode | Route | Rôle |
-|---|---|---|
-| GET | `/api/health` | sonde de santé (Container Apps) |
-| GET | `/api/parameters` | catalogue des paramètres (mode 4) |
-| GET | `/api/modes` | modes 1 à 3 et leurs critères prédéfinis |
-| GET | `/api/reference/moon` | profil de référence lunaire |
-| POST | `/api/analyze` | entrée : `mode` ou `criteria[]` ; sortie : sites classés avec score global et score par critère |
-| GET | `/api/sites/{id}` | fiche détaillée d'un site (valeurs brutes, correspond / ne correspond pas) |
-| GET | `/api/docs` | documentation Swagger UI |
+- **The scoring engine only knows the parameter catalog, never the sources.** Each source is an adapter (`apps/api/src/sources/`) returning catalog values, so Mars can be added without touching the engine.
+- **A failing source never breaks a response:** its parameters are `null`, the criterion is `missing` and excluded from the total.
+- **Nothing is invented:** a value that cannot be measured stays `null`; every value on a site card shows its source.
+- A Python scorer (`tools/scoring/score_sites.py`) gives results identical to the TypeScript engine.
 
-Chaque source est isolée dans un adaptateur (`apps/api/src/sources/<source>.ts`) qui renvoie des valeurs du catalogue (`docs/scenarios.md`). Le moteur de score ne connaît que le catalogue, pas les sources : on pourra ajouter Mars en phase 2 sans le modifier.
+## API
 
-## Infrastructure Azure (reprise de meteormadness)
+Contract: [`apps/api/openapi.yaml`](../apps/api/openapi.yaml), live docs on `/api/docs`. Guide: [`apps/api/README.md`](../apps/api/README.md).
 
-| Ressource | Paramètre |
+## Data files
+
+- `data/candidates.json`: `{ id, name, lat, lon, terrain, role, note?, known_for? }`. `role` is `validation` (known analog), `negative` (control) or `candidate` (understudied site).
+- `data/reference/moon-south-pole.json`: lunar reference values with sources, plus `earth_limits` (what Earth cannot reproduce).
+- `data/candidates-precomputed.json`: candidates with a `precomputed` block (terrain geometry and MODIS values). Regenerate with `tools/precompute/` after changing `candidates.json`, then run `tools/validation/rankings.py` and `tools/validation/e2e.py`.
+
+## Azure infrastructure
+
+Resource group, Log Analytics (30-day retention), Container Registry (Basic), Container Apps environment and API app (0.5 vCPU, 1 Gi, 1 to 5 replicas, port 3001), Static Web App (Free), region `canadacentral`. Deploy with `infra/terraform/deploy.sh` (see [its README](../infra/terraform/README.md)).
+
+## Security review (15 November 2026)
+
+| Check | Result |
 |---|---|
-| Souscription | `dev-meteormadness` (DEV uniquement, aucun déploiement en PROD) |
-| Région | `canadacentral` (Static Web App : `eastus2`, régions limitées) |
-| Resource Group | `rg-cyberspace-analogues-<suffixe>` |
-| Log Analytics | SKU `PerGB2018`, rétention 30 jours |
-| Container Registry | SKU `Basic` |
-| Container Apps Environment + Container App API | 0,5 vCPU, 1 Gi, 1 à 5 réplicas, port 3001 |
-| Static Web App | SKU `Free` |
+| Secrets in git history | None found (AWS keys, GitHub tokens, private keys, Azure connection strings, passwords) |
+| Dependencies (`npm audit`, API and front end) | 0 vulnerabilities |
+| API image | Non-root user, production dependencies only |
+| CORS | Front-end origin only |
+| Rate limit | 120 requests per minute per IP on `/api` (health probe excluded) |
+| Input validation | Strict: 50 KB body limit, criteria checked one by one, 400 with a message |
+| Headers | API: `nosniff`, `no-referrer`, no `X-Powered-By`. Front end: CSP, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy` |
+| Data exposed | Open data only; no personal data, no accounts |
 
-Déploiement : `infra/terraform/deploy.sh` (init, validate, plan, confirmation, apply, build et push de l'image, mise à jour de la Container App). Voir [infra/terraform/README.md](../infra/terraform/README.md).
-
-## Sécurité (revue Xavier)
-
-- Aucun secret dans le repo : `.env`, `*.tfstate`, `tfplan` sont ignorés par git.
-- Le state Terraform reste local pour le hackathon : un seul membre (David) applique l'infrastructure.
-- L'API limite le débit (`express-rate-limit`) et restreint CORS au domaine de la Static Web App.
-- Point connu hérité de meteormadness : l'accès admin de l'ACR est activé. Acceptable pour le hackathon ; à remplacer par une identité managée ensuite.
+Known and accepted for the hackathon: Container Registry admin access is enabled (a managed identity would be cleaner), and the Terraform state stays local and out of git.

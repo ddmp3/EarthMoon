@@ -5,24 +5,24 @@ import type { Criterion } from "../src/scoring/index.js";
 const range: Criterion = { param: "slope_mean", min: 5, max: 15, tolerance: 10, weight: 1 };
 
 describe("scoreValue", () => {
-  it("vaut 1 dans l'intervalle, bornes comprises", () => {
+  it("is 1 inside the interval, bounds included", () => {
     expect(scoreValue(5, range)).toBe(1);
     expect(scoreValue(10, range)).toBe(1);
     expect(scoreValue(15, range)).toBe(1);
   });
 
-  it("décroît linéairement hors de l'intervalle", () => {
+  it("decreases linearly outside the interval", () => {
     expect(scoreValue(0, range)).toBeCloseTo(0.5);
     expect(scoreValue(20, range)).toBeCloseTo(0.5);
     expect(scoreValue(22.5, range)).toBeCloseTo(0.25);
   });
 
-  it("vaut 0 au-delà de la tolérance", () => {
+  it("is 0 beyond the tolerance", () => {
     expect(scoreValue(25, range)).toBe(0);
     expect(scoreValue(-100, range)).toBe(0);
   });
 
-  it("gère les intervalles ouverts", () => {
+  it("handles open intervals", () => {
     const maxOnly: Criterion = { param: "t2m_min", max: -20, tolerance: 20, weight: 1 };
     expect(scoreValue(-50, maxOnly)).toBe(1);
     expect(scoreValue(-10, maxOnly)).toBeCloseTo(0.5);
@@ -31,7 +31,7 @@ describe("scoreValue", () => {
     expect(scoreValue(5, minOnly)).toBe(0);
   });
 
-  it("tolérance nulle : tout ou rien", () => {
+  it("zero tolerance: all or nothing", () => {
     const strict: Criterion = { ...range, tolerance: 0 };
     expect(scoreValue(15, strict)).toBe(1);
     expect(scoreValue(15.01, strict)).toBe(0);
@@ -39,7 +39,7 @@ describe("scoreValue", () => {
 });
 
 describe("verdictFor", () => {
-  it("applique les seuils 0,7 et 0,4", () => {
+  it("applies the 0.7 and 0.4 thresholds", () => {
     expect(verdictFor(1)).toBe("match");
     expect(verdictFor(0.7)).toBe("match");
     expect(verdictFor(0.69)).toBe("partial");
@@ -50,13 +50,13 @@ describe("verdictFor", () => {
 });
 
 describe("scoreCriterion", () => {
-  it("marque missing une valeur absente, nulle ou non finie", () => {
+  it("marks an absent, null or non-finite value as missing", () => {
     expect(scoreCriterion({}, range)).toEqual({ param: "slope_mean", value: null, score: 0, verdict: "missing" });
     expect(scoreCriterion({ slope_mean: null }, range).verdict).toBe("missing");
     expect(scoreCriterion({ slope_mean: Number.NaN }, range).verdict).toBe("missing");
   });
 
-  it("renvoie la valeur, le score et le verdict", () => {
+  it("returns the value, score and verdict", () => {
     expect(scoreCriterion({ slope_mean: 20 }, range)).toEqual({
       param: "slope_mean",
       value: 20,
@@ -72,32 +72,32 @@ describe("scoreSite", () => {
     { param: "wind", max: 3, tolerance: 3, weight: 1 },
   ];
 
-  it("calcule la moyenne pondérée sur 100", () => {
+  it("computes the weighted mean out of 100", () => {
     const result = scoreSite({ slope_mean: 10, wind: 6 }, criteria);
     expect(result.total).toBe(75);
     expect(result.criteria.map((c) => c.verdict)).toEqual(["match", "mismatch"]);
   });
 
-  it("exclut les critères manquants du total", () => {
+  it("excludes missing criteria from the total", () => {
     const result = scoreSite({ slope_mean: 10, wind: null }, criteria);
     expect(result.total).toBe(100);
     expect(result.criteria[1].verdict).toBe("missing");
   });
 
-  it("vaut 0 si aucune valeur n'est disponible", () => {
+  it("is 0 if no value is available", () => {
     expect(scoreSite({}, criteria).total).toBe(0);
   });
 
-  it("conserve l'ordre des critères", () => {
+  it("keeps the criteria order", () => {
     expect(scoreSite({}, criteria).criteria.map((c) => c.param)).toEqual(["slope_mean", "wind"]);
   });
 });
 
 describe("isVegetated", () => {
-  it("applique le seuil NDVI 0,2 (NASA Earth Observatory : ≤ 0,1 roche, sable ou neige ; 0,2 à 0,3 arbustes et prairies)", () => {
+  it("applies the 0.2 NDVI threshold (NASA Earth Observatory: ≤ 0.1 rock, sand or snow; 0.2 to 0.3 shrubs and grassland)", () => {
     expect(isVegetated({ ndvi: 0.85 })).toBe(true);
     expect(isVegetated({ ndvi: 0.2 })).toBe(false);
-    expect(isVegetated({ ndvi: 0.157 })).toBe(false); // Meteor Crater : désert à végétation clairsemée, gardé
+    expect(isVegetated({ ndvi: 0.157 })).toBe(false); // Meteor Crater: sparsely vegetated desert, kept
     expect(isVegetated({ ndvi: 0.24 })).toBe(true);
     expect(isVegetated({ ndvi: null })).toBe(false);
     expect(isVegetated({})).toBe(false);
@@ -105,7 +105,7 @@ describe("isVegetated", () => {
 });
 
 describe("MODES", () => {
-  it("définit des critères valides pour chaque mode", () => {
+  it("defines valid criteria for every mode", () => {
     for (const mode of Object.values(MODES)) {
       expect(mode.criteria.length).toBeGreaterThan(0);
       for (const c of mode.criteria) {

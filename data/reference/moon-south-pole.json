@@ -1,43 +1,43 @@
 {
   "id": "moon-south-pole",
   "body": "moon",
-  "name": "Pôle Sud lunaire",
-  "status": "sourcé : relief LOLA calculé comme sur Terre, froid et absence d’atmosphère sourcés ; reste à sourcer : température de jour des crêtes, ensoleillement (voir todo)",
+  "name": "Lunar south pole",
+  "status": "Sourced: LOLA relief computed like on Earth; cold and absence of atmosphere sourced. Still to source: daytime ridge temperature, solar illumination (see todo)",
   "params": {
     "latitude_abs": {
       "min": 84,
       "max": 90,
       "unit": "°",
-      "source": "NASA, 19 août 2022 : les 13 régions candidates d'Artemis III sont à moins de 6° de latitude du pôle Sud — https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-Moon/"
+      "source": "NASA, 19 Aug 2022: the 13 Artemis III candidate regions are within 6° of latitude of the south pole — https://www.nasa.gov/news-release/nasa-identifies-candidate-regions-for-landing-next-americans-on-Moon/"
     },
     "lst_night": {
       "min": -238,
       "unit": "°C",
-      "source": "Paige et al. 2010, Science 330:479, « Diviner Lunar Radiometer Observations of Cold Traps in the Moon's South Polar Region » : températures inférieures à 35 K (≈ -238 °C) dans les régions en ombre permanente — https://pubs.usgs.gov/publication/70036393"
+      "source": "Paige et al. 2010, Science 330:479, \"Diviner Lunar Radiometer Observations of Cold Traps in the Moon's South Polar Region\": temperatures below 35 K (≈ -238 °C) in permanently shadowed regions — https://pubs.usgs.gov/publication/70036393"
     },
     "wind": {
       "min": 0,
       "max": 0,
       "unit": "m/s",
-      "source": "Pas d'atmosphère (exosphère seulement), donc pas de vent"
+      "source": "No atmosphere (exosphere only), hence no wind"
     },
     "humidity": {
       "min": 0,
       "max": 0,
       "unit": "%",
-      "source": "Pas d'atmosphère"
+      "source": "No atmosphere"
     },
     "precipitation": {
       "min": 0,
       "max": 0,
-      "unit": "mm/jour",
-      "source": "Pas d'atmosphère"
+      "unit": "mm/day",
+      "source": "No atmosphere"
     },
     "ndvi": {
       "min": 0,
       "max": 0,
       "unit": "",
-      "source": "Aucune végétation"
+      "source": "No vegetation"
     },
     "slope_mean": {
       "min": 5.23,
@@ -50,7 +50,7 @@
         "p75": 12.89,
         "p90": 17.68
       },
-      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S ; pente et rugosité calculées en fenêtres de 1 km comme pour la Terre (tools/precompute/lunar_reference.py) ; intervalle interquartile (p25-p75) de 71731 fenêtres de 1000 m"
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; slope and roughness computed over 1 km windows like on Earth (tools/precompute/lunar_reference.py); interquartile range (p25-p75) of 71,731 windows of 1,000 m"
     },
     "slope_max": {
       "min": 13.85,
@@ -63,7 +63,7 @@
         "p75": 23.26,
         "p90": 28.53
       },
-      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S ; pente et rugosité calculées en fenêtres de 1 km comme pour la Terre (tools/precompute/lunar_reference.py) ; intervalle interquartile (p25-p75) de 71731 fenêtres de 1000 m"
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; slope and roughness computed over 1 km windows like on Earth (tools/precompute/lunar_reference.py); interquartile range (p25-p75) of 71,731 windows of 1,000 m"
     },
     "roughness": {
       "min": 21.51,
@@ -76,108 +76,72 @@
         "p75": 64.95,
         "p90": 91.81
       },
-      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S ; pente et rugosité calculées en fenêtres de 1 km comme pour la Terre (tools/precompute/lunar_reference.py) ; intervalle interquartile (p25-p75) de 71731 fenêtres de 1000 m"
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; slope and roughness computed over 1 km windows like on Earth (tools/precompute/lunar_reference.py); interquartile range (p25-p75) of 71,731 windows of 1,000 m"
     }
   },
   "todo": [
-    "lst_day, lst_amplitude : Diviner, températures maximales des crêtes éclairées (cartes de Sefton-Nash et al., EPSC 2013)",
-    "quake_count : séismes lunaires peu profonds, sismomètres Apollo (Nakamura)",
-    "solar : fraction d'éclairage des crêtes polaires (Mazarico et al. 2011, LOLA)"
+    "lst_day, lst_amplitude: Diviner maximum temperatures of sunlit ridges (Sefton-Nash et al. maps, EPSC 2013)",
+    "quake_count: shallow moonquakes, Apollo seismometers (Nakamura)",
+    "solar: illumination fraction of polar ridges (Mazarico et al. 2011, LOLA)"
   ],
   "earth_limits": [
     {
       "id": "gravity",
-      "label": "Gravité",
-      "moon": "1,62 m/s²",
-      "earth": "9,81 m/s²",
-      "effect": "Mobilité, ancrage, forage et poussière se comportent autrement : aucun site terrestre ne reproduit la gravité lunaire (environ 1/6).",
-      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
-      "en": {
-        "label": "Gravity",
-        "moon": "1.62 m/s²",
-        "earth": "9.81 m/s²",
-        "effect": "Mobility, anchoring, drilling and dust behave differently: no Earth site reproduces lunar gravity (about one sixth)."
-      }
+      "label": "Gravity",
+      "moon": "1.62 m/s²",
+      "earth": "9.81 m/s²",
+      "effect": "Mobility, anchoring, drilling and dust behave differently: no Earth site reproduces lunar gravity (about one sixth).",
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
     },
     {
       "id": "oxygen",
-      "label": "Oxygène et atmosphère",
-      "moon": "aucune atmosphère respirable : pas d’oxygène libre, pas de pression",
-      "earth": "21 % d’oxygène dans un air à environ 1 bar",
-      "effect": "Sur Terre, moteurs, feu, sons, refroidissement par l’air et respiration fonctionnent ; sur la Lune, tout système doit apporter son oxygène et dissiper sa chaleur par rayonnement.",
-      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
-      "en": {
-        "label": "Oxygen and atmosphere",
-        "moon": "no breathable atmosphere: no free oxygen, no pressure",
-        "earth": "21% oxygen in air at about 1 bar",
-        "effect": "On Earth, engines, fire, sound, air cooling and breathing all work; on the Moon every system must bring its own oxygen and reject heat by radiation."
-      }
+      "label": "Oxygen and atmosphere",
+      "moon": "no breathable atmosphere: no free oxygen, no pressure",
+      "earth": "21% oxygen in air at about 1 bar",
+      "effect": "On Earth, engines, fire, sound, air cooling and breathing all work; on the Moon every system must bring its own oxygen and reject heat by radiation.",
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
     },
     {
       "id": "vacuum",
-      "label": "Vide",
-      "moon": "pression de surface d’environ 3 × 10⁻¹⁵ bar (exosphère)",
-      "earth": "environ 1 bar",
-      "effect": "Pas de convection, pas de vent, pas d’érosion par l’air : les critères vent, humidité et précipitations sont des proxys d’un environnement sec et calme.",
-      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
-      "en": {
-        "label": "Vacuum",
-        "moon": "surface pressure of about 3 × 10⁻¹⁵ bar (exosphere)",
-        "earth": "about 1 bar",
-        "effect": "No convection, no wind, no erosion by air: wind, humidity and precipitation criteria are proxies for a dry, calm environment."
-      }
+      "label": "Vacuum",
+      "moon": "surface pressure of about 3 × 10⁻¹⁵ bar (exosphere)",
+      "earth": "about 1 bar",
+      "effect": "No convection, no wind, no erosion by air: wind, humidity and precipitation criteria are proxies for a dry, calm environment.",
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
     },
     {
       "id": "radiation",
-      "label": "Rayonnement",
-      "moon": "ni atmosphère ni champ magnétique global : surface exposée aux rayons cosmiques et aux particules solaires",
-      "earth": "atmosphère et magnétosphère protectrices",
-      "effect": "Aucun site terrestre ne reproduit l’environnement radiatif lunaire.",
-      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html",
-      "en": {
-        "label": "Radiation",
-        "moon": "no atmosphere and no global magnetic field: surface exposed to cosmic rays and solar particles",
-        "earth": "protective atmosphere and magnetosphere",
-        "effect": "No Earth site reproduces the lunar radiation environment."
-      }
+      "label": "Radiation",
+      "moon": "no atmosphere and no global magnetic field: surface exposed to cosmic rays and solar particles",
+      "earth": "protective atmosphere and magnetosphere",
+      "effect": "No Earth site reproduces the lunar radiation environment.",
+      "source": "NASA, Moon Fact Sheet (NSSDCA) — https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
     },
     {
       "id": "cold",
-      "label": "Froid extrême",
-      "moon": "29 à 50 K dans les zones en ombre permanente (Diviner)",
-      "earth": "au plus froid, environ -90 °C (≈ 180 K) en Antarctique",
-      "effect": "Les critères de température sont des proxys de tendance (froid, amplitude), jamais des valeurs absolues.",
-      "source": "Paige et al. 2010, Science 330:479 ; EPSC2013-386 (vérification de Wassim, docs/verification-modes-1-2.md)",
-      "en": {
-        "label": "Extreme cold",
-        "moon": "29 to 50 K in permanently shadowed regions (Diviner)",
-        "earth": "about -90 °C (≈ 180 K) at the coldest, in Antarctica",
-        "effect": "Temperature criteria are trend proxies (cold, day-night swing), never absolute values."
-      }
+      "label": "Extreme cold",
+      "moon": "29 to 50 K in permanently shadowed regions (Diviner)",
+      "earth": "about -90 °C (≈ 180 K) at the coldest, in Antarctica",
+      "effect": "Temperature criteria are trend proxies (cold, day-night swing), never absolute values.",
+      "source": "Paige et al. 2010, Science 330:479; EPSC2013-386 (see docs/scenarios.md)"
     },
     {
       "id": "regolith",
-      "label": "Régolithe et géologie",
-      "moon": "croûte des hautes terres (anorthosite) au pôle Sud, régolithe non altéré par l’eau ni la vie",
-      "earth": "sols altérés par l’eau, l’air et la vie",
-      "effect": "Le basalte terrestre sert de substitut pour la mécanique des roches ; l’anorthosite (Mistastin, Labrador) est le meilleur jumeau rocheux.",
-      "source": "Moriarty et Petro, EPSC2022-295 (vérification de Wassim)",
-      "en": {
-        "label": "Regolith and geology",
-        "moon": "highland crust (anorthosite) at the south pole, regolith unaltered by water or life",
-        "earth": "soils altered by water, air and life",
-        "effect": "Earth basalt stands in for rock mechanics; anorthosite (Mistastin, Labrador) is the closest rock twin."
-      }
+      "label": "Regolith and geology",
+      "moon": "highland crust (anorthosite) at the south pole, regolith unaltered by water or life",
+      "earth": "soils altered by water, air and life",
+      "effect": "Earth basalt stands in for rock mechanics; anorthosite (Mistastin, Labrador) is the closest rock twin.",
+      "source": "Moriarty and Petro, EPSC2022-295"
     }
   ],
   "context": {
     "quake_count": {
-      "text": "28 séismes lunaires peu profonds enregistrés en 8 ans par les sismomètres Apollo ; pas de microséisme continu, d’où une sensibilité 100 à 1000 fois celle de la Terre",
-      "source": "Nakamura, NTRS 19930008250 ; Latham et al., NTRS 19780005006 (vérification de Wassim)"
+      "text": "28 shallow moonquakes recorded in 8 years by the Apollo seismometers; no continuous microseisms, hence a sensitivity 100 to 1,000 times that of Earth",
+      "source": "Nakamura, NTRS 19930008250; Latham et al., NTRS 19780005006"
     },
     "lst_amplitude": {
-      "text": "à l’équateur, environ 400 K à midi et moins de 100 K la nuit (amplitude d’environ 300 K) ; aucun site terrestre n’approche cette amplitude",
-      "source": "Diviner, EPSC2013-386 (vérification de Wassim)"
+      "text": "at the equator, about 400 K at noon and under 100 K at night (swing of about 300 K); no Earth site comes close to this swing",
+      "source": "Diviner, EPSC2013-386"
     }
   }
 }

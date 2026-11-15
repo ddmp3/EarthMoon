@@ -1,12 +1,12 @@
-"""Geometria de un punto (lat, lon) a partir de Copernicus DEM GLO-30 (COG en AWS, lectura parcial, sin almacenamiento).
+"""Geometry of a point (lat, lon) from Copernicus DEM GLO-30 (COG on AWS, partial read, no storage).
 
-Devuelve los parametros del catalogo de docs/scenarios.md:
-    elevation   altitud en el punto (m)
-    slope_mean  pendiente media en una ventana de 1 km (grados)
-    slope_max   pendiente maxima en una ventana de 1 km (grados)
-    roughness   desviacion estandar de la altitud en una ventana de 1 km (m)
+Returns the catalog parameters of docs/scenarios.md:
+    elevation   elevation at the point (m)
+    slope_mean  mean slope in a 1 km window (degrees)
+    slope_max   maximum slope in a 1 km window (degrees)
+    roughness   standard deviation of elevation in a 1 km window (m)
 
-Dependencias: numpy, rasterio.  Uso:
+Dependencies: numpy, rasterio.  Usage:
     python point_geometry.py -24.1 -70.0
     from point_geometry import point_geometry; point_geometry(75.4, -89.8)
 """
@@ -26,7 +26,7 @@ class TileNotFound(Exception):
 
 
 def tile_name(lat: float, lon: float) -> str:
-    """Nombre del tile de 1x1 grado que contiene el punto, p. ej. Copernicus_DSM_COG_10_S25_00_W071_00_DEM."""
+    """Name of the 1x1 degree tile containing the point, e.g. Copernicus_DSM_COG_10_S25_00_W071_00_DEM."""
     la, lo = math.floor(lat), math.floor(lon)
     ns, ew = ("N" if la >= 0 else "S"), ("E" if lo >= 0 else "W")
     return f"Copernicus_DSM_COG_10_{ns}{abs(la):02d}_00_{ew}{abs(lo):03d}_00_DEM"
@@ -39,7 +39,7 @@ def tile_url(lat: float, lon: float) -> str:
 
 def point_tile_url(lat: float, lon: float) -> str:
     """Tile a ouvrir para el punto. Una latitud entera (p. ej. 25.0) es el borde inferior del tile N25,
-    fuera de su raster (fila = altura) : se usa el tile de abajo (N24), cuyo borde superior la contiene."""
+    outside its raster (row = height): the tile below (N24) is used, whose top edge contains it."""
     if lat == math.floor(lat) and lat > -90:
         lat -= 1e-9
     return tile_url(lat, lon)
@@ -53,7 +53,7 @@ def slope_deg(z: np.ndarray, dx_m: float, dy_m: float) -> np.ndarray:
 
 
 def geometry_from_array(z: np.ndarray, dx_m: float, dy_m: float, margin: int = 1) -> dict:
-    """Estadisticas de la ventana. `margin` = pixeles de borde leidos solo para el gradiente (se descartan al final)."""
+    """Window statistics. `margin` = border pixels read only for the gradient (discarded at the end)."""
     z = np.asarray(z, dtype="float64")
     s = slope_deg(z, dx_m, dy_m)
     if margin and min(z.shape) > 2 * margin:
@@ -75,10 +75,10 @@ def geometry_from_array(z: np.ndarray, dx_m: float, dy_m: float, margin: int = 1
 
 
 def point_geometry(lat: float, lon: float, window_m: float = 1000.0, url: str | None = None) -> dict:
-    """Lee solo la ventana de `window_m` metros alrededor del punto y calcula los 4 parametros.
+    """Reads only the `window_m` meter window around the point and computes the 4 parameters.
 
     `url` permite apuntar a otro raster (pruebas, NASADEM). Limite conocido: si el punto esta a menos de
-    ~500 m del borde de un tile, la ventana se recorta al tile (valid_frac y window_px lo reflejan).
+    ~500 m from a tile edge, the window is clipped to the tile (valid_frac and window_px reflect it).
     """
     import rasterio
     from rasterio.errors import RasterioIOError

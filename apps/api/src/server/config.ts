@@ -2,8 +2,8 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 /**
- * Chemins de l'API. Ce fichier est dans src/server/ (tsx) ou dist/server/ (build) :
- * dans les deux cas, ../.. est le dossier apps/api.
+ * API paths. This file lives in src/server/ (tsx) or dist/server/ (build):
+ * in both cases ../.. is the apps/api folder.
  */
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -13,16 +13,16 @@ export const REPO_ROOT = path.resolve(API_ROOT, "../..");
 export type ServerConfig = {
   port: number;
   dataDir: string;
-  /** Origines autorisées par CORS (domaine du front). */
+  /** Origins allowed by CORS (front-end domain). */
   allowedOrigins: string[];
-  /** Si vrai : valeurs d'exemple (data/fixtures) au lieu des vraies sources. Jamais pour la démo. */
+  /** If true: sample values (data/fixtures) instead of the real sources. Never for the demo. */
   useFixtures: boolean;
   rateLimitPerMinute: number;
 };
 
 export function readConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
   const port = Number(env.PORT ?? 3001);
-  if (!Number.isInteger(port) || port <= 0 || port > 65535) throw new Error(`PORT invalide : ${env.PORT}`);
+  if (!Number.isInteger(port) || port <= 0 || port > 65535) throw new Error(`Invalid PORT : ${env.PORT}`);
   const origins = [env.FRONTEND_URL, ...(env.EXTRA_ORIGINS ?? "").split(",")]
     .map((o) => o?.trim().replace(/\/$/, ""))
     .filter((o): o is string => Boolean(o));

@@ -21,7 +21,7 @@ import { useT, type Texts } from './i18n'
 import { MISSION_ORDER } from './shared'
 import { useAppStore, type CriterionDraft, type SelectedMode } from './store'
 
-/** Critères du mode 4 saisis dans le formulaire ; lève une erreur lisible si la saisie est invalide. */
+/** Mode 4 criteria entered in the form; throws a readable error if the input is invalid. */
 function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
   const seen = new Set<ParamId>()
   return drafts.map((draft) => {
@@ -58,7 +58,7 @@ function App() {
   const [sources, setSources] = useState<DataSource[]>([])
   const [limits, setLimits] = useState<EarthLimit[]>([])
 
-  // Données de référence : chargées une fois ; en cas d'échec, la page reste utilisable.
+  // Reference data: loaded once; if it fails, the page stays usable.
   useEffect(() => {
     let active = true
     getVisualManifest().then((m) => active && setManifest(m)).catch(() => undefined)
@@ -105,7 +105,7 @@ function App() {
     [bareSoilOnly, calibrationInstrument, criteriaDraft, t],
   )
 
-  // Les modes prédéfinis se relancent seuls quand un réglage change ; le mode 4 attend le bouton.
+  // Predefined modes re-run on their own when a setting changes; mode 4 waits for the button.
   useEffect(() => {
     if (mode && mode !== 'custom') void run(mode)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -191,9 +191,9 @@ function App() {
                 {sources.map((source) => (
                   <li key={source.id}>
                     <a href={source.url} rel="noopener noreferrer" target="_blank">
-                      {source.nameEn ?? source.name}
+                      {source.name}
                     </a>{' '}
-                    · {source.provider} · {source.body === 'moon' ? t.moon : t.earth}. <small>{source.termsEn}</small>
+                    · {source.provider} · {source.body === 'moon' ? t.moon : t.earth}. <small>{source.terms}</small>
                   </li>
                 ))}
               </ul>

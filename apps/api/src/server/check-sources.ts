@@ -1,8 +1,8 @@
 /**
- * Vérifie les vraies sources depuis votre machine (le réseau du bac à sable ne les atteint pas) :
+ * Checks the real sources from your machine (a sandboxed network cannot reach them):
  *   npm run check:sources
- * Compare avec les valeurs réelles de Haughton relevées le 2026-11-14 (data/fixtures/site-values.json),
- * et vérifie GVP avec Mauna Kea (volcan holocène : distance attendue presque nulle).
+ * Compares with the real Haughton values recorded on 2026-11-14 (data/fixtures/site-values.json),
+ * and checks GVP with Mauna Kea (Holocene volcano: expected distance almost zero).
  */
 import { createPowerConnector } from "../sources/power.js";
 import { createUsgsConnector } from "../sources/usgs.js";
@@ -26,14 +26,14 @@ async function main(): Promise<void> {
     ["NASA POWER", () => createPowerConnector()(HAUGHTON)],
     ["USGS", () => createUsgsConnector()(HAUGHTON)],
   ];
-  // GVP : Mauna Kea est lui-même un volcan holocène, la distance doit être presque nulle.
-  // Une grande valeur signifierait que latitude et longitude sont inversées dans la réponse du WFS.
+  // GVP: Mauna Kea is itself a Holocene volcano, so the distance must be almost zero.
+  // A large value would mean latitude and longitude are swapped in the WFS response.
   const MAUNA_KEA = { lat: 19.82, lon: -155.47 };
   let failures = 0;
   try {
     const { volcano_distance: d } = await createGvpConnector()(MAUNA_KEA);
     const ok = typeof d === "number" && d < 15;
-    console.log(`\nSmithsonian GVP : ${ok ? "OK" : "ÉCART"} — Mauna Kea à ${d} km du volcan le plus proche (attendu < 15 km)`);
+    console.log(`\nSmithsonian GVP : ${ok ? "OK" : "MISMATCH"} — Mauna Kea is ${d} km from the nearest volcano (expected < 15 km)`);
     if (!ok) failures++;
   } catch (error) {
     failures++;
@@ -46,7 +46,7 @@ async function main(): Promise<void> {
       for (const [param, value] of Object.entries(values)) {
         const expected = EXPECTED[param as keyof ParamValues];
         const close = typeof value === "number" && typeof expected === "number" && Math.abs(value - expected) <= Math.max(1, Math.abs(expected) * 0.15);
-        console.log(`  ${param.padEnd(14)} ${String(value).padEnd(10)} attendu ~${expected}  ${close ? "ok" : "ÉCART (à vérifier)"}`);
+        console.log(`  ${param.padEnd(14)} ${String(value).padEnd(10)} expected ~${expected}  ${close ? "ok" : "MISMATCH (check)"}`);
       }
     } catch (error) {
       failures++;

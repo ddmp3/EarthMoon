@@ -1,10 +1,10 @@
-"""Tests fonctionnels de bout en bout (docs/tests-fonctionnels.md) contre l'application lancée.
+"""End-to-end functional tests against the running application.
 
     docker compose up --build -d
     python tools/validation/e2e.py                       # front http://localhost:8080, API http://localhost:3001
-    python tools/validation/e2e.py --web URL --api URL   # autre environnement (Azure)
+    python tools/validation/e2e.py --web URL --api URL   # another environment (Azure)
 
-Chaque test porte l'identifiant du plan (TF-xx). Sortie : code 0 si tout passe. Bibliothèque standard uniquement.
+Each test has an identifier (TF-xx). Exit code 0 if everything passes. Standard library only.
 """
 from __future__ import annotations
 import argparse
@@ -35,7 +35,7 @@ def check(test_id: str, label: str, fn) -> None:
         RESULTS.append((test_id, True, f"{label}{' : ' + detail if detail else ''}"))
     except AssertionError as e:
         RESULTS.append((test_id, False, f"{label} : {e}"))
-    except Exception as e:  # réseau, JSON illisible
+    except Exception as e:  # network error, unreadable JSON
         RESULTS.append((test_id, False, f"{label} : {type(e).__name__}: {e}"))
 
 
@@ -46,13 +46,13 @@ def run(web: str, api: str) -> None:
         code, _, html = http(f"{web}/")
         assert code == 200, f"HTTP {code}"
         page = html.decode("utf-8", "replace")
-        assert "<div id=\"root\"" in page, "point de montage React absent"
+        assert "<div id=\"root\"" in page, "React mount point missing"
         scripts = re.findall(r'src="(/assets/[^"]+\.js)"', page)
-        assert scripts, "aucun bundle JS"
+        assert scripts, "no JS bundle"
         code, _, js = http(f"{web}{scripts[0]}")
-        assert code == 200 and len(js) > 10_000, "bundle JS illisible"
-        assert api.rstrip("/").encode() in js, f"le bundle n'appelle pas {api}"
-        return f"bundle {len(js) // 1024} Ko, API {api}"
+        assert code == 200 and len(js) > 10_000, "unreadable JS bundle"
+        assert api.rstrip("/").encode() in js, f"the bundle does not call {api}"
+        return f"bundle {len(js) // 1024} KB, API {api}"
 
     def health():
         code, _, b = http(f"{api}/api/health")
@@ -61,9 +61,9 @@ def run(web: str, api: str) -> None:
     def cors():
         code, h, _ = http(f"{api}/api/analyze", "OPTIONS", headers={"Origin": origin, "Access-Control-Request-Method": "POST"})
         allowed = {k.lower(): v for k, v in h.items()}.get("access-control-allow-origin")
-        assert allowed == origin, f"origine {origin} refusée ({allowed})"
-        _, h2, _ = http(f"{api}/api/modes", headers={"Origin": "https://inconnu.example"})
-        assert "access-control-allow-origin" not in {k.lower() for k in h2}, "origine inconnue acceptée"
+        assert allowed == origin, f"origin {origin} rejected ({allowed})"
+        _, h2, _ = http(f"{api}/api/modes", headers={"Origin": "https://unknown.example"})
+        assert "access-control-allow-origin" not in {k.lower() for k in h2}, "unknown origin accepted"
 
     analyses: dict[str, list[dict]] = {}
 
@@ -74,15 +74,15 @@ def run(web: str, api: str) -> None:
             sites = json.loads(b)["sites"]
             assert len(sites) >= 30, f"{len(sites)} sites"
             totals = [s["total"] for s in sites if not s.get("excluded")]
-            assert totals == sorted(totals, reverse=True), "classement non trié"
-            assert all(0 <= t <= 100 for t in totals), "score hors de 0-100"
+            assert totals == sorted(totals, reverse=True), "ranking not sorted"
+            assert all(0 <= t <= 100 for t in totals), "score outside 0-100"
             excluded = [s for s in sites if s.get("excluded")]
-            assert sites[-len(excluded):] == excluded if excluded else True, "sites écartés pas en dernier"
+            assert sites[-len(excluded):] == excluded if excluded else True, "excluded sites are not last"
             amazon = next(s for s in sites if s["role"] == "negative")
-            assert amazon.get("excluded") == "vegetation", "témoin négatif non écarté"
+            assert amazon.get("excluded") == "vegetation", "negative control not excluded"
             missing = sum(c["verdict"] == "missing" for s in sites for c in s["criteria"])
             analyses[m] = sites
-            return f"{len(sites)} sites, 1er {sites[0]['id']} ({sites[0]['total']}), {missing} critères sans valeur"
+            return f"{len(sites)} sites, first {sites[0]['id']} ({sites[0]['total']}), {missing} criteria without a value"
         return fn
 
     def custom():
@@ -90,18 +90,18 @@ def run(web: str, api: str) -> None:
         code, _, b = http(f"{api}/api/analyze", "POST", {"criteria": crit, "bareSoilOnly": False})
         assert code == 200, f"HTTP {code}"
         sites = json.loads(b)["sites"]
-        assert not any(s.get("excluded") for s in sites), "filtre sol nu actif alors qu'il est désactivé"
+        assert not any(s.get("excluded") for s in sites), "bare-soil filter active although it is disabled"
         assert all(len(s["criteria"]) == 2 for s in sites)
-        return f"1er {sites[0]['id']} ({sites[0]['total']})"
+        return f"first {sites[0]['id']} ({sites[0]['total']})"
 
     def custom_invalid():
-        for body, why in [({"criteria": []}, "liste vide"),
-                          ({"criteria": [{"param": "gravite", "max": 1, "tolerance": 1, "weight": 1}]}, "paramètre inconnu"),
-                          ({"mode": "mars"}, "mode inconnu"),
-                          (b"{pas du json", "JSON illisible")]:
+        for body, why in [({"criteria": []}, "empty list"),
+                          ({"criteria": [{"param": "gravity", "max": 1, "tolerance": 1, "weight": 1}]}, "unknown parameter"),
+                          ({"mode": "mars"}, "unknown mode"),
+                          (b"{not json", "unreadable JSON")]:
             code, _, b = http(f"{api}/api/analyze", "POST", body)
             assert code == 400, f"{why} : HTTP {code}"
-            assert "error" in json.loads(b), f"{why} : pas de message d'erreur"
+            assert "error" in json.loads(b), f"{why} : no error message"
 
     def detail():
         code, _, b = http(f"{api}/api/sites/haughton?mode=robotics")
@@ -110,18 +110,18 @@ def run(web: str, api: str) -> None:
         for key in ("values", "valueSources", "moon", "criteria", "sources"):
             assert key in d, f"champ {key} absent"
         known = [k for k, v in d["values"].items() if isinstance(v, (int, float))]
-        assert set(known) <= set(d["valueSources"]), "valeur sans source"
-        assert "fixtures" not in d["valueSources"].values(), "données d'exemple servies en mode réel"
-        assert "slope_mean" in d["moon"] and "source" in d["moon"]["slope_mean"], "référence lunaire absente"
+        assert set(known) <= set(d["valueSources"]), "value without a source"
+        assert "fixtures" not in d["valueSources"].values(), "sample data served in real mode"
+        assert "slope_mean" in d["moon"] and "source" in d["moon"]["slope_mean"], "lunar reference missing"
         code, _, _ = http(f"{api}/api/sites/inconnu")
         assert code == 404, f"site inconnu : HTTP {code}"
-        return f"{len(known)} valeurs sourcées, {len(d['moon'])} références lunaires"
+        return f"{len(known)} sourced values, {len(d['moon'])} lunar references"
 
     def sources():
         code, _, b = http(f"{api}/api/sources")
         assert code == 200
         s = json.loads(b)["sources"]
-        assert all(x["name"] and x["url"].startswith("https://") and x["terms"] for x in s), "source incomplète"
+        assert all(x["name"] and x["url"].startswith("https://") and x["terms"] for x in s), "incomplete source"
         return ", ".join(x["id"] for x in s)
 
     def moon_reference():
@@ -129,8 +129,8 @@ def run(web: str, api: str) -> None:
         assert code == 200
         ref = json.loads(b)
         limits = {x["id"] for x in ref.get("earth_limits", [])}
-        assert {"gravity", "vacuum", "radiation"} <= limits, f"limites absentes : {limits}"
-        assert all("source" in p for p in ref["params"].values()), "paramètre lunaire sans source"
+        assert {"gravity", "vacuum", "radiation"} <= limits, f"limits missing: {limits}"
+        assert all("source" in p for p in ref["params"].values()), "lunar parameter without a source"
 
     def docs():
         code, _, b = http(f"{api}/api/docs/")
@@ -140,7 +140,7 @@ def run(web: str, api: str) -> None:
         code, _, b = http(f"{web}/sites/manifest.json")
         assert code == 200, f"manifest HTTP {code}"
         m = json.loads(b)
-        assert len(m["sites"]) >= 30 and len(m["slope_band_deg"]) == 2, "manifest incomplet"
+        assert len(m["sites"]) >= 30 and len(m["slope_band_deg"]) == 2, "incomplete manifest"
         sid = next(iter(m["sites"]))
         for path in (f"/sites/{sid}/earth-relief.jpg", f"/sites/{sid}/moon-relief.jpg", f"/sites/{sid}/moon-match.png",
                      "/img/hero.jpg", "/img/robotics.jpg", "/img/calibration.jpg", "/img/colony.jpg", "/img/custom.jpg"):
@@ -148,22 +148,22 @@ def run(web: str, api: str) -> None:
             kind = {k.lower(): v for k, v in h.items()}.get("content-type", "")
             assert code == 200 and kind.startswith("image/") and len(body) > 5000, f"{path} : HTTP {code} {kind}"
         twins = [v["twin"] for v in m["sites"].values()]
-        assert all(t["lat"] <= -85 for t in twins), "jumeau lunaire hors du pôle Sud"
-        return f"{len(m['sites'])} sites illustrés, {sum(1 for v in m['sites'].values() if v.get('photo'))} vues satellite"
+        assert all(t["lat"] <= -85 for t in twins), "lunar twin outside the south pole"
+        return f"{len(m['sites'])} illustrated sites, {sum(1 for v in m['sites'].values() if v.get('photo'))} satellite views"
 
-    check("TF-01", "Le front se charge et vise la bonne API", front_loads)
-    check("TF-02", "Sonde de santé de l'API", health)
-    check("TF-03", "CORS : origine du front acceptée, origine inconnue refusée", cors)
-    check("TF-04", "Mode 1, validation robotique", mode("robotics"))
-    check("TF-05", "Mode 2, calibration d'instruments", mode("calibration"))
-    check("TF-06", "Mode 3, colonie autosuffisante", mode("colony"))
-    check("TF-07", "Mode 4, critères libres, filtre sol nu désactivé", custom)
-    check("TF-08", "Requêtes invalides refusées avec un message (400)", custom_invalid)
-    check("TF-09", "Fiche site : valeurs, source de chaque valeur, référence lunaire ; 404 site inconnu", detail)
-    check("TF-10", "Catalogue des sources complet", sources)
-    check("TF-11", "Profil lunaire sourcé et limites de la Terre", moon_reference)
-    check("TF-12", "Documentation de l'API", docs)
-    check("TF-13", "Images réelles : photos NASA, vues des sites, jumeaux lunaires", visuals)
+    check("TF-01", "Front end loads and targets the right API", front_loads)
+    check("TF-02", "API health probe", health)
+    check("TF-03", "CORS: front-end origin accepted, unknown origin rejected", cors)
+    check("TF-04", "Mode 1, robotics validation", mode("robotics"))
+    check("TF-05", "Mode 2, instrument calibration", mode("calibration"))
+    check("TF-06", "Mode 3, self-sufficient colony", mode("colony"))
+    check("TF-07", "Mode 4, free criteria, bare-soil filter off", custom)
+    check("TF-08", "Invalid requests rejected with a message (400)", custom_invalid)
+    check("TF-09", "Site card: values, source of each value, lunar reference; 404 unknown site", detail)
+    check("TF-10", "Complete source catalog", sources)
+    check("TF-11", "Sourced lunar profile and Earth limits", moon_reference)
+    check("TF-12", "API documentation", docs)
+    check("TF-13", "Real images: NASA photos, site views, lunar twins", visuals)
 
 
 def main(argv=None) -> int:
@@ -173,9 +173,9 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     run(args.web.rstrip("/"), args.api.rstrip("/"))
     for test_id, ok, text in RESULTS:
-        print(f"{'OK  ' if ok else 'ÉCHEC'} {test_id}  {text}")
+        print(f"{'OK  ' if ok else 'FAIL '} {test_id}  {text}")
     failed = [r for r in RESULTS if not r[1]]
-    print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} tests passés")
+    print(f"\n{len(RESULTS) - len(failed)}/{len(RESULTS)} tests passed")
     return 1 if failed else 0
 
 
