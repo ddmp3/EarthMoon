@@ -22,9 +22,9 @@ Une application web **déployée sur Azure** où l'on choisit un des 4 modes et 
 | Quand | Étape | Livrable |
 |---|---|---|
 | Sam 15 h – 16 h | **Lancement** : lecture du README et de `docs/scenarios.md`, attribution des tâches | Tout le monde sait quoi faire |
-| Sam 16 h – 17 h 30 | **Contrats** : OpenAPI (Jesus + François-Xavier), maquettes (Yann), squelettes de code | Contrat et maquettes figés |
+| Sam 16 h – 17 h 30 | **Contrats** : OpenAPI (Jesus + François), maquettes (Yann), squelettes de code | Contrat et maquettes figés |
 | Sam 17 h 30 – 20 h | **Bloc 1** : adaptateurs de sources, moteur de score, écrans | Briques testées séparément |
-| Sam 20 h – 21 h | **Intégration v0** : premier déploiement Azure, front branché sur l'API | URL publique qui répond |
+| **Sam 20 h au plus tard** | **Intégration complète** (plus tôt si toutes les sources sont prêtes) : David relit et fusionne les PR, branche la route `/api/analyze`, puis premier déploiement Azure. Pas de déploiement partiel avant. | URL publique qui répond |
 | Sam 21 h – minuit | **Bloc 2** : 4 modes complets, fiches de site, candidats | MVP fonctionnel |
 | Dim 9 h – 12 h | **Bloc 3** : tests fonctionnels, validation des scores, corrections | MVP stable |
 | **Dim 12 h** | **Gel du code** (seulement des correctifs bloquants après) | Version de démo |
@@ -34,7 +34,7 @@ Points d'équipe de 10 minutes : sam 20 h, sam minuit, dim 9 h, dim 12 h.
 
 ## Règles de travail
 
-- Une branche par tâche, une pull request vers `main`. **François-Xavier relit chaque PR** avant fusion ; David fusionne.
+- Une branche par tâche, une pull request vers `main`. **David relit et fusionne les PR** (revue de code avant chaque fusion).
 - Aucun secret dans le repo (voir [architecture.md](architecture.md#sécurité-revue-xavier)).
 - Bloqué plus de 30 minutes : on le dit dans le canal d'équipe.
 - Chacun peut s'appuyer sur Claude : donnez-lui le lien du repo et le fichier de doc lié à votre tâche, demandez du concret (code, tableau, texte), puis vérifiez le résultat.
@@ -44,48 +44,68 @@ Points d'équipe de 10 minutes : sam 20 h, sam minuit, dim 9 h, dim 12 h.
 
 | Qui attend | Tâche | Attend | Prévu | Pour avancer sans attendre |
 |---|---|---|---|---|
-| David | Site en ligne (v0) | Jesus : squelette API ; François-Xavier : squelette web | sam 17 h 30 | Appliquer Terraform tout de suite (image de démonstration déjà prévue), pousser les vraies images après fusion |
+| David | Site en ligne (v0) | Jesus : squelette API ; François : squelette web | sam 17 h 30 | Appliquer Terraform tout de suite (image de démonstration déjà prévue), pousser les vraies images après fusion |
 | David | Profil lunaire | Ouassim : specs rovers lunaires | sam 18 h 30 | Partir des intervalles de `docs/scenarios.md` |
 | David | `/api/analyze` branché | Jesus : connecteurs POWER, USGS, DEM, MODIS | sam 20 h – 22 h | Connecteur factice qui lit les fixtures, remplacé source par source |
-| David | Version de démo | François-Xavier : fiche site | dim minuit | Redéployer ce qui est fusionné à chaque jalon |
+| David | Version de démo | François : fiche site | dim minuit | Redéployer ce qui est fusionné à chaque jalon |
 | Jesus | Routes `/parameters`, `/modes`, `/sites` | Ouassim : `data/candidates.json` | sam 21 h | Servir les 3 sites des fixtures |
 | Jesus | Explication par Claude (bonus) | David : `/api/analyze` | sam 23 h 30 | Préparer l'appel avec un site des fixtures |
-| François-Xavier | Écran d'accueil | Yann : maquettes, textes d'aide | sam 17 h 30 / 20 h | Écran simple d'après `docs/scenarios.md`, textes provisoires dans un fichier séparé |
-| François-Xavier | Carte, fiche site | David : `/api/analyze` | sam 23 h 30 | Lire les fixtures (même format que la réponse de l'API) |
-| François-Xavier | Formulaire mode 4 | Yann : textes d'aide | sam 20 h | Paramètres tirés de `docs/scenarios.md`, textes branchés plus tard |
+| François | Écran d'accueil | Yann : maquettes, textes d'aide | sam 17 h 30 / 20 h | Écran simple d'après `docs/scenarios.md`, textes provisoires dans un fichier séparé |
+| François | Carte, fiche site | David : `/api/analyze` | sam 23 h 30 | Lire les fixtures (même format que la réponse de l'API) |
+| François | Formulaire mode 4 | Yann : textes d'aide | sam 20 h | Paramètres tirés de `docs/scenarios.md`, textes branchés plus tard |
 | Ouassim | Vérification des classements | David : version déployée | dim 12 h | API en local depuis `main` dès que `/api/analyze` est fusionné |
 | Yann | Tests de la v0 | David : site en ligne | sam 20 h | Tester les écrans en local avec les fixtures |
 | Yann | Feu vert du gel | David : version de démo | dim 12 h | Dérouler le plan de test sur la dernière version déployée |
 | Xavier | Contrôle du site en ligne | David : site en ligne | sam 20 h | Relire la config CORS et la limitation de débit dans le code |
-| Xavier | Script et vidéo de démo | François-Xavier : fiche site ; Ouassim : 3 sites | dim minuit / 11 h | Script sur les maquettes de Yann, vidéo en dernier |
+| Xavier | Script et vidéo de démo | François : fiche site ; Ouassim : 3 sites | dim minuit / 11 h | Script sur les maquettes de Yann, vidéo en dernier |
 
 La page de suivi montre en direct, pour chaque tâche, ce qu'elle attend (vert quand c'est livré) et ce qu'elle débloque.
+
+## État du dépôt (sam 14 nov, 16 h 30)
+
+Chaque tâche a son issue GitHub (#3 à #37, libellé = prénom). Ce qui existe déjà, à réutiliser plutôt qu'à refaire :
+
+| Branche | Auteur | Contenu | PR |
+|---|---|---|---|
+| `main` | David | Docs, contrats, fixtures, Terraform | — |
+| `david/moteur-score` | David | Moteur de score TS + service `analyze()` + profil lunaire (brouillon), 42 tests | #38, en revue |
+| `search-engine-geolocalization` | Jesus | `tools/precompute/` : pente, rugosité, altitude Copernicus DEM précalculées dans `data/candidates.json` (bloc `precomputed`) | à ouvrir |
+| `search-engine-scoring-v1` | Jesus | `tools/scoring/score_sites.py` : vérificateur Python du score. **Résultats identiques au moteur TS** sur les fixtures (3 modes) | à ouvrir |
+| `search_engine_geolocation_v_0` | Jesus | `tools/analog_backend/` : prototype Python de référence, hors application (`lro.py` utile pour le profil lunaire) | à ouvrir |
+| `Francois`, `francois-ui` | François | Aucun commit pour l'instant | — |
+
+Points à trancher à l'intégration :
+- **Sites exclus (NDVI)** : le moteur TS les garde en fin de liste avec `excluded: "vegetation"` (contrat, PR #38) ; le vérificateur Python les met dans une liste `excluded` séparée. Aligner le vérificateur sur le contrat.
+- **Copernicus DEM** : Jesus a choisi le précalcul hors ligne. Il faut un connecteur qui lit le bloc `precomputed` de `data/candidates.json` (quelques lignes, à brancher sur `analyze()`).
 
 ---
 
 ## David — chef de projet, infrastructure, moteur de score
 
-- [ ] Fusionner la PR de mise à jour du repo ; créer une issue GitHub par tâche ci-dessous.
-- [ ] Sam 20 h : `infra/terraform/deploy.sh` exécuté, URL de l'API et du front publiques.
-- [ ] Moteur de score dans `apps/api/src/scoring/` : fonction pure (critères + valeurs → scores), tests unitaires.
-- [ ] Route `POST /api/analyze` branchée sur le moteur et les adaptateurs de Jesus.
-- [ ] `data/reference/moon-south-pole.json` avec Ouassim.
-- [ ] Déploiements de l'intégration (sam 20 h, sam minuit, dim 12 h) et arbitrage des priorités.
+- [x] Contrats partagés (`docs/contrats.md`) et données d'exemple (`data/fixtures/site-values.json`), sur `main`.
+- [x] Créer une issue GitHub par tâche (#3 à #37).
+- [ ] Sam 20 h au plus tard : intégration complète, puis `infra/terraform/deploy.sh` exécuté, URL de l'API et du front publiques (#3).
+- [x] Moteur de score dans `apps/api/src/scoring/` : fonction pure (critères + valeurs → scores), modes 1 à 3, tests unitaires (PR #38, en revue). Vérification croisée avec le scorer Python de Jesus : résultats identiques.
+- [ ] Route `POST /api/analyze` branchée sur le moteur et les adaptateurs de Jesus. *Fait : service `analyze()` dans `apps/api/src/analyze/` (validation, fusion des connecteurs, tri) et connecteur factice sur les fixtures. Reste : la route Express, une fois le squelette de Jesus fusionné.*
+- [ ] `data/reference/moon-south-pole.json` avec Ouassim. *Fait : brouillon avec les valeurs sourcées (latitude, froid des zones d'ombre, absence d'atmosphère). Reste : pente, température de jour, séismes, ensoleillement (liste `todo` du fichier).*
+- [ ] Revue de code et fusion des PR (ce soir), déploiements de l'intégration (sam 20 h, sam minuit, dim 12 h) et arbitrage des priorités.
 
 ## Jesus — API et sources de données (dev + IA)
 
-- [ ] Squelette `apps/api` : Node + TypeScript + Express (ES modules), `/api/health`, Dockerfile (port 3001), Swagger UI.
-- [ ] `apps/api/openapi.yaml` avec François-Xavier, figé à sam 17 h 30 (routes : [architecture.md](architecture.md#api-contrat-openapi-à-écrire-en-premier)).
+- [ ] Squelette `apps/api` : Node + TypeScript + Express (ES modules), `/api/health`, Dockerfile (port 3001), Swagger UI. *`apps/api/package.json`, `tsconfig.json` et vitest existent déjà dans la branche `david/moteur-score` : partir de cette branche ou compléter ces fichiers plutôt que les recréer.*
+- [ ] `apps/api/openapi.yaml` avec François, figé à sam 17 h 30 (routes : [architecture.md](architecture.md#api-contrat-openapi-à-écrire-en-premier)).
 - [ ] Adaptateurs dans `apps/api/src/sources/` qui renvoient les paramètres du catalogue ([scenarios.md](scenarios.md)) :
   - [ ] NASA POWER (température, vent, humidité, précipitations, ensoleillement)
-  - [ ] Copernicus DEM en COG (`geotiff.js`) : pente moyenne et max, rugosité
+  - [ ] Copernicus DEM : pente moyenne et max, rugosité. *En cours : précalcul Python dans `tools/precompute/` (branche `search-engine-geolocalization`) ; reste le connecteur qui lit le bloc `precomputed`.*
   - [ ] Planetary Computer MODIS : LST jour/nuit et NDVI (jeton anonyme, nouvelle tentative sur 502)
   - [ ] USGS séismes, Smithsonian GVP (distance au volcan)
 - [ ] Cache mémoire, `express-rate-limit`, CORS limité au domaine du front.
-- [ ] Routes `/api/parameters`, `/api/modes`, `/api/sites/{id}`.
+- [ ] Routes `/api/parameters`, `/api/modes`, `/api/sites/{id}`. *Le catalogue (`PARAM_IDS`) et les modes (`MODES`) existent dans `apps/api/src/scoring/` : les réutiliser.*
+- [x] Vérificateur Python du score (`tools/scoring/`, branche `search-engine-scoring-v1`) : à aligner sur le format `excluded` du contrat, puis ouvrir la PR.
+- [ ] Ouvrir les PR des branches `search-engine-geolocalization`, `search-engine-scoring-v1` et `search_engine_geolocation_v_0` avant 20 h.
 - [ ] Bonus (dimanche seulement si le MVP est stable) : courte explication du site générée par Claude, avec la clé dans un secret de la Container App.
 
-## François-Xavier — front et revue de code
+## François — front
 
 - [ ] Squelette `apps/web` : React + TypeScript + Vite + Tailwind + Leaflet + zustand (comme meteormadness).
 - [ ] Contrat OpenAPI avec Jesus ; client API typé généré à partir du contrat.
@@ -93,7 +113,6 @@ La page de suivi montre en direct, pour chaque tâche, ce qu'elle attend (vert q
 - [ ] Carte Leaflet : sites colorés selon le score ; fond de carte terrestre, encart lunaire en Moon Trek WMTS (bonus).
 - [ ] Fiche site : score global, score par critère, « correspond / ne correspond pas », usage possible.
 - [ ] Formulaire du mode 4 : choix des paramètres, intervalles, poids.
-- [ ] **Revue de toutes les PR** : lisibilité, typage strict, gestion des erreurs, aucun secret.
 
 ## Ouassim — expertise métier (robotique, instruments) et données
 
@@ -106,7 +125,7 @@ La page de suivi montre en direct, pour chaque tâche, ce qu'elle attend (vert q
 
 ## Yann — expérience utilisateur et tests fonctionnels
 
-- [ ] Sam 17 h 30 : parcours utilisateur et maquettes (accueil, carte, fiche site, mode 4), remis à François-Xavier.
+- [ ] Sam 17 h 30 : parcours utilisateur et maquettes (accueil, carte, fiche site, mode 4), remis à François.
 - [ ] Libellés et textes d'aide de chaque paramètre et de chaque mode, compréhensibles par le grand public.
 - [ ] Critères d'acceptation par mode et plan de test dans `docs/tests-fonctionnels.md`.
 - [ ] Sam soir : tester la v0 déployée ; ouvrir une issue par anomalie.
@@ -131,3 +150,17 @@ La page de suivi montre en direct, pour chaque tâche, ce qu'elle attend (vert q
 | Les scores ne retrouvent pas les analogues connus | Ouassim et David ajustent les intervalles dim matin |
 | Retard sur le front | Le mode 4 passe en bonus ; les modes 1 à 3 d'abord |
 | Déploiement Azure bloqué | Démo en local avec `docker compose` |
+
+---
+
+## Après le MVP : expérience utilisateur différenciante
+
+Une fois le MVP livré, l'interface doit passer d'un affichage de scores à une **expérience visuelle et dynamique** : pas de site à tableaux de données. Détails et ordre de priorité : [ux.md](ux.md). Issues : libellé `apres-mvp`.
+
+1. **Re-classement en direct** dans le navigateur : le front importe le moteur de score (fonction pure) et recalcule à chaque mouvement de curseur.
+2. **Globe 3D** des sites candidats, animé au changement de mode.
+3. **Vue « jumeau lunaire »** : site terrestre et région lunaire côte à côte, écart visuel par paramètre.
+4. **Signature radar** de chaque site, superposée au profil lunaire.
+5. **Modes présentés comme des missions** (cartes illustrées).
+6. **Mode 4 en curseurs** reliés au globe.
+7. **Sites peu étudiés mis en avant** : badge « découverte » et fiche narrative.
