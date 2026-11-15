@@ -37,6 +37,7 @@ function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
     if (bad(min) || bad(max) || !Number.isFinite(tolerance) || !Number.isFinite(weight) || tolerance <= 0 || weight <= 0) {
       throw new Error(t.customErrors.number)
     }
+    if (min !== undefined && max !== undefined && min > max) throw new Error(t.customErrors.order)
     return { param: draft.param, ...(min !== undefined ? { min } : {}), ...(max !== undefined ? { max } : {}), tolerance, weight }
   })
 }
