@@ -20,7 +20,7 @@ export const SOURCES: DataSource[] = [
   {
     id: "coordinates",
     name: "Candidate site coordinates",
-    provider: "Cyber&Space Montréal (data/candidates.json)",
+    provider: "Cyber&Space 🛰️ Montréal (data/candidates.json)",
     url: "https://github.com/ddmp3/nasa-space-app-challenge-2026-cyber-space/blob/main/data/candidates.json",
     body: "earth",
     params: ["latitude_abs"],
