@@ -11,7 +11,7 @@
   --night: #0e1626; --panel: #142033; --panel-2: #1a2840; --card: #111b2c; --line: #24334c; --line-2: #2f4160;
   --ink: #eaf0f8; --muted: #9aa8bf; --dim: #66758e; --moon: #d7dbe4;
   --good: #4bd69a; --mid: #f2c25b; --bad: #ff6f6f;
-  --cand-a: #ff7a90; --cand-b: #6fe0b0; --cand-c: #8ab0ff;
+  --cand-a: #ff7a90; --cand-b: #6fe0b0; --cand-c: #8ab0ff; --new: #c39bff;
   --accent: #e6e9f0; --accent-ink: #0e1626;
   --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
   --void: var(--night);
@@ -106,12 +106,12 @@ body:not(.show-api) .api { display: none; }
 .gfail { position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 20px; color: var(--muted); font-size: 13px; }
 
 /* Mises en page par chapitre */
-.main[data-ch="4"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(220px, 34vh) minmax(0, 1fr); grid-template-areas: "scene" "recit"; }
-.main[data-ch="4"] .recit { border-right: 0; border-top: 1px solid var(--line); }
-.main[data-ch="6"] { grid-template-columns: minmax(0, 1fr) 360px; grid-template-areas: "recit scene"; }
-.main[data-ch="6"] .recit { border-right: 0; border-left: 0; }
-.main[data-ch="6"] .scene { border-left: 1px solid var(--line); }
-.main[data-ch="4"] .recit-body, .main[data-ch="6"] .recit-body { padding: 24px max(24px, calc((100% - 1180px) / 2)); }
+.main[data-ch="3"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(220px, 34vh) minmax(0, 1fr); grid-template-areas: "scene" "recit"; }
+.main[data-ch="3"] .recit { border-right: 0; border-top: 1px solid var(--line); }
+.main[data-ch="4"] { grid-template-columns: minmax(0, 1fr) 360px; grid-template-areas: "recit scene"; }
+.main[data-ch="4"] .recit { border-right: 0; border-left: 0; }
+.main[data-ch="4"] .scene { border-left: 1px solid var(--line); }
+.main[data-ch="3"] .recit-body, .main[data-ch="4"] .recit-body { padding: 24px max(24px, calc((100% - 1180px) / 2)); }
 
 /* Éléments du récit */
 .chap-n { font-size: 13px; font-weight: 600; color: var(--accent); }
@@ -200,7 +200,7 @@ body:not(.show-api) .api { display: none; }
 .ccard-h b { display: block; font-size: 15.5px; }
 .ccard-h small { color: var(--muted); font-size: 12.5px; }
 .fams-g { display: grid; gap: 2px; }
-.fam-g { display: grid; grid-template-columns: 112px minmax(0, 1fr) 30px; gap: 8px; align-items: center; padding: 5px 4px; margin: 0 -4px; border: 0; background: none; text-align: left; border-radius: 4px; font-size: 13px; }
+.fam-g { display: grid; grid-template-columns: minmax(0, 1fr) auto 30px; gap: 8px; align-items: center; padding: 5px 4px; margin: 0 -4px; border: 0; background: none; text-align: left; border-radius: 4px; font-size: 13px; }
 .fam-g:hover { background: var(--panel); }
 .fam-g .gb { height: 7px; border-radius: 4px; background: var(--line); overflow: hidden; }
 .fam-g .gb i { display: block; height: 100%; background: var(--accent); border-radius: 4px; transition: width .6s cubic-bezier(.2,.8,.2,1); }
@@ -260,7 +260,48 @@ body:not(.show-api) .api { display: none; }
 .never h3 { color: var(--bad); }
 .never p { font-size: 14px; color: var(--muted); }
 
-/* Fiche d'un site (chapitre 3) et aide */
+
+/* Jauges ▰▱, sites peu étudiés, visuels, fiche de synthèse */
+.gg { font-size: 15px; letter-spacing: 1px; color: var(--accent); white-space: nowrap; line-height: 1; }
+.gg .ge { color: var(--line-2); }
+.new-b { display: inline-flex; align-items: center; gap: 3px; font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--new); color: #1a1030; white-space: nowrap; vertical-align: 1px; }
+.glabel.top { font-weight: 800; color: var(--night); border: 0; padding: 2px 8px; }
+.glabel.cand-A { background: var(--cand-a); } .glabel.cand-B { background: var(--cand-b); } .glabel.cand-C { background: var(--cand-c); }
+.glabel.nw { border-color: var(--new); color: var(--new); }
+.phs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.ph { position: relative; margin: 0; border-radius: 6px; overflow: hidden; background: var(--card); border: 1px solid var(--line); aspect-ratio: 4 / 3; }
+.ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ph figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 6px 8px; font-size: 12px; font-weight: 600; background: linear-gradient(transparent, rgba(8,12,20,.9)); display: grid; }
+.ph figcaption small { font-weight: 400; color: var(--muted); font-size: 11px; }
+.ph-na { display: none; position: absolute; inset: 0; place-items: center; color: var(--dim); font-size: 12.5px; }
+.ph.na img { display: none; } .ph.na .ph-na { display: grid; }
+.row { cursor: pointer; }
+.row.is-top { box-shadow: inset 3px 0 0 var(--cc); background: color-mix(in srgb, var(--cc) 6%, transparent); }
+.lt-s { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--cc); color: var(--night); font-weight: 800; font-size: 12px; }
+.row-end { display: flex; align-items: center; gap: 6px; }
+.eye { width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--line-2); border-radius: 6px; background: transparent; color: var(--muted); }
+.eye:hover { color: var(--accent); border-color: var(--accent); }
+.eye svg { width: 17px; height: 17px; }
+.evals { display: grid; gap: 4px; }
+.ev { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 8px; align-items: baseline; padding: 5px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.ev .tag { color: var(--accent); }
+.crit-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.seg { display: flex; gap: 2px; padding: 2px; border: 1px solid var(--line-2); border-radius: 999px; }
+.seg button { padding: 4px 12px; border: 0; border-radius: 999px; background: none; font-size: 12.5px; color: var(--muted); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+.sy-fam { display: grid; gap: 2px; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.sy-fh { display: grid; grid-template-columns: minmax(0, 1fr) auto 30px; gap: 8px; align-items: center; }
+.sy-fh .gv { text-align: right; font-weight: 700; font-size: 12.5px; }
+.sy-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto auto; gap: 10px; align-items: center; font-size: 12.5px; color: var(--muted); padding: 2px 0 2px 10px; }
+.sy-row .v { color: var(--ink); font-weight: 600; } .sy-row .lv { color: var(--moon); }
+.sy-row .gg { font-size: 12px; }
+.radar { width: 100%; height: auto; overflow: visible; }
+.pc { display: grid; gap: 10px; }
+.pc ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 2px; font-size: 13px; color: var(--muted); }
+.pc ul b { color: var(--ink); font-weight: 600; }
+.pc-h { font-size: 13px; } .pc-h.good { color: var(--good); } .pc-h.bad { color: var(--bad); }
+
+/* Fiche d'un site et aide */
 .sheet, .drawer { position: absolute; z-index: 40; top: var(--bar-h); right: 0; bottom: 0; width: min(440px, 100%); background: var(--panel); border-left: 1px solid var(--line-2); overflow-y: auto; box-shadow: -20px 0 50px rgba(0,0,0,.45); animation: slideIn .3s cubic-bezier(.2,.8,.2,1) both; }
 @keyframes slideIn { from { transform: translateX(24px); opacity: 0; } to { transform: none; opacity: 1; } }
 .sheet-in { padding: 20px; display: grid; gap: 18px; }
@@ -366,13 +407,13 @@ body:not(.show-api) .api { display: none; }
   .steps button { padding: 6px; }
   .steps li + li button::before { width: 6px; }
   .toggle { display: none; }
-  .main, .main[data-ch="4"], .main[data-ch="6"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: 300px minmax(0, 1fr); grid-template-areas: "scene" "recit"; }
+  .main, .main[data-ch="3"], .main[data-ch="4"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: 300px minmax(0, 1fr); grid-template-areas: "scene" "recit"; }
   .recit { border-right: 0; border-top: 1px solid var(--line); }
-  .main[data-ch="6"] .scene { border-left: 0; }
+  .main[data-ch="4"] .scene { border-left: 0; }
   .recit-body { padding: 18px 16px; }
   .recit-nav { padding: 10px 16px; }
   .recit-nav .hint { display: none; }
-  .main[data-ch="4"] .recit-body, .main[data-ch="6"] .recit-body { padding: 18px 16px; }
+  .main[data-ch="3"] .recit-body, .main[data-ch="4"] .recit-body { padding: 18px 16px; }
   .globes[data-mode="split"], .globes[data-mode="stack"] { grid-template-columns: 1fr 1fr; grid-template-rows: 1fr; }
   .caption { display: none; }
   .cmp { grid-template-columns: minmax(0, 1fr); }
@@ -435,14 +476,12 @@ body:not(.show-api) .api { display: none; }
   <div class="help-in">
     <div class="sheet-top"><h2>Aide</h2><button class="close" type="button" id="help-close" aria-label="Fermer l'aide">Fermer</button></div>
     <section>
-      <h3>La recherche en 6 chapitres</h3>
+      <h3>La recherche en 4 chapitres</h3>
       <ol>
-        <li><b>Mission</b> : le site lunaire visé et ce que vous voulez tester.</li>
-        <li><b>Le site lunaire</b> : ce qui le caractérise, donc ce qu'il faut retrouver sur Terre.</li>
-        <li><b>Candidats</b> : les sites terrestres classés selon leur note.</li>
-        <li><b>Comparer</b> : les 3 meilleurs face à la Lune, famille par famille.</li>
-        <li><b>Choisir</b> : le site retenu, ses forces et ce qu'il faudra compenser.</li>
-        <li><b>Dossier</b> : caractéristiques, analogies et différences, portée des tests.</li>
+        <li><b>Mission</b> : le site lunaire visé (sa fiche s'ouvre d'un clic), ce que vous voulez tester, et les critères d'évaluation.</li>
+        <li><b>Candidats</b> : les sites terrestres classés ; les 3 meilleurs (A, B, C) en couleur, ✦ pour un site peu étudié. Survolez un site pour sa fiche de synthèse.</li>
+        <li><b>Comparer</b> : les 3 meilleurs face à la Lune, leurs forces et ce qu'il faudra compenser ; retenez-en un.</li>
+        <li><b>Synthèse</b> : portée des tests, analogies et différences, caractéristiques du site retenu.</li>
       </ol>
       <p>Vous pouvez revenir à tout moment à un chapitre déjà vu : la suite se recalcule.</p>
     </section>
@@ -800,7 +839,7 @@ class Globe {
       const hit = new THREE.Mesh(new THREE.SphereGeometry((d.size || .018) * 2.6, 8, 6), new THREE.MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }));
       mesh.position.copy(pos); hit.position.copy(pos); hit.userData.id = d.id; this.mg.add(mesh, hit);
       this.markers.set(d.id, { mesh, hit, d, base: 1 });
-      if (this.opt.labels) { const l = document.createElement("button"); l.type = "button"; l.className = "glabel"; l.textContent = d.label; l.onclick = () => this.opt.onPick?.(d.id); this.lblBox.appendChild(l); this.labels.set(d.id, l); }
+      if (this.opt.labels && d.label) { const l = document.createElement("button"); l.type = "button"; l.className = "glabel" + (d.cls ? " " + d.cls : ""); l.dataset.id = d.id; l.textContent = d.label; l.onclick = () => this.opt.onPick?.(d.id); this.lblBox.appendChild(l); this.labels.set(d.id, l); }
     });
     this.select(this.sel);
   }
@@ -828,7 +867,7 @@ class Globe {
       // Étiquettes : masquées derrière le globe ou si elles chevauchent une autre (le site choisi passe en premier).
       const camPos = this.camera.position, v = new THREE.Vector3(), placed = [];
       [...this.markers.keys()].sort((a, b) => (b === this.sel) - (a === this.sel)).forEach(id => {
-        const m = this.markers.get(id), l = this.labels.get(id); m.mesh.getWorldPosition(v);
+        const m = this.markers.get(id), l = this.labels.get(id); if (!l) return; m.mesh.getWorldPosition(v);
         const front = v.clone().sub(camPos).dot(v) < -.25;
         v.project(this.camera);
         const x = (v.x + 1) / 2 * this.w, y = (1 - v.y) / 2 * this.h, wd = m.d.label.length * 6.6 + 16;
@@ -996,9 +1035,9 @@ $("#free-fams").addEventListener("input", e => {
 });
 
 // =====================================================================
-// Parcours en 6 chapitres
+// Parcours en 4 chapitres
 // =====================================================================
-const CHAPTERS = ["Mission", "Le site lunaire", "Candidats", "Comparer", "Choisir", "Dossier"];
+const CHAPTERS = ["Mission", "Candidats", "Comparer", "Synthèse"];
 const THEME = {
   1: { accent: "#e8a33d", motif: "contours", icon: '<path d="M3 18l5-8 4 5 3-4 6 7z"/><circle cx="17" cy="6" r="2"/>' },
   2: { accent: "#36d7e8", motif: "scope", icon: '<path d="M2 12h3l2-5 3 10 3-8 2 3h7"/>' },
@@ -1014,25 +1053,27 @@ const FAM_FIX = { "Relief": "sur un banc d'essai ou un second site", "Températu
 const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 const pct = s => Math.round(s * 100);
 const fmtLat = v => `${fmt(Math.abs(v))}° ${v >= 0 ? "N" : "S"}`, fmtLon = v => `${fmt(Math.abs(v))}° ${v >= 0 ? "E" : "O"}`;
+const gauge = s => { const k = Math.round(s * 5); return `<span class="gg" role="img" aria-label="${pct(s)} sur 100">${"▰".repeat(k)}<span class="ge">${"▱".repeat(5 - k)}</span></span>`; };
+const newBadge = s => s.kind === "nouveau" ? `<span class="new-b" title="Site prometteur absent des analogues déjà connus">✦ Peu étudié</span>` : "";
+state.synView = "gauges";
+
+// ---------- Visuels (tuiles d'imagerie ; « non disponible » si le chargement échoue ou est bloqué) ----------
+function moonTile(lat, lon, z = 5) { const cols = 2 ** (z + 1), rows = 2 ** z, x = Math.min(cols - 1, Math.floor((lon + 180) / 360 * cols)), y = Math.min(rows - 1, Math.floor((90 - lat) / 180 * rows)); return `https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm/${z}/${y}/${x}.jpg`; }
+function earthTile(lat, lon, z = 10) { const n = 2 ** z, la = Math.max(-85, Math.min(85, lat)) * DEG, x = Math.floor((lon + 180) / 360 * n), y = Math.floor((1 - Math.log(Math.tan(la) + 1 / Math.cos(la)) / Math.PI) / 2 * n); return `https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`; }
+const photo = (src, alt, caption) => `<figure class="ph"><img src="${src}" alt="${esc(alt)}" loading="lazy" onerror="this.parentNode.classList.add('na')"><span class="ph-na">Visuel non disponible</span><figcaption>${caption}</figcaption></figure>`;
+const photos = (site, m) => `<div class="phs">${m ? photo(moonTile(m.lat, m.lon), "Vue orbitale de " + m.name, `Lune : ${esc(m.name)} <small>LRO WAC, NASA Moon Trek</small>`) : ""}${site ? photo(earthTile(site.lat, site.lon), "Vue satellite de " + site.name, `Terre : ${esc(site.name)} <small>imagerie Esri World Imagery</small>`) : ""}</div>`;
 
 // ---------- Calculs ----------
-function results() {
-  if (state.demo === "empty") return [];
-  return analyze(currentCriteria(), state.scen === 4 ? state.ndvi : true);
-}
+function results() { if (state.demo === "empty") return []; return analyze(currentCriteria(), state.scen === 4 ? state.ndvi : true); }
 function trioOf(res) {
   const ok = res.filter(r => !r.excluded);
   const manual = state.manual.map(id => ok.find(r => r.site.id === id)).filter(Boolean);
   state.manual = manual.map(r => r.site.id);
-  const rest = ok.filter(r => !state.manual.includes(r.site.id));
-  return [...manual, ...rest].slice(0, 3).sort((a, b) => b.score - a.score);
+  return [...manual, ...ok.filter(r => !state.manual.includes(r.site.id))].slice(0, 3).sort((a, b) => b.score - a.score);
 }
 function famScores(r) {
-  return FAMILIES.map(f => {
-    const rows = r.rows.filter(x => P[x.p].fam === f); if (!rows.length) return null;
-    const W = rows.reduce((a, x) => a + x.w, 0);
-    return { fam: f, s: rows.reduce((a, x) => a + x.w * x.s, 0) / W, rows };
-  }).filter(Boolean);
+  return FAMILIES.map(f => { const rows = r.rows.filter(x => P[x.p].fam === f); if (!rows.length) return null;
+    const W = rows.reduce((a, x) => a + x.w, 0); return { fam: f, s: rows.reduce((a, x) => a + x.w * x.s, 0) / W, rows }; }).filter(Boolean);
 }
 function verdict(r) {
   const fs = famScores(r); if (!fs.length) return "";
@@ -1044,43 +1085,27 @@ function verdict(r) {
 function levelFor(row, m) {
   let lv = row.s >= .7 ? 2 : row.s >= .4 ? 1 : 0;
   const mv = moonVal(row.p, m); let far = false;
-  if (mv != null) {
-    const p = P[row.p], outScale = mv < p.lo || mv > p.hi;
-    const gap = outScale ? 1 : Math.abs(toS(p, row.v) - toS(p, mv)) / 1000;
-    if (lv === 2 && gap > .35) { lv = 1; far = true; }
-  }
+  if (mv != null) { const p = P[row.p], outScale = mv < p.lo || mv > p.hi, gap = outScale ? 1 : Math.abs(toS(p, row.v) - toS(p, mv)) / 1000; if (lv === 2 && gap > .35) { lv = 1; far = true; } }
   return { lv, mv, far };
 }
 console.assert(levelFor({ p: "lst_night", v: -30, s: 1 }, { tday: 0, tnight: -190 }).lv === 1, "option A : bonne note mais loin de la Lune = partiel");
-const detailTxt = (row, mv) => mv != null
-  ? `${P[row.p].label} : ${fmt(row.v)}${unitOf(row.p)} ici contre ${fmt(mv)}${unitOf(row.p)} sur la Lune`
-  : `${P[row.p].label} : ${fmt(row.v)}${unitOf(row.p)} pour ${target(row)} souhaité`;
+const detailTxt = (row, mv) => mv != null ? `${P[row.p].label} : ${fmt(row.v)}${unitOf(row.p)} ici contre ${fmt(mv)}${unitOf(row.p)} sur la Lune` : `${P[row.p].label} : ${fmt(row.v)}${unitOf(row.p)} pour ${target(row)} souhaité`;
 
 // ---------- Thème selon le scénario ----------
 function motifUrl(kind, col) {
   let svg = "", size = "520px";
-  const c = encodeURIComponent(col);
   if (kind === "contours") {
     const r = rng(11); let paths = "";
-    [[150, 170], [430, 380], [520, 90]].forEach(([cx, cy]) => {
-      const s1 = r() * 6, s2 = r() * 6;
-      for (let k = 1; k <= 7; k++) {
-        const R = k * 22, pts = [];
-        for (let i = 0; i <= 64; i++) { const a = i / 64 * 6.283, rr = R * (1 + .1 * Math.sin(3 * a + s1) + .06 * Math.sin(5 * a + s2)); pts.push(`${(cx + Math.cos(a) * rr).toFixed(1)},${(cy + Math.sin(a) * rr).toFixed(1)}`); }
-        paths += `<polyline points='${pts.join(" ")}'/>`;
-      }
-    });
-    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='520'><g fill='none' stroke='${col}' stroke-opacity='.16' stroke-width='1'>${paths}</g></svg>`; size = "600px";
+    [[150, 170], [430, 380], [520, 90]].forEach(([cx, cy]) => { const s1 = r() * 6, s2 = r() * 6;
+      for (let k = 1; k <= 7; k++) { const R = k * 22, pts = []; for (let i = 0; i <= 64; i++) { const a = i / 64 * 6.283, rr = R * (1 + .1 * Math.sin(3 * a + s1) + .06 * Math.sin(5 * a + s2)); pts.push(`${(cx + Math.cos(a) * rr).toFixed(1)},${(cy + Math.sin(a) * rr).toFixed(1)}`); } paths += `<polyline points='${pts.join(" ")}'/>`; } });
+    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='520'><g fill='none' stroke='${col}' stroke-opacity='.16'>${paths}</g></svg>`; size = "600px";
   } else if (kind === "scope") {
     let g = ""; for (let i = 0; i <= 240; i += 24) g += `<path d='M${i} 0V120M0 ${i / 2}H240'/>`;
     let w = "M0 60"; for (let x = 0; x <= 240; x += 4) w += ` L${x} ${(60 + 26 * Math.sin(x / 240 * 6.283 * 2)).toFixed(1)}`;
     svg = `<svg xmlns='http://www.w3.org/2000/svg' width='240' height='120'><g stroke='${col}' fill='none'><g stroke-opacity='.08'>${g}</g><path d='${w}' stroke-opacity='.22' stroke-width='1.4'/></g></svg>`; size = "240px 120px";
-  } else if (kind === "hex") {
-    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='97'><path d='M28 0 56 16v32L28 64 0 48V16zM28 64v33' fill='none' stroke='${col}' stroke-opacity='.14'/></svg>`; size = "56px 97px";
-  } else {
-    svg = `<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26'><circle cx='13' cy='13' r='1' fill='${col}' fill-opacity='.22'/></svg>`; size = "26px";
-  }
-  return `url("data:image/svg+xml,${encodeURIComponent(svg).replace(/%23/g, "%23")}") center / ${size}`;
+  } else if (kind === "hex") { svg = `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='97'><path d='M28 0 56 16v32L28 64 0 48V16zM28 64v33' fill='none' stroke='${col}' stroke-opacity='.14'/></svg>`; size = "56px 97px"; }
+  else { svg = `<svg xmlns='http://www.w3.org/2000/svg' width='26' height='26'><circle cx='13' cy='13' r='1' fill='${col}' fill-opacity='.22'/></svg>`; size = "26px"; }
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}") center / ${size}`;
 }
 function applyTheme() {
   const t = THEME[state.scen];
@@ -1090,93 +1115,96 @@ function applyTheme() {
 }
 
 // ---------- Globes ----------
-let earthG, moonG;
+let earthG, moonG, hoverT;
 const zoomTo = (g, off) => { if (!g || g.dead) return; g.zoomOff = off; g.dist = g.base + off; };
 function initGlobes() {
-  moonG = new Globe($(".gp-moon"), { texture: moonTexture, labels: true, ambient: .3, onPick: id => setRef(id) });
-  earthG = new Globe($(".gp-earth"), { texture: earthTexture, glow: THEME[state.scen].accent, onPick: id => onEarthPick(id), onHover: id => hlRow(id),
-    tip: id => { const r = lastRes.find(r => r.site.id === id); return r ? `${r.site.name} : ${r.excluded ? "exclu" : r.score + " sur 100"}` : ""; } });
+  moonG = new Globe($(".gp-moon"), { texture: moonTexture, labels: true, ambient: .3, onPick: id => setRef(id, true) });
+  earthG = new Globe($(".gp-earth"), { texture: earthTexture, labels: true, glow: THEME[state.scen].accent, onPick: id => onEarthPick(id), onHover: id => onEarthHover(id) });
+  $(".gp-earth").addEventListener("mouseover", e => { const l = e.target.closest(".glabel"); if (l) onEarthHover(l.dataset.id); });
 }
+function onEarthHover(id) { hlRow(id); clearTimeout(hoverT); if (id && state.ch === 2) hoverT = setTimeout(() => openSynth(id), 260); }
 function moonMarkers() { const acc = THEME[state.scen].accent; return MOON_SITES.map(m => ({ id: m.id, lat: m.lat, lon: m.lon, label: m.name, color: new THREE.Color(m.id === state.ref ? acc : MOON_HEX), size: m.id === state.ref ? .02 : .014 })); }
 let lastRes = [], lastTrio = [];
 function updateScene() {
-  const ch = state.ch, m = refSite(), g = $("#globes");
-  g.dataset.mode = { 1: "moon", 2: "moon", 3: "earth", 4: "split", 5: "earth", 6: "stack" }[ch];
+  const ch = state.ch, m = refSite();
+  $("#globes").dataset.mode = { 1: "moon", 2: "earth", 3: "split", 4: "stack" }[ch];
   $("#gp-moon-sub").textContent = m.name;
   if (!moonG || moonG.dead) return;
-  moonG.setMarkers(moonMarkers()); moonG.select(state.ref); moonG.focus(m.lat, m.lon);
-  zoomTo(moonG, ch === 2 ? -1.1 : 0);
-  const chosen = lastTrio.find(r => r.site.id === state.chosen);
-  let list = [];
-  if (ch <= 3) list = lastRes.filter(r => r.excluded || (r.score >= state.rmin && r.score <= state.rmax)).map(r => ({ id: r.site.id, lat: r.site.lat, lon: r.site.lon, dim: r.excluded, color: new THREE.Color(cssVar("--" + (r.excluded ? "dim" : tone(r.score)))), size: .019 }));
-  else list = lastTrio.map((r, i) => ({ id: r.site.id, lat: r.site.lat, lon: r.site.lon, color: new THREE.Color(CAND[i].hex), size: ch >= 5 && r.site.id !== state.chosen ? .016 : .024, dim: ch >= 5 && r.site.id !== state.chosen }));
-  earthG.setMarkers(list);
-  earthG.select(ch >= 5 ? state.chosen : null);
-  const focus = ch >= 5 && chosen ? chosen : lastTrio[0];
-  if (focus && ch >= 3) earthG.focus(focus.site.lat, focus.site.lon);
-  zoomTo(earthG, ch === 5 ? -1 : 0);
-  $("#gp-earth-sub").textContent = ch === 3 ? `${lastRes.filter(r => !r.excluded).length} sites candidats` : ch === 4 ? `${lastTrio.length} candidats comparés` : chosen ? chosen.site.name : "";
-  const cap = {
-    1: "Cliquez un site sur la Lune pour le choisir. Faites glisser pour tourner la Lune, molette pour zoomer.",
-    2: `${m.name} : ${MOON_KIND[m.kind].toLowerCase()}, ${m.region.toLowerCase()}.`,
-    3: "Chaque point est un site candidat ; sa couleur indique sa note. Cliquez-en un pour ouvrir sa fiche.",
-    4: "", 5: chosen ? `${chosen.site.name}, ${chosen.site.region}.` : "", 6: "",
-  }[ch];
-  $("#caption").textContent = cap; $("#caption").hidden = !cap;
+  moonG.setMarkers(moonMarkers()); moonG.select(state.ref); moonG.focus(m.lat, m.lon); zoomTo(moonG, 0);
+  const tIdx = id => lastTrio.findIndex(r => r.site.id === id), chosen = lastTrio.find(r => r.site.id === state.chosen);
+  let list;
+  if (ch <= 2) list = lastRes.filter(r => r.excluded || (r.score >= state.rmin && r.score <= state.rmax)).map(r => { const t = tIdx(r.site.id), nw = r.site.kind === "nouveau" ? "✦ " : "";
+    return { id: r.site.id, lat: r.site.lat, lon: r.site.lon, dim: r.excluded, size: t >= 0 ? .032 : .018,
+      color: new THREE.Color(t >= 0 ? CAND[t].hex : cssVar("--" + (r.excluded ? "dim" : tone(r.score)))),
+      label: r.excluded ? "" : t >= 0 ? `${nw}${CAND[t].l} · ${r.score}` : `${nw}${r.score}`, cls: t >= 0 ? "top cand-" + CAND[t].l : r.site.kind === "nouveau" ? "nw" : "" }; });
+  else list = lastTrio.map((r, i) => ({ id: r.site.id, lat: r.site.lat, lon: r.site.lon, color: new THREE.Color(CAND[i].hex), size: ch === 4 && r.site.id !== state.chosen ? .016 : .028, dim: ch === 4 && r.site.id !== state.chosen, label: ch === 4 && r.site.id !== state.chosen ? "" : `${CAND[i].l} · ${r.score}`, cls: "top cand-" + CAND[i].l }));
+  earthG.setMarkers(list); earthG.select(ch === 4 ? state.chosen : null);
+  const focus = ch === 4 && chosen ? chosen : lastTrio[0];
+  if (focus && ch >= 2) earthG.focus(focus.site.lat, focus.site.lon);
+  zoomTo(earthG, 0);
+  $("#gp-earth-sub").textContent = ch === 2 ? `${lastRes.filter(r => !r.excluded).length} sites candidats, les 3 meilleurs en couleur` : ch === 3 ? `${lastTrio.length} candidats comparés` : chosen ? chosen.site.name : "";
+  const capTxt = { 1: "Cliquez un site sur la Lune pour le choisir. Faites glisser pour tourner, molette pour zoomer.", 2: "Les 3 meilleurs sont en couleur (A, B, C) ; ✦ signale un site peu étudié. Survolez un site pour sa fiche de synthèse.", 3: "", 4: "" }[ch];
+  $("#caption").textContent = capTxt; $("#caption").hidden = !capTxt;
 }
 
 // ---------- Rendu général ----------
 function render() {
   lastRes = results(); lastTrio = trioOf(lastRes);
-  if (state.chosen && !lastTrio.some(r => r.site.id === state.chosen)) { state.chosen = null; state.notice = "Le site retenu ne fait plus partie des candidats comparés : choisissez-en un autre."; }
+  if (state.chosen && !lastTrio.some(r => r.site.id === state.chosen)) { state.chosen = null; state.notice = "Le site retenu ne fait plus partie des candidats comparés : retenez-en un autre."; }
   [...state.overlay].forEach(id => { if (!lastTrio.some(r => r.site.id === id)) state.overlay.delete(id); });
-  if (state.ch >= 5 && !state.chosen) state.ch = 4;
-  const main = $("#main"); main.dataset.ch = state.ch;
+  if (state.ch >= 4 && !state.chosen) state.ch = 3;
+  if (state.ch >= 3 && !lastTrio.length) state.ch = 2;
+  $("#main").dataset.ch = state.ch;
   renderSteps();
-  $("#recit").innerHTML = [ch1, ch2, ch3, ch4, ch5, ch6][state.ch - 1]();
-  bindChapter();
-  renderNav();
-  updateScene();
+  $("#recit").innerHTML = [ch1, ch2, ch3, ch4][state.ch - 1]();
+  bindChapter(); renderNav(); updateScene();
 }
-function canReach(n) { if (n > state.reached) return false; if (n >= 5 && !state.chosen) return false; if (n >= 4 && !lastTrio.length) return false; return true; }
+function canReach(n) { if (n > state.reached) return false; if (n >= 4 && !state.chosen) return false; if (n >= 3 && !lastTrio.length) return false; return true; }
 function renderSteps() {
-  $("#steps").innerHTML = CHAPTERS.map((t, i) => { const n = i + 1;
-    return `<li><button type="button" data-go="${n}" ${n === state.ch ? 'aria-current="step"' : ""} class="${n < state.ch || (n <= state.reached && n !== state.ch && canReach(n)) ? "done" : ""}" ${canReach(n) || n === state.ch ? "" : "disabled"}><span class="n">${n}</span><span class="t">${t}</span></button></li>`; }).join("");
+  $("#steps").innerHTML = CHAPTERS.map((t, i) => { const n = i + 1, ok = canReach(n);
+    return `<li><button type="button" data-go="${n}" ${n === state.ch ? 'aria-current="step"' : ""} class="${n !== state.ch && ok ? "done" : ""}" ${ok || n === state.ch ? "" : "disabled"}><span class="n">${n}</span><span class="t">${t}</span></button></li>`; }).join("");
 }
 function renderNav() {
-  const ch = state.ch, m = refSite(), loading = isLoading();
-  const next = { 1: `Découvrir ${m.name}`, 2: "Voir les candidats", 3: `Comparer les ${lastTrio.length > 1 ? lastTrio.length + " meilleurs" : "candidats"}`, 4: state.chosen ? "Revoir le site retenu" : "Choisissez un candidat", 5: "Ouvrir le dossier de tests", 6: "" }[ch];
-  const nb = $("#next"); nb.textContent = next; nb.hidden = ch === 6;
-  nb.disabled = (ch === 3 && (!lastTrio.length || loading || state.demo === "error")) || (ch === 4 && !state.chosen);
+  const ch = state.ch, loading = isLoading();
+  const next = { 1: "Voir les candidats", 2: `Comparer les ${lastTrio.length > 1 ? lastTrio.length + " meilleurs" : "candidats"}` }[ch];
+  const nb = $("#next"); nb.hidden = !next; if (next) nb.textContent = next;
+  nb.disabled = ch === 2 && (!lastTrio.length || loading || state.demo === "error");
   $("#back").hidden = ch === 1;
-  $("#hint").textContent = { 1: "", 2: "", 3: lastTrio.length ? "" : "Aucun candidat à comparer", 4: state.chosen ? "" : "Choisissez un des candidats", 5: "", 6: "Dossier consultable à l'écran" }[ch];
+  $("#hint").textContent = { 1: "", 2: lastTrio.length ? "" : "Aucun candidat à comparer", 3: "Retenez un candidat pour obtenir la synthèse finale.", 4: "Synthèse consultable à l'écran" }[ch];
 }
 function go(n) {
   if (n !== state.ch && !canReach(n) && n !== state.ch + 1) return;
-  if (n === 3 && state.dirty) { state.loadingUntil = reduce ? 0 : Date.now() + 650; state.dirty = false; setTimeout(() => state.ch === 3 && render(), 700); }
-  if (n === 4 && !state.overlay.size && lastTrio[0]) state.overlay.add(lastTrio[0].site.id);
-  state.ch = n; state.reached = Math.max(state.reached, n); state.notice = state.notice && n <= 4 ? state.notice : "";
+  if (n === 2 && state.dirty) { state.loadingUntil = reduce ? 0 : Date.now() + 650; state.dirty = false; setTimeout(() => state.ch === 2 && render(), 700); }
+  if (n === 3 && !state.overlay.size && lastTrio[0]) state.overlay.add(lastTrio[0].site.id);
+  state.ch = n; state.reached = Math.max(state.reached, n); if (n < 3) state.notice = "";
   $("#sheet").hidden = true;
   render(); $("#recit").scrollTop = 0;
 }
 const isLoading = () => state.demo === "loading" || Date.now() < state.loadingUntil;
-function markDirty() { state.dirty = true; }
 
 // ---------- Chapitre 1 : Mission ----------
+function evalList() {
+  const crit = currentCriteria(), m = refSite();
+  if (!crit.length) return `<p class="muted">Aucun critère défini pour l'instant.</p>`;
+  const fams = FAMILIES.map(f => [f, crit.filter(c => P[c.p].fam === f)]).filter(([, l]) => l.length);
+  return `<div class="evals">${fams.map(([f, l]) => `<div class="ev-fam"><span class="need-fam">${f}</span>${l.map(c => `<div class="ev"><span>${esc(P[c.p].label)}</span><b>${target(c)}</b>${c.adapted ? `<span class="tag" title="Suit les caractéristiques de ${esc(m.name)}">adapté</span>` : ""}</div>`).join("")}</div>`).join("")}</div>`;
+}
 function ch1() {
-  const m = refSite();
-  return `<div class="block"><span class="chap-n">Chapitre 1 sur 6</span><h1>Où allez-vous sur la Lune, et que voulez-vous y préparer ?</h1>
+  const m = refSite(), s = SCEN.find(x => x.id === state.scen);
+  return `<div class="block"><span class="chap-n">Chapitre 1 sur 4</span><h1>Où allez-vous sur la Lune, et que voulez-vous y préparer ?</h1>
     <p class="lead">Choisissez le site lunaire visé, puis ce que vos tests doivent valider. Vous pourrez revenir changer ces choix à tout moment.</p></div>
   <div class="block"><h2>Le site lunaire</h2>
-    <div class="pick-cur hud"><div><b>${esc(m.name)}</b><span class="muted" style="font-size:13px">${esc(m.region)}, ${esc(MOON_KIND[m.kind].toLowerCase())}</span></div><span class="api">GET /api/reference/moon</span></div>
+    <div class="pick-cur hud"><div style="min-width:0"><b>${esc(m.name)}</b><span class="muted" style="font-size:13px">${esc(m.region)}, ${esc(MOON_KIND[m.kind].toLowerCase())}</span></div><button type="button" class="ghost-btn" id="moon-sheet">Fiche du site</button></div>
     <input type="search" class="search" id="msearch" placeholder="Chercher : Shackleton, Apollo, tube de lave…" aria-label="Chercher un site lunaire" autocomplete="off">
     <ul class="mlist" id="mlist" role="listbox" aria-label="Sites lunaires"></ul>
-    <p class="muted" style="font-size:13px">Vous pouvez aussi cliquer un site directement sur la Lune.</p></div>
+    <p class="muted" style="font-size:13px">Vous pouvez aussi cliquer un site directement sur la Lune. <span class="api">GET /api/reference/moon</span></p></div>
   <div class="block"><h2>Ce que vos tests doivent valider</h2>
-    <div class="scen-opts" role="radiogroup" aria-label="Scénario">${SCEN.map(s => `<button type="button" class="scen-opt" role="radio" data-scen="${s.id}" aria-checked="${s.id === state.scen}" style="--sc:${THEME[s.id].accent}">
-      <span class="sw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${THEME[s.id].icon}</svg></span>
-      <span><b>${esc(s.name)}</b><span>${esc(s.q)}</span>${s.id === 4 && state.custom ? `<span style="display:block;color:var(--sc);margin-top:4px">${state.custom.length} critère${state.custom.length > 1 ? "s" : ""} définis · modifier</span>` : ""}</span></button>`).join("")}</div>
-    <span class="api">GET /api/modes</span></div>`;
+    <div class="scen-opts" role="radiogroup" aria-label="Scénario">${SCEN.map(x => `<button type="button" class="scen-opt" role="radio" data-scen="${x.id}" aria-checked="${x.id === state.scen}" style="--sc:${THEME[x.id].accent}">
+      <span class="sw"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${THEME[x.id].icon}</svg></span>
+      <span><b>${esc(x.name)}</b><span>${esc(x.q)}</span>${x.id === 4 && state.custom ? `<span style="display:block;color:var(--sc);margin-top:4px">${state.custom.length} critère${state.custom.length > 1 ? "s" : ""} définis, cliquez pour modifier</span>` : ""}</span></button>`).join("")}</div>
+    <span class="api">GET /api/modes</span></div>
+  <div class="block hud" style="padding:14px 16px"><h2>La mission sera évaluée sur ces critères</h2>
+    <p class="muted" style="font-size:13px">Scénario « ${esc(s.name)} », comparé à ${esc(m.name)}.${state.scen === 2 ? " Vous pourrez filtrer par instrument à l'étape suivante." : ""}</p>${evalList()}</div>`;
 }
 function renderMoonList() {
   const q = ($("#msearch")?.value || "").trim().toLowerCase(), ul = $("#mlist"); if (!ul) return;
@@ -1186,53 +1214,48 @@ function renderMoonList() {
     `<li role="presentation"><button type="button" role="option" data-moon="${m.id}" aria-selected="${m.id === state.ref}"><span style="min-width:0"><span class="nm">${esc(m.name)}</span><span class="mt">${esc(MOON_KIND[m.kind])}${m.missions !== "—" ? ", " + esc(m.missions.split(" :")[0].split(" (")[0]) : ""}</span></span><span class="mt">${fmtLat(m.lat)}</span></button></li>`).join("")).join("")
     : `<li class="grp" role="presentation">Aucun site ne correspond à « ${esc(q)} ». Essayez un nom de mission ou de région.</li>`;
 }
-function setRef(id) {
-  if (state.ref === id) return;
-  state.ref = id; markDirty();
-  if (state.ch > 2) state.ch = 2;   // nouveau site : on reprend l'histoire à sa présentation
-  render();
+function setRef(id, openSheet) {
+  if (state.ref !== id) { state.ref = id; state.dirty = true; render(); }
+  if (openSheet) openMoonSheet();
+}
+function openMoonSheet() {
+  const m = refSite(), crit = currentCriteria(), sh = $("#sheet");
+  sh.innerHTML = `<div class="sheet-in">
+    <div class="sheet-top"><div style="display:grid;gap:4px;min-width:0"><span class="lbl">${esc(MOON_KIND[m.kind])}</span><h2>${esc(m.name)}</h2><span class="muted" style="font-size:13px">${esc(m.region)}, ${fmtLat(m.lat)} ${fmtLon(m.lon)}</span><span class="api">GET /api/reference/moon/${m.id}</span></div>
+      <button class="close" type="button" data-close aria-label="Fermer la fiche">Fermer</button></div>
+    ${photos(null, m)}
+    <p>${esc(m.why)}</p>
+    <div class="facts"><div><b>${m.slope}°</b><span>Pente moyenne</span></div><div><b>${m.rough} m</b><span>Relief accidenté</span></div><div><b>${m.illum} %</b><span>Temps éclairé</span></div>
+      <div><b>${m.tday > 0 ? "+" : ""}${m.tday} °C</b><span>Sol au soleil</span></div><div><b>${m.tnight} °C</b><span>Sol à l'ombre</span></div><div><b>${esc(m.ice)}</b><span>Glace d'eau</span></div></div>
+    <p class="muted" style="font-size:13.5px"><b style="color:var(--ink)">Missions :</b> ${esc(m.missions)}</p>
+    <div class="block"><h3>Ce qu'il faudra retrouver sur Terre</h3>${crit.length ? `<div class="need">${crit.map(c => `<div class="need-row"><span>${esc(P[c.p].label)}</span><b>${target(c)}</b><small>Sur la Lune : ${moonTxt(c.p, m)}</small></div>`).join("")}</div>` : `<p class="muted">Choisissez un scénario pour voir les critères.</p>`}</div>
+    <p class="muted" style="font-size:12px">Valeurs indicatives (maquette). Sources prévues : LOLA, Diviner, LEND.</p>
+  </div>`;
+  sh.hidden = false;
 }
 
-// ---------- Chapitre 2 : le site lunaire ----------
+// ---------- Chapitre 2 : candidats ----------
 function ch2() {
-  const m = refSite(), crit = currentCriteria(), s = SCEN.find(x => x.id === state.scen);
-  const fams = FAMILIES.map(f => [f, crit.filter(c => P[c.p].fam === f)]).filter(([, l]) => l.length);
-  return `<div class="block"><span class="chap-n">Chapitre 2 sur 6</span><h1>${esc(m.name)}</h1>
-    <p class="lead">${esc(MOON_KIND[m.kind])}, ${esc(m.region.toLowerCase())}, ${fmtLat(m.lat)} ${fmtLon(m.lon)}.</p><p>${esc(m.why)}</p></div>
-  <div class="facts">
-    <div><b>${m.slope}°</b><span>Pente moyenne</span></div><div><b>${m.rough} m</b><span>Relief accidenté</span></div><div><b>${m.illum} %</b><span>Temps éclairé</span></div>
-    <div><b>${m.tday > 0 ? "+" : ""}${m.tday} °C</b><span>Sol au soleil</span></div><div><b>${m.tnight} °C</b><span>Sol à l'ombre</span></div><div><b>${esc(m.ice)}</b><span>Glace d'eau</span></div>
-  </div>
-  <p class="muted" style="font-size:13.5px"><b style="color:var(--ink)">Missions :</b> ${esc(m.missions)}</p>
-  <div class="block"><h2>Ce qu'il faudra retrouver sur Terre</h2>
-    <p class="muted" style="font-size:13.5px">Pour le scénario « ${esc(s.name)} », un site terrestre devra s'approcher de ces valeurs. ${crit.some(c => c.adapted) ? "Les critères marqués « adapté » suivent les caractéristiques de ce site lunaire." : ""}</p>
-    ${crit.length ? `<div class="need">${fams.map(([f, l]) => `<span class="need-fam">${f}</span>` + l.map(c => `<div class="need-row"><span>${esc(P[c.p].label)}</span><b>${target(c)}</b><small>Sur la Lune : ${moonTxt(c.p, m)}${c.adapted ? ` <span class="tag" style="color:var(--accent)">adapté</span>` : ""}</small></div>`).join("")).join("")}</div>`
-      : `<div class="state-box">Aucun critère défini. Revenez au chapitre 1 pour choisir un scénario ou définir vos critères.</div>`}
-    <span class="api">GET /api/reference/moon/${m.id}</span></div>`;
-}
-
-// ---------- Chapitre 3 : candidats ----------
-function ch3() {
   const m = refSite(), s = SCEN.find(x => x.id === state.scen);
-  const head = `<div class="block"><span class="chap-n">Chapitre 3 sur 6</span><h1>Les sites terrestres les plus proches de ${esc(m.name)}</h1>
-    <p class="lead">Classés selon le scénario « ${esc(s.name)} ». Les 3 premiers seront comparés. Ouvrez un autre site pour le mettre dans la comparaison.</p></div>`;
-  const instr = state.scen === 2 ? `<div class="block"><span class="lbl">Instruments à calibrer</span><div class="chips" id="instr">${["Forage", "Vent", "Gaz", "Sismographe", "Thermique"].map(g => `<button type="button" class="chip" data-g="${g}" aria-pressed="${state.instr.has(g)}">${g}</button>`).join("")}</div></div>` : "";
+  const head = `<div class="block"><span class="chap-n">Chapitre 2 sur 4</span><h1>Les sites terrestres les plus proches de ${esc(m.name)}</h1>
+    <p class="lead">Classés selon le scénario « ${esc(s.name)} ». Les 3 premiers (A, B, C) seront comparés. Ouvrez la fiche de synthèse d'un autre site pour le mettre dans la comparaison.</p></div>`;
+  const instr = state.scen === 2 ? `<div class="block"><span class="lbl">Instruments à calibrer</span><div class="chips">${["Forage", "Vent", "Gaz", "Sismographe", "Thermique"].map(g => `<button type="button" class="chip" data-g="${g}" aria-pressed="${state.instr.has(g)}">${g}</button>`).join("")}</div></div>` : "";
   const range = `<div class="block"><div class="range-head"><span class="lbl" id="range-lbl">Notes affichées</span><span class="range-val">${state.rmin} à ${state.rmax}</span></div>
     <div class="range" role="group" aria-labelledby="range-lbl"><div class="track"></div><div class="fill" style="left:calc(8px + (100% - 16px) * ${state.rmin / 100});width:calc((100% - 16px) * ${(state.rmax - state.rmin) / 100})"></div>
     <input type="range" id="r-min" min="0" max="100" step="5" value="${state.rmin}" aria-label="Note minimale"><input type="range" id="r-max" min="0" max="100" step="5" value="${state.rmax}" aria-label="Note maximale"></div>
-    <div class="chips" id="presets">${[["0,100", "Toutes"], ["70,100", "70 et plus"], ["40,69", "40 à 69"], ["0,39", "Moins de 40"]].map(([v, t]) => `<button type="button" class="chip" data-r="${v}" aria-pressed="${v === state.rmin + "," + state.rmax}">${t}</button>`).join("")}</div></div>`;
+    <div class="chips">${[["0,100", "Toutes"], ["70,100", "70 et plus"], ["40,69", "40 à 69"], ["0,39", "Moins de 40"]].map(([v, t]) => `<button type="button" class="chip" data-r="${v}" aria-pressed="${v === state.rmin + "," + state.rmax}">${t}</button>`).join("")}</div></div>`;
   const demo = `<div class="demo" aria-label="États à démontrer (maquette)">État démo : ${[["normal", "Normal"], ["loading", "Chargement"], ["error", "Erreur"], ["empty", "Aucun résultat"]].map(([v, t]) => `<button type="button" data-demo="${v}" aria-pressed="${state.demo === v}">${t}</button>`).join("")} <span class="api">POST /api/analyze { moonSite, scenario | criteria[] }</span></div>`;
   let body;
   if (isLoading()) body = `<div class="state-box" aria-live="polite"><h3>Interrogation des sources</h3><div class="src"><span>NASA POWER, climat</span><span style="color:var(--good)">OK</span><span>Copernicus DEM, relief</span><span style="color:var(--good)">OK</span><span>MODIS, végétation et sol</span><span style="color:var(--mid)">2ᵉ essai</span><span>USGS, séismes</span><span>en attente</span></div></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
   else if (state.demo === "error") body = `<div class="state-box" role="alert"><h3>Températures du sol indisponibles</h3><p>Le service MODIS ne répond pas après 3 essais. Réessayez dans une minute, ou continuez sans ce paramètre.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" data-demo="normal">Réessayer</button><button type="button" class="btn ghost" data-demo="normal">Continuer sans MODIS</button></div></div>`;
   else {
     const kept = lastRes.filter(r => !r.excluded), out = lastRes.filter(r => r.excluded), shown = kept.filter(r => r.score >= state.rmin && r.score <= state.rmax);
-    if (!kept.length) body = `<div class="state-box"><h3>Aucun site ne correspond</h3><p>Tous les candidats sont exclus ou obtiennent 0 avec ces critères. Revenez au chapitre 1 pour changer de scénario ou élargir vos critères.</p><button type="button" class="btn ghost" data-go="1">Revenir à la mission</button></div>`;
+    if (!kept.length) body = `<div class="state-box"><h3>Aucun site ne correspond</h3><p>Tous les candidats sont exclus ou obtiennent 0 avec ces critères. Revenez à la mission pour changer de scénario ou élargir vos critères.</p><button type="button" class="btn ghost" data-go="1">Revenir à la mission</button></div>`;
     else {
       const row = (r, i) => { const t = lastTrio.findIndex(x => x.site.id === r.site.id);
-        return `<li style="--i:${i}"><button type="button" class="row" data-site="${r.site.id}"><span class="pos">${r.excluded ? "" : kept.indexOf(r) + 1}</span>
-        <span style="min-width:0"><span class="nm">${esc(r.site.name)}</span><span class="mt">${esc(r.site.region)}, ${esc(KIND[r.site.kind].toLowerCase())}${t >= 0 ? ` <span class="in-trio" style="background:var(${CAND[t].v})">Candidat ${CAND[t].l}</span>` : ""}</span></span>
-        <span class="score s-${r.excluded ? "off" : tone(r.score)}">${r.excluded ? "exclu" : r.score}</span></button></li>`; };
+        return `<li style="--i:${i}"><div class="row${t >= 0 ? " is-top" : ""}" data-site="${r.site.id}" style="${t >= 0 ? `--cc:var(${CAND[t].v})` : ""}"><span class="pos">${t >= 0 ? `<span class="lt-s">${CAND[t].l}</span>` : kept.indexOf(r) + 1}</span>
+        <span style="min-width:0"><span class="nm">${esc(r.site.name)}</span><span class="mt">${esc(r.site.region)} ${newBadge(r.site)}</span></span>
+        <span class="row-end"><span class="score s-${tone(r.score)}">${r.score}</span><button type="button" class="eye" data-synth="${r.site.id}" aria-label="Fiche de synthèse de ${esc(r.site.name)}" title="Fiche de synthèse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></button></span></div></li>`; };
       body = `<p class="lbl">${shown.length} site${shown.length > 1 ? "s" : ""} sur ${kept.length} entre ${state.rmin} et ${state.rmax}</p>
         ${shown.length ? `<ol class="rank">${shown.map(row).join("")}</ol>` : `<div class="state-box">Aucun site dans cette plage de notes. <button type="button" class="btn ghost" data-r="0,100">Afficher toutes les notes</button></div>`}
         ${out.length ? `<p class="excl">Exclus parce que couverts de végétation : ${out.map(r => esc(r.site.name)).join(", ")}</p>` : ""}`;
@@ -1241,56 +1264,39 @@ function ch3() {
   return head + instr + range + demo + `<div class="block">${body}</div>`;
 }
 function hlRow(id) { document.querySelectorAll(".row").forEach(b => b.classList.toggle("hl", b.dataset.site === id)); }
-function onEarthPick(id) { if (state.ch <= 3) openSheet(id); else if (state.ch === 4) { const c = document.querySelector(`.ccard[data-site="${id}"]`); c && c.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" }); } }
-function openSheet(id) {
+function onEarthPick(id) { if (state.ch <= 2) openSynth(id); else if (state.ch === 3) { const c = document.querySelector(`.ccard[data-site="${id}"]`); c && c.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" }); } }
+
+// Fiche de synthèse d'un site terrestre
+function openSynth(id) {
   const r = lastRes.find(r => r.site.id === id); if (!r) return;
-  const m = refSite(), t = lastTrio.findIndex(x => x.site.id === id), sh = $("#sheet");
+  const m = refSite(), t = lastTrio.findIndex(x => x.site.id === id), sh = $("#sheet"), fs = famScores(r);
+  const gaugesView = fs.map(f => `<div class="sy-fam"><div class="sy-fh"><b>${f.fam}</b>${gauge(f.s)}<span class="gv">${pct(f.s)}</span></div>
+      ${f.rows.map(x => `<div class="sy-row"><span>${esc(P[x.p].label)}</span><span class="v">${fmt(x.v)}${unitOf(x.p)}</span><span class="lv">${moonTxt(x.p, m)}</span>${gauge(x.s)}</div>`).join("")}</div>`).join("")
+    + `<p class="muted" style="font-size:12px">Valeur du site, valeur lunaire, puis note du critère.</p>`;
+  const radarView = radarSvg(r.rows, [{ rows: r.rows, color: t >= 0 ? `var(${CAND[t].v})` : "var(--accent)", name: r.site.name }]);
   sh.innerHTML = `<div class="sheet-in">
-    <div class="sheet-top"><div style="display:grid;gap:4px;min-width:0"><span class="lbl">${esc(KIND[r.site.kind])}</span><h2>${esc(r.site.name)}</h2><span class="muted" style="font-size:13px">${esc(r.site.region)}, ${fmtLat(r.site.lat)} ${fmtLon(r.site.lon)}</span><span class="api">GET /api/sites/${r.site.id}</span></div>
-      <button class="close" type="button" id="sheet-close" aria-label="Fermer la fiche">Fermer</button></div>
-    <p><span class="score s-${r.excluded ? "off" : tone(r.score)}" style="font-size:22px;padding:4px 10px">${r.excluded ? "exclu" : r.score}</span> <span class="muted">sur 100 face à ${esc(m.name)}</span></p>
-    ${r.excluded ? `<p class="notice">Ce site est couvert de végétation : il est exclu de la recherche.</p>`
-      : t >= 0 ? `<p class="lbl" style="color:var(${CAND[t].v})">Fait partie de la comparaison (candidat ${CAND[t].l})</p>`
-      : `<button type="button" class="btn" id="add-cmp">Mettre dans la comparaison</button><p class="muted" style="font-size:12.5px;margin-top:-8px">Il remplacera ${esc(lastTrio.filter(x => !state.manual.includes(x.site.id)).slice(-1)[0]?.site.name || lastTrio.slice(-1)[0]?.site.name || "")}.</p>`}
-    <div>${r.rows.map(x => `<div class="crow"><div class="l"><span>${esc(P[x.p].label)}</span><b>${fmt(x.v)}${unitOf(x.p)}</b></div>
-      <div class="bar-s"><i style="width:${Math.max(2, pct(x.s))}%;background:var(--${tone(pct(x.s))})"></i></div>
-      <div class="s"><span>Souhaité : ${target(x)}</span><span style="color:var(--moon)">Lune : ${moonTxt(x.p, m)}</span></div></div>`).join("")}</div>
+    <div class="sheet-top"><div style="display:grid;gap:4px;min-width:0"><span class="lbl">${r.site.kind === "nouveau" ? newBadge(r.site) : esc(KIND[r.site.kind])}</span><h2>${esc(r.site.name)}</h2><span class="muted" style="font-size:13px">${esc(r.site.region)}, ${fmtLat(r.site.lat)} ${fmtLon(r.site.lon)}</span><span class="api">GET /api/sites/${r.site.id}</span></div>
+      <button class="close" type="button" data-close aria-label="Fermer la fiche">Fermer</button></div>
+    <p style="display:flex;align-items:center;gap:10px;flex-wrap:wrap"><span class="score s-${r.excluded ? "off" : tone(r.score)}" style="font-size:22px;padding:4px 10px">${r.excluded ? "exclu" : r.score}</span><span class="muted">sur 100 face à ${esc(m.name)}</span>${t >= 0 ? `<span class="in-trio" style="background:var(${CAND[t].v})">Candidat ${CAND[t].l}</span>` : ""}</p>
+    ${photos(r.site, m)}
+    ${r.excluded ? `<p class="notice">Ce site est couvert de végétation : il est exclu de la recherche.</p>` : t < 0 ? `<button type="button" class="btn" data-add="${id}">Mettre dans la comparaison</button>` : ""}
+    <div class="block"><div class="crit-head"><h3>Indicateurs</h3><div class="seg" role="group" aria-label="Affichage des indicateurs"><button type="button" data-sv="gauges" aria-pressed="${state.synView === "gauges"}">Jauges</button><button type="button" data-sv="radar" aria-pressed="${state.synView === "radar"}">Radar</button></div></div>
+      ${state.synView === "radar" ? radarView : gaugesView}</div>
+    ${!r.excluded ? `<div class="block"><h3>En résumé</h3><p class="verdict" style="--cc:var(--accent)">« ${esc(verdict(r))} »</p></div>` : ""}
   </div>`;
-  sh.hidden = false;
-  $("#sheet-close").onclick = () => { sh.hidden = true; };
-  const add = $("#add-cmp"); if (add) add.onclick = () => { addManual(id); sh.hidden = true; };
+  sh.dataset.synth = id; sh.hidden = false;
 }
-// Le site ajouté remplace le moins bien noté des candidats choisis automatiquement (sinon le moins bien noté tout court).
 function addManual(id) {
   const removable = lastTrio.filter(x => !state.manual.includes(x.site.id));
   const drop = lastTrio.length < 3 ? null : (removable.length ? removable : lastTrio).slice(-1)[0];
   if (drop) state.manual = state.manual.filter(x => x !== drop.site.id);
-  state.manual.push(id);
-  render();
+  state.manual.push(id); render(); openSynth(id);
 }
 
-// ---------- Chapitre 4 : comparer ----------
-function ch4() {
-  const m = refSite(), s = SCEN.find(x => x.id === state.scen), n = lastTrio.length;
-  const word = ["Aucun candidat", "Un candidat", "Deux candidats", "Trois candidats"][n];
-  const cards = lastTrio.map((r, i) => {
-    const c = CAND[i], fs = famScores(r);
-    return `<article class="ccard${state.chosen === r.site.id ? " chosen" : ""}" data-site="${r.site.id}" style="--cc:var(${c.v})">
-      <div class="ccard-h"><span class="lt">${c.l}</span><span style="min-width:0"><b>${esc(r.site.name)}</b><small>${esc(r.site.region)}</small></span><span class="score s-${tone(r.score)}">${r.score}</span></div>
-      <div class="fams-g">${fs.map(f => { const key = r.site.id + "|" + f.fam, open = state.openFam.has(key);
-        return `<button type="button" class="fam-g" data-fam="${key}" aria-expanded="${open}"><span>${f.fam}</span><span class="gb"><i style="width:${Math.max(3, pct(f.s))}%"></i></span><span class="gv">${pct(f.s)}</span></button>
-        ${open ? `<div class="fam-detail">${f.rows.map(x => `<div><span>${esc(P[x.p].label)}</span><b>${fmt(x.v)}${unitOf(x.p)}</b><span class="lv">${moonTxt(x.p, m)}</span></div>`).join("")}<div class="muted"><span>Valeur du site, puis valeur lunaire</span></div></div>` : ""}`; }).join("")}</div>
-      <p class="verdict">« ${esc(verdict(r))} »</p>
-      <div class="ccard-b"><button type="button" class="ghost-btn ovl" data-ovl="${r.site.id}" aria-pressed="${state.overlay.has(r.site.id)}">Superposer à la Lune</button><button type="button" class="btn" data-choose="${r.site.id}">Choisir ce site</button></div>
-    </article>`; }).join("");
-  return `<div class="block"><span class="chap-n">Chapitre 4 sur 6</span><h1>${word} face à ${esc(m.name)}</h1>
-    <p class="lead">Scénario « ${esc(s.name)} ». Chaque jauge résume une famille de critères ; cliquez-la pour voir les valeurs du site et de la Lune. « Superposer » pose la forme d'un site sur celle de la Lune.</p>
-    ${state.notice ? `<p class="notice">${esc(state.notice)}</p>` : ""}</div>
-  <div class="cmp"><div class="radar-box hud">${radar()}</div><div class="cards">${cards}</div></div>`;
-}
-function radar() {
-  const m = refSite(), crit = lastTrio[0] ? lastTrio[0].rows : [];
-  if (crit.length < 3) return `<p class="muted" style="font-size:13px">Le graphique de surface demande au moins 3 critères. Comparez les jauges des cartes.</p>`;
+// Graphique de surface : la Lune en fond (pointillé) et un ou plusieurs sites superposés.
+function radarSvg(crit, sites) {
+  const m = refSite();
+  if (crit.length < 3) return `<p class="muted" style="font-size:13px">Le radar demande au moins 3 critères : utilisez la vue en jauges.</p>`;
   const N = crit.length, cx = 200, cy = 170, R = 112;
   const norm = (p, v) => Math.max(0, Math.min(1, toS(P[p], Math.max(P[p].lo, Math.min(P[p].hi, v))) / 1000));
   const pt = (i, k) => { const a = -Math.PI / 2 + i * 2 * Math.PI / N; return [cx + Math.cos(a) * R * k, cy + Math.sin(a) * R * k]; };
@@ -1301,27 +1307,37 @@ function radar() {
     return `<line class="rd-axis" x1="${cx}" y1="${cy}" x2="${ex}" y2="${ey}"/><line class="rd-band" x1="${ax}" y1="${ay}" x2="${bx}" y2="${by}"/><text class="rd-lbl" x="${lx}" y="${ly}" text-anchor="${anchor}" dominant-baseline="middle"><title>${esc(P[x.p].label)}</title>${esc(lbl)}</text>`; }).join("");
   const moonK = crit.map(x => { const v = moonVal(x.p, m); return v == null ? null : norm(x.p, v); });
   const moonPoly = moonK.filter(k => k != null).length >= 3 ? `<polygon class="rd-moon" points="${poly(moonK)}"/>` : "";
-  const cands = lastTrio.map((r, i) => state.overlay.has(r.site.id) ? `<polygon class="rd-cand" points="${poly(r.rows.map(x => norm(x.p, x.v)))}" style="fill:var(${CAND[i].v});stroke:var(${CAND[i].v})"><title>${esc(r.site.name)}</title></polygon>` : "").join("");
-  return `<span class="lbl">Forme de chaque site comparée à celle de la Lune</span>
-    <svg viewBox="0 0 400 340" role="img" aria-label="Graphique de surface : Lune et candidats superposés">${rings}${axes}${moonPoly}${cands}</svg>
-    <div class="legend"><span><i style="background:var(--moon);opacity:.6"></i>${esc(m.name)}</span>${lastTrio.map((r, i) => state.overlay.has(r.site.id) ? `<span><i style="background:var(${CAND[i].v})"></i>${esc(r.site.name)}</span>` : "").join("")}<span><i style="background:var(--good);height:4px;opacity:.5"></i>Intervalle souhaité</span></div>
-    <p class="muted" style="font-size:12px">Chaque axe va de la plus petite à la plus grande valeur possible sur Terre. Une valeur lunaire hors de cette échelle est posée au bord.</p>`;
+  const polys = sites.map(s => `<polygon class="rd-cand" points="${poly(s.rows.map(x => norm(x.p, x.v)))}" style="fill:${s.color};stroke:${s.color}"><title>${esc(s.name)}</title></polygon>`).join("");
+  return `<svg class="radar" viewBox="0 0 400 340" role="img" aria-label="Graphique de surface : Lune et site superposés">${rings}${axes}${moonPoly}${polys}</svg>
+    <div class="legend"><span><i style="background:var(--moon);opacity:.6"></i>${esc(m.name)}</span>${sites.map(s => `<span><i style="background:${s.color}"></i>${esc(s.name)}</span>`).join("")}<span><i style="background:var(--good);height:4px;opacity:.5"></i>Intervalle souhaité</span></div>
+    <p class="muted" style="font-size:12px">Chaque axe va de la plus petite à la plus grande valeur possible sur Terre ; une valeur lunaire hors échelle est posée au bord.</p>`;
 }
 
-// ---------- Chapitre 5 : choisir ----------
-function ch5() {
-  const m = refSite(), s = SCEN.find(x => x.id === state.scen), r = lastTrio.find(x => x.site.id === state.chosen); if (!r) return "";
-  const fs = famScores(r), strong = fs.filter(f => f.s >= .7), weak = fs.filter(f => f.s < .7);
-  const others = lastTrio.map((x, i) => [x, i]).filter(([x]) => x.site.id !== r.site.id);
-  return `<div class="block"><span class="chap-n">Chapitre 5 sur 6</span><h1>Vous retenez ${esc(r.site.name)}</h1>
-    <p class="lead">${esc(r.site.region)}. Note de ${r.score} sur 100 face à ${esc(m.name)}, pour le scénario « ${esc(s.name)} ».</p></div>
-  <div class="block"><h2>Ce qui joue en sa faveur</h2>${strong.length ? `<ul class="why">${strong.map(f => `<li><b>${f.fam}</b> : ${FAM_STRONG[f.fam]} (${pct(f.s)} sur 100).</li>`).join("")}</ul>` : `<p class="muted">Aucune famille de critères n'atteint 70 : ce site reste un compromis.</p>`}</div>
-  <div class="block"><h2>Ce qu'il faudra compenser</h2>${weak.length ? `<ul class="why">${weak.map(f => `<li><b>${f.fam}</b> : ${FAM_WEAK[f.fam]} (${pct(f.s)} sur 100).</li>`).join("")}</ul>` : `<p class="muted">Pas de point faible marqué pour ce scénario.</p>`}</div>
-  ${others.length ? `<div class="block"><h2>Les autres candidats</h2>${others.map(([x, i]) => `<div class="alt" style="--cc:var(${CAND[i].v})"><span><b>${esc(x.site.name)}</b> <span class="muted">${x.score} sur 100, ${esc(verdict(x).toLowerCase())}</span></span><button type="button" class="ghost-btn" data-choose="${x.site.id}">Retenir plutôt</button></div>`).join("")}</div>` : ""}`;
+// ---------- Chapitre 3 : comparer ----------
+function ch3() {
+  const m = refSite(), s = SCEN.find(x => x.id === state.scen), n = lastTrio.length;
+  const word = ["Aucun candidat", "Un candidat", "Deux candidats", "Trois candidats"][n];
+  const cards = lastTrio.map((r, i) => {
+    const c = CAND[i], fs = famScores(r), strong = fs.filter(f => f.s >= .7), weak = fs.filter(f => f.s < .7);
+    return `<article class="ccard${state.chosen === r.site.id ? " chosen" : ""}" data-site="${r.site.id}" style="--cc:var(${c.v})">
+      <div class="ccard-h"><span class="lt">${c.l}</span><span style="min-width:0"><b>${esc(r.site.name)}</b><small>${esc(r.site.region)}</small> ${newBadge(r.site)}</span><span class="score s-${tone(r.score)}">${r.score}</span></div>
+      <div class="fams-g">${fs.map(f => { const key = r.site.id + "|" + f.fam, open = state.openFam.has(key);
+        return `<button type="button" class="fam-g" data-fam="${key}" aria-expanded="${open}"><span>${f.fam}</span>${gauge(f.s)}<span class="gv">${pct(f.s)}</span></button>
+        ${open ? `<div class="fam-detail">${f.rows.map(x => `<div><span>${esc(P[x.p].label)}</span><b>${fmt(x.v)}${unitOf(x.p)}</b><span class="lv">${moonTxt(x.p, m)}</span></div>`).join("")}<div class="muted"><span>Valeur du site, puis valeur lunaire</span></div></div>` : ""}`; }).join("")}</div>
+      <p class="verdict">« ${esc(verdict(r))} »</p>
+      <div class="pc"><div><h3 class="pc-h good">Ce qui joue en sa faveur</h3>${strong.length ? `<ul>${strong.map(f => `<li><b>${f.fam}</b> : ${FAM_STRONG[f.fam]}</li>`).join("")}</ul>` : `<p class="muted">Aucune famille n'atteint 70.</p>`}</div>
+        <div><h3 class="pc-h bad">Ce qu'il faudra compenser</h3>${weak.length ? `<ul>${weak.map(f => `<li><b>${f.fam}</b> : ${FAM_WEAK[f.fam]}</li>`).join("")}</ul>` : `<p class="muted">Pas de point faible marqué.</p>`}</div></div>
+      <div class="ccard-b"><button type="button" class="ghost-btn ovl" data-ovl="${r.site.id}" aria-pressed="${state.overlay.has(r.site.id)}">Superposer à la Lune</button>${state.chosen === r.site.id ? `<button type="button" class="btn" data-go="4">Site retenu : voir la synthèse</button>` : `<button type="button" class="btn" data-choose="${r.site.id}">Retenir ce site</button>`}</div>
+    </article>`; }).join("");
+  const over = lastTrio.map((r, i) => state.overlay.has(r.site.id) ? { rows: r.rows, color: `var(${CAND[i].v})`, name: r.site.name } : null).filter(Boolean);
+  return `<div class="block"><span class="chap-n">Chapitre 3 sur 4</span><h1>${word} face à ${esc(m.name)}</h1>
+    <p class="lead">Scénario « ${esc(s.name)} ». Chaque jauge résume une famille de critères ; cliquez-la pour voir les valeurs du site et de la Lune. « Superposer » pose la forme d'un site sur celle de la Lune.</p>
+    ${state.notice ? `<p class="notice">${esc(state.notice)}</p>` : ""}</div>
+  <div class="cmp"><div class="radar-box hud"><span class="lbl">Forme de chaque site comparée à celle de la Lune</span>${radarSvg(lastTrio[0] ? lastTrio[0].rows : [], over)}</div><div class="cards">${cards}</div></div>`;
 }
 
-// ---------- Chapitre 6 : dossier ----------
-function ch6() {
+// ---------- Chapitre 4 : synthèse finale ----------
+function ch4() {
   const m = refSite(), s = SCEN.find(x => x.id === state.scen), r = lastTrio.find(x => x.site.id === state.chosen); if (!r) return "";
   const fs = famScores(r);
   const chars = FAMILIES.map(f => { const ids = Object.keys(P).filter(id => P[id].fam === f); return ids.length ? `<div><h3>${f}</h3><dl>${ids.map(id => `<div><dt>${esc(P[id].label)}</dt><dd>${fmt(r.site.v[id])}${unitOf(id)}</dd></div>`).join("")}</dl></div>` : ""; }).join("");
@@ -1335,14 +1351,16 @@ function ch6() {
       : `<b>Hors de portée sur ce site.</b> ${esc(detailTxt(worst.x, worst.mv))} : ${FAM_TEST[f.fam]} ne seront pas représentatifs ici.`;
     return `<div class="scope-row"><div style="display:grid;gap:6px;align-content:start"><h3>${f.fam}</h3><span class="lvl lvl-${lv}" style="justify-self:start">${["Non représentatif", "Partiel", "Représentatif"][lv]}</span></div><p>${txt}</p></div>`; }).join("");
   return `<div class="dossier">
-    <div class="dossier-h"><span class="chap-n">Chapitre 6 sur 6</span><h1>Dossier de tests pour ${esc(r.site.name)}</h1>
-      <div class="meta"><span>Site terrestre <b>${esc(r.site.name)}</b>, ${esc(r.site.region)}</span><span>Comparé à <b>${esc(m.name)}</b></span><span>Scénario <b>${esc(s.name)}</b></span><span>Note <b>${r.score} sur 100</b></span></div>
+    <div class="dossier-h"><span class="chap-n">Chapitre 4 sur 4</span><h1>Synthèse finale : ${esc(r.site.name)}</h1>
+      <p class="lead">Ce que ce site permettra de tester avant la mission vers ${esc(m.name)}, et ce qu'il faudra valider autrement.</p>
+      <div class="meta"><span>Site retenu <b>${esc(r.site.name)}</b>, ${esc(r.site.region)} ${newBadge(r.site)}</span><span>Comparé à <b>${esc(m.name)}</b></span><span>Scénario <b>${esc(s.name)}</b></span><span>Note <b>${r.score} sur 100</b></span></div>
       <span class="api">GET /api/sites/${r.site.id}?moonSite=${m.id}</span></div>
-    <section class="dsec"><h2>Caractéristiques du site</h2><div class="chars">${chars}</div><p class="muted" style="font-size:12.5px">Maquette : valeurs fictives. Sources prévues : NASA POWER, Copernicus DEM, MODIS, USGS, Smithsonian GVP.</p></section>
-    <section class="dsec"><h2>Analogies et différences avec ${esc(m.name)}</h2>
-      <div class="tablebox"><table class="cmp-table"><thead><tr><th>Critère</th><th>Ce site</th><th>Lune</th><th>Souhaité</th><th>Analogie</th></tr></thead><tbody>${rows}</tbody></table></div></section>
+    ${photos(r.site, m)}
     <section class="dsec"><h2>Portée des tests</h2><div class="scope">${scope}</div>
       <div class="never"><h3>Jamais reproductible sur Terre</h3><p>La gravité lunaire (six fois plus faible), le vide et le rayonnement solaire et cosmique. Ces aspects demandent des essais en vol parabolique, en chambre à vide ou sous accélérateur.</p></div></section>
+    <section class="dsec"><h2>Analogies et différences avec ${esc(m.name)}</h2>
+      <div class="tablebox"><table class="cmp-table"><thead><tr><th>Critère</th><th>Ce site</th><th>Lune</th><th>Souhaité</th><th>Analogie</th></tr></thead><tbody>${rows}</tbody></table></div></section>
+    <section class="dsec"><h2>Caractéristiques du site</h2><div class="chars">${chars}</div><p class="muted" style="font-size:12.5px">Maquette : valeurs fictives. Sources prévues : NASA POWER, Copernicus DEM, MODIS, USGS, Smithsonian GVP.</p></section>
   </div>`;
 }
 
@@ -1351,34 +1369,41 @@ function bindChapter() {
   if (state.ch === 1) { renderMoonList(); const q = $("#msearch"); q.oninput = renderMoonList; q.onkeydown = e => {
       const items = [...document.querySelectorAll("#mlist [data-moon]")]; if (!items.length) return; let i = items.findIndex(b => b.classList.contains("kb"));
       if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); items[i]?.classList.remove("kb"); i = (i + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length; items[i].classList.add("kb"); items[i].scrollIntoView({ block: "nearest" }); }
-      if (e.key === "Enter") { e.preventDefault(); (items[i] || items[0]).click(); } }; }
-  if (state.ch === 3) {
+      if (e.key === "Enter") { e.preventDefault(); (items[i] || items[0]).click(); } };
+    $("#moon-sheet").onclick = openMoonSheet; }
+  if (state.ch === 2) {
     $("#r-min") && ($("#r-min").onchange = e => { state.rmin = Math.min(+e.target.value, state.rmax); render(); });
     $("#r-max") && ($("#r-max").onchange = e => { state.rmax = Math.max(+e.target.value, state.rmin); render(); });
   }
 }
 $("#recit").addEventListener("click", e => {
   const t = e.target;
-  const moon = t.closest("[data-moon]"); if (moon) { state.ref = moon.dataset.moon; markDirty(); render(); setTimeout(() => $("#msearch")?.focus(), 0); return; }
-  const sc = t.closest(".scen-opt[data-scen]"); if (sc) { const id = +sc.dataset.scen; if (id === 4) { openAtelier(); return; } state.prevScen = state.scen = id; markDirty(); applyTheme(); render(); return; }
+  const moon = t.closest("[data-moon]"); if (moon) { state.ref = moon.dataset.moon; state.dirty = true; render(); setTimeout(() => $("#msearch")?.focus(), 0); return; }
+  const sc = t.closest(".scen-opt[data-scen]"); if (sc) { const id = +sc.dataset.scen; if (id === 4) { openAtelier(); return; } state.prevScen = state.scen = id; state.dirty = true; applyTheme(); render(); return; }
   const g = t.closest("[data-g]"); if (g) { const k = g.dataset.g; if (state.instr.has(k)) { if (state.instr.size > 1) state.instr.delete(k); } else state.instr.add(k); render(); return; }
   const r = t.closest("[data-r]"); if (r) { const [a, b] = r.dataset.r.split(",").map(Number); state.rmin = a; state.rmax = b; render(); return; }
   const d = t.closest("[data-demo]"); if (d) { state.demo = d.dataset.demo; render(); return; }
-  const row = t.closest("[data-site].row"); if (row) { openSheet(row.dataset.site); return; }
+  const sy = t.closest("[data-synth]"); if (sy) { openSynth(sy.dataset.synth); return; }
+  const row = t.closest(".row[data-site]"); if (row) { openSynth(row.dataset.site); return; }
   const f = t.closest("[data-fam]"); if (f) { const k = f.dataset.fam; state.openFam.has(k) ? state.openFam.delete(k) : state.openFam.add(k); render(); return; }
   const o = t.closest("[data-ovl]"); if (o) { const k = o.dataset.ovl; state.overlay.has(k) ? state.overlay.delete(k) : state.overlay.add(k); render(); return; }
-  const ch = t.closest("[data-choose]"); if (ch) { state.chosen = ch.dataset.choose; state.notice = ""; state.reached = Math.max(state.reached, 5); go(5); return; }
+  const ch = t.closest("[data-choose]"); if (ch) { state.chosen = ch.dataset.choose; state.notice = ""; state.reached = Math.max(state.reached, 4); go(4); return; }
+});
+$("#sheet").addEventListener("click", e => {
+  if (e.target.closest("[data-close]")) { $("#sheet").hidden = true; return; }
+  const sv = e.target.closest("[data-sv]"); if (sv) { state.synView = sv.dataset.sv; openSynth($("#sheet").dataset.synth); return; }
+  const a = e.target.closest("[data-add]"); if (a) addManual(a.dataset.add);
 });
 $("#recit").addEventListener("mouseover", e => { const b = e.target.closest(".row[data-site], .ccard[data-site]"); if (b && earthG && !earthG.dead) earthG.highlight(b.dataset.site); });
 $("#recit").addEventListener("mouseout", e => { if (e.target.closest(".row[data-site], .ccard[data-site]") && earthG && !earthG.dead) earthG.highlight(null); });
-document.addEventListener("click", e => { const s = e.target.closest("[data-go]"); if (s) { const n = +s.dataset.go; if (n <= state.reached || n === 1) go(n); } });
-$("#next").onclick = () => { if (state.ch === 4) { if (state.chosen) go(5); return; } go(state.ch + 1); };
+document.addEventListener("click", e => { const s = e.target.closest("[data-go]"); if (s) go(+s.dataset.go); });
+$("#next").onclick = () => go(state.ch + 1);
 $("#back").onclick = () => go(Math.max(1, state.ch - 1));
 
 // Atelier des critères libres (scénario 4)
 let atelierLoaded = false;
 function openAtelier() {
-  if (!atelierLoaded) { $("#prefill").value = state.custom ? "" : String(state.prevScen < 4 ? state.prevScen : 1); loadFree(state.custom ? null : (state.prevScen < 4 ? state.prevScen : 1)); atelierLoaded = true; }
+  if (!atelierLoaded) { const from = state.custom ? null : (state.prevScen < 4 ? state.prevScen : 1); $("#prefill").value = from ? String(from) : ""; loadFree(from); atelierLoaded = true; }
   $("#atelier").hidden = false; $("#atelier").scrollTop = 0;
 }
 $("#atelier-close").onclick = () => { $("#atelier").hidden = true; };
@@ -1387,7 +1412,7 @@ $("#free-form").addEventListener("submit", e => {
   const crit = freeCriteria(), open = crit.find(c => c.min == null && c.max == null);
   const err = !crit.length ? "Activez au moins un paramètre." : open ? `${P[open.p].label} : resserrez l'intervalle, il couvre toutes les valeurs.` : "";
   $("#free-err").textContent = err; if (err) return;
-  state.custom = crit; state.ndvi = $("#ndvi-filter").checked; state.scen = 4; markDirty();
+  state.custom = crit; state.ndvi = $("#ndvi-filter").checked; state.scen = 4; state.dirty = true;
   $("#atelier").hidden = true; applyTheme(); render();
 });
 

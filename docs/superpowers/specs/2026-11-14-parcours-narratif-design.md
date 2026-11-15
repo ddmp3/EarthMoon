@@ -113,6 +113,17 @@ Une page de l'application, consultée à l'écran.
 - **Thème selon le scénario** : une base commune ; chaque scénario change la couleur d'accent, un motif de fond et le rendu des globes (robotique : ocre et courbes de niveau ; instruments : cyan et grille d'oscilloscope ; colonie : or solaire et trame d'habitat ; critères libres : neutre).
 - **Fichier** : nouveau fichier `docs/maquettes/parcours.html` et nouvel artefact ; l'ancienne maquette reste telle quelle pour comparer.
 
+### Révision après revue de la maquette (Yann, 2026-11-14)
+
+Le parcours passe de 6 à **4 chapitres** : **Mission, Candidats, Comparer, Synthèse**.
+- **Mission** : sous les scénarios, la liste des critères sur lesquels la mission sera évaluée (valeurs cibles, mention « adapté »). Le chapitre « Le site lunaire » disparaît : un bouton **Fiche du site** près de la sélection ouvre la fiche lunaire en superposition, et « Suivant » mène directement aux candidats.
+- **Candidats** : sur le globe, les 3 meilleurs ressortent (couleur, taille, étiquette « A · 92 »), chaque site affiche sa note, et le survol d'un site ouvre sa **fiche de synthèse** en superposition. Dans la liste, une icône ouvre la même fiche.
+- **Fiche de synthèse** : visuels du site lunaire et du site terrestre quand ils sont disponibles ; indicateurs au choix en **jauges** ou en **radar** (surface lunaire superposée).
+- **Comparer** : le bouton « Revoir le site retenu » est retiré. Le chapitre « Choisir » disparaît : « Ce qui joue en sa faveur » et « Ce qu'il faudra compenser » figurent dans chaque carte, avec un bouton « Retenir ce site ».
+- **Synthèse** (ex-« Dossier ») : titre « Synthèse finale : [site] », visuels des deux sites quand ils sont disponibles.
+- **Général** : jauges au format ▰▰▰▰▱ ; les sites peu étudiés sont signalés par une pastille « ✦ Peu étudié » (liste, globe, fiches, cartes, synthèse).
+- **Visuels** (choix de Claude) : mosaïque LRO WAC de NASA Moon Trek pour la Lune, imagerie Esri World Imagery pour la Terre, chargées par tuile ; « Visuel non disponible » si le chargement échoue ou est bloqué (cas de l'artefact claude.ai). Licence et source définitives à confirmer par l'équipe.
+
 ## Ce qui est laissé au constructeur
 
 - L'apparence exacte de la barre de chapitres, des cartes et du dossier, dans le thème existant.
