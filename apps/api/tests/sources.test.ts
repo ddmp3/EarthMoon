@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { withCache, warmUp } from "../src/sources/cache.js";
 import { coordinatesConnector } from "../src/sources/coordinates.js";
-import { createGeometryConnector, loadGeometry } from "../src/sources/geometry.js";
+import { createPrecomputedConnector, loadPrecomputed } from "../src/sources/precomputed.js";
 import { fetchJson, HttpError } from "../src/sources/http.js";
 import type { FetchLike } from "../src/sources/http.js";
 import { buildSources } from "../src/sources/index.js";
@@ -180,7 +180,7 @@ describe("cache", () => {
   });
 });
 
-describe("géométrie précalculée et coordonnées", () => {
+describe("valeurs précalculées (DEM, MODIS) et coordonnées", () => {
   const sites = [
     { id: "a", lat: -24.5, lon: -69.25, precomputed: { slope_mean: 6, slope_max: 28, roughness: 25, elevation: 2400, source: "Copernicus" } },
     { id: "b", lat: 1, lon: 2, precomputed: { slope_mean: null, slope_max: 3, roughness: "x", elevation: 5 } },
@@ -188,23 +188,30 @@ describe("géométrie précalculée et coordonnées", () => {
   ];
 
   it("retrouve le site par ses coordonnées", async () => {
-    expect(await createGeometryConnector(sites)({ lat: -24.5, lon: -69.25 })).toEqual({ slope_mean: 6, slope_max: 28, roughness: 25, elevation: 2400 });
+    expect(await createPrecomputedConnector(sites)({ lat: -24.5, lon: -69.25 })).toEqual({ slope_mean: 6, slope_max: 28, roughness: 25, elevation: 2400 });
   });
 
   it("met null ce qui n'est pas un nombre, et ne renvoie rien pour un site inconnu ou non calculé", async () => {
-    const conn = createGeometryConnector(sites);
+    const conn = createPrecomputedConnector(sites);
     expect(await conn({ lat: 1, lon: 2 })).toEqual({ slope_mean: null, slope_max: 3, roughness: null, elevation: 5 });
     expect(await conn({ lat: 3, lon: 4 })).toEqual({});
     expect(await conn({ lat: 50, lon: 50 })).toEqual({});
   });
 
-  it("lit le fichier produit par enrich_candidates.py", async () => {
+  it("transmet aussi les valeurs MODIS, et seulement les paramètres présents", async () => {
+    const conn = createPrecomputedConnector([
+      { lat: -3.47, lon: -62.37, precomputed: { ndvi: 0.85, lst_day: 31, lst_night: 22, lst_amplitude: 9, modis_source: "x" } },
+    ]);
+    expect(await conn({ lat: -3.47, lon: -62.37 })).toEqual({ ndvi: 0.85, lst_day: 31, lst_night: 22, lst_amplitude: 9 });
+  });
+
+  it("lit le fichier produit par tools/precompute", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "geo-"));
-    const file = path.join(dir, "candidates-geometry.json");
+    const file = path.join(dir, "candidates-precomputed.json");
     await writeFile(file, JSON.stringify(sites));
-    expect(await loadGeometry(file)).toHaveLength(3);
+    expect(await loadPrecomputed(file)).toHaveLength(3);
     await writeFile(file, JSON.stringify({ nope: 1 }));
-    await expect(loadGeometry(file)).rejects.toThrow("invalide");
+    await expect(loadPrecomputed(file)).rejects.toThrow("invalide");
   });
 
   it("latitude_abs = |latitude|", async () => {
@@ -221,19 +228,28 @@ describe("buildSources", () => {
     expect(merged).toMatchObject({ latitude_abs: 75.38, t2m_min: -48.55 });
   });
 
-  it("mode réel sans fichier de géométrie : POWER + USGS, et note ce qui manque", async () => {
+  it("mode réel sans fichier précalculé : POWER + USGS, et note ce qui manque", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "data-"));
     const set = await buildSources(dir, false);
     expect(set.names).toEqual(["coordonnées", "NASA POWER", "USGS Earthquake Catalog"]);
-    expect(set.notes.join(" ")).toMatch(/MODIS/);
-    expect(set.notes.join(" ")).toMatch(/candidates-geometry\.json absent/);
+    expect(set.notes.join(" ")).toMatch(/GVP/);
+    expect(set.notes.join(" ")).toMatch(/candidates-precomputed\.json absent/);
   });
 
-  it("mode réel avec fichier de géométrie : ajoute le connecteur Copernicus précalculé", async () => {
+  it("mode réel avec géométrie seulement : signale que MODIS manque", async () => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "data-"));
-    await writeFile(path.join(dir, "candidates-geometry.json"), JSON.stringify([{ id: "a", lat: 1, lon: 2, precomputed: { slope_mean: 4 } }]));
+    await writeFile(path.join(dir, "candidates-precomputed.json"), JSON.stringify([{ id: "a", lat: 1, lon: 2, precomputed: { slope_mean: 4 } }]));
     const set = await buildSources(dir, false);
     expect(set.names).toContain("Copernicus DEM (précalculé)");
     expect(set.connectors).toHaveLength(4);
+    expect(set.notes.join(" ")).toMatch(/sans MODIS/);
+  });
+
+  it("mode réel avec géométrie et MODIS : un seul connecteur précalculé pour les deux", async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "data-"));
+    await writeFile(path.join(dir, "candidates-precomputed.json"), JSON.stringify([{ id: "a", lat: 1, lon: 2, precomputed: { slope_mean: 4, ndvi: 0.05 } }]));
+    const set = await buildSources(dir, false);
+    expect(set.names).toContain("Copernicus DEM + MODIS (précalculé)");
+    expect(set.notes.join(" ")).not.toMatch(/sans MODIS/);
   });
 });
