@@ -102,7 +102,7 @@ Réponse :
 
 ## Ce dont l'API a besoin de chacun
 
-### Ouassim — `data/candidates.json`
+### Wassim — `data/candidates.json`
 
 Format de `docs/contrats.md` §1 : un tableau de `{ id, name, lat, lon, terrain, role }`.
 

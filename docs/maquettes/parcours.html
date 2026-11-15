@@ -591,7 +591,7 @@ const P = {
   ndvi:             { fam: "Surface", label: "Végétation (NDVI)", unit: "", lo: 0, hi: 1, src: "MODIS (MOD13A1)", moon: "Aucune végétation", help: "De 0 (sol nu) à 1 (végétation dense). Sert de filtre commun : au-dessus de 0,1, le site est exclu." },
 };
 
-// ---------- Scénarios (intervalles de docs/scenarios.md, à valider par Ouassim) ----------
+// ---------- Scénarios (intervalles de docs/scenarios.md, à valider par Wassim) ----------
 const SCEN = [
   { id: 1, name: "Validation robotique", q: "Où tester la mobilité d'un rover ou d'un robot avant de l'envoyer sur la Lune ?", who: "Ingénieurs robotique", usage: "Essais de mobilité de rover",
     criteria: [ { p: "slope_mean", min: 5, max: 15, t: 10, w: 3 }, { p: "slope_max", min: 15, max: 30, t: 10, w: 1 }, { p: "roughness", min: 5, max: 40, t: 30, w: 2 },
@@ -689,7 +689,7 @@ const MOON_SITES = [
 const MOON_KIND = { "pôle": "Région polaire", "mer": "Mer basaltique", "tube": "Puits / tube de lave", "volcanique": "Zone volcanique", "hautes terres": "Hautes terres" };
 const refSite = () => MOON_SITES.find(m => m.id === state.ref);
 
-// Rend les scénarios génériques : certains intervalles suivent le site lunaire choisi (règle proposée, à valider par Ouassim).
+// Rend les scénarios génériques : certains intervalles suivent le site lunaire choisi (règle proposée, à valider par Wassim).
 function adapt(c, scenId, m) {
   c = { ...c };
   const set = (min, max) => { c.min = min; c.max = max; c.adapted = true; };

@@ -19,7 +19,7 @@ L'utilisateur est une personne ou une équipe qui **prépare une mission lunaire
 
 - **Site lunaire de référence** : l'application n'est pas limitée au pôle Sud. L'utilisateur choisit parmi 14 sites (pôles, sites Apollo, puits de tubes de lave, zones volcaniques, face cachée), dans une liste avec recherche ou en cliquant un point sur une Lune en 3D. Coordonnées réelles ; caractéristiques **indicatives**, à remplacer par LOLA, Diviner et LEND.
 - **Scénarios** : 1 Validation robotique, 2 Calibration d'instruments, 3 Colonie autosuffisante, 4 Critères libres. Dans l'interface, on parle de **scénario** et non de « mode » (les docs du repo et le contrat d'API disent encore « mode »).
-- **Scénarios génériques** : certains critères suivent le site lunaire choisi (pente et relief au scénario 1, latitude au scénario 3 seulement pour un site polaire, volcanisme renforcé pour une mer ou un tube de lave). Ils portent la mention « adapté ». *Règle proposée, à valider par Ouassim et David* : le README prévoit un seul profil de référence (`data/reference/moon-south-pole.json`) ; il en faudrait un par site lunaire.
+- **Scénarios génériques** : certains critères suivent le site lunaire choisi (pente et relief au scénario 1, latitude au scénario 3 seulement pour un site polaire, volcanisme renforcé pour une mer ou un tube de lave). Ils portent la mention « adapté ». *Règle proposée, à valider par Wassim et David* : le README prévoit un seul profil de référence (`data/reference/moon-south-pole.json`) ; il en faudrait un par site lunaire.
 - **Globes 3D** (three.js) : une Terre avec les contours des continents et une Lune générée par le code. On les fait tourner en glissant, on zoome à la molette ou en pinçant, et ils se recentrent sur le site choisi.
 - **Critères libres** : paramètres regroupés en thèmes repliables, double curseur par paramètre (intervalle, marge hachurée, sites candidats en points sous le curseur), importance en 3 niveaux, aperçu du classement en direct.
 - **États** : chargement (avec l'état de chaque source), erreur de source (réessayer ou continuer sans elle), aucun résultat.
@@ -142,7 +142,7 @@ Le filtre par plage de notes, le trio comparé, les verdicts et la portée des t
 
 - [ ] Choix de la solution d'interface pour l'application.
 - [ ] Terme « scénario » dans l'API (`scenario`, `/api/scenarios`) ou seulement dans l'interface ?
-- [ ] Un profil de référence par site lunaire (et non le seul pôle Sud), et la règle d'adaptation des critères (Ouassim, David).
+- [ ] Un profil de référence par site lunaire (et non le seul pôle Sud), et la règle d'adaptation des critères (Wassim, David).
 - [ ] `label`, `help`, `family`, `source`, `moonEquivalent` servis par `/api/parameters`, ou fichier de textes côté front ?
 - [ ] `kind` du site (analogue connu, témoin, peu étudié) fourni par `data/candidates.json` et renvoyé par l'API.
 - [ ] `excluded` renvoyé par `/api/analyze` plutôt que de retirer les sites végétalisés (le témoin Amazonie doit rester visible).

@@ -45,7 +45,7 @@ export function parseSites(raw: unknown, onSkip?: (reason: string) => void): Sit
 }
 
 /**
- * Sites interrogés : data/candidates.json (Ouassim) s'il existe, sinon les sites de data/fixtures/ (coordonnées seulement :
+ * Sites interrogés : data/candidates.json (Wassim) s'il existe, sinon les sites de data/fixtures/ (coordonnées seulement :
  * les valeurs viennent toujours des connecteurs).
  */
 export async function loadSites(dataDir: string, onNote?: (message: string) => void): Promise<Site[]> {

@@ -25,7 +25,7 @@ Prérequis : une route qui renvoie les valeurs brutes de tous les sites (à ajou
 | 3 | Modes présentés comme des missions | Cartes illustrées « Tester un rover », « Calibrer un sismomètre », « Fonder une colonie », avec l'enjeu en une phrase | composants React, textes de Yann | S |
 | 4 | Signature radar | Graphique en étoile du site superposé au profil lunaire : on voit d'un coup d'œil où il colle et où il s'écarte | Recharts ou visx (RadarChart) | M |
 | 5 | Vue « jumeau lunaire » | Écran partagé : imagerie du site (NASA GIBS) à gauche, région du pôle Sud (Moon Trek WMTS) à droite, jauges d'écart par paramètre au centre | Leaflet × 2, tuiles GIBS et Moon Trek | M |
-| 6 | Sites peu étudiés mis en avant | Badge « découverte », fiche narrative (pourquoi ce site, ce qu'on pourrait y tester) | contenu d'Ouassim, explication par Claude (bonus API) | M |
+| 6 | Sites peu étudiés mis en avant | Badge « découverte », fiche narrative (pourquoi ce site, ce qu'on pourrait y tester) | contenu d'Wassim, explication par Claude (bonus API) | M |
 | 7 | Globe 3D | La Terre tourne, les sites sont des points lumineux dont la taille et la couleur suivent le score ; changer de mode les anime | globe.gl (three.js) | L |
 
 S = quelques heures, M = une demi-journée, L = une journée.
@@ -42,6 +42,6 @@ S = quelques heures, M = une demi-journée, L = une journée.
 
 - **Yann** : parcours et maquettes des éléments 1 à 6, textes des missions.
 - **François** : éléments 1 à 5, puis 7.
-- **Ouassim** : contenu des fiches « découverte » (élément 6).
+- **Wassim** : contenu des fiches « découverte » (élément 6).
 - **Jesus** : route des valeurs brutes de tous les sites, explication par Claude.
 - **David** : partage du moteur entre API et front, arbitrage de l'ordre.

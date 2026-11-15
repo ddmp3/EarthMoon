@@ -93,4 +93,4 @@ Détail : **[docs/architecture.md](docs/architecture.md)**. L'API publique (Open
 
 ## 👥 Équipe
 
-Équipe locale **Cyber&Space Montréal** : François, Jesus, Ouassim, Yann, Xavier, David.
+Équipe locale **Cyber&Space Montréal** : François, Jesus, Wassim, Yann, Xavier, David.

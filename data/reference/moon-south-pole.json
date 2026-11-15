@@ -2,7 +2,7 @@
   "id": "moon-south-pole",
   "body": "moon",
   "name": "Pôle Sud lunaire",
-  "status": "brouillon : seules les valeurs sourcées sont renseignées, le reste est à compléter avec Ouassim (voir todo)",
+  "status": "brouillon : seules les valeurs sourcées sont renseignées, le reste est à compléter avec Wassim (voir todo)",
   "params": {
     "latitude_abs": {
       "min": 84,

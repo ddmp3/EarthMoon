@@ -45,19 +45,19 @@ Points d'équipe de 10 minutes : sam 20 h, sam minuit, dim 9 h, dim 12 h.
 | Qui attend | Tâche | Attend | Prévu | Pour avancer sans attendre |
 |---|---|---|---|---|
 | David | Site en ligne (v0) | Jesus : squelette API ; François : squelette web | sam 17 h 30 | Appliquer Terraform tout de suite (image de démonstration déjà prévue), pousser les vraies images après fusion |
-| David | Profil lunaire | Ouassim : specs rovers lunaires | sam 18 h 30 | Partir des intervalles de `docs/scenarios.md` |
+| David | Profil lunaire | Wassim : specs rovers lunaires | sam 18 h 30 | Partir des intervalles de `docs/scenarios.md` |
 | David | `/api/analyze` branché | Jesus : connecteurs POWER, USGS, DEM, MODIS | sam 20 h – 22 h | Connecteur factice qui lit les fixtures, remplacé source par source |
 | David | Version de démo | François : fiche site | dim minuit | Redéployer ce qui est fusionné à chaque jalon |
-| Jesus | Routes `/parameters`, `/modes`, `/sites` | Ouassim : `data/candidates.json` | sam 21 h | Servir les 3 sites des fixtures |
+| Jesus | Routes `/parameters`, `/modes`, `/sites` | Wassim : `data/candidates.json` | sam 21 h | Servir les 3 sites des fixtures |
 | Jesus | Explication par Claude (bonus) | David : `/api/analyze` | sam 23 h 30 | Préparer l'appel avec un site des fixtures |
 | François | Écran d'accueil | Yann : maquettes, textes d'aide | sam 17 h 30 / 20 h | Écran simple d'après `docs/scenarios.md`, textes provisoires dans un fichier séparé |
 | François | Carte, fiche site | David : `/api/analyze` | sam 23 h 30 | Lire les fixtures (même format que la réponse de l'API) |
 | François | Formulaire mode 4 | Yann : textes d'aide | sam 20 h | Paramètres tirés de `docs/scenarios.md`, textes branchés plus tard |
-| Ouassim | Vérification des classements | David : version déployée | dim 12 h | API en local depuis `main` dès que `/api/analyze` est fusionné |
+| Wassim | Vérification des classements | David : version déployée | dim 12 h | API en local depuis `main` dès que `/api/analyze` est fusionné |
 | Yann | Tests de la v0 | David : site en ligne | sam 20 h | Tester les écrans en local avec les fixtures |
 | Yann | Feu vert du gel | David : version de démo | dim 12 h | Dérouler le plan de test sur la dernière version déployée |
 | Xavier | Contrôle du site en ligne | David : site en ligne | sam 20 h | Relire la config CORS et la limitation de débit dans le code |
-| Xavier | Script et vidéo de démo | François : fiche site ; Ouassim : 3 sites | dim minuit / 11 h | Script sur les maquettes de Yann, vidéo en dernier |
+| Xavier | Script et vidéo de démo | François : fiche site ; Wassim : 3 sites | dim minuit / 11 h | Script sur les maquettes de Yann, vidéo en dernier |
 
 La page de suivi montre en direct, pour chaque tâche, ce qu'elle attend (vert quand c'est livré) et ce qu'elle débloque.
 
@@ -87,7 +87,7 @@ Points à trancher à l'intégration :
 - [ ] Sam 20 h au plus tard : intégration complète, puis `infra/terraform/deploy.sh` exécuté, URL de l'API et du front publiques (#3).
 - [x] Moteur de score dans `apps/api/src/scoring/` : fonction pure (critères + valeurs → scores), modes 1 à 3, tests unitaires (PR #38, en revue). Vérification croisée avec le scorer Python de Jesus : résultats identiques.
 - [ ] Route `POST /api/analyze` branchée sur le moteur et les adaptateurs de Jesus. *Fait : service `analyze()` dans `apps/api/src/analyze/` (validation, fusion des connecteurs, tri) et connecteur factice sur les fixtures. Reste : la route Express, une fois le squelette de Jesus fusionné.*
-- [ ] `data/reference/moon-south-pole.json` avec Ouassim. *Fait : brouillon avec les valeurs sourcées (latitude, froid des zones d'ombre, absence d'atmosphère). Reste : pente, température de jour, séismes, ensoleillement (liste `todo` du fichier).*
+- [ ] `data/reference/moon-south-pole.json` avec Wassim. *Fait : brouillon avec les valeurs sourcées (latitude, froid des zones d'ombre, absence d'atmosphère). Reste : pente, température de jour, séismes, ensoleillement (liste `todo` du fichier).*
 - [ ] Revue de code et fusion des PR (ce soir), déploiements de l'intégration (sam 20 h, sam minuit, dim 12 h) et arbitrage des priorités.
 
 ## Jesus — API et sources de données (dev + IA)
@@ -114,10 +114,10 @@ Points à trancher à l'intégration :
 - [ ] Fiche site : score global, score par critère, « correspond / ne correspond pas », usage possible.
 - [ ] Formulaire du mode 4 : choix des paramètres, intervalles, poids.
 
-## Ouassim — expertise métier (robotique, instruments) et données
+## Wassim — expertise métier (robotique, instruments) et données
 
 - [ ] Vérifier les intervalles des modes 1 et 2 de [scenarios.md](scenarios.md) : chercher avec Claude les spécifications des rovers lunaires (pente franchissable, températures) et des instruments (forage, sismomètres Apollo) ; noter chaque source.
-- [ ] Créer `data/candidates.json` : les 7 sites de validation + 30 à 50 sites peu étudiés (format : [contrats.md §1](contrats.md#1-sites-candidats--datacandidatesjson-ouassim)).
+- [ ] Créer `data/candidates.json` : les 7 sites de validation + 30 à 50 sites peu étudiés (format : [contrats.md §1](contrats.md#1-sites-candidats--datacandidatesjson-wassim)).
 - [ ] Sam 23 h 30 : écrire le classement attendu par mode (quels sites en haut, lesquels en bas, et pourquoi).
 - [ ] Avec David : valeurs lunaires de référence (Diviner, LOLA, LEND) dans `data/reference/moon-south-pole.json`, avec les sources.
 - [ ] Dimanche : lancer les 4 modes et vérifier le classement (analogues connus en haut, Amazonie en bas) ; signaler les écarts.
@@ -147,7 +147,7 @@ Points à trancher à l'intégration :
 |---|---|
 | Une source est lente ou en panne pendant la démo | Cache mémoire préchauffé avant la démo ; vidéo de secours |
 | Le calcul de pente sur COG prend trop de temps | Fenêtre réduite, ou NASADEM ; en dernier recours, pente retirée du mode concerné |
-| Les scores ne retrouvent pas les analogues connus | Ouassim et David ajustent les intervalles dim matin |
+| Les scores ne retrouvent pas les analogues connus | Wassim et David ajustent les intervalles dim matin |
 | Retard sur le front | Le mode 4 passe en bonus ; les modes 1 à 3 d'abord |
 | Déploiement Azure bloqué | Démo en local avec `docker compose` |
 
