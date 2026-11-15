@@ -4,6 +4,7 @@ import type { Connector } from "../analyze/analyze.js";
 import { createFixtureConnector, loadFixtures } from "../analyze/fixtures.js";
 import { withCache } from "./cache.js";
 import { coordinatesConnector } from "./coordinates.js";
+import { createGvpConnector } from "./gvp.js";
 import { createPowerConnector } from "./power.js";
 import { createPrecomputedConnector, loadPrecomputed, PRECOMPUTED_FILE, PRECOMPUTED_PARAMS } from "./precomputed.js";
 import { createUsgsConnector } from "./usgs.js";
@@ -21,7 +22,7 @@ const exists = (p: string): Promise<boolean> =>
  * - Mode normal : NASA POWER + USGS (avec cache), plus Copernicus DEM et MODIS précalculés si
  *   data/candidates-precomputed.json existe (produit par tools/precompute/).
  * - useFixtures : uniquement data/fixtures/site-values.json (valeurs surtout fictives, jamais pour la démo).
- * Source pas encore branchée (listée dans `notes`) : Smithsonian GVP (volcano_distance).
+ * Smithsonian GVP (volcano_distance) : liste des volcans chargée une fois, distance calculée localement.
  */
 export async function buildSources(dataDir: string, useFixtures: boolean): Promise<SourceSet> {
   if (useFixtures) {
@@ -32,9 +33,14 @@ export async function buildSources(dataDir: string, useFixtures: boolean): Promi
       notes: ["USE_FIXTURES actif : valeurs d'exemple, pas pour la démo"],
     };
   }
-  const connectors: Connector[] = [coordinatesConnector, withCache(createPowerConnector()), withCache(createUsgsConnector())];
-  const names = ["coordonnées", "NASA POWER", "USGS Earthquake Catalog"];
-  const notes = ["Smithsonian GVP (volcano_distance) : pas encore branché, ce critère sera « missing »"];
+  const connectors: Connector[] = [
+    coordinatesConnector,
+    withCache(createPowerConnector()),
+    withCache(createUsgsConnector()),
+    withCache(createGvpConnector()),
+  ];
+  const names = ["coordonnées", "NASA POWER", "USGS Earthquake Catalog", "Smithsonian GVP"];
+  const notes: string[] = [];
   const precomputedFile = path.join(dataDir, PRECOMPUTED_FILE);
   if (await exists(precomputedFile)) {
     const sites = await loadPrecomputed(precomputedFile);
