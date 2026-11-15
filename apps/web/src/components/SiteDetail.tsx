@@ -287,20 +287,20 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
                         {info.label}
                         <small>{info.help}</small>
                       </th>
-                      <td className="num">{formatValue(criterion.value, info.unit)}</td>
-                      <td className="num moon-cell">
+                      <td className="num" data-label={t.colEarth}>{formatValue(criterion.value, info.unit)}</td>
+                      <td className="num moon-cell" data-label={t.colMoon}>
                         {moon ?? <span className="moon-note">{MOON_NOTES[criterion.param] ?? t.noLunarRef}</span>}
                       </td>
-                      <td>
+                      <td className="match-cell" data-label={t.colMatch}>
                         <span className="match-bar">
                           <i className={`tone-${criterion.verdict}`} style={{ width: `${Math.round(criterion.score * 100)}%` }} />
                         </span>
                         <span className="num match-value">{Math.round(criterion.score * 100)}%</span>
                       </td>
-                      <td>
+                      <td data-label={t.colVerdict}>
                         <span className={`pill tone-${criterion.verdict}`}>{t.verdicts[criterion.verdict]}</span>
                       </td>
-                      <td className="source-cell">{sourceName(detail?.valueSources[criterion.param], sources)}</td>
+                      <td className="source-cell" data-label={t.colSource}>{sourceName(detail?.valueSources[criterion.param], sources)}</td>
                     </tr>
                   )
                 })}
@@ -320,15 +320,15 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
                           {text.label}
                           <small>{text.effect}</small>
                         </th>
-                        <td>{text.earth}</td>
-                        <td className="moon-cell">{text.moon}</td>
-                        <td>
+                        <td data-label={t.colEarth}>{text.earth}</td>
+                        <td className="moon-cell" data-label={t.colMoon}>{text.moon}</td>
+                        <td className="cell-empty">
                           <span className="match-bar match-bar-none" />
                         </td>
-                        <td>
+                        <td data-label={t.colVerdict}>
                           <span className="pill tone-limit">{t.limitsVerdict}</span>
                         </td>
-                        <td className="source-cell">{limit.source.split(' — ')[0]}</td>
+                        <td className="source-cell" data-label={t.colSource}>{limit.source.split(' — ')[0]}</td>
                       </tr>
                     )
                   })}
