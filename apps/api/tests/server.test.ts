@@ -85,7 +85,7 @@ describe("HTTP server", () => {
     expect(body.sites.map((s) => s.total)).toEqual([93, 87, 0]);
     expect(body.sites[2]?.excluded).toBe("vegetation");
     for (const s of body.sites) {
-      expect(Object.keys(s).filter((k) => k !== "excluded")).toEqual(["id", "name", "lat", "lon", "role", "criteria", "total"].sort((a, b) => Object.keys(s).indexOf(a) - Object.keys(s).indexOf(b)));
+      expect(Object.keys(s).filter((k) => k !== "excluded" && k !== "stability")).toEqual(["id", "name", "lat", "lon", "role", "criteria", "total"].sort((a, b) => Object.keys(s).indexOf(a) - Object.keys(s).indexOf(b)));
       for (const c of s.criteria) expect(Object.keys(c)).toEqual(["param", "value", "score", "verdict"]);
     }
   });

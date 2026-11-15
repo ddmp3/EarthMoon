@@ -268,3 +268,16 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
   .mission-card, .mission-card img { transition: none; }
   .spinner { animation: none; }
 }
+
+/* Rank stability (sensitivity analysis) and screening note */
+.stab { display: inline-flex; gap: 3px; margin-left: 8px; vertical-align: middle; }
+.stab i { width: 6px; height: 6px; border-radius: 50%; background: var(--line); }
+.stab i.on { background: var(--sc, var(--muted)); }
+.stab-high { --sc: var(--good); }
+.stab-medium { --sc: var(--mid); }
+.stab-low { --sc: var(--low); }
+.stab-text { color: var(--sc); }
+.screening-note { margin: 0 0 8px; padding: 0 10px; color: var(--muted); font-size: 0.78rem; max-width: 60ch; }
+.confidence { grid-column: 1 / -1; display: grid; gap: 4px; color: var(--muted); font-size: 0.85rem; max-width: 78ch; }
+.confidence p { margin: 0; }
+.confidence small { display: block; font-size: 0.75rem; opacity: 0.8; }

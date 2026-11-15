@@ -24,7 +24,7 @@ const en = {
   loadingHint: 'The first run takes a few seconds; the next ones are instant.',
   errorTitle: 'The analysis could not run',
   retry: 'Try again',
-  roles: { validation: 'Known analog', candidate: 'Understudied site', negative: 'Negative control' },
+  roles: { validation: 'Known analog', candidate: 'Candidate to validate', negative: 'Negative control' },
   verdicts: { match: 'Matches', partial: 'Partly matches', mismatch: 'Does not match', missing: 'No data' },
   score: 'Analog score',
   criteriaEvaluated: 'criteria evaluated',
@@ -60,8 +60,16 @@ const en = {
   imagesText:
     'Mission photographs: NASA (Apollo 14, 15 and 17; Artemis II; Clementine mosaic NASA/JPL/USGS). Site imagery: Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0; Landsat WELD, NASA GIBS. Relief: Copernicus DEM GLO-30 and LRO LOLA. Base map: NASA Blue Marble, NASA GIBS.',
   footer: 'A NASA Space Apps Challenge 2026 project · Parts of this project were built with AI assistance (Claude, Microsoft Copilot).',
-  bareSoil: 'Exclude vegetated sites',
-  bareSoilHint: 'Bare ground filter (NDVI ≤ 0.2)',
+  bareSoil: 'Penalize vegetated sites',
+  bareSoilHint: 'NDVI above 0.2 lowers the score; dense vegetation (0.6+) is excluded',
+  screeningNote:
+    'A screening tool: scores rank sites worth studying, they do not approve a mission. Weights and ranges are expert estimates, so each rank comes with a stability reading.',
+  stabilityTitle: 'Rank stability',
+  stabilityLevels: { high: 'Stable', medium: 'Moderate', low: 'Fragile' },
+  stabilityLine: (rank: number, low: number, high: number) =>
+    low === high ? `Ranked #${rank}; it stays #${rank} in 80% of scenarios.` : `Ranked #${rank}; in 80% of scenarios it lands between #${low} and #${high}.`,
+  stabilityHint: 'Scenarios: weights ±50%, tolerances ±25%, range bounds ±10%, 500 runs.',
+  vegetationNote: (pct: number) => `Vegetation lowers this score to ${pct}% of its value (NDVI above 0.2). A single-point NDVI can misjudge a large site.`,
   instrument: 'Instrument',
   allInstruments: 'All instruments',
   instruments: { drill: 'Drill', wind: 'Wind', gas: 'Gas', seismograph: 'Seismometer', thermal: 'Thermal' },

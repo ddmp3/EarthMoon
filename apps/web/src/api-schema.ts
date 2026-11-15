@@ -441,7 +441,7 @@ export interface components {
             /** @description Mode 4: each parameter at most once; each criterion has min, max or both. */
             criteria?: components["schemas"]["Criterion"][];
             /**
-             * @description Bare-soil filter (NDVI ≤ 0.2). Can be disabled in mode 4.
+             * @description Bare-soil filter. No penalty up to NDVI 0.2, linear penalty down to 0 at NDVI 0.6 (excluded). Can be disabled in mode 4.
              * @default true
              */
             bareSoilOnly: boolean;
@@ -457,15 +457,36 @@ export interface components {
             total: number;
             criteria: components["schemas"]["CriterionScore"][];
             /**
-             * @description Present if the bare-soil filter excludes the site (total forced to 0).
+             * @description Present if the bare-soil filter excludes the site (dense vegetation, NDVI ≥ 0.6; total forced to 0).
              * @enum {string}
              */
             excluded?: "vegetation";
+            /** @description Present if the bare-soil filter lowered the total (NDVI between 0.2 and 0.6). The total is multiplied by this factor. */
+            vegetationFactor?: number;
+            stability?: components["schemas"]["Stability"];
+        };
+        /** @description Rank of the site when weights, tolerances and interval bounds are perturbed (see AnalyzeResponse.sensitivity). Absent for excluded sites. */
+        Stability: {
+            /** @description Best-case rank (10th percentile of the scenarios). */
+            rankP10: number;
+            rankMedian: number;
+            /** @description Worst-case rank (90th percentile of the scenarios). */
+            rankP90: number;
+            /** @description Share of scenarios where the site stays in the top half of the ranked sites. */
+            topHalfShare: number;
+        };
+        /** @description How the stability of the ranks was computed. */
+        Sensitivity: {
+            runs: number;
+            /** @description Fixed seed */
+            seed: number;
+            perturbation: string;
         };
         AnalyzeResponse: {
             /** @enum {string} */
             mode: "robotics" | "calibration" | "colony" | "custom";
             sites: components["schemas"]["AnalyzedSite"][];
+            sensitivity: components["schemas"]["Sensitivity"];
         };
         SiteDetail: components["schemas"]["AnalyzedSite"] & {
             terrain?: string;

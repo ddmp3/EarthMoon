@@ -11,6 +11,7 @@ import {
   type SiteVisual,
   type VisualManifest,
 } from '../api'
+import { ConfidenceNotes } from './Stability'
 import { formatNumber, useT } from '../i18n'
 import { scoreTone, siteName } from '../shared'
 
@@ -193,6 +194,8 @@ function Radar({ site }: { site: SiteResult }) {
 interface Props {
   site: SiteResult
   rank: number
+  /** Number of ranked (non-excluded) sites, to read the rank range. */
+  rankedTotal: number
   detail: SiteDetailData | null
   detailError: string | null
   visual: SiteVisual | undefined
@@ -201,7 +204,7 @@ interface Props {
   limits: EarthLimit[]
 }
 
-export function SiteDetail({ site, rank, detail, detailError, visual, manifest, sources, limits }: Props) {
+export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visual, manifest, sources, limits }: Props) {
   const { t } = useT()
   const evaluated = site.criteria.filter((criterion) => criterion.verdict !== 'missing').length
   const count = (verdict: string) => site.criteria.filter((criterion) => criterion.verdict === verdict).length
@@ -228,6 +231,7 @@ export function SiteDetail({ site, rank, detail, detailError, visual, manifest, 
             </small>
           </span>
         </div>
+        <ConfidenceNotes rank={rank} site={site} total={rankedTotal} />
         <ul className="verdict-summary">
           {(['match', 'partial', 'mismatch', 'missing'] as const).map((verdict) =>
             count(verdict) > 0 ? (

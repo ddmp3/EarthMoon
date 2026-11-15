@@ -49,7 +49,8 @@ curl -X POST http://localhost:3001/api/analyze -H "content-type: application/jso
 
 - Send either `mode` or `criteria` (mode 4), never both. `total` is out of 100, sites are sorted by descending `total`.
 - `verdict`: `match` (≥ 0.7), `partial` (0.4 to 0.7), `mismatch` (< 0.4), `missing` (no value, excluded from the total).
-- The bare-soil filter (`bareSoilOnly`, on by default) keeps vegetated sites in the list with `total: 0` and `"excluded": "vegetation"`, last.
+- The vegetation filter (`bareSoilOnly`, on by default) multiplies the total by a factor: 1 up to NDVI 0.2, linear down to 0 at NDVI 0.6. A reduced total comes with `vegetationFactor`; at NDVI 0.6 and above the site stays in the list with `total: 0` and `"excluded": "vegetation"`, last.
+- Each ranked site has `stability`: its rank (10th percentile, median, 90th percentile) over 500 scenarios where weights (±50%), tolerances (±25%) and interval bounds (±10% of the tolerance) are perturbed, and `topHalfShare`, the share of scenarios where it stays in the top half. The seed is fixed: same data, same answer. `sensitivity` in the response describes the method.
 - Errors are always `{ "error": "message" }` with 400, 404, 413, 429 or 500.
 
 ## Data

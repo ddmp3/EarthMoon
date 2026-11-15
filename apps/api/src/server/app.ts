@@ -7,7 +7,7 @@ import { analyze, collectValues } from "../analyze/analyze.js";
 import type { AnalyzeDeps } from "../analyze/analyze.js";
 import { ValidationError } from "../analyze/validate.js";
 import { moonValues } from "../analyze/moon.js";
-import { MODES, PARAM_IDS, isModeId, isVegetated, scoreSite } from "../scoring/index.js";
+import { MODES, PARAM_IDS, isModeId, scoreSite, vegetationFactor, weightedTotal } from "../scoring/index.js";
 import { SOURCES, valueSources } from "../sources/catalog.js";
 import { PARAMETERS } from "./parameters.js";
 
@@ -111,8 +111,10 @@ export function createApp(deps: AppDeps): express.Express {
     }
     try {
       const values = await collectValues(site, deps.connectors, deps.onConnectorError);
-      const { total, criteria } = scoreSite(values, MODES[mode].criteria);
-      const excluded = isVegetated(values);
+      const { criteria } = scoreSite(values, MODES[mode].criteria);
+      const factor = vegetationFactor(values);
+      const excluded = factor === 0;
+      const total = excluded ? 0 : Math.round(weightedTotal(values, MODES[mode].criteria) * factor);
       res.json({
         id: site.id,
         name: site.name,
@@ -121,9 +123,10 @@ export function createApp(deps: AppDeps): express.Express {
         role: site.role,
         ...(site.terrain ? { terrain: site.terrain } : {}),
         mode,
-        total: excluded ? 0 : total,
+        total,
         criteria,
         ...(excluded ? { excluded: "vegetation" } : {}),
+        ...(factor > 0 && factor < 1 ? { vegetationFactor: Math.round(factor * 100) / 100 } : {}),
         values,
         sources: deps.sourceNames,
         valueSources: valueSources(values, deps.useFixtures),

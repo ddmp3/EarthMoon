@@ -25,6 +25,7 @@ def test_check_mode_counts_only_expected_analogs():
     assert s["ranked"] == 4 and s["excluded"] == ["neg"] and s["negative_ok"]
     assert s["expected_met"] == ["a", "c"] and s["expected_missed"] == []
     assert s["top_candidates"][0] == ("b", "B", 85)
+    assert s["top"][0] == (1, "a", "validation", 90, "-") and s["penalized"] == []
     assert s["mean_coverage"] == 0.875
 
 
@@ -40,3 +41,29 @@ def test_overall_threshold():
     bad = {"expected_met": ["a"], "expected_missed": [("d", 9)], "negative_ok": True}
     assert not rk.overall({"m": bad})["passes"]
     assert not rk.overall({"m": {**good, "negative_ok": False}})["passes"]
+
+
+def test_chance_probability_exact():
+    # one mode, 4 sites, top half = 2, one expected analog: P(met) = 2/4
+    assert abs(rk.chance_probability([(4, 2, 1)], 1) - 0.5) < 1e-12
+    # two expected analogs both in the top half of 4 sites: C(2,2)/C(4,2) = 1/6
+    assert abs(rk.chance_probability([(4, 2, 2)], 2) - 1 / 6) < 1e-12
+    # two independent modes, each 50%, both met: 25%
+    assert abs(rk.chance_probability([(4, 2, 1), (4, 2, 1)], 2) - 0.25) < 1e-12
+    assert rk.chance_probability([(4, 2, 1)], 0) == 1.0
+
+
+def test_robustness_reports_fragile_expectations():
+    r = {"m": {"ranked": 10, "half": 5, "negative_ok": True, "expected_met": ["a"], "expected_missed": [("b", 9)],
+               "expected_shares": [("a", 0.9), ("b", 0.2)]}}
+    rb = rk.robustness(r)
+    assert abs(rb["mean_share"] - 0.55) < 1e-9 and rb["fragile"] == [("b", "m")]
+
+
+def test_check_mode_reads_stability_and_vegetation():
+    a = site("a", "validation", 90)
+    a["stability"] = {"rankP10": 1, "rankP90": 3, "topHalfShare": 1.0}
+    b = site("b", "candidate", 50)
+    b["vegetationFactor"] = 0.69
+    s = rk.check_mode([a, b], expected={"a"})
+    assert s["top"][0][4] == "1-3" and s["expected_shares"] == [("a", 1.0)] and s["penalized"] == [("b", 0.69)]

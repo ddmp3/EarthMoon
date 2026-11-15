@@ -28,7 +28,7 @@ Only parameters our sources provide exist in the app. Modes 1 to 3 preselect som
 - Criterion score: 1 inside the interval, linear decrease to 0 at distance `t`.
 - Site score: `Σ(w × score) / Σ(w)`, out of 100. Criteria with no value are excluded from the total.
 - Verdicts: score ≥ 0.7 matches, 0.4 to 0.7 partly matches, below 0.4 does not match.
-- **Common filter:** `ndvi ≤ 0.2` (bare soil); vegetated sites are ranked last with score 0. The threshold was raised from 0.1 to 0.2 after measuring 2024 MODIS NDVI on all 37 sites: at 0.1 it excluded bare deserts (Namib 0.116, Harrat Khaybar 0.109) and two NASA test sites (Black Point 0.151, Meteor Crater 0.157). At 0.2 it still excludes the Amazon (0.867), Manicouagan (0.551), Wolfe Creek (0.325), Popigai (0.241) and Gosses Bluff (0.240). Reference: NASA Earth Observatory, *Measuring Vegetation (NDVI & EVI)*.
+- **Common vegetation filter:** the total is multiplied by a factor that is 1 up to `ndvi` 0.2, decreases linearly to 0 at `ndvi` 0.6 (dense vegetation by the usual remote-sensing convention), and excludes the site (score 0, ranked last) at 0.6 and above. It used to be a hard cut at 0.2; a single-point NDVI can misjudge a large site (Manicouagan is a ring lake in a forest), so the filter now degrades the score instead of dropping the site. The 0.2 threshold was raised from 0.1 to 0.2 after measuring 2024 MODIS NDVI on all 37 sites: at 0.1 it excluded bare deserts (Namib 0.116, Harrat Khaybar 0.109) and two NASA test sites (Black Point 0.151, Meteor Crater 0.157). At 0.2 it would still have excluded the Amazon (0.867), Manicouagan (0.551), Wolfe Creek (0.325), Popigai (0.241) and Gosses Bluff (0.240); with the graded filter their factors are 0 (Amazon), 0.12, 0.69, 0.90 and 0.90. Reference: NASA Earth Observatory, *Measuring Vegetation (NDVI & EVI)*.
 
 ## Mode 1 — Robotics validation (mobility)
 
@@ -75,11 +75,11 @@ Earth sites that reproduce the conditions that make a lunar site favorable to a 
 
 ## Mode 4 — Free criteria
 
-The user picks parameters from the catalog and sets the interval, tolerance and weight of each. The bare-soil filter stays on by default and can be turned off.
+The user picks parameters from the catalog and sets the interval, tolerance and weight of each. The vegetation filter stays on by default and can be turned off.
 
 ## Candidate sites
 
-37 sites in `data/candidates.json`: 9 known analogs (Atacama, McMurdo Dry Valleys, Haughton, Mauna Kea, Svalbard, Holuhraun, Meteor Crater, Black Point, Death Valley), 1 negative control (Amazon) and 27 understudied sites in cold, arid or volcanic regions (Canadian Arctic, Greenland, Tibetan plateau, Altiplano, Gobi, Namib, volcanic fields…).
+37 sites in `data/candidates.json`: 9 known analogs (Atacama, McMurdo Dry Valleys, Haughton, Mauna Kea, Svalbard, Holuhraun, Meteor Crater, Black Point, Death Valley), 1 negative control (Amazon) and 27 candidate sites (hypotheses to validate) in cold, arid or volcanic regions (Canadian Arctic, Greenland, Tibetan plateau, Altiplano, Gobi, Namib, volcanic fields…).
 
 ## Evidence
 

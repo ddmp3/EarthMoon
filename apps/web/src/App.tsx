@@ -175,6 +175,7 @@ function App() {
                 limits={limits}
                 manifest={manifest}
                 rank={sites.findIndex((site) => site.id === selected.id) + 1}
+                rankedTotal={sites.filter((site) => !site.excluded).length}
                 site={selected}
                 sources={sources}
                 visual={manifest?.sites[selected.id]}

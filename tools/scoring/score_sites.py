@@ -10,7 +10,8 @@ Rules implemented (scenarios.md):
   * criterion score = 1 inside [min, max]; linear decay to 0 at `tolerance` away from the interval
   * total = sum(w * score) / sum(w), on 100
   * verdict: match >= 0.7 | partial 0.4-0.7 | mismatch < 0.4 | missing (value is null)
-  * common filter: sites with ndvi > 0.2 are excluded before scoring (can be turned off)
+  * common vegetation filter (can be turned off): the total is multiplied by a factor, 1 up to ndvi 0.2, linear
+    down to 0 at ndvi 0.6; at 0.6 and above the site is excluded (same rule as apps/api/src/scoring/score.ts)
 Not defined by the contract, so made explicit here: a MISSING value is left out of the weighted mean
 (missing="skip", default) or counted as 0 (missing="zero"). To be confirmed with the team.
 """
@@ -21,6 +22,7 @@ import math
 import sys
 
 NDVI_MAX = 0.2
+NDVI_DENSE = 0.6
 
 
 def C(param, lo=None, hi=None, tolerance=0.0, weight=1.0) -> dict:
@@ -77,8 +79,16 @@ def verdict(score: float) -> str:
     return "match" if score >= 0.7 else "partial" if score >= 0.4 else "mismatch"
 
 
-def score_site(values: dict, criteria: list[dict], missing: str = "skip") -> dict:
-    """values: ParamValues ({param: number | null}). Returns {"total": 0-100, "criteria": [CriterionScore]}."""
+def vegetation_factor(ndvi) -> float:
+    """1 up to NDVI 0.2, linear decrease to 0 at NDVI 0.6; 1 if NDVI is unknown."""
+    if not _is_number(ndvi) or ndvi <= NDVI_MAX:
+        return 1.0
+    return max(0.0, 1.0 - (ndvi - NDVI_MAX) / (NDVI_DENSE - NDVI_MAX))
+
+
+def score_site(values: dict, criteria: list[dict], missing: str = "skip", factor: float = 1.0) -> dict:
+    """values: ParamValues ({param: number | null}). Returns {"total": 0-100, "criteria": [CriterionScore]}.
+    `factor` (0 to 1) multiplies the total (vegetation filter)."""
     if missing not in ("skip", "zero"):
         raise ValueError("missing must be 'skip' or 'zero'")
     out, num, den = [], 0.0, 0.0
@@ -96,13 +106,14 @@ def score_site(values: dict, criteria: list[dict], missing: str = "skip") -> dic
         out.append({"param": c["param"], "value": v, "score": round(s, 3), "verdict": verdict(s)})
         num += w * s
         den += w
-    return {"total": round(100 * num / den) if den > 0 else 0, "criteria": out}
+    return {"total": round(100 * num / den * factor) if den > 0 else 0, "criteria": out}
 
 
 def analyze(sites: list[dict], mode: str | None = None, criteria: list[dict] | None = None,
             ndvi_filter: bool = True, missing: str = "skip") -> dict:
     """sites: [{id, name, lat, lon, role, values}]. Returns the POST /api/analyze response, sorted by total desc.
-    Sites removed by the NDVI filter are listed under "excluded" (extra key, not in the contract)."""
+    Sites with dense vegetation (factor 0) are listed under "excluded" (extra key, not in the contract);
+    a reduced factor is reported as "vegetation_factor" on the site."""
     if criteria is None:
         if mode not in MODES:
             raise ValueError(f"mode must be one of {sorted(MODES)} (or pass criteria)")
@@ -111,12 +122,16 @@ def analyze(sites: list[dict], mode: str | None = None, criteria: list[dict] | N
     for s in sites:
         vals = s.get("values") or {}
         ndvi = vals.get("ndvi")
-        if ndvi_filter and _is_number(ndvi) and ndvi > NDVI_MAX:
-            excluded.append({"id": s["id"], "name": s.get("name"), "reason": f"ndvi {ndvi} > {NDVI_MAX}"})
+        factor = vegetation_factor(ndvi) if ndvi_filter else 1.0
+        if factor == 0:
+            excluded.append({"id": s["id"], "name": s.get("name"), "reason": f"ndvi {ndvi} >= {NDVI_DENSE}"})
             continue
-        r = score_site(vals, criteria, missing)
-        ranked.append({"id": s["id"], "name": s.get("name"), "lat": s.get("lat"), "lon": s.get("lon"),
-                       "role": s.get("role"), "total": r["total"], "criteria": r["criteria"]})
+        r = score_site(vals, criteria, missing, factor)
+        site = {"id": s["id"], "name": s.get("name"), "lat": s.get("lat"), "lon": s.get("lon"),
+                "role": s.get("role"), "total": r["total"], "criteria": r["criteria"]}
+        if factor < 1:
+            site["vegetation_factor"] = round(factor, 2)
+        ranked.append(site)
     ranked.sort(key=lambda x: (-x["total"], x["id"]))
     res = {"mode": mode if mode in MODES else "custom", "sites": ranked}
     if excluded:

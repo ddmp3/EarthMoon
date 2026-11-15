@@ -85,6 +85,35 @@ def run(web: str, api: str) -> None:
             return f"{len(sites)} sites, first {sites[0]['id']} ({sites[0]['total']}), {missing} criteria without a value"
         return fn
 
+    def stability():
+        sites = analyses.get("robotics")
+        assert sites, "robotics analysis missing (TF-04 failed?)"
+        code, _, b = http(f"{api}/api/analyze", "POST", {"mode": "robotics"})
+        body = json.loads(b)
+        meta = body["sensitivity"]
+        assert meta["runs"] >= 100 and "weights" in meta["perturbation"], "sensitivity method not described"
+        ranked = [s for s in body["sites"] if not s.get("excluded")]
+        for s in ranked:
+            st = s["stability"]
+            assert 1 <= st["rankP10"] <= st["rankMedian"] <= st["rankP90"] <= len(ranked), f"{s['id']}: inconsistent rank range"
+            assert 0 <= st["topHalfShare"] <= 1, f"{s['id']}: topHalfShare outside 0-1"
+        assert not any("stability" in s for s in body["sites"] if s.get("excluded")), "excluded site has a rank range"
+        again = json.loads(http(f"{api}/api/analyze", "POST", {"mode": "robotics"})[2])
+        assert [s.get("stability") for s in again["sites"]] == [s.get("stability") for s in body["sites"]], "not deterministic"
+        stable = sum(1 for s in ranked if s["stability"]["rankP90"] - s["stability"]["rankP10"] <= 2)
+        return f"{len(ranked)} ranked sites, {stable} with a rank range of 2 places or less"
+
+    def vegetation():
+        code, _, b = http(f"{api}/api/analyze", "POST", {"mode": "colony"})
+        sites = json.loads(b)["sites"]
+        penalized = [s for s in sites if "vegetationFactor" in s]
+        assert penalized, "no site penalized by vegetation (graded filter missing?)"
+        assert all(0 < s["vegetationFactor"] < 1 and not s.get("excluded") for s in penalized), "inconsistent factor"
+        off = json.loads(http(f"{api}/api/analyze", "POST", {"mode": "colony", "bareSoilOnly": False})[2])["sites"]
+        raw = {s["id"]: s["total"] for s in off}
+        assert all(s["total"] <= raw[s["id"]] for s in penalized), "penalty raised a score"
+        return ", ".join(f"{s['id']} ×{s['vegetationFactor']}" for s in penalized)
+
     def custom():
         crit = [{"param": "t2m_mean", "max": -10, "tolerance": 10, "weight": 2}, {"param": "wind", "max": 3, "tolerance": 3, "weight": 1}]
         code, _, b = http(f"{api}/api/analyze", "POST", {"criteria": crit, "bareSoilOnly": False})
@@ -164,6 +193,8 @@ def run(web: str, api: str) -> None:
     check("TF-11", "Sourced lunar profile and Earth limits", moon_reference)
     check("TF-12", "API documentation", docs)
     check("TF-13", "Real images: NASA photos, site views, lunar twins", visuals)
+    check("TF-14", "Rank stability: ranges consistent, deterministic, none for excluded sites", stability)
+    check("TF-15", "Graded vegetation filter: penalized sites kept, never boosted", vegetation)
 
 
 def main(argv=None) -> int:
