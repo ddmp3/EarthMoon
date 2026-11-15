@@ -5,12 +5,17 @@ import fixtureJson from '../../../data/fixtures/site-values.json'
 import './App.css'
 import {
   analyzeSites,
-  calibrationCriteria,
   calibrationInstruments,
+  getEarthLimits,
+  getModeCriteria,
   getSiteDetails,
+  getSources,
   parameterCatalog,
   type CalibrationInstrument,
   type Criterion,
+  type DataSource,
+  type EarthLimit,
+  type MoonValue,
   type FixtureSite,
   type ModeId,
   type ParamId,
@@ -30,25 +35,25 @@ const modes: {
     id: 'robotics',
     number: '01',
     title: 'Validation robotique',
-    description: 'Trouver un terrain pour tester la mobilité d’un rover.',
+    description: 'Trouver un terrain pour tester la mobilité d’un rover : pentes et rugosité comparables au pôle Sud lunaire, sol sec, froid.',
   },
   {
     id: 'calibration',
     number: '02',
     title: 'Calibration d’instruments',
-    description: 'Comparer des conditions pour calibrer des instruments.',
+    description: 'Calibrer un instrument (forage, vent, gaz, sismographe, thermique) dans un environnement sec, calme et froid.',
   },
   {
     id: 'colony',
     number: '03',
     title: 'Colonie autosuffisante',
-    description: 'Explorer les conditions utiles à une base lunaire.',
+    description: 'Retrouver les conditions d’une base lunaire : sol gelé (eau), lumière polaire, terrain plat et stable.',
   },
   {
     id: 'custom',
     number: '04',
     title: 'Critères libres',
-    description: 'Composer une analyse avec vos propres critères.',
+    description: 'Choisir vos paramètres, leurs intervalles et leur poids : chaque paramètre a son aide.',
   },
 ]
 
@@ -130,6 +135,21 @@ function coverageLabel(site: SiteView) {
   return ` · ${evaluatedCount(site)}/${site.criteria.length} critères`
 }
 
+function formatMoon(value: MoonValue) {
+  const unit = value.unit ? ` ${value.unit}` : ''
+  const fmt = (n: number) => n.toLocaleString('fr-CA', { maximumFractionDigits: 2 })
+  if (value.min !== undefined && value.max !== undefined) {
+    return value.min === value.max ? `${fmt(value.min)}${unit}` : `${fmt(value.min)} à ${fmt(value.max)}${unit}`
+  }
+  if (value.min !== undefined) return `≥ ${fmt(value.min)}${unit}`
+  return `≤ ${fmt(value.max as number)}${unit}`
+}
+
+function sourceLabel(id: string, sources: DataSource[]) {
+  if (id === 'fixtures') return 'données d’exemple (pas pour la démo)'
+  return sources.find((source) => source.id === id)?.name ?? id
+}
+
 /** Noms des sources renvoyés par GET /api/sites/{id} (tableau de chaînes). */
 function sourceNames(sources: unknown): string[] {
   return Array.isArray(sources)
@@ -146,7 +166,7 @@ function toFixtureResult(site: FixtureSite): SiteView {
     role: site.role,
     total: null,
     criteria: [],
-    ...(typeof site.values.ndvi === 'number' && site.values.ndvi > 0.1
+    ...(typeof site.values.ndvi === 'number' && site.values.ndvi > 0.2
       ? { excluded: 'vegetation' as const }
       : {}),
     values: site.values,
@@ -170,6 +190,18 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [siteDetailState, setSiteDetailState] = useState<SiteDetailLoadState | null>(null)
+  const [dataSources, setDataSources] = useState<DataSource[]>([])
+  const [earthLimits, setEarthLimits] = useState<EarthLimit[]>([])
+
+  // Catalogue des sources et limites de l'analogie : chargés une fois ; en cas d'échec, la page reste utilisable.
+  useEffect(() => {
+    let active = true
+    getSources().then((list) => active && setDataSources(list)).catch(() => undefined)
+    getEarthLimits().then((list) => active && setEarthLimits(list)).catch(() => undefined)
+    return () => {
+      active = false
+    }
+  }, [])
 
   const selectedSite = sites.find((site) => site.id === selectedSiteId) ?? null
   const selectedModeDetails = modes.find((mode) => mode.id === selectedMode)
@@ -270,7 +302,7 @@ function App() {
           ? { criteria: buildCustomCriteria(), bareSoilOnly }
           : selectedMode === 'calibration' && calibrationInstrument !== 'all'
             ? {
-              criteria: calibrationCriteria
+              criteria: (await getModeCriteria('calibration'))
                 .filter((criterion) => criterion.group === calibrationInstrument)
                 .map(({ group: _group, ...criterion }) => criterion),
                 bareSoilOnly,
@@ -423,7 +455,7 @@ function App() {
             <span>
               <strong>Exclure les sites végétalisés</strong>
               <small>
-                Filtre sol nu (NDVI ≤ 0,1). Désactivez-le pour inclure ces sites.
+                Filtre sol nu (NDVI ≤ 0,2). Désactivez-le pour inclure ces sites.
               </small>
             </span>
           </label>
@@ -468,6 +500,9 @@ function App() {
                         </option>
                       ))}
                     </select>
+                    <small className="param-help">
+                      {parameterCatalog.find((parameter) => parameter.id === criterion.param)?.help}
+                    </small>
                   </label>
                   <div className="criterion-inputs">
                     <label>
@@ -583,7 +618,7 @@ function App() {
                 <strong>Aperçu de développement — ne pas utiliser en démo</strong>
                 <p>
                   Valeurs de test, aucun score calculé. Les sites au NDVI supérieur à
-                  0,1 sont marqués comme exclus lorsque le filtre est actif.
+                  0,2 sont marqués comme exclus lorsque le filtre est actif.
                 </p>
               </div>
             </div>
@@ -745,9 +780,19 @@ function App() {
                     const parameter = parameterCatalog.find((item) => item.id === criterion.param)
                     return (
                       <div className="criterion-result" key={criterion.param}>
-                        <div className="criterion-copy">
+                        <div className="criterion-copy" title={parameter?.help}>
                           <span>{parameter?.label ?? criterion.param}</span>
                           <strong>{formatValue(criterion.value, parameter?.unit)}</strong>
+                          {siteDetail?.moon[criterion.param] && (
+                            <small className="moon-value">
+                              Lune (pôle Sud) : {formatMoon(siteDetail.moon[criterion.param])}
+                            </small>
+                          )}
+                          {siteDetail?.valueSources[criterion.param] && (
+                            <small className="value-source">
+                              Source : {sourceLabel(siteDetail.valueSources[criterion.param], dataSources)}
+                            </small>
+                          )}
                         </div>
                         <div className="criterion-score">
                           <strong>{Math.round(criterion.score * 100)}%</strong>
@@ -802,6 +847,32 @@ function App() {
               ) : (
                 <p className="no-site-data">Aucune valeur brute n’a été renvoyée pour ce site.</p>
               )}
+              {earthLimits.length > 0 && (
+                <div className="earth-limits">
+                  <h4>Ce que la Terre ne peut pas reproduire</h4>
+                  <ul>
+                    {earthLimits.map((limit) => (
+                      <li key={limit.id}>
+                        <strong>{limit.label}</strong> · Lune : {limit.moon} · Terre : {limit.earth}.{' '}
+                        {limit.effect} <small>({limit.source})</small>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </section>
+          )}
+          {dataSources.length > 0 && (
+            <section className="sources-list" aria-labelledby="sources-title">
+              <h3 id="sources-title">Sources des données</h3>
+              <ul>
+                {dataSources.map((source) => (
+                  <li key={source.id}>
+                    <a href={source.url} target="_blank" rel="noopener noreferrer">{source.name}</a>
+                    {' '}· {source.provider} · {source.body === 'moon' ? 'Lune' : 'Terre'}. <small>{source.terms}</small>
+                  </li>
+                ))}
+              </ul>
             </section>
           )}
         </section>
