@@ -1,0 +1,28 @@
+{
+  "description": "Curated evidence of lava tubes at or near candidate sites. Only levels 2 and 3 are recorded here, each with a published reference. Level 1 (geological predisposition) is derived automatically from the Smithsonian GVP attributes by tools/precompute/build_dataset.py. A site absent from this file has NOT been assessed: absence is not evidence that no cave exists.",
+  "levels": {
+    "3": "demonstrated: a lava tube has been entered, surveyed or mapped and is documented in the cited reference",
+    "2": "probable: surface indicators (aligned collapse pits, skylights, sinuous collapsed channels) are reported in the cited reference, without direct survey",
+    "1": "predisposition only: Holocene basaltic effusive volcanism nearby (GVP); says nothing about the presence of a cave",
+    "null": "not assessed or no evidence either way"
+  },
+  "sites": {
+    "craters-of-the-moon": {
+      "level": 3,
+      "evidence": "Surveyed lava tube caves in the Craters of the Moon lava field (for example Indian Tunnel), used as a planetary analog by the NASA BASALT and FINESSE programs.",
+      "references": [
+        "Hughes et al. 2019, Astrobiology 19:260-283, doi:10.1089/ast.2018.1847",
+        "U.S. National Park Service, Craters of the Moon National Monument and Preserve: https://www.nps.gov/crmo/"
+      ],
+      "caveat": "The site coordinate lies in the lava field; its distance to a specific tube has not been measured."
+    },
+    "harrat-khaybar": {
+      "level": 3,
+      "evidence": "Umm Jirsan lava tube system in the Harrat Khaybar volcanic field, entered and excavated.",
+      "references": [
+        "Stewart et al. 2021, Archaeological and Anthropological Sciences 13:139, doi:10.1007/s12520-021-01365-6"
+      ],
+      "caveat": "The site coordinate is approximate (data/candidates.json); its distance to Umm Jirsan has not been measured."
+    }
+  }
+}

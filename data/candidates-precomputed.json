@@ -29,7 +29,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:01:44+00:00"
     },
-    "known_for_note": "Haughton-Mars Project: rover and spacewalk tests, inhabited station"
+    "known_for_note": "Haughton-Mars Project: rover and spacewalk tests, inhabited station",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 3.325,
+        "slope_p95": 6.347,
+        "slope_max": 10.027,
+        "roughness": 11.346,
+        "roughness_detrended": 9.146,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 1.019,
+        "slope_p95": 2.337,
+        "slope_max": 3.216,
+        "roughness": 1.918,
+        "roughness_detrended": 3.954,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:20+00:00"
+    }
   },
   {
     "id": "atacama",
@@ -61,7 +90,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:01:59+00:00"
     },
-    "known_for_note": "NASA rover and drilling tests (ARADS)"
+    "known_for_note": "NASA rover and drilling tests (ARADS)",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 7.846,
+        "slope_p95": 9.573,
+        "slope_max": 13.897,
+        "roughness": 38.887,
+        "roughness_detrended": 2.535,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 1.965,
+        "slope_p95": 3.305,
+        "slope_max": 6.701,
+        "roughness": 8.9,
+        "roughness_detrended": 2.082,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:22+00:00"
+    }
   },
   {
     "id": "dry-valleys",
@@ -93,7 +151,36 @@
       "modis_computed_at": "2026-11-15T05:15:29+00:00",
       "modis_error": "valeurs absentes : ndvi"
     },
-    "known_for_note": "Cold desert: instruments, permafrost and ice"
+    "known_for_note": "Cold desert: instruments, permafrost and ice",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 1.99,
+        "slope_p95": 7.307,
+        "slope_max": 9.827,
+        "roughness": 7.949,
+        "roughness_detrended": 5.277,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 5.464,
+        "slope_p95": 4.696,
+        "slope_max": 4.589,
+        "roughness": 32.921,
+        "roughness_detrended": 3.308,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:24+00:00"
+    }
   },
   {
     "id": "mauna-kea",
@@ -125,7 +212,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:02:24+00:00"
     },
-    "known_for_note": "PISCES: rover and ISRU tests"
+    "known_for_note": "PISCES: rover and ISRU tests",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 11.215,
+        "slope_p95": 23.722,
+        "slope_max": 28.884,
+        "roughness": 41.979,
+        "roughness_detrended": 17.601,
+        "traversable_15": 0.782,
+        "traversable_20": 0.87,
+        "traversable_25": 0.963
+      },
+      "sigma": {
+        "slope_mean": 2.831,
+        "slope_p95": 2.355,
+        "slope_max": 1.868,
+        "roughness": 6.227,
+        "roughness_detrended": 7.756,
+        "traversable_15": 0.074,
+        "traversable_20": 0.045,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:26+00:00"
+    }
   },
   {
     "id": "svalbard-bockfjorden",
@@ -157,7 +273,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:02:41+00:00"
     },
-    "known_for_note": "AMASE: instrument tests"
+    "known_for_note": "AMASE: instrument tests",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 9.578,
+        "slope_p95": 14.632,
+        "slope_max": 25.679,
+        "roughness": 51.337,
+        "roughness_detrended": 7.018,
+        "traversable_15": 0.962,
+        "traversable_20": 0.989,
+        "traversable_25": 0.998
+      },
+      "sigma": {
+        "slope_mean": 7.492,
+        "slope_p95": 13.498,
+        "slope_max": 10.903,
+        "roughness": 24.01,
+        "roughness_detrended": 14.757,
+        "traversable_15": 0.126,
+        "traversable_20": 0.078,
+        "traversable_25": 0.026
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:28+00:00"
+    }
   },
   {
     "id": "iceland-holuhraun",
@@ -188,7 +333,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:00+00:00"
     },
-    "known_for_note": "NASA SAND-E: rover navigation on a lava flow"
+    "known_for_note": "NASA SAND-E: rover navigation on a lava flow",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 1.939,
+        "slope_p95": 4.611,
+        "slope_max": 8.637,
+        "roughness": 6.301,
+        "roughness_detrended": 2.782,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.387,
+        "slope_p95": 1.027,
+        "slope_max": 1.512,
+        "roughness": 0.894,
+        "roughness_detrended": 1.119,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:30+00:00"
+    }
   },
   {
     "id": "death-valley",
@@ -220,7 +394,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:15:54+00:00"
     },
-    "known_for_note": "Mars analog named in the challenge statement; no lunar mode expected"
+    "known_for_note": "Mars analog named in the challenge statement; no lunar mode expected",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 0.115,
+        "slope_p95": 0.235,
+        "slope_max": 0.47,
+        "roughness": 0.138,
+        "roughness_detrended": 0.096,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.016,
+        "slope_p95": 0.03,
+        "slope_max": 0.051,
+        "roughness": 0.015,
+        "roughness_detrended": 0.008,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:32+00:00"
+    }
   },
   {
     "id": "meteor-crater",
@@ -252,7 +455,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:37+00:00"
     },
-    "known_for_note": "Apollo astronaut field geology training"
+    "known_for_note": "Apollo astronaut field geology training",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 12.64,
+        "slope_p95": 37.143,
+        "slope_max": 45.904,
+        "roughness": 60.67,
+        "roughness_detrended": 38.465,
+        "traversable_15": 0.706,
+        "traversable_20": 0.763,
+        "traversable_25": 0.813
+      },
+      "sigma": {
+        "slope_mean": 0.755,
+        "slope_p95": 2.855,
+        "slope_max": 5.196,
+        "roughness": 6.773,
+        "roughness_detrended": 1.127,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:33+00:00"
+    }
   },
   {
     "id": "black-point",
@@ -284,7 +516,36 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:39+00:00"
     },
-    "known_for_note": "NASA Desert RATS: rover and spacewalk tests"
+    "known_for_note": "NASA Desert RATS: rover and spacewalk tests",
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 2.416,
+        "slope_p95": 9.074,
+        "slope_max": 13.838,
+        "roughness": 10.782,
+        "roughness_detrended": 5.776,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.613,
+        "slope_p95": 1.384,
+        "slope_max": 4.614,
+        "roughness": 1.054,
+        "roughness_detrended": 1.869,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:34+00:00"
+    }
   },
   {
     "id": "amazon",
@@ -314,6 +575,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:03:58+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 2.556,
+        "slope_p95": 5.636,
+        "slope_max": 9.584,
+        "roughness": 2.776,
+        "roughness_detrended": 2.766,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.648,
+        "slope_p95": 1.289,
+        "slope_max": 2.221,
+        "roughness": 0.439,
+        "roughness_detrended": 0.584,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:35+00:00"
     }
   },
   {
@@ -345,6 +635,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:04:16+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 2.75,
+        "slope_p95": 8.561,
+        "slope_max": 14.306,
+        "roughness": 6.743,
+        "roughness_detrended": 4.599,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 2.882,
+        "slope_p95": 7.003,
+        "slope_max": 10.931,
+        "roughness": 12.036,
+        "roughness_detrended": 5.89,
+        "traversable_15": 0.012,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:37+00:00"
     }
   },
   {
@@ -376,6 +695,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:04:35+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 3.667,
+        "slope_p95": 8.376,
+        "slope_max": 14.109,
+        "roughness": 7.282,
+        "roughness_detrended": 5.498,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.595,
+        "slope_p95": 0.537,
+        "slope_max": 4.86,
+        "roughness": 3.984,
+        "roughness_detrended": 3.356,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:40+00:00"
     }
   },
   {
@@ -408,6 +756,35 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:16:17+00:00",
       "modis_error": "valeurs absentes : ndvi"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 15.247,
+        "slope_p95": 27.52,
+        "slope_max": 33.822,
+        "roughness": 55.073,
+        "roughness_detrended": 16.952,
+        "traversable_15": 0.568,
+        "traversable_20": 0.797,
+        "traversable_25": 0.917
+      },
+      "sigma": {
+        "slope_mean": 1.936,
+        "slope_p95": 3.545,
+        "slope_max": 2.211,
+        "roughness": 19.816,
+        "roughness_detrended": 3.173,
+        "traversable_15": 0.24,
+        "traversable_20": 0.119,
+        "traversable_25": 0.066
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:42+00:00"
     }
   },
   {
@@ -439,6 +816,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:09+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 6.893,
+        "slope_p95": 27.592,
+        "slope_max": 32.78,
+        "roughness": 31.214,
+        "roughness_detrended": 21.641,
+        "traversable_15": 0.842,
+        "traversable_20": 0.896,
+        "traversable_25": 0.926
+      },
+      "sigma": {
+        "slope_mean": 4.292,
+        "slope_p95": 8.62,
+        "slope_max": 5.96,
+        "roughness": 15.104,
+        "roughness_detrended": 11.173,
+        "traversable_15": 0.009,
+        "traversable_20": 0.007,
+        "traversable_25": 0.007
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:44+00:00"
     }
   },
   {
@@ -470,6 +876,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:26+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 5.896,
+        "slope_p95": 13.491,
+        "slope_max": 29.614,
+        "roughness": 23.055,
+        "roughness_detrended": 10.88,
+        "traversable_15": 0.955,
+        "traversable_20": 0.978,
+        "traversable_25": 0.992
+      },
+      "sigma": {
+        "slope_mean": 4.022,
+        "slope_p95": 10.003,
+        "slope_max": 19.706,
+        "roughness": 20.657,
+        "roughness_detrended": 8.067,
+        "traversable_15": 0.066,
+        "traversable_20": 0.017,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:46+00:00"
     }
   },
   {
@@ -501,6 +936,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:05:43+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 10.821,
+        "slope_p95": 15.551,
+        "slope_max": 20.141,
+        "roughness": 52.627,
+        "roughness_detrended": 13.286,
+        "traversable_15": 0.939,
+        "traversable_20": 0.997,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 4.236,
+        "slope_p95": 4.848,
+        "slope_max": 6.968,
+        "roughness": 30.932,
+        "roughness_detrended": 3.529,
+        "traversable_15": 0.081,
+        "traversable_20": 0.005,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:50+00:00"
     }
   },
   {
@@ -531,6 +995,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:01+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 1.515,
+        "slope_p95": 3.095,
+        "slope_max": 3.921,
+        "roughness": 5.41,
+        "roughness_detrended": 3.54,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.14,
+        "slope_p95": 0.935,
+        "slope_max": 1.146,
+        "roughness": 1.221,
+        "roughness_detrended": 0.198,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:51+00:00"
     }
   },
   {
@@ -562,6 +1055,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:24+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 10.95,
+        "slope_p95": 23.154,
+        "slope_max": 30.474,
+        "roughness": 35.909,
+        "roughness_detrended": 24.078,
+        "traversable_15": 0.744,
+        "traversable_20": 0.907,
+        "traversable_25": 0.966
+      },
+      "sigma": {
+        "slope_mean": 4.399,
+        "slope_p95": 4.689,
+        "slope_max": 2.885,
+        "roughness": 4.731,
+        "roughness_detrended": 9.962,
+        "traversable_15": 0.183,
+        "traversable_20": 0.062,
+        "traversable_25": 0.002
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:53+00:00"
     }
   },
   {
@@ -593,6 +1115,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:38+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 37.297,
+        "slope_p95": 46.564,
+        "slope_max": 52.018,
+        "roughness": 181.253,
+        "roughness_detrended": 86.281,
+        "traversable_15": 0.022,
+        "traversable_20": 0.054,
+        "traversable_25": 0.088
+      },
+      "sigma": {
+        "slope_mean": 1.948,
+        "slope_p95": 1.848,
+        "slope_max": 5.8,
+        "roughness": 19.785,
+        "roughness_detrended": 18.071,
+        "traversable_15": 0.005,
+        "traversable_20": 0.007,
+        "traversable_25": 0.074
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:55+00:00"
     }
   },
   {
@@ -624,6 +1175,35 @@
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:16:28+00:00",
       "modis_error": "valeurs absentes : ndvi"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 19.507,
+        "slope_p95": 31.207,
+        "slope_max": 41.54,
+        "roughness": 56.305,
+        "roughness_detrended": 38.486,
+        "traversable_15": 0.304,
+        "traversable_20": 0.514,
+        "traversable_25": 0.712
+      },
+      "sigma": {
+        "slope_mean": 7.106,
+        "slope_p95": 9.177,
+        "slope_max": 7.023,
+        "roughness": 30.947,
+        "roughness_detrended": 7.771,
+        "traversable_15": 0.436,
+        "traversable_20": 0.353,
+        "traversable_25": 0.111
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:56+00:00"
     }
   },
   {
@@ -655,6 +1235,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:06:59+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 0.098,
+        "slope_p95": 0.178,
+        "slope_max": 0.24,
+        "roughness": 0.387,
+        "roughness_detrended": 0.054,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.008,
+        "slope_p95": 0.009,
+        "slope_max": 0.032,
+        "roughness": 0.078,
+        "roughness_detrended": 0.004,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:32:58+00:00"
     }
   },
   {
@@ -686,6 +1295,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:07:15+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 6.687,
+        "slope_p95": 12.328,
+        "slope_max": 13.803,
+        "roughness": 17.808,
+        "roughness_detrended": 17.409,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.874,
+        "slope_p95": 1.328,
+        "slope_max": 2.277,
+        "roughness": 9.405,
+        "roughness_detrended": 3.537,
+        "traversable_15": 0.026,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:01+00:00"
     }
   },
   {
@@ -717,6 +1355,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:07:39+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 0.568,
+        "slope_p95": 0.955,
+        "slope_max": 1.236,
+        "roughness": 1.992,
+        "roughness_detrended": 0.61,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.077,
+        "slope_p95": 0.124,
+        "slope_max": 0.081,
+        "roughness": 0.187,
+        "roughness_detrended": 0.102,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:05+00:00"
     }
   },
   {
@@ -747,6 +1414,37 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:03+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 0.0,
+        "slope_p95": 0.0,
+        "slope_max": 0.0,
+        "roughness": 0.0,
+        "roughness_detrended": 0.0,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.0,
+        "slope_p95": 0.0,
+        "slope_max": 0.0,
+        "roughness": 0.0,
+        "roughness_detrended": 0.0,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [
+        "flat_artifact"
+      ],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:07+00:00"
     }
   },
   {
@@ -777,6 +1475,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:11+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 31.55,
+        "slope_p95": 38.055,
+        "slope_max": 44.061,
+        "roughness": 164.802,
+        "roughness_detrended": 36.706,
+        "traversable_15": 0.024,
+        "traversable_20": 0.054,
+        "traversable_25": 0.094
+      },
+      "sigma": {
+        "slope_mean": 2.567,
+        "slope_p95": 1.484,
+        "slope_max": 2.549,
+        "roughness": 14.517,
+        "roughness_detrended": 2.869,
+        "traversable_15": 0.007,
+        "traversable_20": 0.024,
+        "traversable_25": 0.102
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:08+00:00"
     }
   },
   {
@@ -807,6 +1534,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:34+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 15.196,
+        "slope_p95": 31.543,
+        "slope_max": 37.516,
+        "roughness": 40.376,
+        "roughness_detrended": 27.058,
+        "traversable_15": 0.502,
+        "traversable_20": 0.757,
+        "traversable_25": 0.875
+      },
+      "sigma": {
+        "slope_mean": 0.818,
+        "slope_p95": 2.551,
+        "slope_max": 2.972,
+        "roughness": 21.077,
+        "roughness_detrended": 4.139,
+        "traversable_15": 0.071,
+        "traversable_20": 0.033,
+        "traversable_25": 0.071
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:10+00:00"
     }
   },
   {
@@ -837,6 +1593,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:08:51+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 1.859,
+        "slope_p95": 4.354,
+        "slope_max": 7.653,
+        "roughness": 6.304,
+        "roughness_detrended": 2.535,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.626,
+        "slope_p95": 2.267,
+        "slope_max": 5.256,
+        "roughness": 3.063,
+        "roughness_detrended": 1.974,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:12+00:00"
     }
   },
   {
@@ -868,6 +1653,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:11+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 0.214,
+        "slope_p95": 0.543,
+        "slope_max": 0.827,
+        "roughness": 0.754,
+        "roughness_detrended": 0.362,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.163,
+        "slope_p95": 0.427,
+        "slope_max": 0.687,
+        "roughness": 0.256,
+        "roughness_detrended": 0.316,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:15+00:00"
     }
   },
   {
@@ -898,6 +1712,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:29+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 1.257,
+        "slope_p95": 3.667,
+        "slope_max": 5.39,
+        "roughness": 2.696,
+        "roughness_detrended": 1.923,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.774,
+        "slope_p95": 0.7,
+        "slope_max": 3.096,
+        "roughness": 5.441,
+        "roughness_detrended": 1.409,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:17+00:00"
     }
   },
   {
@@ -928,6 +1771,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:31+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 5.473,
+        "slope_p95": 10.185,
+        "slope_max": 30.659,
+        "roughness": 16.128,
+        "roughness_detrended": 9.808,
+        "traversable_15": 0.982,
+        "traversable_20": 0.989,
+        "traversable_25": 0.992
+      },
+      "sigma": {
+        "slope_mean": 1.843,
+        "slope_p95": 4.116,
+        "slope_max": 12.297,
+        "roughness": 7.627,
+        "roughness_detrended": 5.98,
+        "traversable_15": 0.019,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:19+00:00"
     }
   },
   {
@@ -959,6 +1831,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:09:52+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 11.481,
+        "slope_p95": 25.457,
+        "slope_max": 32.192,
+        "roughness": 56.276,
+        "roughness_detrended": 20.077,
+        "traversable_15": 0.746,
+        "traversable_20": 0.859,
+        "traversable_25": 0.941
+      },
+      "sigma": {
+        "slope_mean": 2.585,
+        "slope_p95": 4.837,
+        "slope_max": 4.626,
+        "roughness": 12.889,
+        "roughness_detrended": 14.28,
+        "traversable_15": 0.166,
+        "traversable_20": 0.102,
+        "traversable_25": 0.074
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:21+00:00"
     }
   },
   {
@@ -990,6 +1891,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:10:14+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 1.025,
+        "slope_p95": 2.553,
+        "slope_max": 3.9,
+        "roughness": 2.268,
+        "roughness_detrended": 1.815,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 0.12,
+        "slope_p95": 0.12,
+        "slope_max": 0.554,
+        "roughness": 0.592,
+        "roughness_detrended": 0.202,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:23+00:00"
     }
   },
   {
@@ -1020,6 +1950,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:10:39+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 6.077,
+        "slope_p95": 17.816,
+        "slope_max": 27.318,
+        "roughness": 19.177,
+        "roughness_detrended": 10.528,
+        "traversable_15": 0.92,
+        "traversable_20": 0.973,
+        "traversable_25": 0.997
+      },
+      "sigma": {
+        "slope_mean": 2.676,
+        "slope_p95": 6.538,
+        "slope_max": 5.217,
+        "roughness": 7.9,
+        "roughness_detrended": 3.368,
+        "traversable_15": 0.033,
+        "traversable_20": 0.007,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:26+00:00"
     }
   },
   {
@@ -1050,6 +2009,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:02+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 6.746,
+        "slope_p95": 19.929,
+        "slope_max": 30.194,
+        "roughness": 29.409,
+        "roughness_detrended": 14.389,
+        "traversable_15": 0.896,
+        "traversable_20": 0.95,
+        "traversable_25": 0.971
+      },
+      "sigma": {
+        "slope_mean": 2.892,
+        "slope_p95": 5.243,
+        "slope_max": 6.788,
+        "roughness": 3.143,
+        "roughness_detrended": 7.499,
+        "traversable_15": 0.059,
+        "traversable_20": 0.024,
+        "traversable_25": 0.007
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:27+00:00"
     }
   },
   {
@@ -1080,6 +2068,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:21+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 3.613,
+        "slope_p95": 20.278,
+        "slope_max": 28.226,
+        "roughness": 13.628,
+        "roughness_detrended": 11.879,
+        "traversable_15": 0.922,
+        "traversable_20": 0.947,
+        "traversable_25": 0.984
+      },
+      "sigma": {
+        "slope_mean": 0.577,
+        "slope_p95": 1.565,
+        "slope_max": 2.386,
+        "roughness": 3.102,
+        "roughness_detrended": 1.417,
+        "traversable_15": 0.0,
+        "traversable_20": 0.0,
+        "traversable_25": 0.0
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:29+00:00"
     }
   },
   {
@@ -1110,6 +2127,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:11:52+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 1.922,
+        "slope_p95": 4.546,
+        "slope_max": 21.425,
+        "roughness": 5.162,
+        "roughness_detrended": 2.414,
+        "traversable_15": 0.998,
+        "traversable_20": 0.998,
+        "traversable_25": 1.0
+      },
+      "sigma": {
+        "slope_mean": 3.257,
+        "slope_p95": 2.875,
+        "slope_max": 4.103,
+        "roughness": 5.236,
+        "roughness_detrended": 7.84,
+        "traversable_15": 0.119,
+        "traversable_20": 0.062,
+        "traversable_25": 0.052
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:31+00:00"
     }
   },
   {
@@ -1140,6 +2186,35 @@
       },
       "modis_source": "MODIS modis-11A2-061 + modis-13A1-061 (Planetary Computer), 2024",
       "modis_computed_at": "2026-11-15T05:12:20+00:00"
+    },
+    "terrain_v2": {
+      "value": {
+        "slope_mean": 5.677,
+        "slope_p95": 18.085,
+        "slope_max": 25.553,
+        "roughness": 22.821,
+        "roughness_detrended": 14.455,
+        "traversable_15": 0.891,
+        "traversable_20": 0.971,
+        "traversable_25": 0.997
+      },
+      "sigma": {
+        "slope_mean": 1.454,
+        "slope_p95": 10.793,
+        "slope_max": 13.001,
+        "roughness": 3.997,
+        "roughness_detrended": 5.759,
+        "traversable_15": 0.036,
+        "traversable_20": 0.009,
+        "traversable_25": 0.002
+      },
+      "neighbours": 9,
+      "valid_frac": 1.0,
+      "flags": [],
+      "source": "Copernicus DEM GLO-30 resampled to a 40 m local metric grid (bilinear), 1 km windows",
+      "pixel_m": 40.0,
+      "window_m": 1000.0,
+      "computed_at": "2026-11-17T05:33:33+00:00"
     }
   }
 ]

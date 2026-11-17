@@ -1,0 +1,6725 @@
+{
+ "version": "2.0.0",
+ "snapshot_created_at": "2026-11-17T05:39:42+00:00",
+ "sources": {
+  "power": {
+   "url": "https://power.larc.nasa.gov/",
+   "parameters": [
+    "T2M",
+    "T2M_MIN",
+    "T2M_MAX",
+    "T2M_RANGE",
+    "WS2M",
+    "RH2M",
+    "QV2M",
+    "PRECTOTCORR",
+    "ALLSKY_SFC_SW_DWN"
+   ],
+   "community": "RE"
+  },
+  "usgs": {
+   "url": "https://earthquake.usgs.gov/fdsnws/event/1/",
+   "radius_km": 300,
+   "start": "2000-01-01",
+   "end": "2026-11-01"
+  },
+  "gvp": {
+   "url": "https://volcano.si.edu/",
+   "layer": "Smithsonian_VOTW_Holocene_Volcanoes",
+   "volcanoes": 1214
+  }
+ },
+ "constants": {
+  "lapse_rate_K_per_km": 6.5,
+  "lapse_rate_sigma_K_per_km": 2.0,
+  "reanalysis_temperature_sigma_K": 1.5,
+  "predisposition_radius_km": 30.0,
+  "basaltic_rock_types": [
+   "Basalt / Picro-Basalt",
+   "Trachybasalt / Tephrite Basanite"
+  ]
+ },
+ "sites": {
+  "haughton": {
+   "lat": 75.38,
+   "lon": -89.67,
+   "values": {
+    "slope_mean": {
+     "value": 3.325,
+     "sigma": 1.019,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 6.347,
+     "sigma": 2.337,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 10.027,
+     "sigma": 3.216,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 11.346,
+     "sigma": 1.918,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 9.146,
+     "sigma": 3.954,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 134.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 75.38,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -14.17,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -48.3,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 17.06,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.08,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 94.36,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 1.79,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.85,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.3155,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 7,
+     "sigma": 2.65,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 18,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 2112.6,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -22.64,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -20.82,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 2.24,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": -0.002,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "atacama": {
+   "lat": -24.5,
+   "lon": -69.25,
+   "values": {
+    "slope_mean": {
+     "value": 7.846,
+     "sigma": 1.965,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 9.573,
+     "sigma": 3.305,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 13.897,
+     "sigma": 6.701,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 38.887,
+     "sigma": 8.9,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 2.535,
+     "sigma": 2.082,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 2652.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 24.5,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 12.66,
+     "sigma": 1.6,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -6.18,
+     "sigma": 1.6,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 30.9,
+     "sigma": 1.6,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 24.88,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 3.09,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.03,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 7.2058,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 1452,
+     "sigma": 38.11,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 4921,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 69.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 36.27,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 8.83,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 27.44,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.074,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "dry-valleys": {
+   "lat": -77.52,
+   "lon": 161.85,
+   "values": {
+    "slope_mean": {
+     "value": 1.99,
+     "sigma": 5.464,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 7.307,
+     "sigma": 4.696,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 9.827,
+     "sigma": 4.589,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 7.949,
+     "sigma": 32.921,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 5.277,
+     "sigma": 3.308,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 141.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 77.52,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -20.75,
+     "sigma": 2.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -45.53,
+     "sigma": 2.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 2.69,
+     "sigma": 2.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 5.37,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "humidity": {
+     "value": 79.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "specific_humidity": {
+     "value": 0.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "precipitation": {
+     "value": 0.22,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "solar": {
+     "value": 2.9993,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 1,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 81.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -27.62,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -27.27,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 3.31,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "mauna-kea": {
+   "lat": 19.8,
+   "lon": -155.46,
+   "values": {
+    "slope_mean": {
+     "value": 11.215,
+     "sigma": 2.831,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 23.722,
+     "sigma": 2.355,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 28.884,
+     "sigma": 1.868,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 41.979,
+     "sigma": 6.227,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 17.601,
+     "sigma": 7.756,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.782,
+     "sigma": 0.074,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.87,
+     "sigma": 0.045,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.963,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 3729.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 19.8,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 0.79,
+     "sigma": 6.37,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_min": {
+     "value": -7.36,
+     "sigma": 6.37,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_max": {
+     "value": 8.56,
+     "sigma": 6.37,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "wind": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "specific_humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "precipitation": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "solar": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 140,
+     "sigma": 11.83,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 20383,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 2.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "predisposition_only"
+     ]
+    },
+    "lst_day": {
+     "value": 34.06,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": -1.08,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 35.14,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.056,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "svalbard-bockfjorden": {
+   "lat": 79.42,
+   "lon": 13.35,
+   "values": {
+    "slope_mean": {
+     "value": 9.578,
+     "sigma": 7.492,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 14.632,
+     "sigma": 13.498,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 25.679,
+     "sigma": 10.903,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 51.337,
+     "sigma": 24.01,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 7.018,
+     "sigma": 14.757,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.962,
+     "sigma": 0.126,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.989,
+     "sigma": 0.078,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.998,
+     "sigma": 0.026,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 72.2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 79.42,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -5.86,
+     "sigma": 1.59,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -38.33,
+     "sigma": 1.59,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 13.61,
+     "sigma": 1.59,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.37,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 94.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 2.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 1.82,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.0894,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 106,
+     "sigma": 10.3,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 274,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1094.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -5.68,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -8.45,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 2.76,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.018,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "iceland-holuhraun": {
+   "lat": 64.87,
+   "lon": -16.83,
+   "values": {
+    "slope_mean": {
+     "value": 1.939,
+     "sigma": 0.387,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 4.611,
+     "sigma": 1.027,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 8.637,
+     "sigma": 1.512,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 6.301,
+     "sigma": 0.894,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 2.782,
+     "sigma": 1.119,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 739.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 64.87,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -2.44,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -23.43,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 10.71,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 4.82,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 94.09,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 3.31,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 2.36,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.9798,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 441,
+     "sigma": 21.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 776,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 18.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "predisposition_only"
+     ]
+    },
+    "lst_day": {
+     "value": 0.28,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -8.42,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 8.44,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": -0.037,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "death-valley": {
+   "lat": 36.25,
+   "lon": -116.82,
+   "values": {
+    "slope_mean": {
+     "value": 0.115,
+     "sigma": 0.016,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 0.235,
+     "sigma": 0.03,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 0.47,
+     "sigma": 0.051,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 0.138,
+     "sigma": 0.015,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 0.096,
+     "sigma": 0.008,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": -85.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 36.25,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 25.15,
+     "sigma": 2.39,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -0.11,
+     "sigma": 2.39,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 52.27,
+     "sigma": 2.39,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.09,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "humidity": {
+     "value": 29.33,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "specific_humidity": {
+     "value": 3.89,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "precipitation": {
+     "value": 0.34,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "solar": {
+     "value": 5.7024,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 122,
+     "sigma": 11.05,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 14082,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 102.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 34.55,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": 22.85,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 9.21,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.014,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "meteor-crater": {
+   "lat": 35.03,
+   "lon": -111.02,
+   "values": {
+    "slope_mean": {
+     "value": 12.64,
+     "sigma": 0.755,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 37.143,
+     "sigma": 2.855,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 45.904,
+     "sigma": 5.196,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 60.67,
+     "sigma": 6.773,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 38.465,
+     "sigma": 1.127,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.706,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.763,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.813,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 1592.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 35.03,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 13.46,
+     "sigma": 1.63,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -20.26,
+     "sigma": 1.63,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 39.93,
+     "sigma": 1.63,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.35,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 47.71,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 4.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 1.14,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 5.5637,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 2,
+     "sigma": 1.41,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 745,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 69.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 31.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 6.74,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 24.76,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.157,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "black-point": {
+   "lat": 35.69,
+   "lon": -111.47,
+   "values": {
+    "slope_mean": {
+     "value": 2.416,
+     "sigma": 0.613,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 9.074,
+     "sigma": 1.384,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 13.838,
+     "sigma": 4.614,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 10.782,
+     "sigma": 1.054,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 5.776,
+     "sigma": 1.869,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 1557.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 35.69,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 14.01,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -15.79,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 41.21,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.49,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 41.85,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 4.68,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.93,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 5.5637,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 3,
+     "sigma": 1.73,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 663,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 42.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 34.99,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 7.02,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 27.97,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.151,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "amazon": {
+   "lat": -3.47,
+   "lon": -62.37,
+   "values": {
+    "slope_mean": {
+     "value": 2.556,
+     "sigma": 0.648,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 5.636,
+     "sigma": 1.289,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 9.584,
+     "sigma": 2.221,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 2.776,
+     "sigma": 0.439,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 2.766,
+     "sigma": 0.584,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 54.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 3.47,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 26.55,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": 20.09,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 41.56,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 0.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 87.03,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 18.85,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 6.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 4.7076,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 0,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1542.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 29.25,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": 23.99,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 4.95,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.867,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "mistastin": {
+   "lat": 55.88,
+   "lon": -63.15,
+   "values": {
+    "slope_mean": {
+     "value": 2.75,
+     "sigma": 2.882,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 8.561,
+     "sigma": 7.003,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 14.306,
+     "sigma": 10.931,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 6.743,
+     "sigma": 12.036,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 4.599,
+     "sigma": 5.89,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.012,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 361.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 55.88,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -5.43,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -46.13,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 26.12,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 4.32,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 92.59,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 3.36,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 2.6,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 3.0089,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 0,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 2332.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 0.79,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -9.83,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 10.65,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.179,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "tunnunik": {
+   "lat": 72.47,
+   "lon": -113.97,
+   "values": {
+    "slope_mean": {
+     "value": 3.667,
+     "sigma": 0.595,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 8.376,
+     "sigma": 0.537,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 14.109,
+     "sigma": 4.86,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 7.282,
+     "sigma": 3.984,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 5.498,
+     "sigma": 3.356,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 72.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 72.47,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -13.44,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -53.11,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 22.71,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 94.19,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 1.95,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.95,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.2574,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 0,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1430.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -12.81,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -17.34,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 4.71,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": -0.017,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "axel-heiberg": {
+   "lat": 79.43,
+   "lon": -90.77,
+   "values": {
+    "slope_mean": {
+     "value": 15.247,
+     "sigma": 1.936,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 27.52,
+     "sigma": 3.545,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 33.822,
+     "sigma": 2.211,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 55.073,
+     "sigma": 19.816,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 16.952,
+     "sigma": 3.173,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.568,
+     "sigma": 0.24,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.797,
+     "sigma": 0.119,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.917,
+     "sigma": 0.066,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 429.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 79.43,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -16.1,
+     "sigma": 1.64,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -48.29,
+     "sigma": 1.64,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 13.56,
+     "sigma": 1.64,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 1.85,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 93.09,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 1.36,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.82,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.5373,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 1,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1662.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -15.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": -17.34,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 1.64,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "pingualuit": {
+   "lat": 61.28,
+   "lon": -73.69,
+   "values": {
+    "slope_mean": {
+     "value": 6.893,
+     "sigma": 4.292,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 27.592,
+     "sigma": 8.62,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 32.78,
+     "sigma": 5.96,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 31.214,
+     "sigma": 15.104,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 21.641,
+     "sigma": 11.173,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.842,
+     "sigma": 0.009,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.896,
+     "sigma": 0.007,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.926,
+     "sigma": 0.007,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 567.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 61.28,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -10.41,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -49.81,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 23.17,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 4.16,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 94.38,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 2.58,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 1.75,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.8776,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 0,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 2478.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -3.37,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -14.03,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 8.94,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": -0.033,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "manicouagan": {
+   "lat": 51.4,
+   "lon": -68.7,
+   "values": {
+    "slope_mean": {
+     "value": 5.896,
+     "sigma": 4.022,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 13.491,
+     "sigma": 10.003,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 29.614,
+     "sigma": 19.706,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 23.055,
+     "sigma": 20.657,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 10.88,
+     "sigma": 8.067,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.955,
+     "sigma": 0.066,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.978,
+     "sigma": 0.017,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.992,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 576.6,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 51.4,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -2.75,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -50.73,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 28.14,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 1.03,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 90.41,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 4.27,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 2.84,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 3.1042,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 0,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 20,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 2756.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 3.31,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -6.16,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 8.97,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.551,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "peary-land": {
+   "lat": 82.7,
+   "lon": -31.0,
+   "values": {
+    "slope_mean": {
+     "value": 10.821,
+     "sigma": 4.236,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 15.551,
+     "sigma": 4.848,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 20.141,
+     "sigma": 6.968,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 52.627,
+     "sigma": 30.932,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 13.286,
+     "sigma": 3.529,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.939,
+     "sigma": 0.081,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.997,
+     "sigma": 0.005,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 807.6,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 82.7,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -19.78,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -49.82,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 4.86,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.42,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 93.33,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 1.21,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.56,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.6304,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 8,
+     "sigma": 2.83,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 22,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1116.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -19.35,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": -19.92,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 0.57,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": -0.026,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "popigai": {
+   "lat": 71.65,
+   "lon": 111.18,
+   "values": {
+    "slope_mean": {
+     "value": 1.515,
+     "sigma": 0.14,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 3.095,
+     "sigma": 0.935,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 3.921,
+     "sigma": 1.146,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 5.41,
+     "sigma": 1.221,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 3.54,
+     "sigma": 0.198,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 42.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 71.65,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -11.65,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -61.33,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 28.07,
+     "sigma": 1.52,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.07,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 93.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 2.54,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 1.28,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.2478,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 2,
+     "sigma": 1.41,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1614.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -10.94,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": -16.08,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 5.14,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.241,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "elgygytgyn": {
+   "lat": 67.5,
+   "lon": 172.25,
+   "values": {
+    "slope_mean": {
+     "value": 10.95,
+     "sigma": 4.399,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 23.154,
+     "sigma": 4.689,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 30.474,
+     "sigma": 2.885,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 35.909,
+     "sigma": 4.731,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 24.078,
+     "sigma": 9.962,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.744,
+     "sigma": 0.183,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.907,
+     "sigma": 0.062,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.966,
+     "sigma": 0.002,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 544.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 67.5,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -10.94,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -46.57,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 24.74,
+     "sigma": 1.51,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 94.33,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 2.71,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 1.67,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 2.3731,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 0,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1091.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -9.97,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -12.63,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 5.04,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": -0.033,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "tolbachik": {
+   "lat": 55.83,
+   "lon": 160.33,
+   "values": {
+    "slope_mean": {
+     "value": 37.297,
+     "sigma": 1.948,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 46.564,
+     "sigma": 1.848,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 52.018,
+     "sigma": 5.8,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 181.253,
+     "sigma": 19.785,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 86.281,
+     "sigma": 18.071,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.022,
+     "sigma": 0.005,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.054,
+     "sigma": 0.007,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.088,
+     "sigma": 0.074,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 3453.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 55.83,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -21.47,
+     "sigma": 5.15,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_min": {
+     "value": -55.97,
+     "sigma": 5.15,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_max": {
+     "value": 9.42,
+     "sigma": 5.15,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "wind": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "specific_humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "precipitation": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "solar": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 829,
+     "sigma": 28.79,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 2081,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 0.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "predisposition_only"
+     ]
+    },
+    "lst_day": {
+     "value": -13.94,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -20.59,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 6.34,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": -0.051,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "erebus": {
+   "lat": -77.53,
+   "lon": 167.15,
+   "values": {
+    "slope_mean": {
+     "value": 19.507,
+     "sigma": 7.106,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 31.207,
+     "sigma": 9.177,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 41.54,
+     "sigma": 7.023,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 56.305,
+     "sigma": 30.947,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 38.486,
+     "sigma": 7.771,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.304,
+     "sigma": 0.436,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.514,
+     "sigma": 0.353,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.712,
+     "sigma": 0.111,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 3736.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 77.53,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -42.22,
+     "sigma": 7.17,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_min": {
+     "value": -65.01,
+     "sigma": 7.17,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_max": {
+     "value": -22.41,
+     "sigma": 7.17,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "wind": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "specific_humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "precipitation": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "solar": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 1,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 0.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": -34.57,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -41.23,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 3.38,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "qaidam-lenghu": {
+   "lat": 38.6,
+   "lon": 93.2,
+   "values": {
+    "slope_mean": {
+     "value": 0.098,
+     "sigma": 0.008,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 0.178,
+     "sigma": 0.009,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 0.24,
+     "sigma": 0.032,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 0.387,
+     "sigma": 0.078,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 0.054,
+     "sigma": 0.004,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 2746.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 38.6,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 4.26,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -25.13,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 34.91,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.96,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 32.89,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 2.43,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.08,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 5.3633,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 125,
+     "sigma": 11.18,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 226,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1071.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 21.04,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": -0.25,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 21.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.053,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "changtang": {
+   "lat": 34.5,
+   "lon": 85.0,
+   "values": {
+    "slope_mean": {
+     "value": 6.687,
+     "sigma": 0.874,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 12.328,
+     "sigma": 1.328,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 13.803,
+     "sigma": 2.277,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 17.808,
+     "sigma": 9.405,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 17.409,
+     "sigma": 3.537,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.026,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 5452.6,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 34.5,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -7.72,
+     "sigma": 1.56,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -35.56,
+     "sigma": 1.56,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 19.52,
+     "sigma": 1.56,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 4.18,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 44.07,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 2.15,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.36,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 5.142,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 163,
+     "sigma": 12.77,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 447,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 334.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 10.07,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": -13.11,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 23.18,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.101,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "gobi": {
+   "lat": 42.5,
+   "lon": 102.0,
+   "values": {
+    "slope_mean": {
+     "value": 0.568,
+     "sigma": 0.077,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 0.955,
+     "sigma": 0.124,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 1.236,
+     "sigma": 0.081,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 1.992,
+     "sigma": 0.187,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 0.61,
+     "sigma": 0.102,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 1158.6,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 42.5,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 8.87,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -24.54,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 43.02,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.33,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 32.93,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 2.81,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.16,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 4.8895,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 22,
+     "sigma": 4.69,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 48,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 461.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 26.81,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 2.54,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 24.27,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.077,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "uyuni": {
+   "lat": -20.13,
+   "lon": -67.49,
+   "values": {
+    "slope_mean": {
+     "value": 0.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "slope_p95": {
+     "value": 0.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "slope_max": {
+     "value": 0.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "roughness": {
+     "value": 0.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "roughness_detrended": {
+     "value": 0.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": [
+      "flat_artifact"
+     ]
+    },
+    "elevation": {
+     "value": 3653.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 20.13,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 7.73,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -14.22,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 25.32,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 1.99,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 42.84,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 4.11,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.91,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 5.6482,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 1474,
+     "sigma": 38.39,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 4814,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 129.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 21.04,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": 4.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 13.94,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": -0.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "licancabur": {
+   "lat": -22.83,
+   "lon": -67.88,
+   "values": {
+    "slope_mean": {
+     "value": 31.55,
+     "sigma": 2.567,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 38.055,
+     "sigma": 1.484,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 44.061,
+     "sigma": 2.549,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 164.802,
+     "sigma": 14.517,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 36.706,
+     "sigma": 2.869,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.024,
+     "sigma": 0.007,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.054,
+     "sigma": 0.024,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.094,
+     "sigma": 0.102,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 5691.1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 22.83,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -4.7,
+     "sigma": 5.82,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_min": {
+     "value": -25.01,
+     "sigma": 5.82,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_max": {
+     "value": 14.56,
+     "sigma": 5.82,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "wind": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "specific_humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "precipitation": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "solar": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 2184,
+     "sigma": 46.73,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 7411,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 0.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 20.98,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": -4.18,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 25.16,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.011,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "payunia": {
+   "lat": -36.42,
+   "lon": -69.24,
+   "values": {
+    "slope_mean": {
+     "value": 15.196,
+     "sigma": 0.818,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 31.543,
+     "sigma": 2.551,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 37.516,
+     "sigma": 2.972,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 40.376,
+     "sigma": 21.077,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 27.058,
+     "sigma": 4.139,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.502,
+     "sigma": 0.071,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.757,
+     "sigma": 0.033,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.875,
+     "sigma": 0.071,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 3542.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 36.42,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": -1.91,
+     "sigma": 4.09,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_min": {
+     "value": -26.45,
+     "sigma": 4.09,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_max": {
+     "value": 24.39,
+     "sigma": 4.09,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "wind": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "specific_humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "precipitation": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "solar": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 285,
+     "sigma": 16.88,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 3327,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 0.2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "predisposition_only"
+     ]
+    },
+    "lst_day": {
+     "value": 11.57,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": -6.71,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 17.1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.015,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "namib-gobabeb": {
+   "lat": -23.56,
+   "lon": 15.04,
+   "values": {
+    "slope_mean": {
+     "value": 1.859,
+     "sigma": 0.626,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 4.354,
+     "sigma": 2.267,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 7.653,
+     "sigma": 5.256,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 6.304,
+     "sigma": 3.063,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 2.535,
+     "sigma": 1.974,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 404.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 23.56,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 22.2,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": 3.71,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 44.08,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.02,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 41.66,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 6.58,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.18,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 6.6372,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 1,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 2236.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 40.81,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 16.77,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 24.04,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.116,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "lut": {
+   "lat": 30.5,
+   "lon": 59.0,
+   "values": {
+    "slope_mean": {
+     "value": 0.214,
+     "sigma": 0.163,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 0.543,
+     "sigma": 0.427,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 0.827,
+     "sigma": 0.687,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 0.754,
+     "sigma": 0.256,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 0.362,
+     "sigma": 0.316,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 552.1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 30.5,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 25.19,
+     "sigma": 1.53,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -5.81,
+     "sigma": 1.53,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 50.82,
+     "sigma": 1.53,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.01,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 21.88,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 4.01,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.22,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 5.9496,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 150,
+     "sigma": 12.25,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 458,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 881.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 45.46,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 18.2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 27.26,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.076,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "dallol": {
+   "lat": 14.24,
+   "lon": 40.3,
+   "values": {
+    "slope_mean": {
+     "value": 1.257,
+     "sigma": 0.774,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 3.667,
+     "sigma": 0.7,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 5.39,
+     "sigma": 3.096,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 2.696,
+     "sigma": 5.441,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 1.923,
+     "sigma": 1.409,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": -93.1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 14.24,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 33.48,
+     "sigma": 2.76,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_min": {
+     "value": 18.78,
+     "sigma": 2.76,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "t2m_max": {
+     "value": 47.79,
+     "sigma": 2.76,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected",
+      "large_elevation_correction"
+     ]
+    },
+    "wind": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "specific_humidity": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "precipitation": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "solar": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_representative_elevation"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 187,
+     "sigma": 13.67,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 381,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 0.2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 44.18,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": 32.55,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 12.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.01,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "erta-ale": {
+   "lat": 13.6,
+   "lon": 40.67,
+   "values": {
+    "slope_mean": {
+     "value": 5.473,
+     "sigma": 1.843,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 10.185,
+     "sigma": 4.116,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 30.659,
+     "sigma": 12.297,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 16.128,
+     "sigma": 7.627,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 9.808,
+     "sigma": 5.98,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.982,
+     "sigma": 0.019,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.989,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.992,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 527.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 13.6,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 30.81,
+     "sigma": 1.74,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": 14.51,
+     "sigma": 1.74,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 45.06,
+     "sigma": 1.74,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.98,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 37.88,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 11.64,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.81,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 5.9966,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 183,
+     "sigma": 13.53,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 358,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 0.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "predisposition_only"
+     ]
+    },
+    "lst_day": {
+     "value": 43.24,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": 25.31,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 18.45,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.028,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "hoggar-atakor": {
+   "lat": 23.3,
+   "lon": 5.6,
+   "values": {
+    "slope_mean": {
+     "value": 11.481,
+     "sigma": 2.585,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 25.457,
+     "sigma": 4.837,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 32.192,
+     "sigma": 4.626,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 56.276,
+     "sigma": 12.889,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 20.077,
+     "sigma": 14.28,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.746,
+     "sigma": 0.166,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.859,
+     "sigma": 0.102,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.941,
+     "sigma": 0.074,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 2284.6,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 23.3,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 16.28,
+     "sigma": 2.07,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -9.94,
+     "sigma": 2.07,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 35.1,
+     "sigma": 2.07,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.16,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "humidity": {
+     "value": 22.94,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "specific_humidity": {
+     "value": 4.01,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "precipitation": {
+     "value": 0.35,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "solar": {
+     "value": 6.3499,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "cell_elevation_mismatch"
+     ]
+    },
+    "quake_m45_count": {
+     "value": 1,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 23.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "predisposition_only"
+     ]
+    },
+    "lst_day": {
+     "value": 35.78,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 11.47,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 24.31,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.082,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "harrat-khaybar": {
+   "lat": 25.1,
+   "lon": 39.92,
+   "values": {
+    "slope_mean": {
+     "value": 1.025,
+     "sigma": 0.12,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 2.553,
+     "sigma": 0.12,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 3.9,
+     "sigma": 0.554,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 2.268,
+     "sigma": 0.592,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 1.815,
+     "sigma": 0.202,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 1078.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 25.1,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 24.74,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -4.25,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 45.47,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.69,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 24.77,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 4.63,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.07,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 6.2054,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 7,
+     "sigma": 2.65,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 13,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 45.2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "curated_reference"
+     ]
+    },
+    "lst_day": {
+     "value": 42.13,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": 17.82,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 23.62,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.109,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "aorounga": {
+   "lat": 19.1,
+   "lon": 19.25,
+   "values": {
+    "slope_mean": {
+     "value": 6.077,
+     "sigma": 2.676,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 17.816,
+     "sigma": 6.538,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 27.318,
+     "sigma": 5.217,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 19.177,
+     "sigma": 7.9,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 10.528,
+     "sigma": 3.368,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.92,
+     "sigma": 0.033,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.973,
+     "sigma": 0.007,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.997,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 677.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 19.1,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 24.84,
+     "sigma": 1.57,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": 1.24,
+     "sigma": 1.57,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 44.47,
+     "sigma": 1.57,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 4.5,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 19.1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 4.01,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.01,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 6.8002,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 0,
+     "sigma": 1.0,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 108.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 37.08,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 22.48,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 14.59,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.11,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "tenoumer": {
+   "lat": 22.92,
+   "lon": -10.4,
+   "values": {
+    "slope_mean": {
+     "value": 6.746,
+     "sigma": 2.892,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 19.929,
+     "sigma": 5.243,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 30.194,
+     "sigma": 6.788,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 29.409,
+     "sigma": 3.143,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 14.389,
+     "sigma": 7.499,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.896,
+     "sigma": 0.059,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.95,
+     "sigma": 0.024,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.971,
+     "sigma": 0.007,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 268.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 22.92,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 26.02,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": 2.13,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 48.7,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.39,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 26.77,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 5.29,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.11,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 6.2698,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 3,
+     "sigma": 1.73,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 29,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 705.1,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 41.2,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 19.43,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 21.77,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.077,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "wolfe-creek": {
+   "lat": -19.17,
+   "lon": 127.8,
+   "values": {
+    "slope_mean": {
+     "value": 3.613,
+     "sigma": 0.577,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 20.278,
+     "sigma": 1.565,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 28.226,
+     "sigma": 2.386,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 13.628,
+     "sigma": 3.102,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 11.879,
+     "sigma": 1.417,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.922,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.947,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.984,
+     "sigma": 0.0,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 364.4,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 19.17,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 26.73,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": 3.51,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 46.88,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.95,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 39.44,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 8.87,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 1.66,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 6.3401,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 3,
+     "sigma": 1.73,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 21,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1250.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 37.36,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 22.08,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 15.28,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.325,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "gosses-bluff": {
+   "lat": -23.82,
+   "lon": 132.31,
+   "values": {
+    "slope_mean": {
+     "value": 1.922,
+     "sigma": 3.257,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 4.546,
+     "sigma": 2.875,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 21.425,
+     "sigma": 4.103,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 5.162,
+     "sigma": 5.236,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 2.414,
+     "sigma": 7.84,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.998,
+     "sigma": 0.119,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.998,
+     "sigma": 0.062,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 1.0,
+     "sigma": 0.052,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 739.3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 23.82,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 21.68,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -2.28,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 45.74,
+     "sigma": 1.5,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 3.27,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 35.48,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 5.88,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 0.72,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 6.2398,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 10,
+     "sigma": 3.16,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 38,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 1407.8,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": null,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "not_assessed"
+     ]
+    },
+    "lst_day": {
+     "value": 34.0,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_night": {
+     "value": 19.49,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "lst_amplitude": {
+     "value": 14.51,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "ndvi": {
+     "value": 0.24,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  },
+  "craters-of-the-moon": {
+   "lat": 43.42,
+   "lon": -113.52,
+   "values": {
+    "slope_mean": {
+     "value": 5.677,
+     "sigma": 1.454,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_p95": {
+     "value": 18.085,
+     "sigma": 10.793,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "slope_max": {
+     "value": 25.553,
+     "sigma": 13.001,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness": {
+     "value": 22.821,
+     "sigma": 3.997,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "roughness_detrended": {
+     "value": 14.455,
+     "sigma": 5.759,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_15": {
+     "value": 0.891,
+     "sigma": 0.036,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_20": {
+     "value": 0.971,
+     "sigma": 0.009,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "traversable_25": {
+     "value": 0.997,
+     "sigma": 0.002,
+     "sigma_basis": "spread of the 3 x 3 neighbouring 1 km windows",
+     "flags": []
+    },
+    "elevation": {
+     "value": 1739.7,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "latitude_abs": {
+     "value": 43.42,
+     "sigma": 0.0,
+     "sigma_basis": "exact",
+     "flags": []
+    },
+    "t2m_mean": {
+     "value": 6.68,
+     "sigma": 1.53,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_min": {
+     "value": -31.63,
+     "sigma": 1.53,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "t2m_max": {
+     "value": 37.9,
+     "sigma": 1.53,
+     "sigma_basis": "assumed reanalysis error (1.5 K) and lapse-rate error (2 K/km)",
+     "flags": [
+      "elevation_corrected"
+     ]
+    },
+    "wind": {
+     "value": 2.21,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "humidity": {
+     "value": 59.83,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "specific_humidity": {
+     "value": 3.95,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "precipitation": {
+     "value": 1.14,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "solar": {
+     "value": 4.5494,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    },
+    "quake_m45_count": {
+     "value": 28,
+     "sigma": 5.29,
+     "sigma_basis": "Poisson counting error",
+     "flags": []
+    },
+    "quake_count": {
+     "value": 4380,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "incomplete_catalog"
+     ]
+    },
+    "volcano_distance": {
+     "value": 5.9,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "deprecated"
+     ]
+    },
+    "lava_tube_evidence": {
+     "value": 3,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "curated_reference"
+     ]
+    },
+    "lst_day": {
+     "value": 22.79,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_night": {
+     "value": 0.93,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "lst_amplitude": {
+     "value": 20.56,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": [
+      "seasonal_gaps"
+     ]
+    },
+    "ndvi": {
+     "value": 0.199,
+     "sigma": null,
+     "sigma_basis": null,
+     "flags": []
+    }
+   }
+  }
+ },
+ "inputs": {
+  "candidates-precomputed.json": "22c203fc1f56c93629169a2c2d7ab067ca73e94b196497f907a23d2962fbb682",
+  "live-sources.json": "e96c97982a28982b22662a1dd3f89ab11adf5f39ccc8b5eff96d5cff6f658df0",
+  "lava-tubes.json": "d352bc6604ed6bcf12f8294ccdb2429f39a8aa7a8c498b24ab2bea7c4d8f413d"
+ }
+}
