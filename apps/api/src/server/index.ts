@@ -19,6 +19,8 @@ async function main(): Promise<void> {
     sites,
     connectors: sources.connectors,
     sourceNames: sources.names,
+    ...(sources.quality ? { quality: sources.quality } : {}),
+    ...(sources.datasetVersion ? { datasetVersion: sources.datasetVersion } : {}),
     useFixtures: config.useFixtures,
     openapi: await loadOpenApi(),
     moonReference: await loadMoonReference(config.dataDir),

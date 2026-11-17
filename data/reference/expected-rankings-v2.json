@@ -1,0 +1,678 @@
+{
+ "description": "Totals, requirement outcomes and coverage of every site on data/dataset-v2.json, computed by tools/scoring/score_sites.py. The API tests check that the TypeScript engine gives the same.",
+ "methodology": "2.0.0",
+ "modes": {
+  "robotics": [
+   {
+    "id": "aorounga",
+    "total": 100,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "erta-ale",
+    "total": 100,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "peary-land",
+    "total": 91,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "tenoumer",
+    "total": 88,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "craters-of-the-moon",
+    "total": 84,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "tunnunik",
+    "total": 83,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "svalbard-bockfjorden",
+    "total": 80,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "changtang",
+    "total": 79,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "haughton",
+    "total": 79,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "atacama",
+    "total": 75,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "black-point",
+    "total": 75,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "dry-valleys",
+    "total": 75,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "hoggar-atakor",
+    "total": 75,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "axel-heiberg",
+    "total": 73,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "meteor-crater",
+    "total": 72,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "mauna-kea",
+    "total": 71,
+    "requirements": "met",
+    "coverage": 0.75
+   },
+   {
+    "id": "elgygytgyn",
+    "total": 58,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "payunia",
+    "total": 57,
+    "requirements": "met",
+    "coverage": 0.75
+   },
+   {
+    "id": "pingualuit",
+    "total": 56,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "death-valley",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "gobi",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "harrat-khaybar",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "lut",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "namib-gobabeb",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "qaidam-lenghu",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "uyuni",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "gosses-bluff",
+    "total": 45,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "mistastin",
+    "total": 43,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "wolfe-creek",
+    "total": 42,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "popigai",
+    "total": 41,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "dallol",
+    "total": 33,
+    "requirements": "met",
+    "coverage": 0.75
+   },
+   {
+    "id": "iceland-holuhraun",
+    "total": 25,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "erebus",
+    "total": 13,
+    "requirements": "met",
+    "coverage": 0.75
+   },
+   {
+    "id": "manicouagan",
+    "total": 9,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "licancabur",
+    "total": 0,
+    "requirements": "failed",
+    "coverage": 0.75
+   },
+   {
+    "id": "tolbachik",
+    "total": 0,
+    "requirements": "failed",
+    "coverage": 0.75
+   },
+   {
+    "id": "amazon",
+    "total": 0,
+    "requirements": null,
+    "coverage": null
+   }
+  ],
+  "calibration": [
+   {
+    "id": "axel-heiberg",
+    "total": 87,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "haughton",
+    "total": 85,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "peary-land",
+    "total": 85,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "tunnunik",
+    "total": 84,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "erebus",
+    "total": 83,
+    "requirements": "met",
+    "coverage": 0.6
+   },
+   {
+    "id": "elgygytgyn",
+    "total": 79,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "dry-valleys",
+    "total": 74,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "popigai",
+    "total": 73,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "pingualuit",
+    "total": 72,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "changtang",
+    "total": 71,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "mistastin",
+    "total": 69,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "gobi",
+    "total": 67,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "hoggar-atakor",
+    "total": 66,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "black-point",
+    "total": 65,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "meteor-crater",
+    "total": 65,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "namib-gobabeb",
+    "total": 62,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "tenoumer",
+    "total": 61,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "harrat-khaybar",
+    "total": 60,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "craters-of-the-moon",
+    "total": 59,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "svalbard-bockfjorden",
+    "total": 57,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "licancabur",
+    "total": 55,
+    "requirements": "met",
+    "coverage": 0.6
+   },
+   {
+    "id": "qaidam-lenghu",
+    "total": 55,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "aorounga",
+    "total": 51,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "atacama",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "tolbachik",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 0.6
+   },
+   {
+    "id": "lut",
+    "total": 48,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "gosses-bluff",
+    "total": 46,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "death-valley",
+    "total": 38,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "uyuni",
+    "total": 38,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "erta-ale",
+    "total": 33,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "iceland-holuhraun",
+    "total": 32,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "payunia",
+    "total": 32,
+    "requirements": "met",
+    "coverage": 0.6
+   },
+   {
+    "id": "wolfe-creek",
+    "total": 30,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "mauna-kea",
+    "total": 17,
+    "requirements": "met",
+    "coverage": 0.6
+   },
+   {
+    "id": "manicouagan",
+    "total": 8,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "dallol",
+    "total": 3,
+    "requirements": "met",
+    "coverage": 0.6
+   },
+   {
+    "id": "amazon",
+    "total": 0,
+    "requirements": null,
+    "coverage": null
+   }
+  ],
+  "colony": [
+   {
+    "id": "dry-valleys",
+    "total": 100,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "tunnunik",
+    "total": 100,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "haughton",
+    "total": 99,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "popigai",
+    "total": 90,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "pingualuit",
+    "total": 84,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "mistastin",
+    "total": 82,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "iceland-holuhraun",
+    "total": 60,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "svalbard-bockfjorden",
+    "total": 52,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "black-point",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "namib-gobabeb",
+    "total": 50,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "harrat-khaybar",
+    "total": 49,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "aorounga",
+    "total": 45,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "gosses-bluff",
+    "total": 43,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "changtang",
+    "total": 42,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "gobi",
+    "total": 41,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "tenoumer",
+    "total": 41,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "craters-of-the-moon",
+    "total": 34,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "wolfe-creek",
+    "total": 34,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "dallol",
+    "total": 25,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "death-valley",
+    "total": 25,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "lut",
+    "total": 25,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "qaidam-lenghu",
+    "total": 25,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "uyuni",
+    "total": 25,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "erta-ale",
+    "total": 23,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "atacama",
+    "total": 11,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "manicouagan",
+    "total": 7,
+    "requirements": "met",
+    "coverage": 1.0
+   },
+   {
+    "id": "axel-heiberg",
+    "total": 75,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "elgygytgyn",
+    "total": 75,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "erebus",
+    "total": 75,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "peary-land",
+    "total": 73,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "tolbachik",
+    "total": 35,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "hoggar-atakor",
+    "total": 25,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "meteor-crater",
+    "total": 25,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "licancabur",
+    "total": 20,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "payunia",
+    "total": 8,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "mauna-kea",
+    "total": 0,
+    "requirements": "failed",
+    "coverage": 1.0
+   },
+   {
+    "id": "amazon",
+    "total": 0,
+    "requirements": null,
+    "coverage": null
+   }
+  ]
+ }
+}

@@ -3,11 +3,12 @@ import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import swaggerUi from "swagger-ui-express";
-import { analyze, collectValues } from "../analyze/analyze.js";
+import { analyze, collectValues, METHODOLOGY_VERSION } from "../analyze/analyze.js";
 import type { AnalyzeDeps } from "../analyze/analyze.js";
 import { ValidationError } from "../analyze/validate.js";
 import { moonValues } from "../analyze/moon.js";
-import { MODES, PARAM_IDS, isModeId, scoreSite, vegetationFactor, weightedTotal } from "../scoring/index.js";
+import { MODES, PARAM_IDS, assess, isModeId, vegetationFactor } from "../scoring/index.js";
+import { explain } from "../analyze/explain.js";
 import { SOURCES, valueSources } from "../sources/catalog.js";
 import { PARAMETERS } from "./parameters.js";
 
@@ -111,10 +112,13 @@ export function createApp(deps: AppDeps): express.Express {
     }
     try {
       const values = await collectValues(site, deps.connectors, deps.onConnectorError);
-      const { criteria } = scoreSite(values, MODES[mode].criteria);
+      const quality = deps.quality?.(site);
+      const definitions = MODES[mode].criteria;
+      const a = assess(values, definitions, quality?.sigmas, quality?.flags);
+      const criteria = a.criteria;
       const factor = vegetationFactor(values);
       const excluded = factor === 0;
-      const total = excluded ? 0 : Math.round(weightedTotal(values, MODES[mode].criteria) * factor);
+      const total = excluded ? 0 : Math.round(a.total * factor);
       res.json({
         id: site.id,
         name: site.name,
@@ -127,6 +131,13 @@ export function createApp(deps: AppDeps): express.Express {
         criteria,
         ...(excluded ? { excluded: "vegetation" } : {}),
         ...(factor > 0 && factor < 1 ? { vegetationFactor: Math.round(factor * 100) / 100 } : {}),
+        coverage: Math.round(a.coverage * 100) / 100,
+        totalRange: { min: Math.round(a.totalMin * factor), max: Math.round(a.totalMax * factor) },
+        requirements: a.requirements,
+        ...(a.failed.length > 0 ? { failedRequirements: a.failed } : {}),
+        ...(a.missing.length > 0 ? { missing: a.missing } : {}),
+        explanation: explain(a, definitions),
+        methodology: { version: METHODOLOGY_VERSION, ...(deps.datasetVersion ? { dataset: deps.datasetVersion } : {}) },
         values,
         sources: deps.sourceNames,
         valueSources: valueSources(values, deps.useFixtures),

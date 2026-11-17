@@ -59,9 +59,20 @@ function parseCriterion(raw: unknown, index: number): Criterion {
   if (weight === undefined || weight <= 0) {
     throw new ValidationError(`${at}.weight must be a strictly positive number`);
   }
+  const toleranceBelow = optionalFinite(c.toleranceBelow, `${at}.toleranceBelow`);
+  const toleranceAbove = optionalFinite(c.toleranceAbove, `${at}.toleranceAbove`);
+  if ((toleranceBelow !== undefined && toleranceBelow < 0) || (toleranceAbove !== undefined && toleranceAbove < 0)) {
+    throw new ValidationError(`${at}.toleranceBelow and toleranceAbove must be non-negative numbers`);
+  }
+  if (c.required !== undefined && typeof c.required !== "boolean") {
+    throw new ValidationError(`${at}.required must be a boolean`);
+  }
   const criterion: Criterion = { param: c.param, tolerance, weight };
   if (min !== undefined) criterion.min = min;
   if (max !== undefined) criterion.max = max;
+  if (toleranceBelow !== undefined) criterion.toleranceBelow = toleranceBelow;
+  if (toleranceAbove !== undefined) criterion.toleranceAbove = toleranceAbove;
+  if (c.required === true) criterion.required = true;
   return criterion;
 }
 

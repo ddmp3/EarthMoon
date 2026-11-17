@@ -1,6 +1,6 @@
 # Full local test (API + front end) before an Azure deployment.
 #   docker compose up --build      then open http://localhost:8080
-# The API queries the real sources (NASA POWER, USGS, GVP); slope, roughness and MODIS come from data/candidates-precomputed.json.
+# The API scores the frozen data set data/dataset-v2.json (no live source call); rebuild it with tools/precompute/build_dataset.py.
 services:
   api:
     build:

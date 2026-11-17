@@ -1,8 +1,20 @@
 import type { Criterion } from "./types.js";
 
 /**
- * Modes 1 to 3: predefined criteria, copied from docs/scenarios.md.
- * Any change to a range must also be made in scenarios.md, with its source.
+ * Modes 1 to 3, methodology v2 (docs/SCIENTIFIC_METHODOLOGY.md, section "Scenarios").
+ *
+ * Rules applied to every criterion:
+ * - `role` says what the criterion is: a similarity to a measured lunar distribution, an operational
+ *   requirement of the vehicle / instrument / mission, or an Earth proxy of a lunar condition.
+ * - `basis` says where its numbers come from. Lunar-measured intervals are the interquartile range of the
+ *   LRO LOLA distribution (data/reference/moon-south-pole.json, terrain_v2) and their tolerances reach the
+ *   5th and 95th percentiles: no number is chosen by hand. Everything else is an expert judgement and says so.
+ * - Weights are equal (1) unless stated: there is no measured basis for ranking criteria by importance, and
+ *   the sensitivity analysis varies every weight by ±50%. In mode 2 each instrument counts for 1 in total.
+ * - A `required` criterion is a hard requirement: failing it fails the scenario, it is never averaged away.
+ *
+ * `data/reference/scenarios-v2.json` is the same content for the Python reference scorer; a test keeps the
+ * two identical. Any change must be made in both and justified in the methodology document.
  */
 
 export type ModeId = "robotics" | "calibration" | "colony";
@@ -10,50 +22,201 @@ export type ModeId = "robotics" | "calibration" | "colony";
 export type Mode = {
   id: ModeId;
   name: string;
+  /** Lunar environment the scenario targets. */
+  target: string;
   criteria: Criterion[];
 };
+
+const SOUTH_POLE = "Lunar south polar region (85°S to 90°S), highland terrain";
 
 export const MODES: Record<ModeId, Mode> = {
   robotics: {
     id: "robotics",
     name: "Validation robotique",
+    target: SOUTH_POLE,
     criteria: [
-      // Mean slope and roughness: interquartile range at the lunar south pole (LRO LOLA, 1 km windows,
-      // tools/precompute/lunar_reference.py). Max slope: rover limits (docs/scenarios.md).
-      { param: "slope_mean", min: 5, max: 13, tolerance: 10, weight: 3 },
-      { param: "slope_max", min: 15, max: 30, tolerance: 10, weight: 1 },
-      { param: "roughness", min: 22, max: 65, tolerance: 30, weight: 2 },
-      { param: "precipitation", max: 1, tolerance: 1, weight: 1 },
-      { param: "t2m_min", max: -20, tolerance: 20, weight: 1 },
-      { param: "lst_amplitude", min: 20, tolerance: 15, weight: 1 },
-      { param: "volcano_distance", max: 50, tolerance: 100, weight: 1 },
+      {
+        param: "slope_mean",
+        min: 5.231,
+        max: 12.886,
+        tolerance: 8.006,
+        toleranceBelow: 2.277,
+        toleranceAbove: 8.006,
+        weight: 1,
+        role: "similarity",
+        basis: "lunar_measurement",
+        rationale:
+          "Mean slope of 1 km windows at 40 m baseline. Interval: interquartile range of 71,731 LOLA windows south of 85°S; score 0 at the lunar 5th (2.95°) and 95th (20.89°) percentiles.",
+      },
+      {
+        param: "roughness_detrended",
+        min: 5.122,
+        max: 10.521,
+        tolerance: 8.05,
+        toleranceBelow: 1.79,
+        toleranceAbove: 8.05,
+        weight: 1,
+        role: "similarity",
+        basis: "lunar_measurement",
+        rationale:
+          "Relief left after removing the mean tilt of the 1 km window. Interval: lunar interquartile range; score 0 at the lunar 5th (3.33 m) and 95th (18.57 m) percentiles. Replaces the v1 roughness, which measured tilt (correlation 0.96 with mean slope).",
+      },
+      {
+        param: "traversable_15",
+        min: 0.5,
+        tolerance: 0.25,
+        weight: 1,
+        required: true,
+        role: "requirement",
+        basis: "mission_requirement",
+        rationale:
+          "Share of the window with slope of 15° or less, the climbing limit documented for VIPER (NASA NTRS 20240013903). A site where less than a quarter of the ground is within the limit cannot host a mobility test. The 0.5 and 0.25 thresholds are expert judgements.",
+      },
+      {
+        param: "precipitation",
+        max: 1,
+        tolerance: 1,
+        weight: 1,
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Dry ground as a proxy for the absence of liquid water in regolith. Thresholds are expert judgements; soil mechanics are not measured.",
+      },
     ],
   },
   calibration: {
     id: "calibration",
     name: "Calibration d'instruments",
+    target: SOUTH_POLE,
     criteria: [
-      { param: "t2m_mean", max: 0, tolerance: 10, weight: 2, group: "drill" },
-      { param: "volcano_distance", max: 50, tolerance: 100, weight: 1, group: "drill" },
-      { param: "wind", max: 3, tolerance: 3, weight: 2, group: "wind" },
-      { param: "humidity", max: 40, tolerance: 30, weight: 2, group: "gas" },
-      { param: "precipitation", max: 0.5, tolerance: 1, weight: 1, group: "gas" },
-      { param: "quake_count", max: 5, tolerance: 20, weight: 3, group: "seismograph" },
-      { param: "lst_amplitude", min: 25, tolerance: 15, weight: 2, group: "thermal" },
-      { param: "t2m_min", max: -30, tolerance: 20, weight: 1, group: "thermal" },
+      {
+        param: "t2m_mean",
+        max: -6,
+        tolerance: 6,
+        weight: 1,
+        group: "drill",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Frozen ground for drilling tests: permafrost needs a mean annual air temperature below 0 °C and is continuous at roughly -6 °C and colder (Obu et al. 2019). Temperature is corrected to the site elevation. Permafrost ice is not lunar cold-trapped ice: process and abundance differ.",
+      },
+      {
+        param: "wind",
+        max: 3,
+        tolerance: 3,
+        weight: 1,
+        group: "wind",
+        role: "requirement",
+        basis: "expert_judgement",
+        rationale:
+          "Low wind as a low-disturbance condition for sensitive instruments (wind is a leading noise source for surface seismometers). There is no wind on the Moon and no lunar wind instrument: this is a test-quality requirement, not an analogy. Thresholds are expert judgements.",
+      },
+      {
+        param: "specific_humidity",
+        max: 3,
+        tolerance: 5,
+        weight: 0.5,
+        group: "gas",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Low absolute water vapour content of the air (g/kg) for volatile-sensing instruments. Replaces relative humidity, which depends on temperature and ranked cold dry polar air as humid. Thresholds are expert judgements.",
+      },
+      {
+        param: "precipitation",
+        max: 0.5,
+        tolerance: 1,
+        weight: 0.5,
+        group: "gas",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale: "Dry environment. Thresholds are expert judgements.",
+      },
+      {
+        param: "quake_m45_count",
+        max: 5,
+        tolerance: 45,
+        weight: 1,
+        group: "seismograph",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Tectonic quiescence: earthquakes of magnitude 4.5 or more within 300 km since 2000, the magnitude from which the USGS catalog is reported worldwide. It does not measure ambient seismic noise at the site (microseisms, wind, human activity). Thresholds are expert judgements.",
+      },
+      {
+        param: "lst_amplitude",
+        min: 25,
+        tolerance: 15,
+        weight: 0.5,
+        group: "thermal",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Day-night surface temperature difference (MODIS) as a thermal cycling proxy; the lunar swing (about 300 K at low latitude) is out of reach on Earth. Thresholds are expert judgements.",
+      },
+      {
+        param: "t2m_min",
+        max: -30,
+        tolerance: 20,
+        weight: 0.5,
+        group: "thermal",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Coldest monthly minimum air temperature, corrected to the site elevation, as a cold-soak proxy. No Earth site approaches permanently shadowed regions (below 110 K). Thresholds are expert judgements.",
+      },
     ],
   },
   colony: {
     id: "colony",
     name: "Colonie autosuffisante",
+    target: SOUTH_POLE,
     criteria: [
-      { param: "t2m_mean", max: -5, tolerance: 10, weight: 3, group: "water" },
-      { param: "latitude_abs", min: 65, tolerance: 15, weight: 2, group: "energy" },
-      { param: "solar", min: 2, tolerance: 2, weight: 1, group: "energy" },
-      { param: "slope_mean", max: 5, tolerance: 5, weight: 3, group: "construction" },
-      { param: "volcano_distance", max: 100, tolerance: 200, weight: 1, group: "shelter" },
-      { param: "quake_count", max: 10, tolerance: 30, weight: 2, group: "stability" },
-      { param: "t2m_min", max: -30, tolerance: 20, weight: 1, group: "survival" },
+      {
+        param: "t2m_mean",
+        max: -6,
+        tolerance: 6,
+        weight: 1,
+        group: "water",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Ground ice (continuous permafrost) as an operational proxy for ice-bearing regolith. Temperature is corrected to the site elevation. The origin, temperature and abundance of lunar polar ice are different.",
+      },
+      {
+        param: "latitude_abs",
+        min: 65,
+        tolerance: 15,
+        weight: 1,
+        group: "energy",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "High latitude gives low Sun elevations and long shadows part of the year. It does not reproduce lunar polar illumination, which is set by a 1.54° obliquity and by topography. Thresholds are expert judgements.",
+      },
+      {
+        param: "slope_mean",
+        max: 5,
+        tolerance: 5,
+        weight: 1,
+        required: true,
+        group: "construction",
+        role: "requirement",
+        basis: "expert_judgement",
+        rationale:
+          "Gentle ground for landing and building. A mean slope of 10° or more over the 1 km window fails the scenario. Thresholds are expert judgements.",
+      },
+      {
+        param: "quake_m45_count",
+        max: 5,
+        tolerance: 45,
+        weight: 1,
+        group: "stability",
+        role: "proxy",
+        basis: "expert_judgement",
+        rationale:
+          "Tectonic quiescence (magnitude 4.5 or more within 300 km since 2000). Thresholds are expert judgements.",
+      },
     ],
   },
 };

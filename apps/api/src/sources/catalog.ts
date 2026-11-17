@@ -32,7 +32,7 @@ export const SOURCES: DataSource[] = [
     provider: "NASA Langley Research Center",
     url: "https://power.larc.nasa.gov/",
     body: "earth",
-    params: ["t2m_mean", "t2m_min", "t2m_max", "wind", "humidity", "precipitation", "solar"],
+    params: ["t2m_mean", "t2m_min", "t2m_max", "wind", "humidity", "specific_humidity", "precipitation", "solar"],
     terms: "NASA data, open access. Data obtained from the NASA Langley Research Center POWER Project.",
   },
   {
@@ -41,8 +41,9 @@ export const SOURCES: DataSource[] = [
     provider: "U.S. Geological Survey",
     url: "https://earthquake.usgs.gov/fdsnws/event/1/",
     body: "earth",
-    params: ["quake_count"],
-    terms: "Public domain (U.S. Government). Earthquakes M ≥ 2.5 within 300 km since 2000.",
+    params: ["quake_count", "quake_m45_count"],
+    terms:
+      "Public domain (U.S. Government). Earthquakes within 300 km since 2000: M ≥ 4.5 (quake_m45_count, reported worldwide) and M ≥ 2.5 (quake_count, complete only where networks are dense).",
   },
   {
     id: "smithsonian-gvp",
@@ -50,8 +51,9 @@ export const SOURCES: DataSource[] = [
     provider: "Smithsonian Institution",
     url: "https://volcano.si.edu/",
     body: "earth",
-    params: ["volcano_distance"],
-    terms: "Global Volcanism Program, Smithsonian Institution, Volcanoes of the World database.",
+    params: ["volcano_distance", "lava_tube_evidence"],
+    terms:
+      "Global Volcanism Program, Smithsonian Institution, Volcanoes of the World database. lava_tube_evidence level 1 is derived from its rock type and distance; levels 2 and 3 come from the references in data/evidence/lava-tubes.json.",
   },
   {
     id: "copernicus-dem",
@@ -59,9 +61,19 @@ export const SOURCES: DataSource[] = [
     provider: "ESA / European Union (Copernicus programme), via AWS Open Data",
     url: "https://registry.opendata.aws/copernicus-dem/",
     body: "earth",
-    params: ["elevation", "slope_mean", "slope_max", "roughness"],
+    params: [
+      "elevation",
+      "slope_mean",
+      "slope_max",
+      "slope_p95",
+      "roughness",
+      "roughness_detrended",
+      "traversable_15",
+      "traversable_20",
+      "traversable_25",
+    ],
     terms:
-      "Produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA. Slope and roughness computed over 1 km windows (tools/precompute).",
+      "Produced using Copernicus WorldDEM-30 © DLR e.V. 2010-2014 and © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the European Union and ESA. Resampled to the 40 m grid of the lunar model; slope and roughness computed over 1 km windows (tools/precompute/site_terrain.py).",
   },
   {
     id: "modis",
@@ -78,8 +90,18 @@ export const SOURCES: DataSource[] = [
     provider: "NASA, PDS Geosciences Node",
     url: "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/",
     body: "moon",
-    params: ["slope_mean", "slope_max", "roughness"],
-    terms: "NASA PDS data, open access. Computed with the same method as Earth (tools/precompute/lunar_reference.py).",
+    params: [
+      "slope_mean",
+      "slope_max",
+      "slope_p95",
+      "roughness",
+      "roughness_detrended",
+      "traversable_15",
+      "traversable_20",
+      "traversable_25",
+    ],
+    terms:
+      "NASA PDS data, open access. Computed with the same function, pixel and window as Earth (tools/precompute/lunar_reference_v2.py).",
   },
   {
     id: "lro-diviner",
