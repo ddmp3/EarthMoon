@@ -1,16 +1,16 @@
 # Architecture
 
-Static front end, containerized API, Terraform infrastructure on Azure. No database: sources are read live by the API (in-memory cache) or precomputed offline.
+Static front end, containerized API, Terraform infrastructure on Azure. No database: the API scores a frozen, versioned data set built offline (see [SCIENTIFIC_METHODOLOGY.md](SCIENTIFIC_METHODOLOGY.md), section 3). Without that file it falls back to reading the sources live.
 
 ```
 Browser ──► Azure Static Web App (React)
                 │  HTTPS (VITE_API_URL)
                 ▼
            Azure Container App (Node/TypeScript API, OpenAPI)
-                │  in-memory cache, no database
+                │  no database, no network call when scoring
                 ▼
-   NASA POWER · USGS Earthquakes · Smithsonian GVP   (live)
-   Copernicus DEM · MODIS (Planetary Computer)       (precomputed offline in tools/precompute)
+   data/dataset-v2.json  (frozen, versioned; built offline by tools/precompute/build_dataset.py from
+                          Copernicus DEM, MODIS, and NASA POWER / USGS / Smithsonian GVP snapshots)
 ```
 
 ## Repository layout
@@ -29,7 +29,7 @@ tools/            precompute (offline data), validation (e2e + rankings), scorin
 - **The scoring engine only knows the parameter catalog, never the sources.** Each source is an adapter (`apps/api/src/sources/`) returning catalog values, so Mars can be added without touching the engine.
 - **A failing source never breaks a response:** its parameters are `null`, the criterion is `missing` and excluded from the total.
 - **Nothing is invented:** a value that cannot be measured stays `null`; every value on a site card shows its source.
-- A Python scorer (`tools/scoring/score_sites.py`) gives results identical to the TypeScript engine.
+- A Python scorer (`tools/scoring/score_sites.py`) gives results identical to the TypeScript engine; a test checks it on every site and mode of the real data set.
 
 ## API
 

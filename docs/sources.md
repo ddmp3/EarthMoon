@@ -4,14 +4,16 @@ The exact catalog, with the attribution to reproduce for each source, is served 
 
 ## Used in the app
 
+Since methodology v2 (17 November 2026) the API reads no source at request time: it scores the frozen data set `data/dataset-v2.json`, rebuilt by `tools/precompute/build_dataset.py` from `data/candidates-precomputed.json`, `data/snapshots/live-sources.json` (POWER, USGS and GVP frozen by `tools/precompute/live_snapshot.py`) and `data/evidence/lava-tubes.json`. If the data set file is absent the API falls back to the v1 live connectors and says so. Full documentation of every source, its resolution, limits and processing: [SCIENTIFIC_REFERENCES.md](SCIENTIFIC_REFERENCES.md), section 7, and [SCIENTIFIC_METHODOLOGY.md](SCIENTIFIC_METHODOLOGY.md), section 4.
+
 | Source | Parameters | Access |
 |---|---|---|
-| [NASA POWER](https://power.larc.nasa.gov/) (NASA Langley) | `t2m_*`, `wind`, `humidity`, `precipitation`, `solar` | Live API, point climatology, in-memory cache |
-| [USGS Earthquake Catalog](https://earthquake.usgs.gov/fdsnws/event/1/) | `quake_count` | Live API (M ≥ 2.5 within 300 km since 2000) |
-| [Smithsonian Global Volcanism Program](https://volcano.si.edu/) | `volcano_distance` | Holocene volcano list loaded once, distance computed locally |
-| [Copernicus DEM GLO-30](https://registry.opendata.aws/copernicus-dem/) (ESA / EU, via AWS Open Data) | `elevation`, `slope_*`, `roughness` | Precomputed (`tools/precompute/enrich_candidates.py`), 1 km windows |
+| [NASA POWER](https://power.larc.nasa.gov/) (NASA Langley) | `t2m_*` (corrected to site elevation), `wind`, `humidity`, `specific_humidity`, `precipitation`, `solar` | Frozen snapshot of the point climatology |
+| [USGS Earthquake Catalog](https://earthquake.usgs.gov/fdsnws/event/1/) | `quake_m45_count`, `quake_count` (deprecated) | Frozen counts within 300 km, 2000-01-01 to 2026-11-01 |
+| [Smithsonian Global Volcanism Program](https://volcano.si.edu/) | `lava_tube_evidence` (level 1), `volcano_distance` (deprecated) | Frozen nearest volcano with its rock type |
+| [Copernicus DEM GLO-30](https://registry.opendata.aws/copernicus-dem/) (ESA / EU, via AWS Open Data) | `elevation`, `slope_*`, `roughness*`, `traversable_*` | Precomputed on the 40 m lunar grid (`tools/precompute/site_terrain.py`), 1 km windows |
 | NASA MODIS MOD11A2/MYD11A2 (land surface temperature) and MOD13A1/MYD13A1 (NDVI), v6.1, via Microsoft Planetary Computer | `lst_*`, `ndvi` | Precomputed (`tools/precompute/modis_values.py`): 2024 means on the tile containing the site, at least 6 valid composites |
-| NASA LRO LOLA LDEM_85S_40M (PDS Geosciences Node) | lunar slope and roughness | Precomputed (`tools/precompute/lunar_reference.py`): interquartile range of 71,731 windows of 1 km south of 85°S |
+| NASA LRO LOLA LDEM_85S_40M (PDS Geosciences Node) | lunar slope, roughness, traversable share | Precomputed (`tools/precompute/lunar_reference_v2.py`): distribution of 71,731 windows of 1 km south of 85°S, same function as Earth |
 | LRO Diviner, NASA Moon Fact Sheet, NASA Artemis III candidate regions | cold of shadowed regions, gravity, pressure, latitude | Published values cited in `data/reference/moon-south-pole.json` |
 
 Planetary Computer sometimes answers 502 on the first call; the API and scripts retry automatically.
@@ -43,4 +45,4 @@ Canadian Space Agency analog network (Haughton-Mars Project station, McGill Arct
 
 - No Earth site reaches the temperatures of permanently shadowed regions (about 25 to 110 K): temperature criteria compare trends (extreme cold, large swing), not absolute values.
 - Biology and habitability are out of scope.
-- The USGS catalog is less complete in remote regions, so a low earthquake count can reflect few stations.
+- The USGS catalog is complete at M 2.5 only near dense networks (measured in [SCIENTIFIC_AUDIT.md](SCIENTIFIC_AUDIT.md), finding S1); v2 uses M ≥ 4.5.
