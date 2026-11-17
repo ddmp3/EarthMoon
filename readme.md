@@ -5,7 +5,7 @@
 Ce repo est un clone du repo https://github.com/ddmp3/nasa-space-app-challenge-2026-cyber-space qui ne doit pas être modifier car en cours d'évaluation par le jury de la nasa.
 le repo https://github.com/ddmp3/EarthMoon sert a faire une v2 du projet afin de traiter les limitations rencontrées durant le challenge de 48h.
 
-les sites ci-dessous peuvent être consulté mais non modifié pour les même raison que ci-dessus (évaluation nasa).
+les sites ci-dessous peuvent être consulté mais non modifié pour les même raisons que ci-dessus (évaluation nasa).
 
 **Live:** https://jolly-rock-05f5cb20f.3.azurestaticapps.net · **API docs:** https://ca-api-rtzkc5ya.bluesky-19c5e80c.canadacentral.azurecontainerapps.io/api/docs
 
