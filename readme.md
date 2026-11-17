@@ -2,16 +2,21 @@
 
 **NASA Space Apps Challenge 2026 · Cyber&Space Montréal** · Challenge: [Permanent Moon Base Locations and Mars](https://www.spaceappschallenge.org/2026/challenges/permanent-moon-base-locations-and-mars/)
 
-A web application that ranks Earth sites as analogs of the **lunar south pole** for a chosen mission: rover mobility testing, instrument calibration, a self-sufficient colony, or free criteria. Each site is scored criterion by criterion with open data (NASA POWER, MODIS, Copernicus DEM, USGS, Smithsonian GVP) against lunar reference values (LRO LOLA slope and roughness computed with the same 1 km method as on Earth, LRO Diviner).
+Ce repo est un clone du repo https://github.com/ddmp3/nasa-space-app-challenge-2026-cyber-space qui ne doit pas être modifier car en cours d'évaluation par le jury de la nasa.
+le repo https://github.com/ddmp3/EarthMoon sert a faire une v2 du projet afin de traiter les limitations rencontrées durant le challenge de 48h.
 
-It is a **screening tool**: it ranks where to look first and says how solid each rank is. It does not approve a mission or replace field work.
-
-Every site card shows what matches, what does not, the lunar value next to the Earth value, the source of each number, and what Earth cannot reproduce (gravity, vacuum, radiation).
+les sites ci-dessous peuvent être consulté mais non modifié pour les même raison que ci-dessus (évaluation nasa).
 
 **Live:** https://jolly-rock-05f5cb20f.3.azurestaticapps.net · **API docs:** https://ca-api-rtzkc5ya.bluesky-19c5e80c.canadacentral.azurecontainerapps.io/api/docs
 
 ![Home](docs/screenshots/01-home.jpg)
 ![Colony mission, Tunnunik Crater](docs/screenshots/02-mission-colony-tunnunik.jpg)
+
+A web application that ranks Earth sites as analogs of the **lunar south pole** for a chosen mission: rover mobility testing, instrument calibration, a self-sufficient colony, or free criteria. Each site is scored criterion by criterion with open data (NASA POWER, MODIS, Copernicus DEM, USGS, Smithsonian GVP) against lunar reference values (LRO LOLA slope and roughness computed with the same 1 km method as on Earth, LRO Diviner).
+
+It is a **screening tool**: it ranks where to look first and says how solid each rank is. It does not approve a mission or replace field work.
+
+Every site card shows what matches, what does not, the lunar value next to the Earth value, the source of each number, and what Earth cannot reproduce (gravity, vacuum, radiation).
 
 ## The four modes
 
