@@ -27,7 +27,7 @@ from discovery import worldcover  # noqa: E402
 from discovery.copernicus import PRODUCTS, list_tiles, local_copy, neighbours, tile_name, tile_url  # noqa: E402
 from discovery.grid import TileGrid, tile_grid  # noqa: E402
 from discovery.keys import content_key  # noqa: E402
-from discovery.windows import STORED_METRICS, window_metrics_grid  # noqa: E402
+from discovery.windows import STORED_METRICS, _quiet, window_metrics_grid  # noqa: E402
 
 WINDOW_M = 1000.0
 CELL_M = 5000.0
@@ -49,7 +49,8 @@ def compute_tile(z: np.ndarray, grid: TileGrid, classes: dict[str, np.ndarray] |
         n, m = grid.window_px, grid.margin_px
         for name, frac in classes.items():
             core = frac[m:m + grid.rows * n, m:m + grid.cols * n]
-            w[f"wc_{name}"] = core.reshape(grid.rows, n, grid.cols, n).mean(axis=(1, 3))
+            with _quiet():  # a window with no WorldCover value stays unknown (NaN)
+                w[f"wc_{name}"] = np.nanmean(core.reshape(grid.rows, n, grid.cols, n), axis=(1, 3))
     cell_id = (ci - ci.min()) * 100_000 + (cj - cj.min())
     cells = cell_table(w, cell_id, owned, STORED_METRICS)
     # cell centres: mean of the owned window centres; mask fractions: mean over owned windows
@@ -59,7 +60,8 @@ def compute_tile(z: np.ndarray, grid: TileGrid, classes: dict[str, np.ndarray] |
                     "area_km2": float(sel.sum() * (grid.window_m / 1000) ** 2),
                     "flat_windows": int(w["flat"][sel].sum())})
         for name in (classes or {}):
-            row[f"wc_{name}"] = float(np.nanmean(w[f"wc_{name}"][sel]))
+            with _quiet():
+                row[f"wc_{name}"] = float(np.nanmean(w[f"wc_{name}"][sel]))
     windows = {"row": np.indices(owned.shape)[0][owned], "col": np.indices(owned.shape)[1][owned],
                "lat": lat[owned], "lon": lon[owned], "i": ci[owned], "j": cj[owned]}
     for k, v in w.items():

@@ -62,4 +62,13 @@ def read(grid, signals: dict) -> tuple[dict[str, np.ndarray], dict]:
                       dst_nodata=0, resampling=Resampling.nearest)
         used[k] = {x: signals[k][x] for x in ("etag", "size", "last_modified")}
         cls = np.where(part > 0, part, cls)
-    return {n: (cls == c).astype("float32") for c, n in MASK_CLASSES.items()}, used
+    return fractions(cls), used
+
+
+def fractions(cls: np.ndarray) -> dict[str, np.ndarray]:
+    """Per-pixel indicator of each mask class; NaN where WorldCover has no value (0: outside its coverage, such
+    as south of 60°S, or open ocean). `covered` is 1 where a class is known. Unknown is never "not this class"."""
+    known = cls > 0
+    out = {n: np.where(known, cls == c, np.nan).astype("float32") for c, n in MASK_CLASSES.items()}
+    out["covered"] = known.astype("float32")
+    return out

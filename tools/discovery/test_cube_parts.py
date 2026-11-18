@@ -185,3 +185,30 @@ def test_provenance_commit_comes_from_the_runner_when_given(monkeypatch):
     from discovery.cube import git_commit
     monkeypatch.setenv("EARTHMOON_COMMIT", "abc123")
     assert git_commit() == "abc123"
+
+
+def test_pixels_without_worldcover_are_unknown_not_absent():
+    from discovery.worldcover import fractions
+    fr = fractions(np.array([[0, 70], [10, 0]], dtype="uint8"))
+    assert np.isnan(fr["snow_ice"][0, 0]) and fr["snow_ice"][0, 1] == 1.0 and fr["snow_ice"][1, 0] == 0.0
+    assert np.array_equal(fr["covered"], [[0.0, 1.0], [1.0, 0.0]])
+
+
+def test_cells_outside_worldcover_have_unknown_mask_fractions_and_zero_cover():
+    from discovery.cube import compute_tile
+    g = tile_grid(-76, -6, 90.0, 990.0)                          # south of 60°S: no WorldCover tile
+    z = np.tile(np.arange(g.shape[1]) * 90.0 * np.tan(np.radians(5)), (g.shape[0], 1))
+    nan = np.full(g.shape, np.nan, "float32")
+    windows, cells = compute_tile(z, g, {"snow_ice": nan, "covered": np.zeros(g.shape, "float32")})
+    assert np.isnan(windows["wc_snow_ice"]).all() and (windows["wc_covered"] == 0).all()
+    assert all(np.isnan(r["wc_snow_ice"]) and r["wc_covered"] == 0 for r in cells.values())
+
+
+def test_window_mask_fraction_uses_its_covered_pixels_only():
+    from discovery.cube import compute_tile
+    g = tile_grid(45, 10, 90.0, 990.0)
+    z = np.zeros(g.shape) + np.arange(g.shape[1]) * 5.0
+    ice = np.ones(g.shape, "float32")
+    ice[:, ::2] = np.nan                                         # every other column has no WorldCover value
+    windows, _ = compute_tile(z, g, {"snow_ice": ice, "covered": np.isfinite(ice).astype("float32")})
+    assert np.allclose(windows["wc_snow_ice"], 1.0) and np.all((windows["wc_covered"] > 0.4) & (windows["wc_covered"] < 0.6))
