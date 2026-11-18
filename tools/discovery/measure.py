@@ -4,6 +4,7 @@
     python tools/discovery/measure.py pilot --out tiles-pilot.txt                     # the 13 T22 pilot tiles
     python tools/discovery/measure.py timing --manifest M.jsonl --listing L.json --pass-share 0.48 --workers 8
     python tools/discovery/measure.py summary --manifest M.jsonl                       # run report numbers
+    python tools/discovery/measure.py breakdown --a DIR                                # why cells are missing
     python tools/discovery/measure.py equivalence --a DIR_GLO90 --b DIR_GLO30_AT_90 --tiles tiles-pilot.txt
 """
 from __future__ import annotations
@@ -42,10 +43,14 @@ def projection(records: list[dict], workers: int, n_tiles: int, share: float) ->
             "workers": workers, "tiles": n_tiles, "share": share, "projected_hours": round(hours, 1)}
 
 
+def latest(records: list[dict]) -> list[dict]:
+    """The last record of each tile: a rerun appends to the manifest."""
+    return list({r["tile"]: r for r in records}.values())
+
+
 def summary(records: list[dict]) -> dict:
     """Run report of a manifest: the latest record per tile (a rerun appends), coverage counts and shares, timings."""
-    last = {r["tile"]: r for r in records}
-    recs = list(last.values())
+    recs = latest(records)
     cells = {k: sum(r["cells"][k] for r in recs) for k in ("evaluated", "partial", "missing")}
     total = sum(cells.values())
     t = np.array([r["seconds"]["total"] for r in recs]) if recs else np.array([np.nan])
@@ -56,6 +61,22 @@ def summary(records: list[dict]) -> dict:
             "windows": {"total": sum(r["windows"] for r in recs), "valid": sum(r["valid_windows"] for r in recs)},
             "seconds": {"median_total": round(float(np.median(t)), 2), "p90_total": round(float(np.percentile(t, 90)), 2),
                         "sum_total_h": round(float(t.sum()) / 3600, 2)}}
+
+
+def missing_breakdown(cells: dict) -> dict:
+    """Why cells have no elevation: water (WorldCover water at least half the cell), outside WorldCover (no class
+    known, e.g. south of 60°S or open sea), or land (a real gap in the DEM)."""
+    out = {"water": 0, "outside_worldcover": 0, "land": 0}
+    for state, water, covered in zip(cells["state"], cells["wc_water"], cells["wc_covered"]):
+        if state != "missing":
+            continue
+        if not covered or not math.isfinite(covered) or not math.isfinite(water):
+            out["outside_worldcover"] += 1
+        elif water >= 0.5:
+            out["water"] += 1
+        else:
+            out["land"] += 1
+    return out
 
 
 def equivalence(a: Path, b: Path, names: list[tuple[str, str]]) -> dict:
@@ -81,7 +102,7 @@ def equivalence(a: Path, b: Path, names: list[tuple[str, str]]) -> dict:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("what", choices=["tiles", "pilot", "timing", "equivalence", "summary"])
+    ap.add_argument("what", choices=["tiles", "pilot", "timing", "equivalence", "summary", "breakdown"])
     ap.add_argument("--listing")
     ap.add_argument("--manifest")
     ap.add_argument("--out")
@@ -97,13 +118,20 @@ def main(argv=None) -> int:
     elif a.what == "pilot":
         t22 = json.loads((ROOT / "data/research/sampling-t22.json").read_text(encoding="utf-8"))
         Path(a.out).write_text("\n".join(f"{t['lat']},{t['lon']}" for t in t22["tiles"]) + "\n")
+    elif a.what == "breakdown":
+        import pyarrow.parquet as pq
+        total: dict = {}
+        for f in sorted(Path(a.a).glob("*.cells.parquet")):
+            part = missing_breakdown(pq.read_table(f, columns=["state", "wc_water", "wc_covered"]).to_pydict())
+            total = {k: total.get(k, 0) + v for k, v in part.items()}
+        print(json.dumps(total, indent=1))
     elif a.what == "summary":
         recs = [json.loads(x) for x in Path(a.manifest).read_text().splitlines() if x.strip()]
         print(json.dumps(summary(recs), indent=1))
     elif a.what == "timing":
         recs = [json.loads(x) for x in Path(a.manifest).read_text().splitlines() if x.strip()]
         n = len(json.loads(Path(a.listing).read_text()))
-        print(json.dumps(projection(recs, a.workers, n, a.pass_share), indent=1))
+        print(json.dumps(projection(latest(recs), a.workers, n, a.pass_share), indent=1))
     else:
         sys.path.insert(0, str(ROOT / "tools"))
         from discovery.copernicus import tile_name

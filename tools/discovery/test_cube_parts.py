@@ -212,3 +212,17 @@ def test_window_mask_fraction_uses_its_covered_pixels_only():
     ice[:, ::2] = np.nan                                         # every other column has no WorldCover value
     windows, _ = compute_tile(z, g, {"snow_ice": ice, "covered": np.isfinite(ice).astype("float32")})
     assert np.allclose(windows["wc_snow_ice"], 1.0) and np.all((windows["wc_covered"] > 0.4) & (windows["wc_covered"] < 0.6))
+
+
+def test_missing_cells_are_split_into_water_outside_worldcover_and_land():
+    from discovery.measure import missing_breakdown
+    nan = float("nan")
+    cells = {"state": ["missing", "missing", "missing", "missing", "evaluated"],
+             "wc_water": [0.9, nan, 0.1, 0.5, 0.0], "wc_covered": [1.0, 0.0, 1.0, 1.0, 1.0]}
+    assert missing_breakdown(cells) == {"water": 2, "outside_worldcover": 1, "land": 1}
+
+
+def test_latest_keeps_the_last_record_of_each_tile_in_order_of_first_appearance():
+    from discovery.measure import latest
+    recs = [{"tile": "A", "v": 1}, {"tile": "B", "v": 1}, {"tile": "A", "v": 2}]
+    assert latest(recs) == [{"tile": "A", "v": 2}, {"tile": "B", "v": 1}]

@@ -1,2 +1,5 @@
-# tools/discovery (T40). Exact pins for new dependencies (ADR-002); numpy and rasterio come from tools/precompute.
+# tools/discovery (T40). Exact pins (ADR-002). numpy and rasterio are pinned here to the versions that built the
+# 18/11/2026 cube; tools/precompute keeps its own ranges for v2.
 pyarrow==26.0.1
+numpy==2.4.6
+rasterio==1.4.4
