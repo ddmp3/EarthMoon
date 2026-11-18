@@ -1,6 +1,6 @@
 # ADR-005 Which side computes on demand, and parity
 
-Status: proposed (T30), for gate G3.
+Status: accepted at gate G3 (signed 18/11/2026 by David).
 
 ## Context
 v2 computes in TypeScript and keeps a Python scorer identical, with a parity test. v3 computes everything offline in Python (ADR-001). Only `cells` and `query` need on-demand work, over Parquet files.

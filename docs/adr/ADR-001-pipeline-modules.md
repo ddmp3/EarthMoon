@@ -1,6 +1,6 @@
 # ADR-001 Discovery pipeline modules
 
-Status: proposed (T30, 18 November 2026), for gate G3.
+Status: accepted at gate G3 (signed 18/11/2026 by David).
 
 ## Context
 v3 must turn planetary and Earth products into profiles, cell statistics, comparisons and zones, and do it reproducibly. The research scripts of T21 to T25 (`tools/research/`) already hold the tested functions: windows, percentile typicality, two-stage screening, controls.
@@ -18,7 +18,7 @@ A Python package `tools/discovery/` with one module per stage. Each stage reads 
 | `validate` | Zones, `data/validation/*.yaml` (tag `validation-protocol-v1`) | Validation report and Monte Carlo |
 | `export` | Comparison, zones | Web layers and zone JSON (ADR-002) |
 
-**Run manifest:** every stage records its inputs (with SHA-256), code version (git commit), parameters and seed. The `release` id is the hash of the run manifests.
+**Run manifest:** every stage records its inputs (with SHA-256), code version (sha256 of the step's sources) and git commit, parameters and seed. The `release` id is the hash of the run manifests.
 
 The functions validated in `tools/research/` move into `tools/discovery/` with their tests. The research scripts then import from there, so one implementation remains.
 

@@ -1,6 +1,6 @@
 # ADR-006 Front end
 
-Status: proposed (T30), for gate G3. Specification: `docs/wiki/ui/map-spec.md` (T26).
+Status: accepted at gate G3 (signed 18/11/2026 by David). Specification: `docs/wiki/ui/map-spec.md` (T26).
 
 ## Decision
 - **Keep the stack:** React 19, Vite, Tailwind 4, react-leaflet 5, zustand. **No new runtime dependency** is needed:
