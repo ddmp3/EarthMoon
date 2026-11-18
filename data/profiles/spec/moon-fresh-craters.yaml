@@ -1,0 +1,26 @@
+id: moon-fresh-craters
+body: moon
+name: Fresh (Copernican) craters
+kind: distribution
+status: conditional
+blocked_by: [usgs-unified-geologic-map]
+catalogue_environments: [fresh-craters]
+selection:
+  rule: 1 km windows of SLDEM2015 inside crater units mapped as Copernican on the USGS Unified Geologic Map.
+  steps:
+    - {product: sldem2015, condition: "1 km window inside 60°S to 60°N", uses: [latitude]}
+    - {product: usgs-unified-geologic-map, condition: "unit age is Copernican", uses: [map_unit_age]}
+  parameters: []
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: sldem2015
+    scale: 1 km windows of about 60 m pixels
+    effective_resolution: near 512 ppd (stated)
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - Map units at 1:5,000,000 miss small fresh craters; only large ones are selected.
+  - The Robbins 2019 crater database (not verified) could add small craters but gives no age by itself.
+cannot_characterize: [vacuum, gravity, space weathering]

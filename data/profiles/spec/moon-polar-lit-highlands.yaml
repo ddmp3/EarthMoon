@@ -1,0 +1,42 @@
+id: moon-polar-lit-highlands
+body: moon
+name: South polar highlands, sunlit at least part of the time
+kind: distribution
+status: ready
+catalogue_environments: [polar-highlands]
+selection:
+  rule: Windows of the v2 domain (1 km, south of 85°S) whose fraction of permanently shadowed pixels is at most f_lit.
+  steps:
+    - {product: lro-lola-ldem-85s-40m, condition: "1 km window entirely south of 85°S", uses: [latitude]}
+    - {product: lola-polar-illumination, condition: "permanent shadow fraction of the window <= f_lit (60 m map)", uses: [psr_fraction]}
+  parameters:
+    - {name: f_lit, value: "to fix in T22", sensitivity: [0.0, 0.05, 0.10]}
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: lro-lola-ldem-85s-40m
+    scale: 1 km windows of 40 m pixels
+    effective_resolution: coarser than 40 m away from the pole (interpolated); measured in T41
+  - dimension: illumination
+    names: [mean_illumination]
+    product: lola-polar-illumination
+    scale: 60 m pixels averaged per window
+    effective_resolution: not stated on the source page; model computed from topography
+  - dimension: thermal
+    names: [annual_max_temperature]
+    product: lro-diviner-prp
+    scale: triangular mesh resampled to the window (element size not stated)
+    effective_resolution: not stated on the source page; thermal model output
+  - dimension: regolith
+    names: [lamp_far_uv_albedo]
+    product: lro-lamp-gdr
+    scale: 240 m pixels averaged per window
+    effective_resolution: 240 m (stated)
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - Illumination and permanent shadow come from a model computed from the same LOLA topography, so selection and terrain are not independent.
+  - mean_illumination is related to the selection variable (psr_fraction); T21 measures their correlation before it is compared.
+  - Same interpolation bias as the v2 reference (L3).
+cannot_characterize: [gravity, vacuum, radiation, absolute surface temperature compared with Earth (L5)]

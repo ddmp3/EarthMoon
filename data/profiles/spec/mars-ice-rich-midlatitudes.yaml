@@ -1,0 +1,37 @@
+id: mars-ice-rich-midlatitudes
+body: mars
+name: Northern mid-latitude terrain consistent with shallow ice
+kind: distribution
+status: ready
+catalogue_environments: [ice-rich-midlatitudes]
+selection:
+  rule: MOLA windows (0 to 60°N) whose SWIM 1.0 combined consistency value is at or above the class boundary c given by the SWIM documentation.
+  steps:
+    - {product: swim-ice-consistency, condition: "combined consistency >= c (3 km pixels)", uses: [swim_consistency]}
+    - {product: mgs-mola-megdr, condition: "terrain windows inside the selected SWIM pixels", uses: []}
+  parameters:
+    - {name: c, value: "to read in the SWIM documentation (T48)", sensitivity: ["SWIM class boundary", "one class lower", "one class higher"]}
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: mgs-mola-megdr
+    scale: windows of 128 ppd cells (about 460 m at the equator); size decided in T22
+    effective_resolution: binned from tracks, empty or interpolated cells at high ppd (as LOLA)
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: mro-hirise-dtm
+    scale: rover-scale windows of 1 to 2 m posts, only where a DTM exists
+    effective_resolution: about 4 times the input pixel scale (stated)
+  - dimension: atmosphere
+    names: [surface_pressure_range, surface_temperature_range]
+    product: lmd-mars-climate-database
+    scale: model grid (not stated on the source page)
+    effective_resolution: model output, linearly interpolated
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - SWIM is an interpretation built from several data sets with thresholds, not an ice measurement.
+  - Every data set inside SWIM (its component layers, to list from the documentation in T48) is excluded from the compared parameters, otherwise the selection would be circular.
+  - Southern hemisphere not covered (SWIM 2.0 not read).
+cannot_characterize: [ice content, gravity, radiation, atmospheric composition and pressure compared with Earth]

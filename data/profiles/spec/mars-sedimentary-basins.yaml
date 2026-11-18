@@ -1,0 +1,30 @@
+id: mars-sedimentary-basins
+body: mars
+name: Sedimentary basin fill
+kind: distribution
+status: conditional
+blocked_by: [usgs-mars-geologic-map-2014]
+catalogue_environments: [sedimentary-basins]
+selection:
+  rule: MOLA windows inside sedimentary or basin-fill units of the Mars geologic map (Tanaka et al. 2014); HiRISE windows where a DTM exists.
+  steps:
+    - {product: usgs-mars-geologic-map-2014, condition: "sedimentary or basin-fill unit", uses: [map_unit]}
+    - {product: mgs-mola-megdr, condition: "windows inside the units", uses: []}
+  parameters: []
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: mgs-mola-megdr
+    scale: windows of 128 ppd cells
+    effective_resolution: binned from tracks
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: mro-hirise-dtm
+    scale: rover-scale windows where a DTM exists
+    effective_resolution: about 4 times the input pixel scale (stated)
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - Unit names group deposits of different origin; the map is coarse.
+cannot_characterize: [depositional age, past water depth, gravity, atmosphere]

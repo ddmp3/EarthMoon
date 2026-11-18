@@ -1,0 +1,35 @@
+id: moon-pits
+body: moon
+name: Pits (possible openings to voids or lava tubes)
+kind: site-set
+status: ready
+catalogue_environments: [pits-tubes]
+selection:
+  rule: Every pit of the LROC Lunar Pits Atlas, with its setting (mare, impact melt, highland) as given by the atlas.
+  steps:
+    - {product: lroc-pits-atlas, condition: "pit listed in the atlas", uses: [atlas_listing]}
+  parameters: []
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: lroc-nac-dtm-pipeline
+    scale: NAC DTM around the pit, where a public DTM covers it (50 public DTMs, preliminary)
+    effective_resolution: post spacing not stated on the source page
+  - dimension: topography
+    names: [context_slope_mean]
+    product: sldem2015
+    scale: 1 km window centred on the pit (60°S to 60°N)
+    effective_resolution: near 512 ppd (stated)
+  - dimension: gravity
+    names: [bouguer_anomaly]
+    product: grail-grgm1200a
+    scale: degree and order 1200
+    effective_resolution: sensitivity below 5 km (stated); exploratory, cannot detect a single tube
+statistics:
+  per_site: true
+  note: A list of sites, not a distribution. T23 compares Earth candidates with each site and with the range of sites.
+biases:
+  - The atlas list was not read yet (lroc-pits-atlas is partly verified); its completeness is unknown.
+  - A pit is an observed opening; a tube behind it is an inference. Proximity to a volcano or a mare ridge is never used as evidence.
+  - Few pits are covered by a public NAC DTM.
+cannot_characterize: [extent of a void below the surface, cave microclimate, gravity]

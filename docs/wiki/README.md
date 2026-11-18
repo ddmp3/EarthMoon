@@ -5,7 +5,7 @@ Long-form material that the short docs in `docs/` summarize: data inventories, m
 | Folder | Content | Written by |
 |---|---|---|
 | `data/` | Lunar ([moon.md](data/moon.md)), Martian ([mars.md](data/mars.md)) and Earth ([earth.md](data/earth.md)) data inventories | T10, T11, T12 |
-| `methods/` | Profiles, parameters, sampling, comparison, mapping | T20 to T26 |
+| `methods/` | Environment profiles ([profiles.md](methods/profiles.md)), parameters, sampling, comparison, mapping | T20 to T26 |
 | `runs/` | Reports of computation runs, with hashes and numbers | T40 onwards |
 | `ui/` | Interface specifications | T26 |
 | `v2/` | Full v2 scientific documents, unchanged | T02 |

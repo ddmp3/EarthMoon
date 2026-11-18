@@ -1,0 +1,25 @@
+id: mars-caves
+body: mars
+name: Cave entrance candidates
+kind: site-set
+status: conditional
+blocked_by: [mars-cave-candidates]
+catalogue_environments: [caves]
+selection:
+  rule: Every candidate of the Mars cave candidate catalogue, kept with the catalogue's own confidence class.
+  steps:
+    - {product: mars-cave-candidates, condition: "listed candidate", uses: [catalogue_listing]}
+  parameters: []
+parameters:
+  - dimension: topography
+    names: [context_slope_mean]
+    product: mro-hirise-dtm
+    scale: window around the candidate where a DTM exists
+    effective_resolution: about 4 times the input pixel scale (stated)
+statistics:
+  per_site: true
+  note: A list of candidates, not a distribution.
+biases:
+  - A candidate is an image interpretation of a dark opening; a cave behind it is not confirmed.
+  - Proximity to a volcano is never used as evidence.
+cannot_characterize: [extent of the void, cave climate]

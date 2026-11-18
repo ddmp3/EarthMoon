@@ -1,0 +1,33 @@
+id: moon-mare-plains
+body: moon
+name: Mare basalt plains
+kind: distribution
+status: ready
+catalogue_environments: [mare-plains]
+selection:
+  rule: 1 km windows of SLDEM2015 (60°S to 60°N) inside Lunar Prospector iron bins above a split drawn from the lunar data (two-class split of the iron histogram).
+  steps:
+    - {product: sldem2015, condition: "1 km window inside 60°S to 60°N", uses: [latitude]}
+    - {product: lp-grs-ns-special-products, condition: "Fe bin value above fe_split", uses: [fe_abundance]}
+  parameters:
+    - {name: fe_split, value: "to fix in T22", sensitivity: ["two-class split (Otsu) of the Fe histogram", "split minus 10%", "split plus 10%"]}
+upgrade: Replace the iron mask with the mare units of the USGS Unified Geologic Map once it is verified (usgs-unified-geologic-map).
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: sldem2015
+    scale: 1 km windows of about 60 m pixels (512 ppd); the common scale with Earth is decided in T22
+    effective_resolution: true resolution near 512 ppd (stated)
+  - dimension: composition
+    names: [th_abundance]
+    product: lp-grs-ns-special-products
+    scale: Lunar Prospector bins (0.5° to 5°, 15 to 150 km), one value for many windows
+    effective_resolution: at least the bin size
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - Iron bins of 15 km or more cut across mare and highland contacts; edge windows are mixed.
+  - Iron selects the windows, so iron is not compared; titanium also tracks mare basalt and stays out until T21 measures it.
+  - The iron split is drawn from the lunar histogram only, never from Earth sites.
+cannot_characterize: [space weathering, vacuum, gravity, regolith maturity at window scale]

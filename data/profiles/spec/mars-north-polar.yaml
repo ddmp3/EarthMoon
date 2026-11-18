@@ -1,0 +1,36 @@
+id: mars-north-polar
+body: mars
+name: North polar terrain (layered deposits, residual cap and surroundings)
+kind: distribution
+status: ready
+catalogue_environments: [polar-deposits]
+selection:
+  rule: Windows of the MOLA north polar grid poleward of latitude phi.
+  steps:
+    - {product: mgs-mola-megdr, condition: "window entirely north of phi (polar grid, up to 512 ppd)", uses: [latitude]}
+  parameters:
+    - {name: phi, value: "to fix in T22", sensitivity: [75, 80, 85], unit: "°N"}
+upgrade: Restrict to the polar layered deposit units of the Mars geologic map once it is verified (usgs-mars-geologic-map-2014).
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: mgs-mola-megdr
+    scale: windows of polar grid cells (512 ppd, about 115 m); size decided in T22
+    effective_resolution: binned from tracks; empty or interpolated cells at high ppd
+  - dimension: subsurface
+    names: [sharad_reflector_presence]
+    product: mro-sharad-radargrams
+    scale: along orbital tracks
+    effective_resolution: not stated on the source page; an interpretation of radargrams
+  - dimension: volatiles
+    names: [epithermal_neutron_flux]
+    product: ody-neutron-maps
+    scale: map cells (not stated on the source page)
+    effective_resolution: not stated; an indirect hydrogen indicator
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - A latitude rule mixes layered deposits, residual ice, dunes and plains; results are labelled "polar terrain", not "layered deposits".
+  - The altimeter measures the ice surface, not the ground below.
+cannot_characterize: [CO2 frost cycles, atmospheric pressure, gravity, radiation]

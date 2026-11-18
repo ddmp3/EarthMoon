@@ -1,0 +1,30 @@
+id: mars-volcanic-plains
+body: mars
+name: Volcanic plains
+kind: distribution
+status: conditional
+blocked_by: [usgs-mars-geologic-map-2014]
+catalogue_environments: [volcanic-plains]
+selection:
+  rule: MOLA windows inside volcanic units of the Mars geologic map (Tanaka et al. 2014).
+  steps:
+    - {product: usgs-mars-geologic-map-2014, condition: "volcanic unit", uses: [map_unit]}
+    - {product: mgs-mola-megdr, condition: "windows inside the units", uses: []}
+  parameters: []
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: mgs-mola-megdr
+    scale: windows of 128 ppd cells
+    effective_resolution: binned from tracks
+  - dimension: thermal
+    names: [thermal_inertia]
+    product: mgs-tes-thermal-inertia
+    scale: map cells (not stated on the source page)
+    effective_resolution: not stated; interpolated cells masked
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - Map at 1:20,000,000 (from the title); unit boundaries are coarse.
+cannot_characterize: [lava age, gravity, atmosphere]

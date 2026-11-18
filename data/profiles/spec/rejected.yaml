@@ -1,0 +1,28 @@
+# Environments considered in T20 and not specified, with the reason. Revisit when the reason no longer holds.
+rejected:
+  - id: mars-dune-fields
+    body: mars
+    catalogue_environments: [dune-fields]
+    reason: >-
+      No dune field catalogue was inventoried in T11. Drawing dunes from images alone would select on visual
+      appearance, which the method forbids. Revisit in T48 if a catalogue is found and verified.
+  - id: moon-global
+    body: moon
+    reason: >-
+      A whole-Moon distribution mixes every environment, so a match to it means nothing specific. The global
+      products serve as context layers only.
+  - id: moon-polar-ice-deposits
+    body: moon
+    reason: >-
+      The polar volatile products (LAMP, LEND, Mini-RF, Diviner ice stability) are indicators or models, not
+      abundances. Ice is a parameter of moon-psr, labelled as an indicator, not an environment of its own.
+  - id: moon-lava-tubes
+    body: moon
+    reason: >-
+      No product observes a tube. Only pits are observed (moon-pits); a tube is an inference. Gravity
+      (GRAIL, sensitivity below 5 km) is exploratory and cannot delineate tubes.
+  - id: mars-ancient-aqueous-continuous
+    body: mars
+    reason: >-
+      OMEGA and CRISM give detection sites, not a continuous map, so a distribution over a region would be
+      invented between sites. Specified as a site set instead (mars-aqueous-mineral-sites).
