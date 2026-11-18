@@ -3,7 +3,7 @@
 For one 1° tile and one pixel scale: read the Copernicus DEM tile and its existing neighbours onto the tile's
 local equal-area grid (bilinear; sea is 0 m in the product and is read as missing), compute the 1 km window
 metrics, the ESA WorldCover class fractions of each window, and the 5 km cell statistics. Write two Parquet
-tables and one manifest line keyed by sha256(input keys + code commit + parameters).
+tables and one manifest line keyed by sha256(input keys + code version + parameters).
 
     python tools/discovery/cube.py --product glo90 --pixel 90 --tiles all --out /data/cube --workers 8
     python tools/discovery/cube.py --product glo30 --pixel 40 --tiles pilot --out /data/cube
@@ -108,14 +108,17 @@ def code_version(root: Path = Path(__file__).resolve().parents[1]) -> str:
 
 
 def git_commit() -> str:
-    """The commit the run started from, for provenance only."""
+    """The commit the run started from, for provenance only. The runner sets EARTHMOON_COMMIT from the host
+    checkout (`git describe --dirty`); git inside a container on a Windows mount sees false line-ending changes."""
     import subprocess
+    if os.environ.get("EARTHMOON_COMMIT"):
+        return os.environ["EARTHMOON_COMMIT"]
     try:
         out = subprocess.run(["git", "describe", "--always", "--dirty", "--abbrev=40"], capture_output=True, text=True,
                              cwd=Path(__file__).resolve().parent, check=True).stdout.strip()
         return out or "unknown"
     except (OSError, subprocess.CalledProcessError):
-        return os.environ.get("EARTHMOON_COMMIT", "unknown")
+        return "unknown"
 
 
 def _write(path: Path, table: dict) -> str:
@@ -129,8 +132,8 @@ def _write(path: Path, table: dict) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def process(lat: int, lon: int, product: str, pixel: float, out: Path, listing: dict, commit: str,
-            wc: dict | None, cache: Path | None) -> dict:
+def process(lat: int, lon: int, product: str, pixel: float, out: Path, listing: dict, code: str,
+            wc: dict | None, cache: Path | None, source: str = "unknown") -> dict:
     os.environ.update(GDAL_ENV)
     t0 = time.time()
     grid = tile_grid(lat, lon, pixel, WINDOW_M)
@@ -154,8 +157,8 @@ def process(lat: int, lon: int, product: str, pixel: float, out: Path, listing: 
         cell_cols[k] = [r[k] for r in cells.values()]
     sha_w = _write(out / f"{name}.windows.parquet", windows)
     sha_c = _write(out / f"{name}.cells.parquet", cell_cols)
-    return {"tile": name, "lat": lat, "lon": lon, "key": content_key(inputs, commit, params), "inputs": inputs,
-            "code": commit, "commit": git_commit(), "params": params, "outputs": {"windows": sha_w, "cells": sha_c},
+    return {"tile": name, "lat": lat, "lon": lon, "key": content_key(inputs, code, params), "inputs": inputs,
+            "code": code, "commit": source, "params": params, "outputs": {"windows": sha_w, "cells": sha_c},
             "windows": int(len(windows["row"])), "valid_windows": int(np.isfinite(windows["slope_mean"]).sum()),
             "cells": coverage(cells), "seconds": {"read": round(t_read, 2), "mask": round(t_mask, 2),
                                                   "total": round(time.time() - t0, 2)}}
@@ -189,7 +192,7 @@ def main(argv=None) -> int:
     wc = None if a.no_mask else _cached(out / "worldcover-listing.json", worldcover.listing)
     tiles = sorted(listing) if a.tiles == "all" else [
         t for t in (tuple(int(x) for x in line.split(",")) for line in Path(a.tiles).read_text().split()) if t in listing]
-    commit = code_version()
+    commit, source = code_version(), git_commit()
     manifest = out / "manifest.jsonl"
     done = done_keys(manifest)
     todo = [t for t in tiles if not _up_to_date(done.get(tile_name(*t, a.product)), t, listing, commit, out, a.product)]
@@ -206,7 +209,7 @@ def main(argv=None) -> int:
                     print(f"download {i}/{len(need)}, {(time.time() - t0) / 3600:.2f} h", flush=True)
     t0, n, failed = time.time(), 0, []
     with ProcessPoolExecutor(max_workers=a.workers) as pool, manifest.open("a", encoding="utf-8") as fh:
-        futs = {pool.submit(process, la, lo, a.product, a.pixel, out, listing, commit, wc, cache): (la, lo)
+        futs = {pool.submit(process, la, lo, a.product, a.pixel, out, listing, commit, wc, cache, source): (la, lo)
                 for la, lo in todo}
         for f in as_completed(futs):
             try:

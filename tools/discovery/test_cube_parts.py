@@ -179,3 +179,9 @@ def test_summary_keeps_the_latest_record_per_tile_and_reports_coverage_shares():
     assert s["cells"] == {"evaluated": 6, "partial": 1, "missing": 13, "total": 20}
     assert s["cell_shares"] == {"evaluated": 0.3, "partial": 0.05, "missing": 0.65}
     assert s["windows"] == {"total": 20, "valid": 7} and s["seconds"]["median_total"] == 3.0
+
+
+def test_provenance_commit_comes_from_the_runner_when_given(monkeypatch):
+    from discovery.cube import git_commit
+    monkeypatch.setenv("EARTHMOON_COMMIT", "abc123")
+    assert git_commit() == "abc123"
