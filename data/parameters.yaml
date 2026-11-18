@@ -1,0 +1,347 @@
+# EarthMoon v3 parameter catalogue (task T21). Replaces the v2 catalog in T42 and T44.
+# Checked by tools/profiles/profiles.py (validate_parameters) against the data catalogues and the measured
+# correlations in data/research/redundancy-t21.json.
+# comparability: direct (same quantity, same scale) | indirect (related quantity, stated model) |
+#                process (same process acts) | impossible | model (needs a physical model)
+# decision: keep | merge (into a combined axis) | drop | context (shown next to results, never scored)
+parameters:
+  # --- topography (decisions from the measured redundancy, see docs/wiki/methods/redundancy.md) ---
+  - id: slope_mean
+    dimension: topography
+    definition: Mean pixel slope in the window
+    unit: "°"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: direct
+    decision: keep
+    reason: >-
+      The slope axis. Every other slope statistic of the same window correlates with it at Spearman 0.87 to 0.99 on the Moon or on Earth.
+    does_not_measure: Relief below the pixel scale; rock abundance
+  - id: slope_p95
+    dimension: topography
+    definition: 95th percentile of pixel slope
+    unit: "°"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: direct
+    decision: drop
+    reason: >-
+      Spearman 0.93 with slope_mean on the Moon, 0.98 on Earth: the same property counted twice.
+    does_not_measure: Anything slope_mean does not already give
+  - id: slope_max
+    dimension: topography
+    definition: Steepest pixel slope
+    unit: "°"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: direct
+    decision: drop
+    reason: >-
+      Extreme value driven by DEM noise (v2 audit); Spearman 0.87 with slope_p95 on the Moon, 0.96 with slope_mean on Earth.
+    does_not_measure: A real hazard (it is one pixel)
+  - id: roughness
+    dimension: topography
+    definition: Standard deviation of elevation, tilt included
+    unit: "m"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: direct
+    decision: drop
+    reason: >-
+      Measures tilt, not roughness: Spearman 0.99 with slope_mean on the Moon, 0.96 on Earth.
+    does_not_measure: Roughness
+  - id: roughness_detrended
+    dimension: topography
+    definition: Standard deviation of elevation after removing a plane
+    unit: "m"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: indirect
+    decision: context
+    reason: >-
+      Behaves differently on the two bodies: Spearman 0.18 with slope_mean on the Moon, 0.98 on Earth. Most likely the lunar grid lacks short-wavelength relief (interpolation, L3). Not compared until the T41 effective resolution experiment says the two measure the same thing.
+    does_not_measure: Roughness below the effective resolution
+  - id: traversable_20
+    dimension: topography
+    definition: Fraction of pixels with slope at most 20°
+    unit: "fraction"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: direct
+    decision: context
+    reason: >-
+      An operational requirement of scenario B (Apollo LRV 20 to 23°, verified), not a similarity. Shown, never scored as similarity (T24).
+    does_not_measure: Rover traction, rocks, soil strength
+  - id: traversable_15
+    dimension: topography
+    definition: Fraction of pixels with slope at most 15°
+    unit: "fraction"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: direct
+    decision: context
+    reason: >-
+      Same as traversable_20; the VIPER 15° limit is not verified (E1). Spearman 0.83 with traversable_20 on the Moon, 0.93 on Earth.
+    does_not_measure: Rover traction
+  - id: traversable_25
+    dimension: topography
+    definition: Fraction of pixels with slope at most 25°
+    unit: "fraction"
+    scale: 1 km window of 40 m pixels (v2); other scales in T22
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: direct
+    decision: drop
+    reason: >-
+      Spearman 0.89 with traversable_20 on Earth; 25° is the LRV maximum, kept only as a scenario B check if T24 asks for it.
+    does_not_measure: Rover traction
+  - id: elevation
+    dimension: topography
+    definition: Height above the reference surface
+    unit: "m"
+    scale: pixel
+    sources: {earth: [copernicus-dem-glo30, copernicus-dem-glo90], moon: [lro-lola-ldem-85s-40m, sldem2015, lola-south-pole-5m-mosaic], mars: [mgs-mola-megdr, mro-hirise-dtm]}
+    comparability: impossible
+    decision: drop
+    reason: >-
+      Datums of different bodies are not comparable; on Earth it mostly proxies climate.
+    does_not_measure: Anything planetary
+
+  # --- geology and mineralogy ---
+  - id: lithology_class
+    dimension: geology
+    definition: Rock class of the mapped unit (for example basalt, anorthosite, sedimentary)
+    unit: class
+    scale: map unit (GLiM open grid 0.5°; Macrostrat multi-scale; lunar 1:5M, Mars 1:20M maps)
+    sources: {earth: [glim, macrostrat], moon: [usgs-unified-geologic-map], mars: [usgs-mars-geologic-map-2014]}
+    comparability: indirect
+    decision: keep
+    reason: Rock type is the first geological match. Planetary maps are not verified yet, so the Moon and Mars side waits (T46).
+    does_not_measure: Mineral proportions, grain size, weathering state
+  - id: fe_abundance
+    dimension: geology
+    definition: Iron abundance of the surface
+    unit: wt%
+    scale: Lunar Prospector bins of 0.5° to 5°
+    sources: {moon: [lp-grs-ns-special-products]}
+    comparability: indirect
+    decision: context
+    reason: Selects the lunar mare profile (T20), so it is not compared (circular). No global Earth iron map exists in the catalogue.
+    does_not_measure: Mineral host of the iron
+  - id: mineral_class
+    dimension: geology
+    definition: Presence of a mineral group from imaging spectroscopy (for example clays, sulfates, carbonates)
+    unit: class (presence)
+    scale: EMIT 60 m (52°N to 52°S); OMEGA and CRISM detection sites
+    sources: {earth: [emit-l2b-minerals], mars: [mex-omega-global-maps, mro-crism-mtrdr]}
+    comparability: indirect
+    decision: keep
+    reason: The only mineralogy available on both Earth and Mars. Interpretation on both sides, presented as presence only.
+    does_not_measure: Abundance, age, formation conditions
+  - id: silica_emissivity
+    dimension: geology
+    definition: Thermal infrared emissivity contrast sensitive to silica content
+    unit: unitless
+    scale: ASTER GED 100 m
+    sources: {earth: [aster-ged-ag100]}
+    comparability: indirect
+    decision: context
+    reason: No planetary counterpart inventoried; qualifies Earth candidates (felsic vs mafic) only.
+    does_not_measure: Mineral identity
+  - id: th_abundance
+    dimension: geology
+    definition: Thorium abundance of the surface
+    unit: ppm
+    scale: Lunar Prospector bins of 0.5° to 5°
+    sources: {moon: [lp-grs-ns-special-products]}
+    comparability: impossible
+    decision: context
+    reason: Characterizes lunar terranes; Earth has no comparable map at these scales in the catalogue.
+    does_not_measure: Anything Earth data can match
+
+  # --- thermal ---
+  - id: lst_amplitude
+    dimension: thermal
+    definition: Day minus night land surface temperature
+    unit: K
+    scale: MODIS 1 km, 8-day composites, multi-year statistics
+    sources: {earth: [modis-mod11a2], moon: [lro-diviner-rdr]}
+    comparability: model
+    decision: keep
+    reason: A relative quantity that relates to thermal inertia through a model; absolute temperatures are not comparable (L5). Terra ends 1 December 2026.
+    does_not_measure: Absolute temperature, subsurface temperature
+  - id: thermal_inertia
+    dimension: thermal
+    definition: Resistance of the surface to temperature change (grain size, rock, induration)
+    unit: J m-2 K-1 s-1/2
+    scale: TES map cells (not stated on the source page)
+    sources: {mars: [mgs-tes-thermal-inertia]}
+    comparability: model
+    decision: keep
+    reason: Physical property of the material, comparable once derived on Earth from MODIS amplitude and albedo by a model (T47).
+    does_not_measure: Composition
+  - id: lst_day
+    dimension: thermal
+    definition: Daytime land surface temperature
+    unit: K
+    scale: MODIS 1 km
+    sources: {earth: [modis-mod11a2]}
+    comparability: impossible
+    decision: drop
+    reason: Absolute temperatures of Earth and the Moon do not overlap; v2 used them as targets (L5).
+    does_not_measure: Lunar or Martian conditions
+  - id: lst_night
+    dimension: thermal
+    definition: Night land surface temperature
+    unit: K
+    scale: MODIS 1 km
+    sources: {earth: [modis-mod11a2]}
+    comparability: impossible
+    decision: drop
+    reason: Same as lst_day.
+    does_not_measure: Lunar or Martian conditions
+  - id: t2m_min
+    dimension: thermal
+    definition: Lowest monthly mean air temperature at 2 m
+    unit: °C
+    scale: about 50 km climatology
+    sources: {earth: [nasa-power]}
+    comparability: impossible
+    decision: drop
+    reason: The Moon has no air; 50 km cells cannot support discovery; v2 lapse-rate correction was wrong for minima (L9).
+    does_not_measure: Surface temperature
+
+  # --- hydric and ice ---
+  - id: ground_ice
+    dimension: hydric-ice
+    definition: Probability or consistency of ground ice in the upper metres
+    unit: probability (Earth), consistency index (Mars)
+    scale: 1 km (Earth permafrost model), 3 km (SWIM)
+    sources: {earth: [obu-permafrost-2018], mars: [swim-ice-consistency]}
+    comparability: indirect
+    decision: keep
+    reason: Both sides are models or interpretations of shallow ice; compared as classes, not values. SWIM selects a Mars profile, so it is not compared inside that profile.
+    does_not_measure: Ice content or depth
+  - id: hydrogen_indicator
+    dimension: hydric-ice
+    definition: Neutron or ultraviolet indicator of hydrogen or water at the surface
+    unit: count ratio or band depth
+    scale: 240 m (LAMP) to tens of km (neutrons)
+    sources: {moon: [lro-lamp-gdr, lro-lend-rdr], mars: [ody-neutron-maps]}
+    comparability: impossible
+    decision: context
+    reason: Indicators of polar volatiles, not abundances; no Earth measurement of the same kind.
+    does_not_measure: Water abundance
+  - id: specific_humidity
+    dimension: hydric-ice
+    definition: Water vapour mass per mass of air at 2 m
+    unit: g/kg
+    scale: ERA5-Land 9 km (model)
+    sources: {earth: [era5-land]}
+    comparability: process
+    decision: keep
+    reason: Dryness of the air drives the processes that matter (weathering, frost); it replaces relative humidity, which v2 used wrongly.
+    does_not_measure: Ground moisture
+  - id: relative_humidity
+    dimension: hydric-ice
+    definition: Relative humidity at 2 m
+    unit: "%"
+    scale: about 50 km
+    sources: {earth: [nasa-power]}
+    comparability: impossible
+    decision: drop
+    reason: Depends on temperature; v2 ranked drier air as wetter (audit C2).
+    does_not_measure: Dryness
+  - id: precipitation
+    dimension: hydric-ice
+    definition: Mean precipitation
+    unit: mm/day
+    scale: ERA5-Land 9 km (model)
+    sources: {earth: [era5-land]}
+    comparability: process
+    decision: keep
+    reason: Water erosion and weathering rate; Mars and the Moon have none, so the closest analogs are the driest.
+    does_not_measure: Groundwater
+
+  # --- environment (dust, wind, aeolian) ---
+  - id: aerosol_optical_depth
+    dimension: environment
+    definition: Column aerosol optical depth
+    unit: unitless
+    scale: MCD19A2 1 km daily, multi-year statistics
+    sources: {earth: [modis-mcd19a2-aod], mars: [mro-mcs-ddr]}
+    comparability: process
+    decision: keep
+    reason: Dust lifting and deposition act on both Earth and Mars; the Moon has no atmosphere (impossible there).
+    does_not_measure: Dust composition or grain size
+  - id: wind_speed
+    dimension: environment
+    definition: Near-surface wind speed
+    unit: m/s
+    scale: ERA5 0.25° (model); Mars Climate Database (model)
+    sources: {earth: [era5-single-levels], mars: [lmd-mars-climate-database]}
+    comparability: model
+    decision: keep
+    reason: Aeolian processes on Mars; both sides are models. Not used for the Moon.
+    does_not_measure: Gusts at the surface, sand transport
+
+  # --- operational (never similarity) ---
+  - id: latitude_abs
+    dimension: operational
+    definition: Absolute latitude
+    unit: °
+    scale: point
+    sources: {}
+    comparability: impossible
+    decision: context
+    reason: Logistics and Sun geometry on Earth; not a property of the planetary environment.
+    does_not_measure: Illumination of a lunar site
+  - id: seismic_noise
+    dimension: operational
+    definition: Ambient seismic noise at the nearest station
+    unit: dB
+    scale: station
+    sources: {earth: [earthscope-mustang-noise]}
+    comparability: indirect
+    decision: context
+    reason: Instrument test scenario C only; stations are sparse (T24 decides).
+    does_not_measure: Lunar seismicity
+  - id: quake_count
+    dimension: operational
+    definition: Regional earthquake count
+    unit: count
+    scale: 300 km radius
+    sources: {earth: [usgs-comcat]}
+    comparability: impossible
+    decision: drop
+    reason: A regional count is not the ambient noise that matters to an instrument (audit S1).
+    does_not_measure: Noise at a site
+  - id: volcano_distance
+    dimension: operational
+    definition: Distance to the nearest Holocene volcano
+    unit: km
+    scale: point
+    sources: {earth: [smithsonian-gvp]}
+    comparability: impossible
+    decision: drop
+    reason: Proximity to a volcano is not evidence of basalt or lava tubes (mission rule; audit V1).
+    does_not_measure: Rock type, caves
+  - id: solar
+    dimension: operational
+    definition: Annual mean insolation on a horizontal surface
+    unit: kWh/m²/day
+    scale: 1°
+    sources: {earth: [nasa-power]}
+    comparability: impossible
+    decision: drop
+    reason: No lunar meaning; lunar polar light is set by obliquity and topography (audit).
+    does_not_measure: Lunar illumination
+
+pairs: []  # no kept pair has |Spearman| > 0.8 on either body
+
+not_comparable:
+  - Gravity (1/6 g on the Moon, 3/8 g on Mars) changes slope stability, regolith compaction and rover traction.
+  - Vacuum on the Moon; a thin CO2 atmosphere at about 1% of Earth's pressure on Mars.
+  - Radiation and space weathering of surfaces.
+  - Absolute temperature ranges and permanently shadowed cryogenic surfaces.
+  - Cold trapping of volatiles in lunar polar craters.
+  - Regolith formed by impacts over billions of years without water.

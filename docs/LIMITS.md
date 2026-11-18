@@ -24,6 +24,7 @@ Full version (uncertainty table, data weaknesses, biases): [wiki/v2/SCIENTIFIC_L
 - Wind, humidity, precipitation and MODIS values have no sigma, so the intervals are lower bounds.
 - Correlated errors are ignored, and the choice of criteria is not varied.
 - The 37 sites were hand-picked: rankings compare these sites, not the whole Earth.
+- The eight v2 terrain metrics carry one independent property, slope (Spearman 0.87 to 0.99 on 71,731 lunar and 1,410 random Earth windows); detrended roughness behaves differently on the two bodies. See [wiki/methods/parameters.md](wiki/methods/parameters.md).
 
 ## Decisions that need human expertise
 

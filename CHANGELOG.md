@@ -2,6 +2,14 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T21 Dimensions, parameters and redundancy (PR #10)
+- `tools/research/redundancy.py` (7 tests) measures Spearman, Pearson and partial correlations of the terrain metrics on all 71,731 lunar windows (LDEM_85S_40M, SHA-256 identical to v2) and on 4,000 seeded random Earth points (1,410 land windows kept; ocean and incomplete windows counted, not scored). Output: `data/research/redundancy-t21.json`, `docs/wiki/methods/redundancy.md`.
+- **Result:** the eight v2 terrain metrics carry one independent property, slope (Spearman 0.87 to 0.99 with `slope_mean` on both bodies). Finding L1 is confirmed beyond the 37 sites.
+- **New finding:** detrended roughness is almost independent of slope on the Moon (0.18) but almost identical to it on Earth (0.98). It likely reflects the interpolated lunar grid (L3); it stays out of comparison until T41 tests it.
+- `data/parameters.yaml`: 31 parameters over six dimensions, each with a comparability class and a decision (keep, context, drop) and its reason. Kept: `slope_mean`, lithology, minerals, day-night amplitude, thermal inertia, ground ice, specific humidity, precipitation, aerosols, wind. Dropped: absolute temperatures, relative humidity, earthquake count, volcano distance, insolation, redundant slope statistics. Rover slope limits move to operational context.
+- The validator (`tools/profiles/profiles.py`, 6 new tests) refuses a kept pair with |Spearman| > 0.8 without a written reason.
+- `docs/wiki/methods/parameters.md` summarizes the decisions; `docs/LIMITS.md` states the slope finding.
+
 ## 2026-11-18 · T20 Planetary environment profiles (PR #9)
 - Gate G1 signed by David (18/11): sources that could not be read stay "not verified".
 - `data/profiles/spec/`: 16 environment specs, each selected from planetary data by a written rule.
