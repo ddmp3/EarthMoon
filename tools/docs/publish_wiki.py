@@ -113,8 +113,14 @@ def main() -> int:
         if not _git("status", "--porcelain", cwd=out):
             print("wiki already up to date")
             return 0
-        _git("commit", "-m", f"Mirror of docs/wiki at {commit}", cwd=out)
-        _git("push", cwd=out)
+        # The temporary clone has no identity: reuse the source repository's author.
+        name, email = _git("config", "user.name", cwd=root), _git("config", "user.email", cwd=root)
+        try:
+            _git("-c", f"user.name={name}", "-c", f"user.email={email}", "commit", "-m", f"Mirror of docs/wiki at {commit}", cwd=out)
+            _git("push", cwd=out)
+        except subprocess.CalledProcessError as e:
+            print(f"git failed: {e.stderr}", file=sys.stderr)
+            return 1
         print(f"published {len(names)} pages from {commit}")
     return 0
 

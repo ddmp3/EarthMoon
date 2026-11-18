@@ -2,6 +2,16 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T10 Lunar data inventory (PR #5)
+- `data/catalog/moon.yaml`: 35 lunar products. Each records nature (measured, derived, model, interpretation), coverage, pixel and effective resolution, units, uncertainty, access and limits, read at the source page with URL and date.
+  - Status: 10 verified, 16 partly verified, 9 not verified (hosts refused automated access or rendered nothing).
+- `tools/catalog/catalog.py`: shared schema check and table renderer for the Moon, Mars and Earth catalogues; 9 tests; part of the gate.
+- `docs/wiki/data/moon.md`:
+  - can be profiled now: polar highlands, shadowed regions, lit ridges;
+  - partly: mare plains, pits;
+  - not yet: crater-age environments, which need the crater database or geologic map, still unverified.
+- `tools/docs/publish_wiki.py`: reuses the repository author when committing to the wiki. The wiki is published (8 pages).
+
 ## 2026-11-18 · T02 Docs reset (PR #4)
 - Short pages:
   - `docs/METHOD.md`, `VALIDATION.md`, `LIMITS.md` (new, condensed from the v2 documents);

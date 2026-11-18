@@ -1,0 +1,778 @@
+# Lunar data catalogue (task T10). Schema and checks: tools/catalog/catalog.py.
+# Rule: a fact is written only if it was read on the page in verified_url on verified_on.
+# "not stated on page" = the page read does not say it. "not verified" = the page could not be read.
+# nature: measured (instrument observation), derived (gridded or processed from observations),
+#         model (computed from a physical model), interpretation (maps or classifications by scientists).
+# Environment ids: polar-highlands, psr, persistently-lit, mare-plains, pits-tubes, fresh-craters,
+#                  degraded-highlands, global.
+products:
+  - id: lro-lola-ldem-85s-40m
+    body: moon
+    mission: LRO
+    instrument: LOLA
+    product: LDEM_85S_40M (polar gridded elevation, south)
+    producer: LOLA Science Team, NASA GSFC
+    url: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/
+    access: {format: PDS IMG, size: "not stated on page", licence: "PDS, free download", account: false}
+    coverage: 85°S to 90°S
+    resolution_spatial: 40 m
+    resolution_effective: "coarser than 40 m away from the pole: grid interpolated between laser tracks (finding L3, not quantified)"
+    resolution_temporal: "mission average"
+    units: m
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Interpolation between tracks; includes shadowed crater walls and floors"
+    dimensions: [topography]
+    environments: [polar-highlands, psr]
+    status: verified
+    verified_on: "2026-11-17"
+    verified_url: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/
+    notes: "Downloaded and hashed by the project in v2 (SHA-256 in data/reference/moon-south-pole.json); 71,731 windows of 1 km"
+
+  - id: lro-lola-gdr-global
+    body: moon
+    mission: LRO
+    instrument: LOLA
+    product: LOLA Gridded Data Records, cylindrical and polar stereographic
+    producer: LOLA Science Team, NASA GSFC
+    url: https://imbrium.mit.edu/DATA/LOLA_GDR/
+    access: {format: "binary IMG, FLOAT_IMG, GeoJPEG2000", size: "not stated on page", licence: "open directory", account: false}
+    coverage: global (cylindrical) and polar
+    resolution_spatial: '"several spatial resolutions"; exact list not stated on page'
+    resolution_effective: "not stated on page"
+    resolution_temporal: "mission average"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Read gdr_ds.cat (not yet read) before use"
+    dimensions: [topography]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://imbrium.mit.edu/
+
+  - id: lola-south-pole-5m-mosaic
+    body: moon
+    mission: LRO
+    instrument: LOLA
+    product: South Pole LOLA DEM Mosaic, 5 m/pixel (Barker et al. 2021, R48)
+    producer: NASA GSFC (M. K. Barker; curated by E. Mazarico), PGDA
+    url: https://pgda.gsfc.nasa.gov/products/81
+    access: {format: GeoTIFF (polar stereographic), size: "elevation 3.3 GB; slope 4.9 GB; counts 140 MB", licence: "open download", account: false}
+    coverage: 87°S to 90°S (97 fields of 20 x 20 km)
+    resolution_spatial: 5 m
+    resolution_effective: "empty pixels filled by interpolation; a count map gives returns per pixel"
+    resolution_temporal: "mission average"
+    units: "m (height), degrees (slope)"
+    nature: derived
+    uncertainty: "typical RMS residual 30 to 55 cm within fields; absolute accuracy not stated on page"
+    limitations: "Interpolated where no laser return; polar cap only"
+    dimensions: [topography]
+    environments: [polar-highlands, psr, persistently-lit]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pgda.gsfc.nasa.gov/products/81
+
+  - id: sldem2015
+    body: moon
+    mission: LRO and SELENE
+    instrument: LOLA and Terrain Camera
+    product: SLDEM2015 merged elevation model (Barker et al. 2016)
+    producer: NASA GSFC
+    url: https://imbrium.mit.edu/DATA/SLDEM2015/
+    access: {format: "global and tiled grids", size: "not stated on page", licence: "open directory", account: false}
+    coverage: 60°S to 60°N (more than 86% of the surface)
+    resolution_spatial: 512 pixels per degree (about 60 m at the equator)
+    resolution_effective: '"true resolution near 512 ppd"'
+    resolution_temporal: "mission average"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "No polar coverage; read the README for accuracy"
+    dimensions: [topography]
+    environments: [mare-plains, fresh-craters, degraded-highlands, pits-tubes]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pgda.gsfc.nasa.gov/products/67
+
+  - id: sldem2015-slope
+    body: moon
+    mission: LRO and SELENE
+    instrument: LOLA and Terrain Camera
+    product: SLDEM2015 slope and azimuth maps
+    producer: NASA GSFC (E. Mazarico), PGDA
+    url: https://pgda.gsfc.nasa.gov/products/67
+    access: {format: "FLOAT_IMG, GeoJPEG2000; 256 and 512 ppd tiled", size: "not stated on page", licence: "open download", account: false}
+    coverage: global (pole to pole)
+    resolution_spatial: "64, 128, 256, 512 ppd (about 500, 250, 120, 60 m at the equator)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "mission average"
+    units: degrees
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Slope at about 60 m or coarser baseline only"
+    dimensions: [topography]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pgda.gsfc.nasa.gov/products/67
+
+  - id: lola-polar-illumination
+    body: moon
+    mission: LRO
+    instrument: LOLA (topography) with illumination model
+    product: Polar average solar illumination, permanent shadow, Earth and sky visibility (Mazarico et al. 2011, R6)
+    producer: NASA GSFC (E. Mazarico), PGDA
+    url: https://pgda.gsfc.nasa.gov/products/69
+    access: {format: "PDS IMG, GeoJPEG2000, GeoTIFF, COG", size: "not stated on page", licence: "open download", account: false}
+    coverage: "65°S to 90°S at 240 m, 75°S to 90°S at 120 m, 85°S to 90°S at 60 m; north equivalents"
+    resolution_spatial: 60 to 240 m
+    resolution_effective: "not stated on page"
+    resolution_temporal: "averaged over hourly time steps spanning 18.6 years"
+    units: "fraction of time illuminated (not stated explicitly on page)"
+    nature: model
+    uncertainty: "not stated on page"
+    limitations: "Computed from topography, not observed; some download links point to the wrong file type"
+    dimensions: [illumination]
+    environments: [polar-highlands, psr, persistently-lit]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pgda.gsfc.nasa.gov/products/69
+
+  - id: lola-roughness
+    body: moon
+    mission: LRO
+    instrument: LOLA
+    product: Surface roughness maps (2011)
+    producer: "not stated on page"
+    url: https://imbrium.mit.edu/EXTRAS/FRACTAL/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Listed on imbrium.mit.edu and PGDA product 98; content not read"
+    dimensions: [topography]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: lro-diviner-rdr
+    body: moon
+    mission: LRO
+    instrument: Diviner
+    product: Diviner Reduced Data Records (calibrated radiometry)
+    producer: Diviner Science Team, UCLA
+    url: https://pds-geosciences.wustl.edu/missions/lro/diviner.htm
+    access: {format: PDS4, size: "not stated on page", licence: "free download; citation requested", account: false}
+    coverage: global
+    resolution_spatial: "about 500 m (instrument mapping scale)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "July 2009 to June 2026 (two volumes)"
+    units: "brightness temperature; unit not stated on page"
+    nature: measured
+    uncertainty: "not stated on page; since April 2019 most solar-channel data are missing"
+    limitations: "Point observations, not maps"
+    dimensions: [thermal]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/lro/diviner.htm
+
+  - id: lro-diviner-global-maps
+    body: moon
+    mission: LRO
+    instrument: Diviner
+    product: Global cumulative products and gridded data records (GCP, GDR level 2 and 3), temperature anomaly maps
+    producer: Diviner Science Team, UCLA
+    url: https://www.diviner.ucla.edu/data
+    access: {format: PDS4, size: "not stated on page", licence: "free download; citation Williams et al. 2017 requested", account: false}
+    coverage: global
+    resolution_spatial: "2 ppd for the temperature anomaly maps; other products not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "July 2009 to April 2015 (GCP), to October 2016 (GDR)"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Level 3 fields built with topographic data and models"
+    dimensions: [thermal]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://www.diviner.ucla.edu/data
+
+  - id: lro-diviner-prp
+    body: moon
+    mission: LRO
+    instrument: Diviner
+    product: Derived Polar Resource Products (annual mean and maximum surface temperature, depth to ice stability)
+    producer: D. A. Paige, UCLA
+    url: https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/data_derived_prp/
+    access: {format: "ASCII table, 2,880,000 triangular elements per pole", size: "about 604 MB per pole", licence: "free download", account: false}
+    coverage: "each pole, square region to 80° latitude"
+    resolution_spatial: "triangular mesh; element size not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not applicable (annual statistics)"
+    units: "not stated on page"
+    nature: model
+    uncertainty: "not stated on page"
+    limitations: "Ice depth is a thermal model result, not a detection; version 1 'lacked any meaningful data'"
+    dimensions: [thermal, volatiles]
+    environments: [polar-highlands, psr]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/catalog/prpds.cat
+
+  - id: lro-diviner-polar-temperature-maps
+    body: moon
+    mission: LRO
+    instrument: Diviner
+    product: South and north polar temperature maps (Williams et al. 2019)
+    producer: Diviner Science Team, UCLA
+    url: http://luna1.diviner.ucla.edu/~jpierre/diviner/level4_polar/
+    access: {format: "not verified", size: "not verified", licence: "citation requested", account: false}
+    coverage: polar
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "seasonal"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Directory could not be read (TLS certificate error)"
+    dimensions: [thermal]
+    environments: [polar-highlands, psr]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: lro-diviner-rock-abundance-thermophysics
+    body: moon
+    mission: LRO
+    instrument: Diviner
+    product: Rock abundance and regolith thermophysical (H-parameter) maps (Bandfield et al.; Hayne et al. 2017, R14)
+    producer: "not stated on page"
+    url: https://pds-geosciences.wustl.edu/lro/urn-nasa-pds-lro_diviner_derived1/readme.txt
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Not in the Diviner derived bundle listing; may be distributed elsewhere. Find the source before use"
+    dimensions: [thermal, regolith]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: lro-minirf-polar-mosaics
+    body: moon
+    mission: LRO
+    instrument: Mini-RF
+    product: Polar mosaics, S1 and circular polarization ratio (CPR), level 3
+    producer: Mini-RF Science Team, JHU APL
+    url: https://pds-geosciences.wustl.edu/lro/lro-l-mrflro-5-global-mosaic-v1/lromrf_1001/
+    access: {format: "PDS labels, PDS4 volume", size: "not stated on page", licence: "free download", account: false}
+    coverage: poleward of 70° latitude (catalogue); the PDS page calls the volume "global mosaics" (conflict)
+    resolution_spatial: 32 and 256 pixels per degree
+    resolution_effective: "not stated on page"
+    resolution_temporal: "July 2009 to January 2011; later data not scientifically useful"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "CPR is sensitive to surface roughness as well as ice; release of further data delayed"
+    dimensions: [radar, volatiles, regolith]
+    environments: [polar-highlands, psr]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/lro/lro-l-mrflro-4-cdr-v1/lromrf_0001/catalog/mrflro_5_cdr_mosaic_v1_0_ds.cat
+
+  - id: lro-lamp-gdr
+    body: moon
+    mission: LRO
+    instrument: LAMP
+    product: LAMP Gridded Data Records (far-UV brightness, albedo, H2O absorption feature depth)
+    producer: "not stated on page (SwRI site unreadable)"
+    url: https://planetarydata.jpl.nasa.gov/img/data/lro/lamp/gdr/LROLAM_2001/
+    access: {format: PDS3 maps, size: "694 maps", licence: "free download", account: false}
+    coverage: polar stereographic, each pole to 80° latitude, night side including permanently shaded regions
+    resolution_spatial: 240 m at the pole (2501 x 2501 pixels)
+    resolution_effective: '"true resolution at the pole of 240 meters/pixel"'
+    resolution_temporal: "September 2009 to September 2010; cumulative and 13 monthly maps"
+    units: "photons/cm²/s/sr (brightness); dimensionless (albedo); ratios (H2O depth)"
+    nature: derived
+    uncertainty: "statistical error maps provided"
+    limitations: "Water-related product is an absorption feature depth, not called a frost map on the page"
+    dimensions: [volatiles, regolith]
+    environments: [psr, polar-highlands]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://planetarydata.jpl.nasa.gov/img/data/lro/lamp/gdr/LROLAM_2001/CATALOG/LAMP_GDR_DS.CAT
+
+  - id: lro-lend-rdr
+    body: moon
+    mission: LRO
+    instrument: LEND
+    product: LEND Reduced Data Records (neutron counting rates and flux maps, ALD and ALF)
+    producer: LEND Science Team (University of Arizona page)
+    url: https://pds-geosciences.wustl.edu/missions/lro/lend.htm
+    access: {format: PDS4, size: "not stated on page", licence: "free download", account: false}
+    coverage: global
+    resolution_spatial: "grid cells 0.5° poleward of 80°, 1° elsewhere; detector footprint not stated on page"
+    resolution_effective: "not stated on page (much coarser than the cells)"
+    resolution_temporal: "data through June 2026 (release 67)"
+    units: "unitless count-rate ratios (ALD); n/(cm²·s) (ALF)"
+    nature: derived
+    uncertainty: "counting statistics only"
+    limitations: "Hydrogen abundance maps are not stated as a product; neutron suppression is an indirect hydrogen indicator"
+    dimensions: [volatiles]
+    environments: [polar-highlands, psr]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/lro/lro-l-lend-2-edr-v1/lrolen_0xxx/catalog/rdr_ds.cat
+
+  - id: lroc-nac-images
+    body: moon
+    mission: LRO
+    instrument: LROC NAC
+    product: Narrow Angle Camera images
+    producer: LROC team, Arizona State University
+    url: https://lroc.im-ldi.com/about/specs
+    access: {format: "not stated on page", size: "not stated on page", licence: "see LROC terms of use (not read)", account: false}
+    coverage: "targeted; not stated on page"
+    resolution_spatial: 0.5 m per pixel at 50 km altitude
+    resolution_effective: "not stated on page"
+    resolution_temporal: since 2009
+    units: radiance / reflectance
+    nature: measured
+    uncertainty: "1% relative, 10% absolute radiometric accuracy"
+    limitations: "Imagery: morphology, boulders, pits; not a physical property by itself"
+    dimensions: [morphology]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://lroc.im-ldi.com/about/specs
+
+  - id: lroc-nac-dtm-pipeline
+    body: moon
+    mission: LRO
+    instrument: LROC NAC (stereo)
+    product: Automated NAC stereo DEMs (Schmedemann et al. 2025)
+    producer: University of Münster with the LROC team
+    url: https://pds.lroc.im-ldi.com/data/LRO-L-LROC-5-RDR-V1.0/LROLRC_2001/DATA/SDP/NAC_IFPASP/
+    access: {format: "DEM, slope, hillshade, orthomosaics", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "50 public DEMs at selected sites (about 2,000 processed, more than 7,000 stereo pairs)"
+    resolution_spatial: "post spacing not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "preliminary release, February 2026"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated; elevation offsets between pairs not always corrected"
+    limitations: "Preliminary; gaps where no elevation could be computed"
+    dimensions: [topography]
+    environments: [pits-tubes, fresh-craters, mare-plains]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://lroc.im-ldi.com/images/1470
+
+  - id: lroc-wac-global-mosaic
+    body: moon
+    mission: LRO
+    instrument: LROC WAC
+    product: WAC global morphologic mosaic
+    producer: LROC team, Arizona State University
+    url: https://data.lroc.im-ldi.com/lroc/rdr_product_select
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified (WAC instrument: 75 m/pixel visible at 50 km)"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Product page not found on the pages read"
+    dimensions: [morphology]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: lroc-wac-gld100
+    body: moon
+    mission: LRO
+    instrument: LROC WAC (stereo)
+    product: GLD100 global DTM
+    producer: "not verified"
+    url: https://data.lroc.im-ldi.com/lroc/rdr_product_select
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Not found on the pages read"
+    dimensions: [topography]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: lroc-pits-atlas
+    body: moon
+    mission: LRO
+    instrument: LROC NAC
+    product: Lunar Pits Atlas (list and PDF)
+    producer: LROC team
+    url: https://lroc.im-ldi.com/atlases/pits
+    access: {format: "web list, PDF", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "not stated on page"
+    resolution_spatial: "not applicable (catalogue of features)"
+    resolution_effective: "not applicable"
+    resolution_temporal: "not stated on page"
+    units: "not stated on page"
+    nature: interpretation
+    uncertainty: "not stated on page"
+    limitations: "Pit list and PDF not yet read; inventory of pits in maria and impact melt (R17)"
+    dimensions: [subsurface, morphology]
+    environments: [pits-tubes]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://lroc.im-ldi.com/atlases/pits
+
+  - id: lp-grs-ns-special-products
+    body: moon
+    mission: Lunar Prospector
+    instrument: Gamma-Ray and Neutron Spectrometers
+    product: Reduced spectrometer data, special products (Fe, Ti, Th, K, H, O, Si, Al, Mg, Ca, U, Sm, neutron rates)
+    producer: LP Spectrometer Team (LANL and partners); not a peer-reviewed PDS archive
+    url: https://pds-geosciences.wustl.edu/missions/lunarp/reduced_special.html
+    access: {format: "ASCII tables and 720 x 360 binary maps", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: global
+    resolution_spatial: "bins of 0.5°, 2° (60 km) and 5° (150 km), depending on the element"
+    resolution_effective: "not stated on page; at least the bin size"
+    resolution_temporal: "16 January 1998 to 31 July 1999"
+    units: "FeO and Ti wt%; Th, K, H ppm; others wt% or counts"
+    nature: derived
+    uncertainty: "standard deviation provided only for neutron rates and some Th products"
+    limitations: "Hydrogen derived from epithermal neutrons, 'not necessarily reliable' where Th and rare earths are high"
+    dimensions: [composition, volatiles]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/lunarp/reduced_special.html
+
+  - id: lp-grs-elemental-abundance
+    body: moon
+    mission: Lunar Prospector
+    instrument: Gamma-Ray Spectrometer
+    product: GRS elemental abundance (major oxides, K, Th, U), LP_9001
+    producer: T. H. Prettyman, Lunar and Planetary Institute; PDS Geosciences Node
+    url: https://pds-geosciences.wustl.edu/missions/lunarp/grs_elem_abundance.html
+    access: {format: PDS4 tables, size: "not stated on page", licence: "free download", account: false}
+    coverage: global
+    resolution_spatial: "2°, 5° and 20° equal-area pixels"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "1998 to 1999 (100 km altitude data)"
+    units: "oxide wt%, ppm"
+    nature: derived
+    uncertainty: "error matrix terms included"
+    limitations: "Coarse: tens to hundreds of km"
+    dimensions: [composition]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/lunarp/grs_elem_abundance.html
+
+  - id: ch1-m3-level2
+    body: moon
+    mission: Chandrayaan-1
+    instrument: Moon Mineralogy Mapper (M3)
+    product: Level 2 reflectance (CH1M3_0004)
+    producer: "not stated on page"
+    url: https://pds-imaging.jpl.nasa.gov/volumes/m3.html
+    access: {format: "PDS3 multi-band images (*_RFL.IMG, *_SUP.IMG)", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: more than 95% of the Moon in global mode
+    resolution_spatial: "not stated on the catalogue pages read (see DPSIS.PDF)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "November 2008 to August 2009 (dates differ between header and text)"
+    units: "reflectance as radiance factor at i = 30°, e = 0° (unitless)"
+    nature: derived
+    uncertainty: "not stated; ground-truth correction intentionally not applied"
+    limitations: "Thermal removal applied; orbit raised to 200 km in May 2009; read DPSIS.PDF before use"
+    dimensions: [mineralogy, volatiles]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://planetarydata.jpl.nasa.gov/img/data/m3/CH1M3_0004/CATALOG/L2_DS.CAT
+
+  - id: selene-tc-dtm
+    body: moon
+    mission: SELENE (Kaguya)
+    instrument: Terrain Camera
+    product: TC DTM map, seamless DTM, ortho maps, SLDEM2013
+    producer: JAXA
+    url: https://data.darts.isas.jaxa.jp/pub/pds3/
+    access: {format: PDS3, size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "not stated on page"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "2007 to 2009 mission (not stated on page)"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Directories listed without login; the DARTS search service was suspended in October 2026"
+    dimensions: [topography]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://data.darts.isas.jaxa.jp/pub/pds3/aareadme.txt
+
+  - id: selene-mi-sp
+    body: moon
+    mission: SELENE (Kaguya)
+    instrument: Multiband Imager and Spectral Profiler
+    product: MI maps (level 3C5, map v3.0) and SP level 2B/2C spectra
+    producer: JAXA
+    url: https://data.darts.isas.jaxa.jp/pub/pds3/
+    access: {format: PDS3, size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "not stated on page"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Basis of the polar composition maps of Lemelin et al. 2022 (R15)"
+    dimensions: [mineralogy, composition]
+    environments: [global, polar-highlands]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://data.darts.isas.jaxa.jp/pub/pds3/aareadme.txt
+
+  - id: selene-lrs
+    body: moon
+    mission: SELENE (Kaguya)
+    instrument: Lunar Radar Sounder
+    product: LRS sounder data (SNDR) and spectra
+    producer: JAXA
+    url: https://data.darts.isas.jaxa.jp/pub/pds3/
+    access: {format: PDS3, size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "not stated on page"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: "not stated on page"
+    nature: measured
+    uncertainty: "not stated on page"
+    limitations: "Used to detect intact lava tubes at Marius Hills (R18)"
+    dimensions: [subsurface, radar]
+    environments: [pits-tubes, mare-plains]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://data.darts.isas.jaxa.jp/pub/pds3/aareadme.txt
+
+  - id: ch2-iirs
+    body: moon
+    mission: Chandrayaan-2
+    instrument: IIRS (imaging infrared spectrometer)
+    product: IIRS data at ISRO PRADAN
+    producer: ISRO
+    url: https://pradan.issdc.gov.in/ch2/
+    access: {format: "not stated on page", size: "not stated on page", licence: "see disclaimer page (not read)", account: "login/signup shown; download pages under /protected/ (not opened)"}
+    coverage: "20 km swath; global coverage not stated on page"
+    resolution_spatial: 80 m ground sampling distance
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: "spectra 800 to 5000 nm, about 256 bands"
+    nature: measured
+    uncertainty: "not stated on page"
+    limitations: "Download pages behind login/signup"
+    dimensions: [mineralogy, volatiles]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pradan.issdc.gov.in/ch2/
+
+  - id: ch2-dfsar
+    body: moon
+    mission: Chandrayaan-2
+    instrument: DFSAR (dual-frequency SAR, L and S band)
+    product: DFSAR data at ISRO PRADAN
+    producer: ISRO
+    url: https://pradan.issdc.gov.in/ch2/
+    access: {format: "not stated on page", size: "not stated on page", licence: "see disclaimer page (not read)", account: "login/signup shown; download pages under /protected/ (not opened)"}
+    coverage: "polar regions targeted for water-ice; global coverage not stated on page"
+    resolution_spatial: 2 to 75 m (slant range)
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: "radar backscatter"
+    nature: measured
+    uncertainty: "not stated on page"
+    limitations: "Download behind login/signup"
+    dimensions: [radar, volatiles, subsurface]
+    environments: [psr, polar-highlands]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pradan.issdc.gov.in/ch2/
+
+  - id: ch2-ohrc-tmc2
+    body: moon
+    mission: Chandrayaan-2
+    instrument: OHRC and TMC-2 (cameras)
+    product: OHRC images (0.25 m) and TMC-2 stereo triplets (5 m)
+    producer: ISRO
+    url: https://pradan.issdc.gov.in/ch2/
+    access: {format: "not stated on page", size: "not stated on page", licence: "see disclaimer page (not read)", account: "login/signup shown; download pages under /protected/ (not opened)"}
+    coverage: "OHRC swath 3 km; TMC-2 coverage not stated on page"
+    resolution_spatial: "0.25 m (OHRC), 5 m (TMC-2)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: radiance
+    nature: measured
+    uncertainty: "not stated on page"
+    limitations: "Download behind login/signup"
+    dimensions: [morphology, topography]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pradan.issdc.gov.in/ch2/
+
+  - id: ch2-class
+    body: moon
+    mission: Chandrayaan-2
+    instrument: CLASS (X-ray fluorescence)
+    product: Elemental abundance data at ISRO PRADAN
+    producer: ISRO
+    url: https://pradan.issdc.gov.in/ch2/
+    access: {format: "not stated on page", size: "not stated on page", licence: "see disclaimer page (not read)", account: "login/signup shown; download pages under /protected/ (not opened)"}
+    coverage: "not stated on page"
+    resolution_spatial: 12.5 km x 12.5 km from 100 km orbit
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: "X-ray spectra 0.8 to 15 keV"
+    nature: measured
+    uncertainty: "not stated on page"
+    limitations: "Spectra, not abundance maps, as stated on the page"
+    dimensions: [composition]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pradan.issdc.gov.in/ch2/
+
+  - id: clementine-uvvis-feo-tio2
+    body: moon
+    mission: Clementine
+    instrument: UVVIS camera
+    product: FeO and TiO2 maps derived from UVVIS (Lucey et al.)
+    producer: "not verified"
+    url: https://pds-geosciences.wustl.edu/missions/lunarp/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Not listed by PDS Geosciences; PDS Imaging and USGS not checked"
+    dimensions: [composition]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: grail-grgm1200a
+    body: moon
+    mission: GRAIL
+    instrument: Lunar Gravity Ranging System
+    product: GRGM1200A gravity field and Bouguer maps
+    producer: NASA GSFC (E. Mazarico); archived at PDS Geosciences
+    url: https://pgda.gsfc.nasa.gov/products/50
+    access: {format: "SHA/SHB coefficients; PDS IMG and GeoTIFF maps", size: "not stated on page", licence: "PDS free download", account: false}
+    coverage: global
+    resolution_spatial: "degree and order 1200, sensitivity below 5 km"
+    resolution_effective: '"sensitivity down to <5 km"'
+    resolution_temporal: "not applicable"
+    units: "gravity disturbance, Bouguer, geoid (units not stated on page)"
+    nature: derived
+    uncertainty: "clone fields and truncated covariance provided"
+    limitations: "Subsurface density, not a direct cave detection (R21 is exploratory)"
+    dimensions: [gravity, subsurface]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pgda.gsfc.nasa.gov/products/50
+
+  - id: usgs-unified-geologic-map
+    body: moon
+    mission: compilation
+    instrument: multiple
+    product: Unified Geologic Map of the Moon, 1:5,000,000 (Fortezzo, Spudis and Harrel 2020)
+    producer: USGS Astrogeology
+    url: https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "1:5,000,000 (from the title)"
+    resolution_effective: "not verified"
+    resolution_temporal: "not applicable"
+    units: "geologic units"
+    nature: interpretation
+    uncertainty: "not verified"
+    limitations: "USGS hosts refused automated access (HTTP 403); verify in a browser"
+    dimensions: [geology]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: robbins-2019-crater-database
+    body: moon
+    mission: compilation
+    instrument: multiple
+    product: Global lunar crater database (Robbins 2019, JGR Planets, doi:10.1029/2018JE005592)
+    producer: S. J. Robbins
+    url: https://doi.org/10.1029/2018JE005592
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not applicable"
+    units: "crater positions and diameters"
+    nature: interpretation
+    uncertainty: "not verified"
+    limitations: "Publisher and data hosts refused automated access; verify in a browser"
+    dimensions: [morphology]
+    environments: [fresh-craters, degraded-highlands]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: change-lunar-data
+    body: moon
+    mission: Chang'e 1 to 6
+    instrument: multiple
+    product: China Lunar and Planetary Data Release System (e.g. Chang'e-2 global DOM and DEM)
+    producer: CNSA / NAOC
+    url: https://moon.bao.ac.cn/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: "not verified"}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Site is rendered by JavaScript and returned no text; access conditions for foreign users unknown"
+    dimensions: [topography, morphology, composition]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
