@@ -2,6 +2,14 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T11 Mars data inventory (PR #6)
+- `data/catalog/mars.yaml`: 26 Martian products (7 verified, 11 partly verified, 8 not verified), each fact with source URL and date.
+- `docs/wiki/data/mars.md`:
+  - profiled now: ice-rich mid-latitudes and polar deposits;
+  - partly: aqueous, sedimentary and volcanic terrain;
+  - not yet: dunes and caves, which need catalogues.
+  - Mars has 1,377 HiRISE DTMs at 1 to 2 m, so terrain can be compared at rover scale.
+
 ## 2026-11-18 · T10 Lunar data inventory (PR #5)
 - `data/catalog/moon.yaml`: 35 lunar products. Each records nature (measured, derived, model, interpretation), coverage, pixel and effective resolution, units, uncertainty, access and limits, read at the source page with URL and date.
   - Status: 10 verified, 16 partly verified, 9 not verified (hosts refused automated access or rendered nothing).
