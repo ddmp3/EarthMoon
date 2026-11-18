@@ -1,0 +1,92 @@
+{
+ "seed": 20261119,
+ "moon_windows": 71503,
+ "earth_pilot_windows": 109465,
+ "redundancy_spearman": {
+  "moon": 0.786,
+  "earth_pilot": 0.914
+ },
+ "methods": {
+  "interval_v2_1d": {
+   "held_mean": 0.715,
+   "ks_uniform": 0.49,
+   "auc_vs_pilot": 0.776,
+   "earth_mean": 0.281,
+   "noise_spearman": {
+    "0.5": 0.87,
+    "1.0": 0.796
+   },
+   "seconds_per_million": 0.0,
+   "auc_vs_t21_random": 0.825
+  },
+  "percentile_1d": {
+   "held_mean": 0.494,
+   "ks_uniform": 0.014,
+   "auc_vs_pilot": 0.801,
+   "earth_mean": 0.196,
+   "noise_spearman": {
+    "0.5": 0.951,
+    "1.0": 0.891
+   },
+   "seconds_per_million": 0.19,
+   "auc_vs_t21_random": 0.855
+  },
+  "mahalanobis_2d": {
+   "held_mean": 0.497,
+   "ks_uniform": 0.012,
+   "auc_vs_pilot": 0.686,
+   "earth_mean": 0.312,
+   "noise_spearman": {
+    "0.5": 0.974,
+    "1.0": 0.918
+   },
+   "seconds_per_million": 0.25,
+   "missing_regional_spearman": 0.667
+  },
+  "knn_2d": {
+   "held_mean": 0.5,
+   "ks_uniform": 0.007,
+   "auc_vs_pilot": 0.787,
+   "earth_mean": 0.213,
+   "noise_spearman": {
+    "0.5": 0.961,
+    "1.0": 0.896
+   },
+   "seconds_per_million": 174.74,
+   "missing_regional_spearman": 0.803
+  },
+  "wasserstein_zone": {
+   "held_mean": 0.442,
+   "ks_uniform": 0.117,
+   "auc_vs_pilot": 0.781,
+   "earth_mean": 0.186,
+   "noise_spearman": {
+    "0.5": 0.994,
+    "1.0": 0.988
+   },
+   "seconds_per_million": 89.29,
+   "blocks": {
+    "moon_calibration": 300,
+    "moon_held": 300,
+    "earth": 300
+   }
+  },
+  "energy_zone": {
+   "held_mean": 0.444,
+   "ks_uniform": 0.107,
+   "auc_vs_pilot": 0.79,
+   "earth_mean": 0.182,
+   "noise_spearman": {
+    "0.5": 0.991,
+    "1.0": 0.964
+   },
+   "seconds_per_million": 1887.77,
+   "blocks": {
+    "moon_calibration": 300,
+    "moon_held": 300,
+    "earth": 300
+   }
+  }
+ },
+ "date": "2026-11-18"
+}
