@@ -7,6 +7,8 @@ le repo https://github.com/ddmp3/EarthMoon sert a faire une v2 du projet afin de
 
 les sites ci-dessous peuvent être consulté mais non modifié pour les même raisons que ci-dessus (évaluation nasa).
 
+**Work in progress (v3):** from ranking 37 known sites to discovering analogs anywhere on Earth, for the Moon and Mars. Plan and status: [docs/plan/README.md](docs/plan/README.md). History: [CHANGELOG.md](CHANGELOG.md).
+
 **Live:** https://jolly-rock-05f5cb20f.3.azurestaticapps.net · **API docs:** https://ca-api-rtzkc5ya.bluesky-19c5e80c.canadacentral.azurecontainerapps.io/api/docs
 
 ![Home](docs/screenshots/01-home.jpg)
