@@ -9,7 +9,7 @@ Synthesis of task T10 (18 November 2026). Source catalogue: `data/catalog/moon.y
 | Polar highlands, lit | Permanent shadow and average illumination maps (PGDA, model, 60 to 240 m) | LDEM_85S_40M (v2), 5 m mosaic 87°S to 90°S | Illumination (model); Diviner polar resource products (model); LAMP albedo; Mini-RF CPR | **Yes** for terrain and illumination. Thermal and volatiles only partly verified |
 | Permanently shadowed regions | Same permanent shadow map | Same (LOLA is an active laser, so it measures inside shadow) | LAMP H2O absorption depth; Diviner ice stability depth (model); LEND neutrons; Mini-RF CPR; Chandrayaan-2 DFSAR | **Yes** for terrain; volatiles are indicators, not abundances |
 | Persistently lit ridges | Average illumination map (model) | Same | Illumination | **Yes** |
-| Mare plains | Needs a geologic map (USGS 1:5M, not verified) or a composition threshold (Lunar Prospector FeO, 0.5° bins) | SLDEM2015 (60°S to 60°N, about 60 m) and its slope maps | LP FeO/Th; M3 reflectance; SELENE MI/SP | **Partly**: terrain yes; the mask is coarse until the geologic map is verified |
+| Mare plains | Needs a geologic map (USGS 1:5M, verified in T14) or a composition threshold (Lunar Prospector FeO, 0.5° bins) | SLDEM2015 (60°S to 60°N, about 60 m) and its slope maps | LP FeO/Th; M3 reflectance; SELENE MI/SP | **Partly**: terrain yes; geologic map verified in T14 |
 | Pits and lava tubes | LROC pit atlas (list not yet read) | NAC stereo DEMs at selected sites (50 public, preliminary) | SELENE radar sounder; GRAIL gravity (exploratory for caves) | **Partly**: a set of sites, not a distribution |
 | Fresh and degraded craters, ancient terrain | Needs a crater database (Robbins 2019) or geologic map ages: **both not verified** | SLDEM2015 | — | **No**, until those sources are verified |
 
@@ -34,7 +34,7 @@ Synthesis of task T10 (18 November 2026). Source catalogue: `data/catalog/moon.y
 
 USGS hosts and the publisher Wiley refused automated access. David, or a reviewer, please check in a browser and fill in the catalogue:
 
-- the Unified Geologic Map of the Moon (USGS, 1:5M, 2020): format and licence;
+- the Unified Geologic Map of the Moon (USGS, 1:5M, 2020): format and licence (verified 18/11 in T14, see [coverage review](coverage-review.md));
 - the Robbins 2019 crater database: data host, minimum diameter, format;
 - the Chang'e data release system: products, and whether foreign users can register;
 - the LROC WAC global mosaic and the GLD100 product pages;

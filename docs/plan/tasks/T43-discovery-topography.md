@@ -18,3 +18,6 @@ The first defensible global result: where on Earth the terrain resembles each lu
 
 ## Done when
 The report is complete and the checks pass. Gate G4: David reviews the map and the report.
+
+## Added by T14 (18/11/2026)
+- South of 60°S WorldCover has no tile (T40). Use `add-rock-outcrop-v7-3` as the mask there: outside the rock polygons is ice or snow. Lithology there: `scar-geomap-v2022-08`.
