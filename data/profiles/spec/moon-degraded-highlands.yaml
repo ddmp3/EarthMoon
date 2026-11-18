@@ -2,15 +2,16 @@ id: moon-degraded-highlands
 body: moon
 name: Ancient degraded highland terrain
 kind: distribution
-status: conditional
-blocked_by: [usgs-unified-geologic-map]
+status: ready
 catalogue_environments: [degraded-highlands]
 selection:
   rule: 1 km windows of SLDEM2015 inside pre-Nectarian and Nectarian highland units of the USGS Unified Geologic Map.
   steps:
     - {product: sldem2015, condition: "1 km window inside 60°S to 60°N", uses: [latitude]}
     - {product: usgs-unified-geologic-map, condition: "highland material of pre-Nectarian or Nectarian age", uses: [map_unit_age]}
-  parameters: []
+  parameters:
+    - {name: units, value: [Nc, Nb, Nbl, Nbm, Nbsc, Nnj, Np, Nt, Ntp, pNb, pNbm, pNc, pNt], sensitivity: [[Nc, Nb, Nbl, Nbm, Nbsc, Nnj, Np, Nt, Ntp, pNb, pNbm, pNc, pNt, INp, INt]], reason: "every Nectarian and pre-Nectarian unit; the mixed Imbrian-Nectarian units INp and INt are left out (T41)"}
+    - {name: min_unit_share, value: 0.9, sensitivity: [0.5, 1.0], reason: "a window is inside a unit when at least 90% of 25 samples fall in it (T41, as the 90% valid-pixel rule)"}
 parameters:
   - dimension: topography
     names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]

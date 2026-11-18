@@ -167,10 +167,12 @@ def write(path: Path, rec: dict) -> None:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["south-polar-cap", "polar"])
+    ap.add_argument("what", choices=["south-polar-cap", "polar", "cube"])
+    ap.add_argument("--cube", type=Path, help="moon cube folder (moon_cube.py --out)")
     ap.add_argument("--psr", type=Path)
     ap.add_argument("--illumination", type=Path)
     ap.add_argument("--windows-out", type=Path, default=Path("/data/profiles/moon"))
+    ap.add_argument("--iron", type=Path)
     ap.add_argument("--ldem", type=Path)
     ap.add_argument("--out", type=Path, default=Path("data/profiles/moon"))
     a = ap.parse_args(argv)
@@ -182,7 +184,79 @@ def main(argv=None) -> int:
         print(json.dumps(rec["windows"]), json.dumps(rec["metrics"]["slope_mean"]))
     elif a.what == "polar":
         polar(a)
+    elif a.what == "cube":
+        cube_profiles(a)
     return 0
+
+
+CUBE_SPECS = ("moon-mare-plains", "moon-fresh-craters", "moon-degraded-highlands")
+
+
+def _spec_param(spec: dict, name: str) -> dict:
+    return next(p for p in spec["selection"]["parameters"] if p["name"] == name)
+
+
+def cube_profiles(a) -> None:
+    """moon-mare-plains, moon-fresh-craters, moon-degraded-highlands from the lunar window cube (SLDEM2015)."""
+    import pyarrow.dataset as ds
+    import yaml
+    from discovery.moon_cube import otsu_split, read_iron
+    root = Path(__file__).resolve().parents[2]
+    folder = a.cube / "sldem2015-59m"
+    codes = json.loads((a.cube / "units_codes.json").read_text())
+    cols = ["lat", "lon", "unit", "unit_share", "fe", *ALL_METRICS]
+    t = ds.dataset(sorted(folder.glob("*.windows.parquet")), format="parquet").to_table(columns=cols).to_pydict()
+    w = {k: np.asarray(v) for k, v in t.items()}
+    manifest = folder / "manifest.jsonl"
+    inputs = {"moon-cube/manifest": {"file": manifest.name, "sha256": hashlib.sha256(manifest.read_bytes()).hexdigest()},
+              "moon-cube/inputs": json.loads((a.cube / "inputs.json").read_text())}
+    code_of = {c: i + 1 for i, c in enumerate(codes)}
+    in_units = lambda units, share: np.isin(w["unit"], [code_of[u] for u in units if u in code_of]) & (w["unit_share"] >= share)
+    domain = {"windows": int(w["unit"].size), "valid": int(np.isfinite(w["slope_mean"]).sum())}
+    for sid in CUBE_SPECS:
+        spec = yaml.safe_load((root / f"data/profiles/spec/{sid}.yaml").read_text(encoding="utf-8"))
+        up, sp = _spec_param(spec, "units"), _spec_param(spec, "min_unit_share")
+        sel = in_units(up["value"], sp["value"])
+        sens = []
+        for share in sp["sensitivity"]:
+            s = summarise(w, in_units(up["value"], share), ("slope_mean",))
+            sens.append({"min_unit_share": share, "units": up["value"], **s["windows"], "slope_mean": s["metrics"]["slope_mean"]})
+        for units in up["sensitivity"]:
+            s = summarise(w, in_units(units, sp["value"]), ("slope_mean",))
+            sens.append({"min_unit_share": sp["value"], "units": units, **s["windows"], "slope_mean": s["metrics"]["slope_mean"]})
+        params = {"units": up["value"], "min_unit_share": sp["value"], "pixel_m": 59.225293836, "window_px": 17,
+                  "window_m": round(17 * 59.225293836, 1), "min_valid": 0.9, "domain": "60°S to 60°N"}
+        if sid == "moon-mare-plains":
+            iron = read_iron(Path(a.iron))
+            lat = 89.75 - np.arange(360) * 0.5
+            band = np.abs(lat) < 60
+            vals = iron[band].ravel()
+            wts = np.repeat(np.cos(np.radians(lat[band])), 720)
+            split = otsu_split(vals, wts)
+            params["fe_split_wt_pct"] = round(split, 3)
+            for f in (0.9, 1.0, 1.1):
+                fe_sel = np.nan_to_num(w["fe"], nan=-1) >= split * f
+                s = summarise(w, fe_sel, ("slope_mean",))
+                both = int((fe_sel & sel).sum())
+                sens.append({"fe_split_wt_pct": round(split * f, 3), **s["windows"], "slope_mean": s["metrics"]["slope_mean"],
+                             "agreement_with_map": {"both": both, "map_only": int((sel & ~fe_sel).sum()),
+                                                    "iron_only": int((fe_sel & ~sel).sum())}})
+            inputs["lp-grs-ns-special-products/ironhd"] = file_input(Path(a.iron))
+        rec = record(sid, summarise(w, sel, ALL_METRICS), inputs, params)
+        rec["domain"] = domain
+        rec["sensitivity"] = sens
+        rec["outputs"] = {"windows_parquet": _write_cube_windows(a.windows_out / f"{sid}.windows.parquet", w, sel)}
+        rec["not_computed"] = {"reason": "composition (Lunar Prospector Th) is compared in T46 (geology)"} if sid == "moon-mare-plains" else {}
+        write(a.out / f"{sid}.json", rec)
+        print(sid, json.dumps(rec["windows"]), json.dumps(rec["metrics"]["slope_mean"]))
+
+
+def _write_cube_windows(path: Path, w: dict, sel: np.ndarray) -> str:
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    path.parent.mkdir(parents=True, exist_ok=True)
+    pq.write_table(pa.table({k: np.asarray(v)[sel] for k, v in w.items()}), path, compression="zstd")
+    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 POLAR_METRICS = ALL_METRICS + ("mean_illumination",)

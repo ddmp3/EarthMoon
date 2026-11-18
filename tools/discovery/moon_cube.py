@@ -137,6 +137,14 @@ def process(lat: int, lon: int, sldem: Path, units: np.ndarray, iron: np.ndarray
             "sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "seconds": round(time.time() - t0, 2)}
 
 
+def _sha(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as fh:
+        for chunk in iter(lambda: fh.read(1 << 24), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
 def code_version(root: Path = Path(__file__).resolve().parents[1]) -> str:
     h = hashlib.sha256()
     for name in CODE_FILES:
@@ -160,6 +168,11 @@ def main(argv=None) -> int:
         grid, codes = rasterize_units(a.geology)
         np.save(units_npy, grid)
         (a.out / "units_codes.json").write_text(json.dumps(codes) + "\n")
+    inputs_json = a.out / "inputs.json"
+    if not inputs_json.exists():                                       # sha256 of every source file, once
+        files = sorted(a.sldem.glob("SLDEM2015_512_*_FLOAT.IMG")) + [a.iron] + sorted(a.geology.parent.glob(a.geology.stem + ".*"))
+        inputs_json.write_text(json.dumps({f.name: {"size": f.stat().st_size, "sha256": _sha(f)} for f in files},
+                                          indent=1) + "\n")
     units = np.load(units_npy, mmap_mode="r")
     iron = read_iron(a.iron)
     tiles = [(la, lo) for la in range(-60, 60) for lo in range(360)] if a.tiles == "all" else \
