@@ -2,6 +2,15 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T12 Earth data inventory (PR #7)
+- `data/catalog/earth.yaml`: 41 Earth products (22 verified, 12 partly verified, 6 not verified, 1 not available: no global cave inventory exists). Each records its licence, attribution and use (similarity, mask, qualification, operations). The schema requires these for Earth entries (2 new tests).
+- `docs/wiki/data/earth.md`:
+  - scales: GLO-90 for screening, GLO-30 for refinement, 2 m only in polar regions;
+  - composition is the weak dimension (GLiM open grid 0.5°; EMIT excludes the poles);
+  - caves cannot be discovered from global data;
+  - Terra MODIS ends 1 December 2026;
+  - licences still to check.
+
 ## 2026-11-18 · T11 Mars data inventory (PR #6)
 - `data/catalog/mars.yaml`: 26 Martian products (7 verified, 11 partly verified, 8 not verified), each fact with source URL and date.
 - `docs/wiki/data/mars.md`:
