@@ -2,7 +2,7 @@
 import numpy as np
 import pytest
 
-from sampling import contrast_rows, pick_land_tiles, radial_spectrum, spectral_ratio
+from sampling import block_mean, contrast_rows, pick_land_tiles, radial_spectrum, spectral_ratio
 # block_mean, window_slope_means, cells_by_coordinate and screening_misses moved to tools/discovery (T40)
 
 
