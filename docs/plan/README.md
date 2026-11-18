@@ -92,7 +92,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T13](tasks/T13-references.md) | Reference verification | T01 | done (PR #8; VIPER 15° and Lunar Sourcebook still unverified) |
 | G1 | Gate: data inventories | T10-T13 | G1 signed 18/11 by David (unreadable sources stay "not verified") |
 | [T20](tasks/T20-planetary-profiles.md) | Planetary environment profiles | G1 | done (PR #9; 6 lunar and 5 Martian ready specs, 5 conditional) |
-| [T21](tasks/T21-dimensions.md) | Dimensions, parameters, redundancy | G1 | todo |
+| [T21](tasks/T21-dimensions.md) | Dimensions, parameters, redundancy | G1 | done (PR #10; terrain metrics reduce to slope; detrended roughness differs between bodies) |
 | [T22](tasks/T22-sampling.md) | Spatial and statistical sampling | T20, T21 | todo |
 | [T23](tasks/T23-comparison.md) | Comparison methods benchmark | T22 | todo |
 | [T24](tasks/T24-scenarios.md) | Scenarios v3 (A base, B robotics, C instruments, D Mars) | T21 | todo |

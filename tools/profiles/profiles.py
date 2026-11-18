@@ -26,10 +26,49 @@ SPEC_STATUSES = ("ready", "conditional")
 USABLE = ("verified", "partly verified")
 
 
-def catalogue_ids(catalog_dir: Path) -> dict[str, dict[str, str]]:
+DIMENSIONS = ("topography", "geology", "thermal", "hydric-ice", "environment", "operational")
+COMPARABILITY = ("direct", "indirect", "process", "impossible", "model")
+DECISIONS = ("keep", "merge", "drop", "context")
+REDUNDANT = 0.8
+
+
+def validate_parameters(params: list[dict], pairs: list[dict], ids: dict[str, dict[str, str]],
+                        correlations: dict) -> list[str]:
+    """Checks data/parameters.yaml. A kept pair with |Spearman| > 0.8 on any measured matrix needs a justification."""
+    errors = []
+    for p in params:
+        name = p.get("id", "?")
+        for f in ("id", "dimension", "definition", "unit", "scale", "sources", "comparability", "decision",
+                  "reason", "does_not_measure"):
+            if f not in p:
+                errors.append(f"{name}: missing field {f}")
+        if p.get("dimension") not in DIMENSIONS:
+            errors.append(f"{name}: dimension must be one of {DIMENSIONS}")
+        if p.get("comparability") not in COMPARABILITY:
+            errors.append(f"{name}: comparability must be one of {COMPARABILITY}")
+        if p.get("decision") not in DECISIONS:
+            errors.append(f"{name}: decision must be one of {DECISIONS}")
+        for body, products in (p.get("sources") or {}).items():
+            for pid in products:
+                if pid not in ids.get(body, {}):
+                    errors.append(f"{name}: source {pid} is not in the {body} catalogue")
+    kept = {p["id"] for p in params if p.get("decision") in ("keep", "merge")}
+    justified = {frozenset(x["pair"]) for x in pairs if x.get("justification")}
+    for label, block in correlations.items():
+        keys = block["keys"]
+        for i in range(len(keys)):
+            for j in range(i + 1, len(keys)):
+                v = block["spearman"][i][j]
+                pair = frozenset((keys[i], keys[j]))
+                if v is not None and abs(v) > REDUNDANT and pair <= kept and pair not in justified:
+                    errors.append(f"{keys[i]}/{keys[j]}: |r| = {abs(v):.2f} on {label}, both kept, no justification")
+    return errors
+
+
+def catalogue_ids(catalog_dir: Path, bodies: tuple[str, ...] = BODIES) -> dict[str, dict[str, str]]:
     """{body: {product id: status}} from data/catalog/<body>.yaml."""
     out: dict[str, dict[str, str]] = {}
-    for body in BODIES:
+    for body in bodies:
         data = yaml.safe_load((Path(catalog_dir) / f"{body}.yaml").read_text(encoding="utf-8"))
         out[body] = {p["id"]: p["status"] for p in data["products"]}
     return out
@@ -97,9 +136,14 @@ def main(argv: list[str]) -> int:
     specs = load_specs(spec_dir)
     errors = [e for s in specs for e in validate_spec(s, ids)]
     errors += validate_rejected(yaml.safe_load((spec_dir / "rejected.yaml").read_text(encoding="utf-8"))["rejected"])
+    params = yaml.safe_load((root / "data" / "parameters.yaml").read_text(encoding="utf-8"))
+    import json
+    corr = json.loads((root / "data" / "research" / "redundancy-t21.json").read_text(encoding="utf-8"))["matrices"]
+    all_ids = catalogue_ids(root / "data" / "catalog", bodies=("earth", "moon", "mars"))
+    errors += validate_parameters(params["parameters"], params.get("pairs", []), all_ids, corr)
     for e in errors:
         print(e)
-    print(f"{len(specs)} specs, {len(errors)} errors")
+    print(f"{len(specs)} specs, {len(params['parameters'])} parameters, {len(errors)} errors")
     return 1 if errors else 0
 
 
