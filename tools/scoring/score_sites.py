@@ -7,9 +7,9 @@ by this script and checked by the API tests.
     python score_sites.py                       # prints the three rankings on data/dataset-v2.json
     python score_sites.py --mode colony
     python score_sites.py --write-expected      # rewrites data/reference/expected-rankings-v2.json
-    python score_sites.py --v1                  # methodology v1 criteria (baseline of docs/SCIENTIFIC_VALIDATION.md)
+    python score_sites.py --v1                  # methodology v1 criteria (baseline of docs/wiki/v2/SCIENTIFIC_VALIDATION.md)
 
-Rules (docs/SCIENTIFIC_METHODOLOGY.md):
+Rules (docs/METHOD.md):
   * criterion score = 1 inside [min, max]; linear decay to 0 at the tolerance (toleranceBelow / toleranceAbove
     when the two sides differ)
   * total = sum(w * score) / sum(w) over the criteria that have a value, out of 100
@@ -44,7 +44,7 @@ def C(param, lo=None, hi=None, tolerance=0.0, weight=1.0) -> dict:
     return c
 
 
-# Methodology v1 (before the scientific audit), kept to reproduce the baseline of docs/SCIENTIFIC_VALIDATION.md.
+# Methodology v1 (before the scientific audit), kept to reproduce the baseline of docs/wiki/v2/SCIENTIFIC_VALIDATION.md.
 MODES_V1: dict[str, list[dict]] = {
     "robotics": [
         C("slope_mean", 5, 13, 10, 3), C("slope_max", 15, 30, 10, 1), C("roughness", 22, 65, 30, 2),

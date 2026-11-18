@@ -1,6 +1,6 @@
 """Geometry of a point (lat, lon) from Copernicus DEM GLO-30 (COG on AWS, partial read, no storage).
 
-Returns the catalog parameters of docs/scenarios.md:
+Returns the catalog parameters of docs/history/v1-scenarios.md:
     elevation   elevation at the point (m)
     slope_mean  mean slope in a 1 km window (degrees)
     slope_max   maximum slope in a 1 km window (degrees)

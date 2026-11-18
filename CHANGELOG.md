@@ -2,6 +2,16 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T02 Docs reset (PR #4)
+- Short pages:
+  - `docs/METHOD.md`, `VALIDATION.md`, `LIMITS.md` (new, condensed from the v2 documents);
+  - `DATA.md` and `ARCHITECTURE.md` (renamed, updated);
+  - `REFERENCES.md` (renamed);
+  - README rewritten (62 lines).
+- Full v2 documents moved unchanged to `docs/wiki/v2/`; rankings report to `docs/wiki/rankings.md`; v1 criteria and the Montréal presentation to `docs/history/`, with a note on which of their figures are superseded.
+- `tools/docs/check_links.py` (part of the gate: 0 broken links) and `tools/docs/publish_wiki.py` (mirror of `docs/wiki/` to the GitHub wiki; 10 tests).
+- Code comments, `openapi.yaml` and `moon-south-pole.json` point to the new paths. No change to scores or data values.
+
 ## 2026-11-18 · T01 Quality harness (PR #3)
 - `tools/check.sh [api|web|python|e2e|all]`: types, lint, tests, dependency audit, Docker e2e and browser audit, all in pinned Docker images. GitHub Actions runs it on every PR (test only).
 - Dependency policy: production 0 vulnerabilities; development advisories only through `tools/security/audit-allowlist.json` (tested gate). One entry: picomatch ReDoS, no patch exists, dev tools only.

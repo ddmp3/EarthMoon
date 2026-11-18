@@ -1,4 +1,4 @@
-"""Terrain metrics shared by Earth and Moon (methodology v2, docs/SCIENTIFIC_METHODOLOGY.md).
+"""Terrain metrics shared by Earth and Moon (methodology v2, docs/METHOD.md).
 
 One function, `window_metrics`, is applied to a square elevation window sampled on a metric grid with the
 SAME pixel size and the SAME window size on both bodies (40 m pixels, 25 x 25 pixels = 1 km). This removes
@@ -10,7 +10,7 @@ Metrics (all on a 1 km window):
                           dominated by DEM noise and artefacts
     slope_max             kept for continuity with v1
     roughness             standard deviation of elevation (m): v1 definition, kept for continuity. It is
-                          dominated by the regional tilt (see SCIENTIFIC_AUDIT.md, finding T2)
+                          dominated by the regional tilt (see docs/wiki/v2/SCIENTIFIC_AUDIT.md, finding T2)
     roughness_detrended   standard deviation of the residuals after removing the least-squares plane (m):
                           relief that is NOT explained by the mean tilt
     traversable_15/20/25  fraction of the window area with slope <= 15, 20, 25 degrees (0 to 1)

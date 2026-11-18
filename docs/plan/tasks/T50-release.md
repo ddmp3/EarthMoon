@@ -10,7 +10,7 @@ The repository describes v3 in a few short pages, the history is complete, and t
 2. Check that every number in the docs is produced by a script or a cited run. A link checker and a figure check (a script that greps the numbers quoted in the docs and compares them with run outputs where possible) are part of `tools/check.sh`.
 3. Write the release notes in `CHANGELOG.md`; create `git tag v3.0.0` and push the tag to `ddmp3/EarthMoon` only.
 4. v2 endpoints: propose keep, deprecate or remove, with usage evidence. David decides.
-5. Publish the wiki pages to the GitHub wiki (mirror script from T02).
+5. Publish the wiki pages to the GitHub wiki (`python tools/docs/publish_wiki.py`).
 
 ## Done when
 Docs and wiki are consistent, the tag exists, checks pass, and David has the deployment checklist (not executed).

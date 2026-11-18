@@ -1,10 +1,10 @@
 # Validation of the rankings
 
-Known analogs should rank well, not in every mode, but in the modes they are actually used for. The expectations are in `data/candidates.json` (`known_for` field); the report below is produced by [`tools/validation/rankings.py`](../tools/validation/rankings.py) against the running API (methodology v2, frozen data set `data/dataset-v2.json`). The before / after comparison with methodology v1 is in [SCIENTIFIC_VALIDATION.md](SCIENTIFIC_VALIDATION.md).
+Known analogs should rank well, not in every mode, but in the modes they are actually used for. The expectations are in `data/candidates.json` (`known_for` field); the report below is produced by [`tools/validation/rankings.py`](../../tools/validation/rankings.py) against the running API (methodology v2, frozen data set `data/dataset-v2.json`). The before / after comparison with methodology v1 is in [SCIENTIFIC_VALIDATION.md](v2/SCIENTIFIC_VALIDATION.md).
 
 ```bash
 docker compose up --build -d
-python tools/validation/rankings.py --markdown docs/validation.md
+python tools/validation/rankings.py --markdown docs/wiki/rankings.md
 ```
 
 ## Expected ranking
@@ -126,10 +126,10 @@ Excluded for dense vegetation (NDVI ≥ 0.6): amazon.
 
 ## Limits of this validation
 
-- **Not independent.** The expectations (`known_for`) were defined by the team, and one parameter was adjusted after measurement (the NDVI threshold, see [scenarios.md](scenarios.md)). This is a consistency check, not an independent benchmark.
+- **Not independent.** The expectations (`known_for`) were defined by the team, and one parameter was adjusted after measurement (the NDVI threshold, see [scenarios.md](../history/v1-scenarios.md)). This is a consistency check, not an independent benchmark.
 - **One negative control.** With a single negative site, a ROC curve or AUC would be meaningless, so none is reported. A fair benchmark needs an expectation list fixed in advance from the literature and a dozen negative controls (humid, forested or low-latitude sites).
 - **Weights and thresholds are not calibrated.** Scores rank sites, they are not probabilities. The Monte Carlo analysis covers these choices and the data uncertainties that are quantified; it does not cover the choice of criteria, unquantified data errors or the 1 km scale.
-- **Missing criteria.** Lighting at the pole, lithology, regolith mechanics, communications and logistics are not modelled, so a high score does not certify a test site. See [SCIENTIFIC_LIMITATIONS.md](SCIENTIFIC_LIMITATIONS.md).
+- **Missing criteria.** Lighting at the pole, lithology, regolith mechanics, communications and logistics are not modelled, so a high score does not certify a test site. See [SCIENTIFIC_LIMITATIONS.md](v2/SCIENTIFIC_LIMITATIONS.md).
 - **Vegetation.** NDVI is a one-point annual mean; the graded filter reduces, but does not remove, the risk of misjudging a large heterogeneous site.
 - **Rank stability labels.** "Stable" (the 10th to 90th percentile rank range spans 6% of the ranked sites or less, about 2 places out of 36), "moderate" (up to 25%, about 9 places) and "fragile" (more) are presentation choices, shown next to the numbers.
 
@@ -139,6 +139,6 @@ These are hypotheses produced by the model, not discoveries: none has been check
 
 1. **Erta Ale and Aorounga (robotics, both 100, rank ranges 1-14 and 1-11).** Their 1 km slope and detrended relief fall inside the lunar interquartile ranges and most of the ground is under 15°. Erta Ale is an active basaltic shield, Aorounga an eroded impact structure in the Sahara. Neither is highland rock.
 2. **Tunnunik Crater (colony, 100, rank range 1-3, high confidence).** Arctic impact crater, mean temperature -13 °C at site elevation, no earthquake M ≥ 4.5 within 300 km since 2000, flat ground.
-3. **Mistastin (colony, 82).** The best rock twin of the lunar highlands (anorthosite, references R54 and R55 in [SCIENTIFIC_REFERENCES.md](SCIENTIFIC_REFERENCES.md)); no criterion measures rock type yet, so its score does not reflect it.
+3. **Mistastin (colony, 82).** The best rock twin of the lunar highlands (anorthosite, references R54 and R55 in [SCIENTIFIC_REFERENCES.md](../REFERENCES.md)); no criterion measures rock type yet, so its score does not reflect it.
 
 Coordinates of several sites are approximate (`data/candidates.json`).

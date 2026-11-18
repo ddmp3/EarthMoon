@@ -13,7 +13,7 @@ import type {
 export const MATCH_THRESHOLD = 0.7;
 export const PARTIAL_THRESHOLD = 0.4;
 
-/** Threshold of the common "bare soil" filter (docs/scenarios.md): up to here, no penalty. */
+/** Threshold of the common "bare soil" filter (docs/METHOD.md): up to here, no penalty. */
 export const NDVI_BARE_SOIL_MAX = 0.2;
 
 /**

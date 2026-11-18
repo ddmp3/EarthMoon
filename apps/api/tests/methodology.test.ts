@@ -12,7 +12,7 @@ import { loadSites } from "../src/server/load.js";
 import { buildSources } from "../src/sources/index.js";
 import { createDatasetConnector, createDatasetQuality } from "../src/sources/dataset.js";
 
-/** Methodology v2: what the engine must guarantee (docs/SCIENTIFIC_METHODOLOGY.md). */
+/** Methodology v2: what the engine must guarantee (docs/METHOD.md). */
 
 const slope: Criterion = { param: "slope_mean", min: 5, max: 13, tolerance: 8, toleranceBelow: 2, toleranceAbove: 8, weight: 1 };
 const dry: Criterion = { param: "precipitation", max: 1, tolerance: 1, weight: 1 };

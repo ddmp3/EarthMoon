@@ -1,5 +1,5 @@
 {
- "description": "Values scored by methodology v1, as the v1 API obtained them: NASA POWER, USGS (M >= 2.5, no end date) and Smithsonian GVP read live on 2026-11-17, Copernicus DEM and MODIS from data/candidates-precomputed.json. Kept to reproduce the baseline of docs/SCIENTIFIC_VALIDATION.md; not used by the application.",
+ "description": "Values scored by methodology v1, as the v1 API obtained them: NASA POWER, USGS (M >= 2.5, no end date) and Smithsonian GVP read live on 2026-11-17, Copernicus DEM and MODIS from data/candidates-precomputed.json. Kept to reproduce the baseline of docs/wiki/v2/SCIENTIFIC_VALIDATION.md; not used by the application.",
  "read_at": "2026-11-17",
  "sites": [
   {

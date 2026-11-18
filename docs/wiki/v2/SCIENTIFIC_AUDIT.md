@@ -2,7 +2,7 @@
 
 Audit date: 17 November 2026. Scope: data, processing, indicators, scoring and interpretation. The website, its infrastructure, deployment and security are out of scope.
 
-This document describes methodology v1 as it was implemented on `main` (commit `5822942`) and judges it. The corrections are in [SCIENTIFIC_METHODOLOGY.md](SCIENTIFIC_METHODOLOGY.md) and [SCIENTIFIC_ROADMAP.md](SCIENTIFIC_ROADMAP.md); the measured before / after comparison is in [SCIENTIFIC_VALIDATION.md](SCIENTIFIC_VALIDATION.md). References `[Rn]` are listed in [SCIENTIFIC_REFERENCES.md](SCIENTIFIC_REFERENCES.md).
+This document describes methodology v1 as it was implemented on `main` (commit `5822942`) and judges it. The corrections are in [SCIENTIFIC_METHODOLOGY.md](SCIENTIFIC_METHODOLOGY.md) and [SCIENTIFIC_ROADMAP.md](SCIENTIFIC_ROADMAP.md); the measured before / after comparison is in [SCIENTIFIC_VALIDATION.md](SCIENTIFIC_VALIDATION.md). References `[Rn]` are listed in [SCIENTIFIC_REFERENCES.md](../../REFERENCES.md).
 
 Every number in this audit was recomputed from the code and the data, not copied from the documentation. The scripts are in the repository: `tools/validation/ablation.py`, `tools/validation/science_grid.py`, `tools/precompute/`.
 

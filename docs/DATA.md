@@ -4,7 +4,7 @@ The exact catalog, with the attribution to reproduce for each source, is served 
 
 ## Used in the app
 
-Since methodology v2 (17 November 2026) the API reads no source at request time: it scores the frozen data set `data/dataset-v2.json`, rebuilt by `tools/precompute/build_dataset.py` from `data/candidates-precomputed.json`, `data/snapshots/live-sources.json` (POWER, USGS and GVP frozen by `tools/precompute/live_snapshot.py`) and `data/evidence/lava-tubes.json`. If the data set file is absent the API falls back to the v1 live connectors and says so. Full documentation of every source, its resolution, limits and processing: [SCIENTIFIC_REFERENCES.md](SCIENTIFIC_REFERENCES.md), section 7, and [SCIENTIFIC_METHODOLOGY.md](SCIENTIFIC_METHODOLOGY.md), section 4.
+Since methodology v2 (17 November 2026) the API reads no source at request time: it scores the frozen data set `data/dataset-v2.json`, rebuilt by `tools/precompute/build_dataset.py` from `data/candidates-precomputed.json`, `data/snapshots/live-sources.json` (POWER, USGS and GVP frozen by `tools/precompute/live_snapshot.py`) and `data/evidence/lava-tubes.json`. If the data set file is absent the API falls back to the v1 live connectors and says so. Full documentation of every source, its resolution, limits and processing: [REFERENCES.md](REFERENCES.md), section 7, and [wiki/v2/SCIENTIFIC_METHODOLOGY.md](wiki/v2/SCIENTIFIC_METHODOLOGY.md), section 4.
 
 | Source | Parameters | Access |
 |---|---|---|
@@ -37,12 +37,10 @@ Canadian Space Agency analog network (Haughton-Mars Project station, McGill Arct
 
 ## Not used yet
 
-- **Mars (phase 2):** MGS MOLA, ODY THEMIS, MRO CRISM / CTX / HiRISE / SHARAD, Mars Trek.
-- **Complementary Earth data:** EMIT minerals, ASTER, HLS, SRTM/NASADEM, ICESat-2, ArcticDEM, Sentinel-1, RADARSAT-1 and RCM (open Canadian SAR data; radar is not directly comparable to LRO Mini-RF, so it would be a bonus rather than part of the score).
-- **Complementary lunar data:** LRO LEND (hydrogen), Mini-RF, LROC pits.
+Lunar, Martian and Earth data for v3 are being inventoried and verified at their source (plan tasks [T10](plan/tasks/T10-moon-data.md), [T11](plan/tasks/T11-mars-data.md), [T12](plan/tasks/T12-earth-data.md)); results will be in `docs/wiki/data/`. A first list of candidate sources is in [wiki/v2/SCIENTIFIC_ROADMAP.md](wiki/v2/SCIENTIFIC_ROADMAP.md), section 4.
 
 ## Limits
 
 - No Earth site reaches the temperatures of permanently shadowed regions (about 25 to 110 K): temperature criteria compare trends (extreme cold, large swing), not absolute values.
 - Biology and habitability are out of scope.
-- The USGS catalog is complete at M 2.5 only near dense networks (measured in [SCIENTIFIC_AUDIT.md](SCIENTIFIC_AUDIT.md), finding S1); v2 uses M ≥ 4.5.
+- The USGS catalog is complete at M 2.5 only near dense networks (measured in [wiki/v2/SCIENTIFIC_AUDIT.md](wiki/v2/SCIENTIFIC_AUDIT.md), finding S1); v2 uses M ≥ 4.5.

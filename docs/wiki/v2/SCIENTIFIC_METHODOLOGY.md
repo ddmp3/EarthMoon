@@ -8,7 +8,7 @@ The question the method answers:
 
 What the method does not claim: that any Earth site is equivalent to the Moon, or that a score is a probability. Three words are kept apart throughout: **similarity** (a measured quantity falls in the measured lunar range), **representativeness** (the site can stand for a lunar condition in a test, through a proxy) and **equivalence** (never claimed).
 
-Section 1 recalls methodology v1 in one page; the audit of it is in [SCIENTIFIC_AUDIT.md](SCIENTIFIC_AUDIT.md). Sections 2 to 8 describe v2 as implemented. Section 9 describes the target that v2 does not reach yet. References `[Rn]` are in [SCIENTIFIC_REFERENCES.md](SCIENTIFIC_REFERENCES.md).
+Section 1 recalls methodology v1 in one page; the audit of it is in [SCIENTIFIC_AUDIT.md](SCIENTIFIC_AUDIT.md). Sections 2 to 8 describe v2 as implemented. Section 9 describes the target that v2 does not reach yet. References `[Rn]` are in [SCIENTIFIC_REFERENCES.md](../../REFERENCES.md).
 
 ## 1. Methodology v1 in brief
 

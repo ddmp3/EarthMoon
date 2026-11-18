@@ -21,7 +21,7 @@ export type StabilityLevel = "high" | "medium" | "low"
 /**
  * Plain-language reading of a rank range: the share of the list the rank moves across between the best and
  * worst cases of the sensitivity analysis (6% or less: stable; up to 25%: moderate; more: fragile).
- * The cut-offs are a presentation choice, documented in docs/validation.md.
+ * The cut-offs are a presentation choice, documented in docs/VALIDATION.md.
  */
 export function stabilityLevel(stability: { rankP10: number; rankP90: number }, rankedSites: number): StabilityLevel {
   const share = (stability.rankP90 - stability.rankP10) / Math.max(rankedSites, 1)

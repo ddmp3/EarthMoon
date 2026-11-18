@@ -7,7 +7,7 @@
 # Stages:
 #   api     npm ci, tsc --noEmit, vitest, dependency audit
 #   web     npm ci, API contract up to date (src/api-schema.ts), tsc -b, oxlint, vitest, vite build, dependency audit
-#   python  pytest on every Python package, pip-audit on the installed environment
+#   python  pytest on every Python package, Markdown link check, pip-audit on the installed environment
 #   e2e     docker compose up --build, wait for health, tools/validation/e2e.py, browser audit (desktop and phone)
 # Dependency audit, two levels (tools/security/audit-allowlist.json explains the policy):
 #   production dependencies   npm audit --omit=dev: 0 vulnerabilities, no exception
@@ -63,7 +63,8 @@ check_python() {
       pip install --quiet --upgrade pip setuptools wheel
       pip install --quiet -r tools/precompute/requirements.txt \
         -r tools/analog_backend/requirements.txt -r tools/analog_backend/requirements-dev.txt pip-audit
-      python -m pytest -q -p no:cacheprovider tools/precompute tools/scoring tools/validation
+      python -m pytest -q -p no:cacheprovider tools/precompute tools/scoring tools/validation tools/docs
+      python tools/docs/check_links.py
       (cd tools/analog_backend && python -m pytest -q -p no:cacheprovider)
       pip-audit --progress-spinner off"
 }

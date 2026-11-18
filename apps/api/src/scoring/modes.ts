@@ -1,7 +1,7 @@
 import type { Criterion } from "./types.js";
 
 /**
- * Modes 1 to 3, methodology v2 (docs/SCIENTIFIC_METHODOLOGY.md, section "Scenarios").
+ * Modes 1 to 3, methodology v2 (docs/METHOD.md, section "Scenarios").
  *
  * Rules applied to every criterion:
  * - `role` says what the criterion is: a similarity to a measured lunar distribution, an operational

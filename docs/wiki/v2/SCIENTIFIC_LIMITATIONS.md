@@ -1,6 +1,6 @@
 # Limits, uncertainties and points needing human expertise
 
-What EarthMoon v2 cannot conclude, how uncertain its numbers are, and which decisions must be taken by domain experts rather than by the tool or its developers. References `[Rn]` are in [SCIENTIFIC_REFERENCES.md](SCIENTIFIC_REFERENCES.md).
+What EarthMoon v2 cannot conclude, how uncertain its numbers are, and which decisions must be taken by domain experts rather than by the tool or its developers. References `[Rn]` are in [SCIENTIFIC_REFERENCES.md](../../REFERENCES.md).
 
 ## 1. What a result means and does not mean
 

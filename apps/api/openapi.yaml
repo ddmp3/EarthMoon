@@ -3,7 +3,7 @@ info:
   title: Cyber&Space — Earth ↔ Moon analog sites API
   version: 0.1.0
   description: |
-    Ranks Earth sites by how closely they resemble lunar conditions (docs/scenarios.md).
+    Ranks Earth sites by how closely they resemble lunar conditions (docs/METHOD.md).
     Missing values (a source is down) are `null` and the criterion gets the verdict `missing`:
     a failing source never causes a global error.
     The scoring engine is in `apps/api/src/scoring/`, the source connectors in `apps/api/src/sources/`.
@@ -379,7 +379,7 @@ components:
       description: Versions needed to reproduce a result.
       required: [version]
       properties:
-        version: { type: string, description: Version of the scoring method (docs/SCIENTIFIC_METHODOLOGY.md). }
+        version: { type: string, description: Version of the scoring method (docs/METHOD.md). }
         dataset: { type: string, description: Version of the frozen data set (data/dataset-v2.json). Absent when sources are read live. }
     ExplainedCriterion:
       type: object

@@ -13,7 +13,7 @@ You are working on EarthMoon v3: a reproducible tool that **discovers** Earth pl
 - No invented data, resolution, availability or reference. Unverified means labelled "not verified".
 - Results never depend on a list of expected sites. Missing data is never a bad value.
 - TDD: failing test first. Before any merge, `tools/check.sh` must pass (types, lint, tests, dependency audit, Docker e2e).
-- Docs are short and human-readable. Detail goes to `docs/wiki/`, only when useful. The GitHub wiki is a mirror of `docs/wiki/` (`tools/publish_wiki.sh`): never edit it by hand.
+- Docs are short and human-readable. Detail goes to `docs/wiki/`, only when useful. The GitHub wiki is a mirror of `docs/wiki/` (`python tools/docs/publish_wiki.py`): never edit it by hand.
 
 ## Environment notes
 

@@ -198,7 +198,7 @@
       "moon": "29 to 50 K in permanently shadowed regions (Diviner)",
       "earth": "about -90 °C (≈ 180 K) at the coldest, in Antarctica",
       "effect": "Temperature criteria are trend proxies (cold, day-night swing), never absolute values.",
-      "source": "Paige et al. 2010, Science 330:479; EPSC2013-386 (see docs/scenarios.md)"
+      "source": "Paige et al. 2010, Science 330:479; EPSC2013-386 (see docs/REFERENCES.md)"
     },
     {
       "id": "regolith",

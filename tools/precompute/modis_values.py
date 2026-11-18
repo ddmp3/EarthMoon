@@ -1,4 +1,4 @@
-"""MODIS precomputed for each candidate site : ndvi, lst_day, lst_night, lst_amplitude (docs/scenarios.md).
+"""MODIS precomputed for each candidate site : ndvi, lst_day, lst_night, lst_amplitude (docs/METHOD.md).
 
 Source: Microsoft Planetary Computer (STAC, anonymous token, no account), reading a single pixel per image.
     LST  : modis-11A2-061, assets LST_Day_1km / LST_Night_1km (8 days, 1 km)  -> °C

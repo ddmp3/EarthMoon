@@ -5,7 +5,7 @@
     python enrich_candidates.py data/candidates.json --force    # recompute sites that already have values
 
 Input: a JSON list of sites, each with at least  id, name, lat, lon  (other keys are kept untouched).
-Output: the same list, each site gaining a "precomputed" block with the catalogue IDs of docs/scenarios.md:
+Output: the same list, each site gaining a "precomputed" block with the catalogue IDs of docs/history/v1-scenarios.md:
     elevation, slope_mean, slope_max, roughness  (+ source, window_m, valid_frac, computed_at)
 A site whose tile is missing keeps null values and an "error" message; the run never stops on one bad site.
 """
