@@ -1,0 +1,575 @@
+# Mars data catalogue (task T11). Same schema and rules as moon.yaml (tools/catalog/catalog.py).
+# Environment ids: volcanic-plains, ancient-aqueous (clays, sulfates, chlorides), ice-rich-midlatitudes,
+#                  polar-deposits, dune-fields, sedimentary-basins, caves, global.
+products:
+  - id: mgs-mola-megdr
+    body: mars
+    mission: Mars Global Surveyor
+    instrument: MOLA
+    product: Mission Experiment Gridded Data Records (MEGDR), version 2.0
+    producer: MOLA Science Team; PDS Geosciences Node
+    url: https://pds-geosciences.wustl.edu/missions/mgs/megdr.html
+    access: {format: "PDS3 IMG and PDS4 bundle", size: "not stated on page", licence: "PDS online access", account: false}
+    coverage: "global, 90°N to 90°S (4, 16, 32 ppd); tiled at 64 and 128 ppd; polar maps at 128, 256, 512 ppd"
+    resolution_spatial: "4 to 128 pixels per degree (global), up to 512 ppd (polar)"
+    resolution_effective: "not stated on page; grids made by binning the altimetry tracks (PEDR)"
+    resolution_temporal: "mission average (altimetry stopped 30 June 2001)"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Binned between tracks: high ppd grids contain empty or interpolated cells (effective resolution issue, as for the Moon)"
+    dimensions: [topography]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mgs/megdr.html
+
+  - id: mgs-mola-pedr
+    body: mars
+    mission: Mars Global Surveyor
+    instrument: MOLA
+    product: Precision Experiment Data Records (altimetry profiles), version L
+    producer: MOLA Science Team
+    url: https://pds-geosciences.wustl.edu/missions/mgs/pedr.html
+    access: {format: "binary tables with PDS labels", size: "not stated on page", licence: "PDS online access", account: false}
+    coverage: "global tracks"
+    resolution_spatial: "point shots along tracks; spacing not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "1997 to 30 June 2001"
+    units: "not stated on page"
+    nature: measured
+    uncertainty: "not stated on page"
+    limitations: "Raw profiles; gridding needed"
+    dimensions: [topography]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mgs/pedr.html
+
+  - id: mex-hrsc-dtm
+    body: mars
+    mission: Mars Express
+    instrument: HRSC
+    product: HRSC orthophoto and DTM data (MEX-M-HRSC-5-REFDR-DTM-V1.0)
+    producer: DLR (PI T. Roatsch); ESA PSA primary, PDS copy
+    url: https://pds-geosciences.wustl.edu/missions/mars_express/hrsc.htm
+    access: {format: "PDS3 with PDS/VICAR labels", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "strips acquired January 2004 to February 2009; spatial coverage not stated on page"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "2004 to 2009 (this data set)"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "HRSC team site unreachable and ESA PSA FTP needs authentication (HTTP 401) for this path; newer releases may exist"
+    dimensions: [topography]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/mex/mex-m-hrsc-5-refdr-dtm-v1/mexhrs_2001/aareadme.txt
+
+  - id: mola-hrsc-blended-dem
+    body: mars
+    mission: MGS and Mars Express
+    instrument: MOLA and HRSC
+    product: MOLA-HRSC blended global DEM
+    producer: "not verified"
+    url: https://planetarymaps.usgs.gov/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "USGS host refused automated access (HTTP 403)"
+    dimensions: [topography]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: mro-ctx-global-mosaic
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: CTX
+    product: Global CTX Mosaic of Mars V01 (Murray Lab, Caltech)
+    producer: Bruce Murray Laboratory for Planetary Visualization, Caltech
+    url: https://murray-lab.caltech.edu/CTX/
+    access: {format: "GeoTIFF tiles, shapefiles", size: "5.6 TB compressed, 11.5 TB uncompressed", licence: "free use for all purposes (V01)", account: false}
+    coverage: 88°S to 88°N, 99.5% of Mars (86,571 images 2006 to 2020)
+    resolution_spatial: 5 m (resampled, equirectangular)
+    resolution_effective: "not stated on page"
+    resolution_temporal: "2006 to 2020 composite"
+    units: "image brightness (8-sigma linear stretch)"
+    nature: derived
+    uncertainty: "absolute position errors under 200 m, larger at high latitude"
+    limitations: "Imagery, not physical quantities: morphology and mapping only"
+    dimensions: [morphology]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://murray-lab.caltech.edu/CTX/
+
+  - id: mro-hirise-dtm
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: HiRISE (stereo)
+    product: HiRISE digital terrain models and orthoimages
+    producer: University of Arizona HiRISE team and partner institutions
+    url: https://www.uahirise.org/dtm/
+    access: {format: "PDS IMG (DTM), JPEG2000 (ortho)", size: '"usually quite large"', licence: "not stated on page", account: false}
+    coverage: "1,377 DTMs at selected sites"
+    resolution_spatial: "post spacing usually 1 to 2 m (0.25 to 2 m possible)"
+    resolution_effective: "about 4 times the input pixel scale (stated)"
+    resolution_temporal: "since 2006; latest DTMs November 2026"
+    units: m
+    nature: derived
+    uncertainty: "vertical precision in the tens of centimetres; tied to MOLA"
+    limitations: "Selected sites only; manual edits can leave interpolation patterns"
+    dimensions: [topography]
+    environments: [sedimentary-basins, ancient-aqueous, volcanic-plains, caves, ice-rich-midlatitudes]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://www.uahirise.org/dtm/about.php
+
+  - id: mro-hirise-images
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: HiRISE
+    product: HiRISE images
+    producer: University of Arizona HiRISE team
+    url: https://hirise.lpl.arizona.edu/
+    access: {format: "not stated on page", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: targeted
+    resolution_spatial: 0.25 to 0.5 m per pixel
+    resolution_effective: "not stated on page"
+    resolution_temporal: "since 2006; one CCD intermittent since mid-2023"
+    units: radiance
+    nature: measured
+    uncertainty: "not stated on page"
+    limitations: "Targeted strips"
+    dimensions: [morphology]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://www.uahirise.org/dtm/about.php
+
+  - id: ody-themis-mosaics-ti
+    body: mars
+    mission: Mars Odyssey
+    instrument: THEMIS
+    product: Day and night IR global mosaics and thermal inertia maps
+    producer: THEMIS Science Team, Arizona State University
+    url: https://themis.asu.edu/
+    access: {format: "not verified", size: "not verified", licence: "see themis.asu.edu/terms (not read)", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Not listed on the PDS and ASU pages read; data volumes at static.mars.asu.edu/pds not read"
+    dimensions: [thermal, regolith]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: mgs-tes-thermal-inertia
+    body: mars
+    mission: Mars Global Surveyor
+    instrument: TES (bolometer)
+    product: TES Thermal Inertia Maps (mgst_9001)
+    producer: N. E. Putzig (SwRI) and M. T. Mellon (University of Colorado Boulder)
+    url: https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html
+    access: {format: "image maps with PDS labels; interpolation masks", size: "66.4 MB zip", licence: "PDS free download", account: false}
+    coverage: "not stated on page (global maps; day and night)"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "February 1999 to April 2004"
+    units: "J m-2 K-1 s-1/2 (range 5 to 5000)"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Only surface temperatures 160 to 400 K used; interpolated cells masked"
+    dimensions: [thermal, regolith]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mgs/tes-timap.html
+
+  - id: mgs-tes-albedo-dust
+    body: mars
+    mission: Mars Global Surveyor
+    instrument: TES
+    product: Albedo and dust cover index maps
+    producer: "not verified"
+    url: https://pds-geosciences.wustl.edu/missions/mgs/tes.html
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: derived
+    uncertainty: "not verified"
+    limitations: "Not listed on the PDS TES pages; tes.asu.edu certificate error"
+    dimensions: [dust]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: mro-crism-mtrdr
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: CRISM
+    product: Map-projected Targeted Reduced Data Records (MTRDR, MROCR_4001)
+    producer: CRISM Science Team, JHU APL
+    url: https://pds-geosciences.wustl.edu/mro/mro-m-crism-5-rdr-mptargeted-v1/mrocr_4001/
+    access: {format: PDS4, size: "not stated on page", licence: "PDS free download", account: false}
+    coverage: "targeted observations, September 2006 to May 2012"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "2006 to 2012"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Targeted footprints only; IR (L) detector stopped February 2018"
+    dimensions: [mineralogy]
+    environments: [ancient-aqueous, sedimentary-basins]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mro/crism.htm
+
+  - id: mro-crism-mapping-tiles
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: CRISM
+    product: Multispectral (MRDR) and VNIR hyperspectral (VRDR) mapping tiles, Mars charts 1 to 30
+    producer: CRISM Science Team, JHU APL
+    url: https://pds-geosciences.wustl.edu/mro/mro-m-crism-5-rdr-multispectral-v1/mrocr_3201/
+    access: {format: PDS4, size: "not stated on page", licence: "PDS free download", account: false}
+    coverage: "Mars charts 1 to 30 (extent not stated on page)"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Read the data product specification before use; mineral summary parameters are computed by the user from a reference document"
+    dimensions: [mineralogy]
+    environments: [global]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mro/crism.htm
+
+  - id: mex-omega-global-maps
+    body: mars
+    mission: Mars Express
+    instrument: OMEGA
+    product: OMEGA Mars global maps (derived), including hydrated mineral detections
+    producer: OMEGA team (PI J.-P. Bibring, IAS Orsay); ESA PSA primary
+    url: https://pds-geosciences.wustl.edu/mex/mex-m-omega-5-ddr-global-maps-v1/mexomg_2000/
+    access: {format: "not stated on page", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "global (not stated precisely on page)"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "C channel until orbit 8485 (August 2010)"
+    units: "not stated on page"
+    nature: interpretation
+    uncertainty: "not stated on page"
+    limitations: "Hydrated mineral map shows detection sites (OMEGA and CRISM), not abundances"
+    dimensions: [mineralogy]
+    environments: [ancient-aqueous]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mars_express/omega.htm
+
+  - id: ody-grs-elements
+    body: mars
+    mission: Mars Odyssey
+    instrument: Gamma Ray Spectrometer
+    product: Odyssey GRS element concentrations (Cl, Fe, water, K, Si, Th)
+    producer: GRS Science Team, University of Arizona
+    url: https://pds-geosciences.wustl.edu/missions/odyssey/grs_elements.html
+    access: {format: "ASCII tables with PDS labels (PDS4 since October 2026)", size: "not stated on page", licence: "PDS free download", account: false}
+    coverage: "low and mid latitudes (Boynton et al. 2007 title); exact extent not stated on page"
+    resolution_spatial: "2°, 5° and 10° bins; smoothed 5° maps"
+    resolution_effective: "not stated on page; at least hundreds of km"
+    resolution_temporal: "June 2002 to April 2005"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "error maps provided"
+    limitations: "Corrected for CO2 frost; very coarse"
+    dimensions: [composition, volatiles]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/odyssey/grs_elements.html
+
+  - id: ody-neutron-maps
+    body: mars
+    mission: Mars Odyssey
+    instrument: Neutron Spectrometer and HEND
+    product: GRS special products (neutron flux maps, hydrogen peak spectra)
+    producer: GRS Science Team
+    url: https://pds-geosciences.wustl.edu/missions/odyssey/grsspecial.html
+    access: {format: "CSV tables, PDS4 labels", size: "not stated on page", licence: "PDS free download", account: false}
+    coverage: global
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "not stated on page"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Neutron flux is an indirect hydrogen indicator"
+    dimensions: [volatiles]
+    environments: [ice-rich-midlatitudes, polar-deposits]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/odyssey/grsspecial.html
+
+  - id: mro-sharad-radargrams
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: SHARAD
+    product: SHARAD radargrams (US team, PDS4) and Italian RDR/EDR
+    producer: SHARAD Science Team (US and ASI)
+    url: https://pds-geosciences.wustl.edu/missions/mro/sharad.htm
+    access: {format: "PDS4 and PDS3", size: "not stated on page", licence: "PDS free download", account: false}
+    coverage: "orbital tracks, December 2006 to February 2026"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "2006 to 2026"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Clutter simulations needed to separate surface echoes"
+    dimensions: [subsurface, radar, volatiles]
+    environments: [ice-rich-midlatitudes, polar-deposits]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mro/sharad.htm
+
+  - id: mro-sharad-3d
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: SHARAD
+    product: SHARAD 3D radargram volumes (mrosh_3001; Putzig et al. 2025, doi:10.17189/a5av-yc11)
+    producer: SHARAD team (Planetary Science Institute and partners)
+    url: https://pds-geosciences.wustl.edu/missions/mro/sharad_3d_pds4.htm
+    access: {format: "32-bit float 3D arrays", size: "not stated on page", licence: "PDS free download", account: false}
+    coverage: "selected areas (not stated on page)"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "updated October 2025"
+    units: "backscatter power, strength or amplitude"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Selected regions only"
+    dimensions: [subsurface, radar]
+    environments: [polar-deposits, ice-rich-midlatitudes]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mro/sharad_3d_pds4.htm
+
+  - id: mex-marsis
+    body: mars
+    mission: Mars Express
+    instrument: MARSIS
+    product: MARSIS subsurface RDR and optimized radargrams
+    producer: MARSIS team (Università di Roma La Sapienza); ESA PSA primary, PDS copy
+    url: https://pds-geosciences.wustl.edu/missions/mars_express/marsis.htm
+    access: {format: "PDS3 / PDS4", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "orbital tracks; subsurface RDR May 2005 to December 2016"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "2005 onwards"
+    units: "not stated on page"
+    nature: derived
+    uncertainty: "not stated on page"
+    limitations: "Sounds the upper 2 to 3 km; coarse horizontal footprint (not stated)"
+    dimensions: [subsurface, radar, volatiles]
+    environments: [polar-deposits]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-geosciences.wustl.edu/missions/mars_express/marsis.htm
+
+  - id: swim-ice-consistency
+    body: mars
+    mission: compilation
+    instrument: neutron, thermal, radar and geomorphology data
+    product: SWIM 1.0 combined ice consistency map and component layers (Northern Hemisphere)
+    producer: SWIM project (NASA; JPL; hosted by Planetary Science Institute)
+    url: https://swim.psi.edu/NorthHemisProducts.php
+    access: {format: "GeoTIFF, TIFF, PNG", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "0 to 60°N (geomorphology); GIS extent -60 to 60, 0 to 360°E"
+    resolution_spatial: 3000 m pixel
+    resolution_effective: "coarser for the neutron layer (not stated on page)"
+    resolution_temporal: "2019 release"
+    units: "consistency scores (-1 to +1 scale per layer; geomorphology 0 to 1)"
+    nature: interpretation
+    uncertainty: "not stated on page"
+    limitations: "A consistency index combining several data sets with thresholds, not an ice measurement; southern hemisphere in SWIM 2.0 (not read)"
+    dimensions: [volatiles, subsurface]
+    environments: [ice-rich-midlatitudes]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://swim.psi.edu/NorthHemisProducts.php
+
+  - id: lmd-mars-climate-database
+    body: mars
+    mission: model
+    instrument: LMD general circulation model
+    product: Mars Climate Database version 6.2
+    producer: LMD (CNRS) with Open University, Oxford, IAA-CSIC, ESA, CNES
+    url: https://www-mars.lmd.jussieu.fr/
+    access: {format: "NetCDF plus Fortran access software", size: "not stated on page", licence: "free scientific use with citation; no commercial use without authorization", account: "free registration by email for the full version"}
+    coverage: global, 3D atmosphere
+    resolution_spatial: "grid not stated on page; high-resolution mode uses MOLA topography at 32 ppd"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "12 seasons x 12 times of day; scenarios (climatology, dust storm, Mars years 24 to 33)"
+    units: "not stated in full on page"
+    nature: model
+    uncertainty: "validated against observations (not quantified on page)"
+    limitations: "Model output, linearly interpolated"
+    dimensions: [atmosphere, thermal, dust]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: http://www-mars.lmd.jussieu.fr/mars/access.html
+
+  - id: mro-mcs-ddr
+    body: mars
+    mission: Mars Reconnaissance Orbiter
+    instrument: Mars Climate Sounder
+    product: MCS Derived Data Records v6.2 (temperature, dust and water ice opacity profiles)
+    producer: MCS team (McCleese and Schofield); PDS Atmospheres node
+    url: https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MARS/mcs.html
+    access: {format: "ASCII PDS3 tables", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "global limb profiles"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "September 2006 to July 2025"
+    units: "K; opacity per km"
+    nature: derived
+    uncertainty: "error bars on temperature"
+    limitations: "Atmospheric profiles, not surface conditions"
+    dimensions: [atmosphere, dust]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MARS/mcs.html
+
+  - id: emm-data
+    body: mars
+    mission: Emirates Mars Mission
+    instrument: EMIRS, EXI, EMUS
+    product: EMM Science Data Center
+    producer: MBRSC
+    url: https://sdc.emiratesmarsmission.ae/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: "not verified"}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: measured
+    uncertainty: "not verified"
+    limitations: "Page rendered by JavaScript; no text read"
+    dimensions: [atmosphere, thermal, dust]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: tianwen1-data
+    body: mars
+    mission: Tianwen-1
+    instrument: multiple
+    product: Tianwen-1 data release
+    producer: CNSA
+    url: https://moon.bao.ac.cn/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: "not verified"}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "not verified"
+    nature: measured
+    uncertainty: "not verified"
+    limitations: "No official release page read"
+    dimensions: [topography, morphology]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: usgs-mars-geologic-map-2014
+    body: mars
+    mission: compilation
+    instrument: multiple
+    product: Geologic map of Mars, Tanaka et al. 2014 (USGS SIM 3292), 1:20,000,000
+    producer: USGS
+    url: https://astrogeology.usgs.gov/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "global (from the title)"
+    resolution_spatial: "1:20,000,000 (from the title)"
+    resolution_effective: "not verified"
+    resolution_temporal: "not applicable"
+    units: "geologic units"
+    nature: interpretation
+    uncertainty: "not verified"
+    limitations: "USGS hosts and ADS refused automated access; verify in a browser"
+    dimensions: [geology]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: robbins-hynek-mars-craters
+    body: mars
+    mission: compilation
+    instrument: multiple
+    product: Global Mars crater database (Robbins and Hynek 2012)
+    producer: S. J. Robbins and B. M. Hynek
+    url: https://ui.adsabs.harvard.edu/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not applicable"
+    units: "crater positions and diameters"
+    nature: interpretation
+    uncertainty: "not verified"
+    limitations: "Not read; reference details must be verified (T13)"
+    dimensions: [morphology]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: mars-cave-candidates
+    body: mars
+    mission: compilation
+    instrument: THEMIS, CTX, HiRISE imagery
+    product: Mars Global Cave Candidate Catalog (MGC3, Cushing)
+    producer: USGS
+    url: https://astrogeology.usgs.gov/
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
+    coverage: "not verified"
+    resolution_spatial: "not applicable (catalogue)"
+    resolution_effective: "not applicable"
+    resolution_temporal: "not applicable"
+    units: "feature list"
+    nature: interpretation
+    uncertainty: "not verified"
+    limitations: "Not read; candidates are not confirmed caves"
+    dimensions: [subsurface]
+    environments: [caves]
+    status: not verified
+    verified_on: null
+    verified_url: null
