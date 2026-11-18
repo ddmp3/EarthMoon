@@ -1,6 +1,6 @@
 # ADR-009 Automatic refresh, incremental recompute, freshness shown to users
 
-Status: proposed (T30, 18 November 2026), for gate G3. Implements David's decision of 18 November 2026: refresh is automatic, only what changed is recomputed, and every user sees how old the data are, whether they are valid, and whether a newer version is being computed.
+Status: accepted at gate G3 (signed 18/11/2026 by David). Implements David's decision of 18 November 2026: refresh is automatic, only what changed is recomputed, and every user sees how old the data are, whether they are valid, and whether a newer version is being computed.
 
 ## 1. Watching the sources
 A `refresher` checks every source used by a `keep` or `context` parameter, or by a site set, on its own schedule. It reads a machine signal; it never assumes that a source changed or did not change.
@@ -17,7 +17,7 @@ A `refresher` checks every source used by a `keep` or `context` parameter, or by
 - **Cadences in the catalogue:** T52 records each cadence in `data/catalog/*.yaml` (`refresh:` block with signal, cadence, interval and verified URL). A cadence that cannot be read at its source stays "not verified", and only the check interval depends on it.
 
 ## 2. Recomputing only what changed
-Each step output has a key: `sha256(input keys + step code commit + parameters)`. Before running a step, the planner compares the new keys with those of the current release. It reruns a unit only when its key changed, and reuses the stored output otherwise.
+Each step output has a key: `sha256(input keys + step code version + parameters)`. The code version is the sha256 of the step's source files, so a commit that touches only tests or docs does not rerun anything (T40); the git commit is recorded beside it for provenance. Before running a step, the planner compares the new keys with those of the current release. It reruns a unit only when its key changed, and reuses the stored output otherwise.
 
 | Change detected | What reruns |
 |---|---|

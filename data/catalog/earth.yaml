@@ -689,7 +689,7 @@ products:
     access: {format: "Cloud Optimized GeoTIFF, 3°x3° tiles", size: "not stated on page", licence: CC BY 4.0, account: "no account for AWS (--no-sign-request); viewer needs Terrascope login"}
     attribution: "© ESA WorldCover project [year] / Contains modified Copernicus Sentinel data ([year]) processed by ESA WorldCover consortium"
     use: [mask]
-    coverage: global
+    coverage: "60°S to 84°N: 2,651 tiles on the AWS bucket (listed 18/11/2026, T40); no tile on Antarctica"
     resolution_spatial: 10 m
     resolution_effective: "not stated on page"
     resolution_temporal: "2020 and 2021"

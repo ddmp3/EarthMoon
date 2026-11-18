@@ -31,3 +31,9 @@ Compute the topographic and geomorphological parameters for every land cell at t
 - Run the two-stage search of T22. First measure the COG range-read time on 100 tiles and apply the ADR-007 stop rule before any global run.
 - Check that the GLO-90 product matches GLO-30 resampled to 90 m on the pilot tiles, and count the GLO-90 tiles.
 - Record, for every source object read, its identifier and change signal (S3 ETag, size, LastModified), and key every output by `sha256(input keys + code commit + parameters)` (ADR-009). T52 builds incremental refresh on these keys.
+
+## As built (18/11/2026)
+- Modules: ingest is `copernicus.py` and `worldcover.py`; features are `windows.py`, `grid.py`, `cells.py`, `cube.py`; `keys.py` and `measure.py` beside them. One package level, no `ingest/` and `features/` sub-packages: the stage boundary is the manifest, not the folder.
+- Content keys use the code version (sha256 of the sources), not the commit (ADR-001 and ADR-009 updated).
+- The fine stage streams whole tiles: 29 h for the Earth at the measured rate, so reading only the cells that pass stage 1 is an optimisation left for T43.
+- Run report: `docs/wiki/runs/earth-cube.md`.

@@ -2,6 +2,18 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T40 Earth feature cube, topography (PR #18)
+- Gate G3 signed by David (18/11); ADR-001 to 009 accepted.
+- New package `tools/discovery/`: vectorised 1 km window metrics, 5 km cell statistics (n, valid fraction, p5 to p95, sigma, state), one local equal-area grid per tile with each window owned once, WorldCover 2021 mask fractions, content keys from source signals (ETag, size, date, SHA-256) and a code version hashed from the sources.
+- Measured:
+  - global 90 m stage: 26,475 tiles in 1.05 h; cells 80.7% evaluated, 1.2% partial, 18.1% missing (water, sea or ice outside WorldCover, and only 258 land cells);
+  - fine stage 40 m: 903 tiles/h, about 29 h for the Earth, under the 72 h stop rule;
+  - sizes: GLO-30 0.589 TB, GLO-90 0.071 TB (T22 had estimated 0.96 and 0.14 TB);
+  - GLO-90 matches GLO-30 at 90 m: Spearman 0.9997, median slope ratio 0.978;
+  - the v2 anchor (37 sites) is reproduced within 0.0015.
+- Fixed during the run: Antarctica had an ice fraction of 0 where WorldCover has no data (now unknown); the provenance commit is read once per run. WorldCover coverage corrected to 60°S to 84°N in the catalogue.
+- Report: `docs/wiki/runs/earth-cube.md`.
+
 ## 2026-11-18 · T30 Automatic refresh (PR #17)
 - David's decision: refresh is automatic. New ADR-009:
   - sources watched per family on a machine signal (S3 ETag, CMR `revision_date`, CDS update date, PDS file checksums and release tables, DOI versions), with the published cadences read on 18/11 and the rest labelled not verified;

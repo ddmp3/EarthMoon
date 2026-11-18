@@ -78,6 +78,7 @@ Experiment: `tools/research/sampling.py` (8 tests); output: `data/research/sampl
 | Reprojection and windows, 40 m | about 0.8 s per tile | about 6 h of CPU |
 | Reprojection and windows, 90 m | about 0.4 s per tile | about 3 h of CPU |
 
-- About half the cells pass stage 1, spread over most tiles, so stage 2 should read only those cells through COG range requests. Its time is **not measured yet** (T40).
-- The GLO-90 tile count was not listed; it is assumed close to GLO-30 and is to be checked in T40.
+- About half the cells pass stage 1, spread over most tiles, so stage 2 should read only those cells through COG range requests.
+- **Measured in T40** ([earth-cube run](../runs/earth-cube.md)): the full listings are 0.589 TB (GLO-30) and 0.071 TB (GLO-90), about 60% and 50% of the estimates above. Streaming a whole GLO-30 tile with its neighbours and the mask takes 27 s (median); 903 tiles/h with 8 workers, about 29 h for the Earth. The global 90 m stage took 1.05 h with 12 workers.
+- GLO-90 has 26,475 tiles (T40), 25 more than GLO-30.
 - **Kept output:** cell statistics only, a few gigabytes at most. Raw tiles are not kept.

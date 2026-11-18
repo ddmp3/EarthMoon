@@ -13,7 +13,7 @@ Browser ──► Azure Static Web App (React)
                           Copernicus DEM, MODIS, and NASA POWER / USGS / Smithsonian GVP snapshots)
 ```
 
-## Target architecture (v3, proposed in T30, gate G3)
+## Target architecture (v3, accepted at gate G3 on 18/11/2026)
 
 Decisions: [adr/](adr/README.md). Only the local Docker stack runs v3; nothing is deployed.
 
