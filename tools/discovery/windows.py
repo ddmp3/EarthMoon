@@ -31,8 +31,9 @@ def _blocks(a: np.ndarray, n: int, margin: int) -> np.ndarray:
     return core[:h, :w].reshape(h // n, n, w // n, n).transpose(0, 2, 1, 3)
 
 
-def _detrended_std(zb: np.ndarray) -> np.ndarray:
-    """Std of residuals after the least-squares plane a + b*col + c*row, per window, over finite z."""
+def _detrended_std(zb: np.ndarray, good: np.ndarray) -> np.ndarray:
+    """Std of residuals after the least-squares plane a + b*col + c*row, per window, over finite z.
+    Solved only for valid windows (>= 90% of pixels): a few aligned pixels would make the system singular."""
     n = zb.shape[-1]
     rows, cols = np.indices((n, n), dtype="float64")
     ok = np.isfinite(zb)
@@ -44,7 +45,7 @@ def _detrended_std(zb: np.ndarray) -> np.ndarray:
                   np.stack([s(x), s(x * x), s(x * y)], -1),
                   np.stack([s(y), s(x * y), s(y * y)], -1)], -2)
     rhs = np.stack([(z * w).sum(axis=(-2, -1)), (z * x * w).sum(axis=(-2, -1)), (z * y * w).sum(axis=(-2, -1))], -1)
-    enough = w.sum(axis=(-2, -1)) >= 4
+    enough = good & (w.sum(axis=(-2, -1)) >= 4)
     m = np.where(enough[..., None, None], m, np.eye(3))
     coef = np.linalg.solve(m, rhs[..., None])[..., 0]
     pred = coef[..., 0, None, None] + coef[..., 1, None, None] * x + coef[..., 2, None, None] * y
@@ -78,7 +79,7 @@ def window_metrics_grid(z: np.ndarray, pixel_m: float, window_px: int, margin: i
             elif k == "roughness":
                 v = np.nanstd(np.where(ok, zb, np.nan), axis=(-2, -1))
             elif k == "roughness_detrended":
-                v = _detrended_std(zb)
+                v = _detrended_std(zb, good)
             elif k.startswith("traversable_"):
                 limit = float(k.split("_")[1])
                 v = np.where(ok, sb <= limit, False).sum(axis=(-2, -1)) / np.maximum(ok.sum(axis=(-2, -1)), 1)

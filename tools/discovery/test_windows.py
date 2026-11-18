@@ -104,3 +104,10 @@ def test_windows_are_grouped_into_cells_by_their_centre_coordinates():
     cells = cells_by_coordinate(vals, 990.0, 5000.0)
     assert sorted(len(v) for v in cells.values()) == [1, 5, 5, 25]
     assert cells[(0, 0)] == [vals[r, c] for r in range(5) for c in range(5)]
+
+
+def test_window_with_a_single_valid_row_is_invalid_and_does_not_fail():
+    z = np.full((27, 27), np.nan)
+    z[5, :] = np.arange(27.0)                    # one aligned row: the plane fit would be singular
+    out = window_metrics_grid(z, 40.0, 25, margin=1)
+    assert np.isnan(out["roughness_detrended"][0, 0]) and np.isnan(out["slope_mean"][0, 0])
