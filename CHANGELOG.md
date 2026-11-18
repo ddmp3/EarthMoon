@@ -2,6 +2,17 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T26 Mapping methodology (PR #15)
+- `docs/wiki/methods/mapping.md`:
+  - one layer per similarity parameter, with its value, legend text and valid scale;
+  - one colour scale for all typicality layers (cividis, colour-blind safe);
+  - four states that differ by pattern, not only by colour: evaluated, partial (pastel hatching listing the missing criteria), not evaluated (grey dots, with the reason), masked (outline);
+  - confidence as a separate layer;
+  - candidate zones by rule (typicality τ, eliminating requirements, masks, 8-connected, minimum area), with the sensitivity grids τ ∈ {0.5, 0.7, 0.9} and area ∈ {1, 3, 9} cells;
+  - comparison of 2 to 4 zones, a zone against the reference environment, and a provenance panel for every number.
+- `docs/wiki/ui/map-spec.md`: ASCII wireframes (main screen, hover, zone card, comparison, provenance) and accessibility notes, in the existing dark theme with Space Grotesk and Inter.
+- The multidimensional layer stays disabled until two non-redundant dimensions exist (T23).
+
 ## 2026-11-18 · T25 Validation protocol v1 (PR #14, tag `validation-protocol-v1`)
 - `docs/VALIDATION_PROTOCOL.md`: controls, metrics and pass thresholds fixed before any discovery run; the Monte Carlo scope, bias checks, the unexpected-candidate dossiers, and what the protocol cannot show.
 - **Positive controls by rule** (`data/validation/positives.yaml`): only places named in the abstract of a verified reference as analog or test sites, and located by a public gazetteer.
