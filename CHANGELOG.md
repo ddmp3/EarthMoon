@@ -2,6 +2,16 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T23 Comparison methods benchmark (PR #12)
+- The protocol was committed before the run (`4580530`). `tools/research/compare_methods.py` (7 analytic tests) benchmarks six candidates on 71,503 lunar windows, 20,000 pilot windows and the 1,410 random T21 windows. Output: `data/research/comparison-t23.json`, `docs/wiki/methods/comparison.md`.
+- **Chosen: the two-sided percentile per parameter.** It is calibrated (KS 0.014), the most discriminating (AUC 0.80, 0.86 on random Earth), and robust at 0.5° of noise (0.95). At 1° it falls to 0.891, just below the rule, so the uncertainty is propagated in T25.
+- **Rejected, with numbers:**
+  - v2 interval score: not calibrated (KS 0.49);
+  - Mahalanobis and k-NN: the regional slope is redundant on Earth (Spearman 0.91), and they do not discriminate better;
+  - Wasserstein and energy zone distances: not calibrated (KS 0.11 to 0.12), to re-test in T25.
+- **Reporting:** dimensions are always separate. A global similarity exists only with two or more non-redundant dimensions; it is the minimum (not compensating), with the geometric mean as a sensitivity check in T43.
+- Fixed during the run: zone blocks are now split by block, and Earth block ids were made unique across tiles.
+
 ## 2026-11-18 · T22 Spatial and statistical sampling (PR #11)
 - `tools/research/sampling.py` (8 tests): 10 random area-weighted GLO-30 land tiles (seed 20261117) and 3 contrasting tiles; resampling to 30, 40 and 90 m; a two-stage screening test; spectra; H3 cell areas; tile count from the bucket listing. Output: `data/research/sampling-t22.json`.
 - Decisions (`docs/wiki/methods/sampling.md`):
