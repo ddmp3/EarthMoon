@@ -110,3 +110,22 @@ def test_psr_map_is_read_in_the_ldem_orientation_shadow_lies_in_topographic_lows
     as_read = np.nanmedian(rel[p == 1])
     flipped = [np.nanmedian(rel[f(p) == 1]) for f in (np.flipud, np.fliplr, lambda a: a.T)]
     assert as_read < -100 and all(as_read < 3 * f for f in flipped)     # measured: -215 m against -18 to -39 m
+
+
+PITS_HTML = """<table><tr><th>Host Feat.</th><th>Name</th><th>Lat.</th><th>Long.</th><th>Funnel Max Diam. (m)</th>
+<th>Funnel Min Diam. (m)</th><th>Inner Max Diam. (m)</th><th>Inner Max Diam. Sorting</th><th>Inner Min Diam. (m)</th>
+<th>Inner Min Diam. Sorting</th><th>Azimuth</th><th>Depth (m)</th><th>Depth Sorting</th></tr>
+<tr><td>Mare Tranquillitatis</td><td><a href="/atlases/pits/3">Mare Tranquillitatis Pit</a></td><td>8.3355</td>
+<td>33.222</td><td>140</td><td>100</td><td>88</td><td>88</td><td>N/A</td><td></td><td>170</td><td>105.0</td><td>105.0</td></tr>
+<tr><td>Aristarchus</td><td><a href="/atlases/pits/33">Aristarchus 5</a></td><td>23.5984</td><td>312.4196</td>
+<td>16</td><td>21</td><td>7</td><td>7</td><td>N/A</td><td></td><td>75</td><td>&gt;17.0</td><td>17.0</td></tr></table>"""
+
+
+def test_pits_atlas_rows_are_parsed_with_lower_bounds_marked_and_east_longitudes():
+    from discovery.profiles import parse_pits
+    pits = parse_pits(PITS_HTML)
+    assert [p["id"] for p in pits] == [3, 33]
+    assert pits[0] == {"id": 3, "name": "Mare Tranquillitatis Pit", "host": "Mare Tranquillitatis", "lat": 8.3355,
+                       "lon": 33.222, "funnel_max_m": 140.0, "funnel_min_m": 100.0, "inner_max_m": 88.0,
+                       "inner_min_m": None, "azimuth": 170.0, "depth_m": 105.0, "depth_is_lower_bound": False}
+    assert pits[1]["depth_m"] == 17.0 and pits[1]["depth_is_lower_bound"] and pits[1]["lon"] == 312.4196

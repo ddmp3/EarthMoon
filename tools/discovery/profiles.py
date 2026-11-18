@@ -80,6 +80,32 @@ def lit_areas(illumination: np.ndarray, q: float, min_pixels: int) -> np.ndarray
     return kept & above              # sieving never adds a pixel below q
 
 
+def parse_pits(html: str) -> list[dict]:
+    """Rows of the LROC Lunar Pits Atlas list page. Values as printed; '>' marks a lower bound, N/A is None.
+    The 'Sorting' columns repeat the value beside them and are dropped."""
+    import re
+    from html import unescape
+
+    def num(cell: str) -> tuple[float | None, bool]:
+        c = unescape(cell).strip()
+        if c in ("", "N/A"):
+            return None, False
+        return float(c.lstrip(">")), c.startswith(">")
+
+    out = []
+    for row in re.findall(r"<tr>(.*?)</tr>", html, flags=re.S):
+        cells = re.findall(r"<td>(.*?)</td>", row, flags=re.S)
+        if len(cells) != 13:
+            continue                                               # header row
+        link = re.search(r'href="/atlases/pits/(\d+)">(.*?)</a>', cells[1])
+        depth, lower = num(cells[11])
+        out.append({"id": int(link.group(1)), "name": unescape(link.group(2)).strip(), "host": unescape(cells[0]).strip(),
+                    "lat": float(cells[2]), "lon": float(cells[3]) % 360, "funnel_max_m": num(cells[4])[0],
+                    "funnel_min_m": num(cells[5])[0], "inner_max_m": num(cells[6])[0], "inner_min_m": num(cells[8])[0],
+                    "azimuth": num(cells[10])[0], "depth_m": depth, "depth_is_lower_bound": lower})
+    return out
+
+
 def code_version(root: Path = Path(__file__).resolve().parents[1]) -> str:
     """sha256 of the profile sources, line endings normalised (as the Earth cube, ADR-009)."""
     h = hashlib.sha256()
