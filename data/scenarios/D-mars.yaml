@@ -15,9 +15,13 @@ similarity:
   - {parameter: precipitation, status: "waiting for T47", why: "little liquid water erosion"}
 context: [latitude_abs]
 requirements:
-  - id: mars_mobility
-    what: Rover slope and terrain limits on Mars
-    value: "not set (R43 cited, figures not read)"
+  - id: mars_mobility_tests
+    what: Slopes traversable by Mars Science Laboratory test vehicles (Earth tests at Mars weight)
+    value: "up to 22° on smooth bedrock, up to 28° on some cohesive soils; in loose sand, moderate slip at 10° and embedding at 17°"
+    source: R43
+  - id: mars_mobility_limit
+    what: Which of those limits applies to a cell
+    value: "depends on the terrain type, which no global layer gives"
     expert_decision: E14
   - id: target_environment
     what: Which Martian environment each campaign targets

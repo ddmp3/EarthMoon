@@ -2,6 +2,15 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T25 Validation protocol v1 (PR #14, tag `validation-protocol-v1`)
+- `docs/VALIDATION_PROTOCOL.md`: controls, metrics and pass thresholds fixed before any discovery run; the Monte Carlo scope, bias checks, the unexpected-candidate dossiers, and what the protocol cannot show.
+- **Positive controls by rule** (`data/validation/positives.yaml`): only places named in the abstract of a verified reference as analog or test sites, and located by a public gazetteer.
+  - Mars geology (D): 4 sites from R29 (Big Craters; Mauna Ulu; Kīlauea Iki; Kīlauea caldera).
+  - Radar (C4): 2 lava tubes from R25 (Skull Cave and Valentine Cave).
+  - **A, B and the other instruments have none**, and say so. The v2 team list is not used (L6).
+- **Negative controls by rule** (`data/validation/negatives.yaml`, `tools/research/controls.py`, 4 tests): 18 seeded random points in 6 WorldCover classes where the ground is hidden. The class legend was read from the files' metadata.
+- From the R43 abstract, scenario D now has sourced Mars rover limits: 22° on bedrock, 28° on cohesive soil, embedding at 17° in loose sand. Which one applies stays E14.
+
 ## 2026-11-18 · T24 Scenarios v3 (PR #13)
 - `data/scenarios/{A-lunar-base,B-lunar-robotics,C-instruments,D-mars}.yaml` and `docs/SCENARIOS.md`. They replace `scenarios-v2.json` in T42.
 - Each scenario lists its target environments (T20), its similarity parameters (only those kept in T21, either available or waiting for a task), its requirements and eliminating constraints, its proxies, and what it cannot assess. Scenario C covers 7 instruments.

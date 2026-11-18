@@ -52,7 +52,7 @@ One row per instrument; site requirements are all open (E15).
 |---|---|
 | Targets | Ice-rich mid-latitudes; north and south polar terrain; aqueous mineral sites; HiRISE rover-scale terrain |
 | Similarity | Slope (T48); mineral groups (T46); ground ice, thermal inertia, aerosols, wind, specific humidity, precipitation (T47) |
-| Requirements | Mars rover limits not set (E14; R43 figures not read) |
+| Requirements | MSL test vehicles (R43): up to 22° on smooth bedrock, 28° on some cohesive soils, embedding at 17° in loose sand. Which applies depends on terrain type (E14), so none eliminates |
 | Proxy | Martian ground ice → Earth permafrost models, compared as classes |
 | Cannot assess | CO₂ atmosphere at about 1% of Earth's pressure; gravity; radiation; ice content and depth |
 
