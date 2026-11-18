@@ -29,3 +29,6 @@ Implement the comparison methods chosen in T23, with separate outputs per cell o
 ## Done when
 - The engine runs on the pilot tiles for scenarios A and B and produces all outputs.
 - Checks pass, and `docs/METHOD.md` gets a short section describing the new engine.
+
+## Alignment with the ADRs (T30)
+Every v3 number is computed once, in Python (`tools/discovery/compare` and `zones`, ADR-005), so no TypeScript port is needed. The parity rule above applies to v2 only, as long as v2 is served.

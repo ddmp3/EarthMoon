@@ -13,6 +13,38 @@ Browser ──► Azure Static Web App (React)
                           Copernicus DEM, MODIS, and NASA POWER / USGS / Smithsonian GVP snapshots)
 ```
 
+## Target architecture (v3, proposed in T30, gate G3)
+
+Decisions: [adr/](adr/README.md). Only the local Docker stack runs v3; nothing is deployed.
+
+```
+OFFLINE (tools/discovery, Python; data under C:\Users\david\earthmoon-data, never in git)
+  ingest ──► features ──► compare ──► zones ──► validate ──► export
+  (manifest,   (Parquet per    ▲   (T23        (T26 rule)   (tag validation-   (PNG tiles z0-7,
+   SHA-256)     tile & scale)  │    percentile)              protocol-v1)       zone JSON, release id)
+                    profiles ──┘  (data/profiles/spec → computed planetary distributions)
+                                           │
+                                           ▼  releases/<release-id>/ (static files + Parquet)
+ONLINE (docker compose, local)
+  Browser (React + Leaflet) ──► Node API /api/v2 (unchanged) and /api/v3 (OpenAPI)
+                                   │ static: releases, profiles, scenarios, tiles, zones
+                                   └──► apps/discovery (Python, internal only): cells in view, custom query
+                                        over the Parquet cube; no outbound network, read-only data
+```
+
+**New dependencies** (Python, for `tools/discovery` and `apps/discovery`). Each is the newest release at least 14 days old on 18 November 2026; `pip-audit` is clean on the full set.
+
+| Package | Version | Licence | Use |
+|---|---|---|---|
+| pyarrow | 26.0.1 | Apache-2.0 | Parquet feature cube |
+| pillow | 13.0.0 | MIT-CMU | Raster tiles |
+| h3 | 4.5.0 | Apache | Zoom-out aggregation (area-weighted) |
+| fastapi | 0.162.0 | MIT | Internal on-demand service |
+| pydantic | 2.14.2 | MIT | Strict request validation |
+| uvicorn | 0.54.0 | BSD-3-Clause | Server of the internal service |
+
+No new JavaScript dependency.
+
 ## Repository layout
 
 ```

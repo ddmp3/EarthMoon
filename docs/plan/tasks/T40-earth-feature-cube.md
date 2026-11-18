@@ -24,3 +24,9 @@ Compute the topographic and geomorphological parameters for every land cell at t
 ## Done when
 - The global coarse stage and the pilot-tile fine stage are complete.
 - The regression anchor passes, `tools/check.sh` passes, and `docs/wiki/runs/earth-cube.md` records versions, hashes, timings and coverage (share of land evaluated, partial, not covered).
+
+## Alignment with the ADRs (T30)
+- Code goes in `tools/discovery/ingest` and `tools/discovery/features` (ADR-001). Move the tested functions of `tools/research/sampling.py` there first, with their tests.
+- Output: Parquet per tile, pixel scale and data version, with windows and cell statistics tables (ADR-002). GLO-30 is streamed, not stored.
+- Run the two-stage search of T22. First measure the COG range-read time on 100 tiles and apply the ADR-007 stop rule before any global run.
+- Check that the GLO-90 product matches GLO-30 resampled to 90 m on the pilot tiles, and count the GLO-90 tiles.
