@@ -88,8 +88,11 @@ async function run(name, viewport, mobile) {
     if (rows < 30) defect(name, `${mode}: only ${rows} sites in the ranking`);
     const dots = await page.locator(".rank-row .stab").count();
     if (dots < 25) defect(name, `${mode}: stability dots on ${dots} rows only`);
-    await page.locator("img.leaflet-tile-loaded").first().waitFor({ timeout: 20000 }).catch(() => undefined);
-    await page.waitForLoadState("networkidle");
+    // NASA GIBS is a third-party service and can be slow: wait up to 45 s for two loaded tiles. A blocked
+    // request (CSP, wrong URL) still fails, because no tile ever loads.
+    await page
+      .waitForFunction(() => [...document.querySelectorAll("img.leaflet-tile")].filter((i) => i.complete && i.naturalWidth > 0).length >= 2, null, { timeout: 45000 })
+      .catch(() => undefined);
     const tiles = await page.evaluate(() => [...document.querySelectorAll("img.leaflet-tile")].filter((i) => i.complete && i.naturalWidth > 0).length);
     if (tiles < 2) defect(name, `${mode}: NASA base map tiles not loaded (${tiles})`);
     if (!(await page.locator(".site-detail h2").first().isVisible())) defect(name, `${mode}: no site card after the analysis`);

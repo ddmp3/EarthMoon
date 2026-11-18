@@ -1,0 +1,101 @@
+"""Data catalogues of EarthMoon v3 (data/catalog/moon.yaml, mars.yaml, earth.yaml).
+
+    python tools/catalog/catalog.py check                         # validate every catalogue
+    python tools/catalog/catalog.py render data/catalog/moon.yaml docs/wiki/data/moon-table.md "Lunar data catalogue"
+
+One entry per data product. A fact is written only if it was read at its source (verified_url, verified_on);
+otherwise the entry says "not verified". `nature` separates measurements from derived products, model
+output and interpretations (docs/plan/tasks/T10-moon-data.md).
+"""
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import yaml
+
+NATURES = ("measured", "derived", "model", "interpretation")
+STATUSES = ("verified", "partly verified", "not verified", "not available")
+REQUIRED = (
+    "id", "body", "mission", "instrument", "product", "producer", "url", "access", "coverage",
+    "resolution_spatial", "resolution_effective", "resolution_temporal", "units", "nature", "uncertainty",
+    "limitations", "dimensions", "environments", "status", "verified_on", "verified_url",
+)
+ACCESS = ("format", "size", "licence", "account")
+
+
+def load(path: Path) -> list[dict]:
+    data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    return data.get("products", [])
+
+
+def validate(entries: list[dict]) -> list[str]:
+    errors, seen = [], set()
+    for i, e in enumerate(entries):
+        name = e.get("id", f"#{i}")
+        for field in REQUIRED:
+            if field not in e:
+                errors.append(f"{name}: missing field {field}")
+        if name in seen:
+            errors.append(f"{name}: duplicate id")
+        seen.add(name)
+        if e.get("nature") not in NATURES:
+            errors.append(f"{name}: nature must be one of {NATURES}")
+        if e.get("status") not in STATUSES:
+            errors.append(f"{name}: status must be one of {STATUSES}")
+        if e.get("status") in ("verified", "partly verified") and not (e.get("verified_on") and e.get("verified_url")):
+            errors.append(f"{name}: a verified entry needs verified_on and verified_url")
+        access = e.get("access")
+        if not isinstance(access, dict) or any(k not in access for k in ACCESS):
+            errors.append(f"{name}: access needs {ACCESS}")
+        for field in ("dimensions", "environments"):
+            if field in e and not isinstance(e[field], list):
+                errors.append(f"{name}: {field} must be a list")
+    return errors
+
+
+def _cell(value) -> str:
+    if isinstance(value, list):
+        value = ", ".join(str(v) for v in value)
+    return str(value if value is not None else "").replace("|", "/").replace("\n", " ")
+
+
+def render_markdown(entries: list[dict], title: str) -> str:
+    lines = [
+        f"# {title}",
+        "",
+        "Generated from the YAML catalogue by `tools/catalog/catalog.py render`. Do not edit by hand.",
+        "",
+        "| Product | Mission / instrument | Nature | Coverage | Resolution (pixel / effective) | Units | Uncertainty | Limitations | Status |",
+        "|---|---|---|---|---|---|---|---|---|",
+    ]
+    for e in entries:
+        product = f"[{_cell(e['product'])}]({e['url']})" if e.get("url") else _cell(e["product"])
+        lines.append(
+            f"| {product} | {_cell(e['mission'])} {_cell(e['instrument'])} | {_cell(e['nature'])} | {_cell(e['coverage'])} "
+            f"| {_cell(e['resolution_spatial'])} / {_cell(e['resolution_effective'])} | {_cell(e['units'])} "
+            f"| {_cell(e['uncertainty'])} | {_cell(e['limitations'])} | {_cell(e['status'])} |"
+        )
+    return "\n".join(lines) + "\n"
+
+
+def main(argv: list[str]) -> int:
+    root = Path(__file__).resolve().parents[2]
+    if argv[:1] == ["check"]:
+        bad = 0
+        for path in sorted((root / "data" / "catalog").glob("*.yaml")):
+            errs = validate(load(path))
+            for err in errs:
+                print(f"{path.name}: {err}")
+            bad += len(errs)
+            print(f"{path.name}: {len(load(path))} products, {len(errs)} errors")
+        return 1 if bad else 0
+    if argv[:1] == ["render"] and len(argv) == 4:
+        Path(argv[2]).write_text(render_markdown(load(Path(argv[1])), argv[3]), encoding="utf-8")
+        return 0
+    print(__doc__)
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
