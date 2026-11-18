@@ -51,13 +51,13 @@ describe("verdictFor", () => {
 
 describe("scoreCriterion", () => {
   it("marks an absent, null or non-finite value as missing", () => {
-    expect(scoreCriterion({}, range)).toEqual({ param: "slope_mean", value: null, score: 0, verdict: "missing" });
+    expect(scoreCriterion({}, range)).toMatchObject({ param: "slope_mean", value: null, score: 0, verdict: "missing" });
     expect(scoreCriterion({ slope_mean: null }, range).verdict).toBe("missing");
     expect(scoreCriterion({ slope_mean: Number.NaN }, range).verdict).toBe("missing");
   });
 
   it("returns the value, score and verdict", () => {
-    expect(scoreCriterion({ slope_mean: 20 }, range)).toEqual({
+    expect(scoreCriterion({ slope_mean: 20 }, range)).toMatchObject({
       param: "slope_mean",
       value: 20,
       score: 0.5,

@@ -81,13 +81,17 @@ describe("HTTP server", () => {
     expect(res.status).toBe(200);
     const body = (await res.json()) as { mode: string; sites: { id: string; total: number; excluded?: string; criteria: { param: string; value: number | null; score: number; verdict: string }[] }[] };
     expect(body.mode).toBe("robotics");
-    expect(body.sites.map((s) => s.id)).toEqual(["atacama", "haughton", "amazon"]);
-    expect(body.sites.map((s) => s.total)).toEqual([93, 87, 0]);
+    // Haughton (sample values): mean slope 7.5° and detrended roughness 9.1 m are inside the lunar interquartile
+    // ranges, all ground is under 15°, dry: 100. Atacama: its detrended roughness (2.5 m) is below the lunar 5th
+    // percentile (3.3 m), so one criterion out of four scores 0: 75.
+    expect(body.sites.map((s) => s.id)).toEqual(["haughton", "atacama", "amazon"]);
+    expect(body.sites.map((s) => s.total)).toEqual([100, 75, 0]);
     expect(body.sites[2]?.excluded).toBe("vegetation");
     for (const s of body.sites) {
-      expect(Object.keys(s).filter((k) => k !== "excluded" && k !== "stability")).toEqual(["id", "name", "lat", "lon", "role", "criteria", "total"].sort((a, b) => Object.keys(s).indexOf(a) - Object.keys(s).indexOf(b)));
-      for (const c of s.criteria) expect(Object.keys(c)).toEqual(["param", "value", "score", "verdict"]);
+      expect(s).toMatchObject({ coverage: 1, requirements: "met" });
+      for (const c of s.criteria) expect(Object.keys(c)).toEqual(expect.arrayContaining(["param", "value", "score", "verdict", "contribution", "maxContribution"]));
     }
+    expect((body as unknown as { methodology: { version: string } }).methodology.version).toBe("2.0.0");
   });
 
   it("POST /api/analyze (free criteria, filter off) keeps the Amazon in the ranking", async () => {
@@ -138,7 +142,8 @@ describe("HTTP server", () => {
     const res = await fetch(`${api.url}/api/sites/haughton?mode=robotics`);
     expect(res.status).toBe(200);
     const body = (await res.json()) as { id: string; total: number; mode: string; values: Record<string, number>; sources: string[]; terrain?: string };
-    expect(body).toMatchObject({ id: "haughton", total: 87, mode: "robotics", sources: ["fixtures"], terrain: "impact" });
+    expect(body).toMatchObject({ id: "haughton", total: 100, mode: "robotics", sources: ["fixtures"], terrain: "impact" });
+    expect(body).toMatchObject({ coverage: 1, requirements: "met", explanation: { decisive: [], missing: [] } });
     expect(body.values.t2m_min).toBe(-48.55);
   });
 

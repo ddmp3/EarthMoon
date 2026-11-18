@@ -95,10 +95,12 @@ def check_mode(sites: list[dict], expected: set[str]) -> dict:
         "negative_ok": all(s.get("excluded") or rank.get(s["id"]) == n for s in negatives),
         "top_candidates": [(s["id"], s["name"], s["total"]) for s in candidates[:3]],
         "mean_coverage": round(statistics.fmean(coverage), 3) if coverage else 0.0,
-        "top": [(rank[s["id"]], s["id"], s["role"], s["total"], _range(s)) for s in ranked[:10]],
+        "top": [(rank[s["id"]], s["id"], s["role"], s["total"], _range(s), s.get("confidence", "-")) for s in ranked[:10]],
         "expected_shares": shares,
         "penalized": [(s["id"], s["vegetationFactor"]) for s in ranked if "vegetationFactor" in s],
         "validation": [(rank.get(s["id"]), s["id"], s["total"]) for s in sites if s["role"] == "validation"],
+        "failed": [(s["id"], s.get("failedRequirements", [])) for s in ranked if s.get("requirements") == "failed"],
+        "confidence": {level: sum(s.get("confidence") == level for s in ranked) for level in ("high", "medium", "low")},
     }
 
 
@@ -129,7 +131,8 @@ def to_markdown(results: dict[str, dict]) -> str:
              f"Chance baseline: a random ranking would meet at least {o['met']}/{o['total']} expectations "
              f"{rb['chance']:.1%} of the time (modes treated as independent: indicative).",
              ("Robustness: on average each expectation is still met in "
-              f"{rb['mean_share']:.0%} of the sensitivity scenarios (weights ±50%, tolerances ±25%, bounds ±10%)."
+              f"{rb['mean_share']:.0%} of the Monte Carlo scenarios (weights ±50%, tolerances ±25%, bounds ±10%, "
+              "site values redrawn within their uncertainty)."
               if rb["mean_share"] is not None else "Robustness: not available (the API returned no stability)."),
              ("Fragile expectations (met in fewer than half of the scenarios): "
               + ", ".join(f"{i} in {m}" for i, m in rb["fragile"]) + ".") if rb["fragile"] else
@@ -142,8 +145,8 @@ def to_markdown(results: dict[str, dict]) -> str:
         lines.append(f"| {MODES[mode]} | {s['ranked']} | {len(s['expected_met'])}/{exp} | "
                      f"{'excluded or last' if s['negative_ok'] else '**not last**'} | {s['mean_coverage']:.0%} |")
     for mode, s in results.items():
-        lines += ["", f"### {MODES[mode]}", "", "| Rank | Site | Role | Score | Rank range (80% of scenarios) |", "|---|---|---|---|---|"]
-        lines += [f"| {r} | {i} | {role} | {t} | {rg} |" for r, i, role, t, rg in s["top"]]
+        lines += ["", f"### {MODES[mode]}", "", "| Rank | Site | Role | Score | Rank range (80% of scenarios) | Confidence |", "|---|---|---|---|---|---|"]
+        lines += [f"| {r} | {i} | {role} | {t} | {rg} | {conf} |" for r, i, role, t, rg, conf in s["top"]]
         lines += ["", f"Expected in the top half (rank ≤ {s['half']}) and present: "
                   + (", ".join(s["expected_met"]) or "none") + "."]
         if s["expected_missed"]:
@@ -151,6 +154,12 @@ def to_markdown(results: dict[str, dict]) -> str:
         lines.append("All known analogs: " + ", ".join(
             f"{i} ({'excluded' if r is None else f'#{r}'}, {t})" for r, i, t in s["validation"]) + ".")
         lines.append("Best candidate sites (hypotheses to validate): " + ", ".join(f"{n} ({t})" for _, n, t in s["top_candidates"]) + ".")
+        if s["failed"]:
+            lines.append("Fail a hard requirement (ranked after the others, total kept): "
+                         + ", ".join(f"{i} ({', '.join(f)})" for i, f in s["failed"]) + ".")
+        if any(s["confidence"].values()):
+            c = s["confidence"]
+            lines.append(f"Confidence of the assessments: {c['high']} high, {c['medium']} medium, {c['low']} low.")
         if s["penalized"]:
             lines.append("Score lowered by vegetation (NDVI 0.2 to 0.6, factor in brackets): "
                          + ", ".join(f"{i} (×{f})" for i, f in s["penalized"]) + ".")

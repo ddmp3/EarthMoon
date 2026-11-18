@@ -1,5 +1,5 @@
 {
-  "note": "Sample data to develop without the API. Only the NASA POWER and USGS values of Haughton are real (recorded 2026-11-14); all others are fictional.",
+  "note": "Sample data to develop without the API. Only the NASA POWER and USGS values of Haughton are real (recorded 2026-11-14); the methodology v2 parameters (slope_p95, roughness_detrended, traversable_*, specific_humidity, quake_m45_count) are copied from data/dataset-v2.json; all others are fictional.",
   "sites": [
     {
       "id": "haughton",
@@ -26,7 +26,14 @@
         "solar": 2.32,
         "latitude_abs": 75.38,
         "quake_count": 18,
-        "volcano_distance": 1400
+        "volcano_distance": 1400,
+        "slope_p95": 6.347,
+        "roughness_detrended": 9.146,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0,
+        "specific_humidity": 1.79,
+        "quake_m45_count": 7
       }
     },
     {
@@ -54,7 +61,14 @@
         "solar": 7.2,
         "latitude_abs": 24.5,
         "quake_count": 950,
-        "volcano_distance": 35
+        "volcano_distance": 35,
+        "slope_p95": 9.573,
+        "roughness_detrended": 2.535,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0,
+        "specific_humidity": 3.09,
+        "quake_m45_count": 1452
       }
     },
     {
@@ -82,7 +96,14 @@
         "solar": 4.8,
         "latitude_abs": 3.47,
         "quake_count": 2,
-        "volcano_distance": 2100
+        "volcano_distance": 2100,
+        "slope_p95": 5.636,
+        "roughness_detrended": 2.766,
+        "traversable_15": 1.0,
+        "traversable_20": 1.0,
+        "traversable_25": 1.0,
+        "specific_humidity": 18.85,
+        "quake_m45_count": 0
       }
     }
   ]

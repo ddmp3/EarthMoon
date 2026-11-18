@@ -77,6 +77,81 @@
         "p90": 91.81
       },
       "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; slope and roughness computed over 1 km windows like on Earth (tools/precompute/lunar_reference.py); interquartile range (p25-p75) of 71,731 windows of 1,000 m"
+    },
+    "slope_p95": {
+      "min": 9.421,
+      "max": 17.892,
+      "unit": "°",
+      "distribution": {
+        "p5": 6.048,
+        "p10": 7.05,
+        "p25": 9.421,
+        "p50": 13.182,
+        "p75": 17.892,
+        "p90": 22.61,
+        "p95": 25.608
+      },
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; 1 km windows (25 x 25 px), same function as Earth (tools/precompute/terrain_metrics.py); interquartile range (p25-p75) of 71731 windows"
+    },
+    "roughness_detrended": {
+      "min": 5.122,
+      "max": 10.521,
+      "unit": "m",
+      "distribution": {
+        "p5": 3.332,
+        "p10": 3.877,
+        "p25": 5.122,
+        "p50": 7.221,
+        "p75": 10.521,
+        "p90": 14.962,
+        "p95": 18.571
+      },
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; 1 km windows (25 x 25 px), same function as Earth (tools/precompute/terrain_metrics.py); interquartile range (p25-p75) of 71731 windows"
+    },
+    "traversable_15": {
+      "min": 0.763,
+      "max": 1.0,
+      "unit": "",
+      "distribution": {
+        "p5": 0.01,
+        "p10": 0.15,
+        "p25": 0.763,
+        "p50": 0.984,
+        "p75": 1.0,
+        "p90": 1.0,
+        "p95": 1.0
+      },
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; 1 km windows (25 x 25 px), same function as Earth (tools/precompute/terrain_metrics.py); interquartile range (p25-p75) of 71731 windows"
+    },
+    "traversable_20": {
+      "min": 0.987,
+      "max": 1.0,
+      "unit": "",
+      "distribution": {
+        "p5": 0.354,
+        "p10": 0.782,
+        "p25": 0.987,
+        "p50": 1.0,
+        "p75": 1.0,
+        "p90": 1.0,
+        "p95": 1.0
+      },
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; 1 km windows (25 x 25 px), same function as Earth (tools/precompute/terrain_metrics.py); interquartile range (p25-p75) of 71731 windows"
+    },
+    "traversable_25": {
+      "min": 1.0,
+      "max": 1.0,
+      "unit": "",
+      "distribution": {
+        "p5": 0.923,
+        "p10": 0.989,
+        "p25": 1.0,
+        "p50": 1.0,
+        "p75": 1.0,
+        "p90": 1.0,
+        "p95": 1.0
+      },
+      "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; 1 km windows (25 x 25 px), same function as Earth (tools/precompute/terrain_metrics.py); interquartile range (p25-p75) of 71731 windows"
     }
   },
   "todo": [
@@ -142,6 +217,111 @@
     "lst_amplitude": {
       "text": "at the equator, about 400 K at noon and under 100 K at night (swing of about 300 K); no Earth site comes close to this swing",
       "source": "Diviner, EPSC2013-386"
+    }
+  },
+  "terrain_v2": {
+    "source": "LRO LOLA LDEM_85S_40M (NASA PDS Geosciences Node, lro-l-lola-3-rdr-v1), 40 m/pixel, 85°S-90°S; 1 km windows (25 x 25 px), same function as Earth (tools/precompute/terrain_metrics.py)",
+    "windows": 71731,
+    "window_m": 1000.0,
+    "pixel_m": 40.0,
+    "file_sha256": "1609e9b860748e0b9952a7239c51b37d3b2a799d35e9fc3c258526711cc1e51d",
+    "params": {
+      "slope_mean": {
+        "unit": "°",
+        "distribution": {
+          "p5": 2.954,
+          "p10": 3.566,
+          "p25": 5.231,
+          "p50": 8.314,
+          "p75": 12.886,
+          "p90": 17.682,
+          "p95": 20.892
+        }
+      },
+      "slope_p95": {
+        "unit": "°",
+        "distribution": {
+          "p5": 6.048,
+          "p10": 7.05,
+          "p25": 9.421,
+          "p50": 13.182,
+          "p75": 17.892,
+          "p90": 22.61,
+          "p95": 25.608
+        }
+      },
+      "slope_max": {
+        "unit": "°",
+        "distribution": {
+          "p5": 9.337,
+          "p10": 10.802,
+          "p25": 13.854,
+          "p50": 18.165,
+          "p75": 23.258,
+          "p90": 28.529,
+          "p95": 32.109
+        }
+      },
+      "roughness": {
+        "unit": "m",
+        "distribution": {
+          "p5": 7.782,
+          "p10": 11.429,
+          "p25": 21.508,
+          "p50": 39.323,
+          "p75": 64.95,
+          "p90": 91.815,
+          "p95": 110.395
+        }
+      },
+      "roughness_detrended": {
+        "unit": "m",
+        "distribution": {
+          "p5": 3.332,
+          "p10": 3.877,
+          "p25": 5.122,
+          "p50": 7.221,
+          "p75": 10.521,
+          "p90": 14.962,
+          "p95": 18.571
+        }
+      },
+      "traversable_15": {
+        "unit": "",
+        "distribution": {
+          "p5": 0.01,
+          "p10": 0.15,
+          "p25": 0.763,
+          "p50": 0.984,
+          "p75": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        }
+      },
+      "traversable_20": {
+        "unit": "",
+        "distribution": {
+          "p5": 0.354,
+          "p10": 0.782,
+          "p25": 0.987,
+          "p50": 1.0,
+          "p75": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        }
+      },
+      "traversable_25": {
+        "unit": "",
+        "distribution": {
+          "p5": 0.923,
+          "p10": 0.989,
+          "p25": 1.0,
+          "p50": 1.0,
+          "p75": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        }
+      }
     }
   }
 }

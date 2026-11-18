@@ -213,6 +213,14 @@ components:
         - latitude_abs
         - quake_count
         - volcano_distance
+        - slope_p95
+        - roughness_detrended
+        - traversable_15
+        - traversable_20
+        - traversable_25
+        - specific_humidity
+        - quake_m45_count
+        - lava_tube_evidence
     ModeId:
       type: string
       enum: [robotics, calibration, colony]
@@ -222,31 +230,56 @@ components:
       enum: [match, partial, mismatch, missing]
     Criterion:
       type: object
-      description: Target interval [min, max]; score 1 inside, linear decrease to 0 at `tolerance` distance.
+      description: >-
+        Target interval [min, max]; score 1 inside, linear decrease to 0 at `tolerance` distance
+        (`toleranceBelow` / `toleranceAbove` when the two sides differ).
       required: [param, tolerance, weight]
       properties:
         param: { $ref: "#/components/schemas/ParamId" }
         min: { type: number }
         max: { type: number }
         tolerance: { type: number, minimum: 0 }
+        toleranceBelow: { type: number, minimum: 0, description: "Tolerance below `min`, if different from `tolerance`." }
+        toleranceAbove: { type: number, minimum: 0, description: "Tolerance above `max`, if different from `tolerance`." }
         weight: { type: number, exclusiveMinimum: 0, minimum: 0 }
+        required:
+          type: boolean
+          description: Hard requirement. A site scoring 0 on it fails the scenario and ranks after every site that passes; it is never averaged away.
         group:
           type: string
           description: Instrument (mode 2) or need (mode 3), to filter and group in the interface.
+        role:
+          type: string
+          enum: [similarity, requirement, proxy]
+          description: "similarity: compared with a measured lunar distribution · requirement: operational need of the vehicle, instrument or mission · proxy: indirect Earth indicator of a lunar condition."
+        basis:
+          type: string
+          enum: [lunar_measurement, mission_requirement, expert_judgement]
+          description: Where the interval and tolerance come from.
+        rationale: { type: string, description: Why the criterion is there and where its numbers come from. }
     CriterionScore:
       type: object
-      required: [param, value, score, verdict]
+      required: [param, value, score, verdict, contribution, maxContribution]
       properties:
         param: { $ref: "#/components/schemas/ParamId" }
-        value: { type: number, nullable: true, description: "null = source indisponible" }
+        value: { type: number, nullable: true, description: "null = no measurement" }
         score: { type: number, minimum: 0, maximum: 1 }
         verdict: { $ref: "#/components/schemas/Verdict" }
+        contribution: { type: number, minimum: 0, description: "Points (out of 100) this criterion adds to the total; 0 when missing." }
+        maxContribution: { type: number, minimum: 0, description: "Points this criterion could add at most, given the criteria that have data." }
+        sigma: { type: number, minimum: 0, description: "1-sigma uncertainty of the value, when quantified." }
+        flags:
+          type: array
+          items: { type: string }
+          description: Data-quality flags of the value (for example large_elevation_correction, seasonal_gaps, flat_artifact).
+        required: { type: boolean, description: Present (true) on hard requirements. }
     Mode:
       type: object
-      required: [id, name, criteria]
+      required: [id, name, target, criteria]
       properties:
         id: { $ref: "#/components/schemas/ModeId" }
         name: { type: string }
+        target: { type: string, description: Lunar environment the scenario targets. }
         criteria:
           type: array
           items: { $ref: "#/components/schemas/Criterion" }
@@ -267,7 +300,7 @@ components:
         criteria:
           type: array
           minItems: 1
-          maxItems: 18
+          maxItems: 26
           description: "Mode 4: each parameter at most once; each criterion has min, max or both."
           items: { $ref: "#/components/schemas/Criterion" }
         bareSoilOnly:
@@ -279,7 +312,7 @@ components:
         - required: [criteria]
     AnalyzedSite:
       type: object
-      required: [id, name, lat, lon, role, total, criteria]
+      required: [id, name, lat, lon, role, total, criteria, coverage, totalRange, requirements]
       properties:
         id: { type: string }
         name: { type: string }
@@ -303,15 +336,90 @@ components:
           description: Present if the bare-soil filter lowered the total (NDVI between 0.2 and 0.6). The total is multiplied by this factor.
         stability:
           $ref: "#/components/schemas/Stability"
+        coverage: { type: number, minimum: 0, maximum: 1, description: "Share of the criteria weight that has data. A missing value counts neither for nor against the site." }
+        totalRange:
+          type: object
+          description: Total if every missing criterion scored 0 (min) and if it scored 1 (max). Equal to the total when nothing is missing.
+          required: [min, max]
+          properties:
+            min: { type: integer, minimum: 0, maximum: 100 }
+            max: { type: integer, minimum: 0, maximum: 100 }
+        requirements:
+          type: string
+          enum: [met, failed, unknown]
+          description: "Hard requirements of the scenario. failed: the site ranks after every site that passes · unknown: a required criterion has no data."
+        failedRequirements:
+          type: array
+          items: { $ref: "#/components/schemas/ParamId" }
+        missing:
+          type: array
+          items: { $ref: "#/components/schemas/ParamId" }
+          description: Criteria with no data for this site.
+        confidence:
+          type: string
+          enum: [high, medium, low]
+          description: >-
+            Confidence in the assessment, separate from the score. low: coverage under 0.6, a required criterion
+            without data, or a 10th to 90th percentile interval of the total wider than 30 points. high: coverage of 0.9
+            or more and an interval of 15 points or less. Absent for excluded sites.
     Stability:
       type: object
-      description: Rank of the site when weights, tolerances and interval bounds are perturbed (see AnalyzeResponse.sensitivity). Absent for excluded sites.
-      required: [rankP10, rankMedian, rankP90, topHalfShare]
+      description: Rank and total of the site when weights, tolerances, interval bounds and the site values (within their uncertainty) are perturbed (see AnalyzeResponse.sensitivity). Absent for excluded sites.
+      required: [rankP10, rankMedian, rankP90, topHalfShare, totalP10, totalP90, requirementsShare]
       properties:
         rankP10: { type: integer, minimum: 1, description: "Best-case rank (10th percentile of the scenarios)." }
         rankMedian: { type: integer, minimum: 1 }
         rankP90: { type: integer, minimum: 1, description: "Worst-case rank (90th percentile of the scenarios)." }
         topHalfShare: { type: number, minimum: 0, maximum: 1, description: Share of scenarios where the site stays in the top half of the ranked sites. }
+        totalP10: { type: number, minimum: 0, maximum: 100, description: 10th percentile of the total over the scenarios. }
+        totalP90: { type: number, minimum: 0, maximum: 100, description: 90th percentile of the total over the scenarios. }
+        requirementsShare: { type: number, minimum: 0, maximum: 1, description: Share of scenarios where the site meets every hard requirement. }
+    Methodology:
+      type: object
+      description: Versions needed to reproduce a result.
+      required: [version]
+      properties:
+        version: { type: string, description: Version of the scoring method (docs/SCIENTIFIC_METHODOLOGY.md). }
+        dataset: { type: string, description: Version of the frozen data set (data/dataset-v2.json). Absent when sources are read live. }
+    ExplainedCriterion:
+      type: object
+      required: [param, contribution, loss]
+      properties:
+        param: { $ref: "#/components/schemas/ParamId" }
+        contribution: { type: number, description: Points added to the total. }
+        loss: { type: number, description: Points lost compared with a perfect score on this criterion. }
+        role: { type: string }
+        basis: { type: string }
+        rationale: { type: string }
+    Explanation:
+      type: object
+      description: Why the site gets its result. Orders what the assessment already contains; adds no information.
+      required: [strengths, weaknesses, decisive, missing, flagged, expertShare]
+      properties:
+        strengths:
+          type: array
+          items: { $ref: "#/components/schemas/ExplainedCriterion" }
+        weaknesses:
+          type: array
+          items: { $ref: "#/components/schemas/ExplainedCriterion" }
+        decisive:
+          type: array
+          items: { $ref: "#/components/schemas/ParamId" }
+          description: Required criteria the site fails.
+        missing:
+          type: array
+          items: { $ref: "#/components/schemas/ParamId" }
+        flagged:
+          type: array
+          items:
+            type: object
+            required: [param, flags]
+            properties:
+              param: { $ref: "#/components/schemas/ParamId" }
+              flags:
+                type: array
+                items: { type: string }
+        expertShare: { type: number, minimum: 0, maximum: 1, description: Share of the total resting on criteria whose numbers are expert judgements rather than measurements. }
     Sensitivity:
       type: object
       description: How the stability of the ranks was computed.
@@ -322,7 +430,7 @@ components:
         perturbation: { type: string }
     AnalyzeResponse:
       type: object
-      required: [mode, sites, sensitivity]
+      required: [mode, sites, sensitivity, methodology]
       properties:
         mode:
           type: string
@@ -332,13 +440,17 @@ components:
           items: { $ref: "#/components/schemas/AnalyzedSite" }
         sensitivity:
           $ref: "#/components/schemas/Sensitivity"
+        methodology:
+          $ref: "#/components/schemas/Methodology"
     SiteDetail:
       allOf:
         - $ref: "#/components/schemas/AnalyzedSite"
         - type: object
-          required: [mode, values, sources, valueSources, moon]
+          required: [mode, values, sources, valueSources, moon, explanation, methodology]
           properties:
             terrain: { type: string }
+            explanation: { $ref: "#/components/schemas/Explanation" }
+            methodology: { $ref: "#/components/schemas/Methodology" }
             mode: { $ref: "#/components/schemas/ModeId" }
             values:
               type: object

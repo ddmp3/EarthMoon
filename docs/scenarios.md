@@ -1,6 +1,8 @@
-# Modes and parameters
+# Modes and parameters (methodology v1, superseded)
 
-Intervals, tolerances and weights are orders of magnitude, each tied to a source. Any change to a range must cite its source and be mirrored in `apps/api/src/scoring/modes.ts`.
+> **Superseded on 17 November 2026.** This page describes methodology v1. The API now applies methodology v2: see [SCIENTIFIC_METHODOLOGY.md](SCIENTIFIC_METHODOLOGY.md) for the criteria, formulas and data, and [SCIENTIFIC_AUDIT.md](SCIENTIFIC_AUDIT.md) for why v1 was changed (volcano distance, earthquake catalog, temperature elevation, roughness, relative humidity, insolation). The v1 criteria are kept in `tools/scoring/score_sites.py` (`MODES_V1`) to reproduce the baseline.
+
+Intervals, tolerances and weights are orders of magnitude, each tied to a source. These were the v1 values.
 
 **All temperature criteria are proxies.** No Earth site approaches the cold of permanently shadowed lunar regions (29 to 50 K) or the lunar day-night swing (about 300 K at low latitude). The lunar south pole is highland crust (anorthosite), not mare basalt (Moriarty and Petro, EPSC2022-295); Earth basalt is only a stand-in for regolith and rock mechanics.
 

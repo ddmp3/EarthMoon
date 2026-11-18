@@ -73,9 +73,20 @@ def run(web: str, api: str) -> None:
             assert code == 200, f"HTTP {code}"
             sites = json.loads(b)["sites"]
             assert len(sites) >= 30, f"{len(sites)} sites"
-            totals = [s["total"] for s in sites if not s.get("excluded")]
-            assert totals == sorted(totals, reverse=True), "ranking not sorted"
+            body = json.loads(b)
+            assert body["methodology"]["version"] and body["methodology"].get("dataset"), "methodology or data set version missing"
+            ranked = [s for s in sites if not s.get("excluded")]
+            totals = [s["total"] for s in ranked]
+            # Sites failing a hard requirement come after the others; each group is sorted by descending total.
+            passing = [s["total"] for s in ranked if s["requirements"] != "failed"]
+            failing = [s["total"] for s in ranked if s["requirements"] == "failed"]
+            assert totals == passing + failing, "a site failing a requirement ranks above a passing site"
+            assert passing == sorted(passing, reverse=True) and failing == sorted(failing, reverse=True), "ranking not sorted"
             assert all(0 <= t <= 100 for t in totals), "score outside 0-100"
+            for s in ranked:
+                assert 0 <= s["coverage"] <= 1 and s["totalRange"]["min"] <= s["total"] <= s["totalRange"]["max"], f"{s['id']}: inconsistent coverage or bounds"
+                assert (s["coverage"] < 1) == bool(s.get("missing")), f"{s['id']}: coverage and missing criteria disagree"
+                assert s["confidence"] in ("high", "medium", "low"), f"{s['id']}: no confidence label"
             excluded = [s for s in sites if s.get("excluded")]
             assert sites[-len(excluded):] == excluded if excluded else True, "excluded sites are not last"
             amazon = next(s for s in sites if s["role"] == "negative")

@@ -25,7 +25,7 @@ def test_check_mode_counts_only_expected_analogs():
     assert s["ranked"] == 4 and s["excluded"] == ["neg"] and s["negative_ok"]
     assert s["expected_met"] == ["a", "c"] and s["expected_missed"] == []
     assert s["top_candidates"][0] == ("b", "B", 85)
-    assert s["top"][0] == (1, "a", "validation", 90, "-") and s["penalized"] == []
+    assert s["top"][0] == (1, "a", "validation", 90, "-", "-") and s["penalized"] == []
     assert s["mean_coverage"] == 0.875
 
 
