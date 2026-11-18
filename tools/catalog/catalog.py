@@ -22,6 +22,10 @@ REQUIRED = (
     "limitations", "dimensions", "environments", "status", "verified_on", "verified_url",
 )
 ACCESS = ("format", "size", "licence", "account")
+# Earth layers: what each one is used for (T12). Similarity = compared with a planetary property;
+# mask = excludes or delimits areas (water, ice, vegetation); qualification = explains or flags a result;
+# operations = suitability for a test (access, logistics), never similarity.
+USES = ("similarity", "mask", "qualification", "operations")
 
 
 def load(path: Path) -> list[dict]:
@@ -48,6 +52,12 @@ def validate(entries: list[dict]) -> list[str]:
         access = e.get("access")
         if not isinstance(access, dict) or any(k not in access for k in ACCESS):
             errors.append(f"{name}: access needs {ACCESS}")
+        if e.get("body") == "earth":
+            if not e.get("attribution"):
+                errors.append(f"{name}: an Earth entry needs attribution (licence and credit text)")
+            uses = e.get("use")
+            if not isinstance(uses, list) or not uses or any(u not in USES for u in uses):
+                errors.append(f"{name}: use must be a non-empty list from {USES}")
         for field in ("dimensions", "environments"):
             if field in e and not isinstance(e[field], list):
                 errors.append(f"{name}: {field} must be a list")

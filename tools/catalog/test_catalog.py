@@ -61,5 +61,17 @@ def test_repository_catalogues_are_valid(path):
     assert validate(load(path)) == []
 
 
+def test_earth_entries_need_attribution_and_use():
+    errs = validate([entry(body="earth")])
+    assert any("attribution" in err for err in errs) and any("use" in err for err in errs)
+    ok = entry(body="earth", attribution="Contains modified Copernicus data", use=["similarity", "mask"])
+    assert validate([ok]) == []
+
+
+def test_use_is_a_closed_list():
+    bad = entry(body="earth", attribution="x", use=["decoration"])
+    assert any("use" in err for err in validate([bad]))
+
+
 def test_statuses():
     assert STATUSES == ("verified", "partly verified", "not verified", "not available")

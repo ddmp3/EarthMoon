@@ -88,7 +88,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T02](tasks/T02-docs-reset.md) | Docs reset: short README, wiki, history | T01 | done (PR #4; wiki publication waits for a first "Home" page on GitHub) |
 | [T10](tasks/T10-moon-data.md) | Lunar data inventory | T01 | done (PR #5; 9 products need a browser check before G1) |
 | [T11](tasks/T11-mars-data.md) | Mars data inventory | T01 | done (PR #6; 8 products need a browser check before G1) |
-| [T12](tasks/T12-earth-data.md) | Earth data inventory | T01 | todo |
+| [T12](tasks/T12-earth-data.md) | Earth data inventory | T01 | done (PR #7; 6 products need a browser check before G1) |
 | [T13](tasks/T13-references.md) | Reference verification | T01 | todo |
 | G1 | Gate: data inventories | T10-T13 | todo |
 | [T20](tasks/T20-planetary-profiles.md) | Planetary environment profiles | G1 | todo |
