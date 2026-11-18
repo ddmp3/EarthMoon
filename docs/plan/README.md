@@ -33,6 +33,7 @@ Reusable as is: `tools/precompute/terrain_metrics.py` (any grid), the value/sigm
 - **Missing data is shown, never hidden**: regions or sites with partial or missing data are labelled as such, and map areas where one or more criteria have no data are **hatched in a soft pastel colour**, so that comparisons stay honest.
 - Caching: preset scenarios use precomputed layers with a simple refresh command; custom criteria are computed on demand (see task T30 for the reproducibility constraint).
 - An AI assistant for scientists is an option for later (task T51), not now.
+- **Refresh is automatic (18 Nov 2026):** sources are watched on their own cadence, only what changed is recomputed, and every user sees the data date, whether it is validated, the last check, and any newer version being computed (ADR-009, task T52).
 - The project is rebuilt for demonstrated scientific value. All docs are rewritten short; detail goes to `docs/wiki/`.
 - The GitHub wiki is enabled (17 Nov 2026). Source of truth: `docs/wiki/` in the repository (versioned, reviewed in PRs). A script (`tools/docs/publish_wiki.py`, T02) mirrors it to the GitHub wiki for reading. Never edit the GitHub wiki by hand: edits there would be overwritten.
 
@@ -99,7 +100,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T25](tasks/T25-validation-protocol.md) | Uncertainty and independent validation protocol | T23, T24 | done (PR #14; tag validation-protocol-v1; positives only for D and C4) |
 | [T26](tasks/T26-mapping.md) | Mapping methodology | T23 | done (PR #15; layers, four states, zones, comparison, provenance, wireframes) |
 | G2 | Gate: methodology | T20-T26 | G2 signed 18/11 by David |
-| [T30](tasks/T30-architecture.md) | Target architecture and ADRs | G2 | done (PR #16; ADR-001 to 008, for G3) |
+| [T30](tasks/T30-architecture.md) | Target architecture and ADRs | G2 | done (PR #16, PR #17; ADR-001 to 009, for G3) |
 | G3 | Gate: architecture | T30 | todo |
 | [T40](tasks/T40-earth-feature-cube.md) | Earth feature cube, topography | G3 | todo |
 | [T41](tasks/T41-moon-profiles.md) | Lunar profiles computed | G3 | todo |
@@ -111,10 +112,11 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T46](tasks/T46-geology.md) | Geology and mineralogy dimension | G4 | todo |
 | [T47](tasks/T47-thermal-hydric.md) | Thermal, ice and hydric dimensions | G4 | todo |
 | [T48](tasks/T48-mars.md) | Mars profiles and discovery | T46, T47 | todo |
-| [T49](tasks/T49-validation-report.md) | v3 validation report and limits | T45-T48 | todo |
+| [T49](tasks/T49-validation-report.md) | v3 validation report and limits | T45-T48, T52 | todo |
 | G5 | Gate: release | T49 | todo |
 | [T50](tasks/T50-release.md) | Docs, release notes, v2 retirement decision | G5 | todo |
 | [T51](tasks/T51-assistant.md) | AI assistant for scientists (optional) | T50 | todo |
+| [T52](tasks/T52-automatic-refresh.md) | Automatic refresh and incremental recompute | T43, T44 | todo |
 
 ## 6. Tooling
 

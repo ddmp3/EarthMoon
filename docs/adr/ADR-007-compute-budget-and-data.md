@@ -16,5 +16,6 @@ Status: proposed (T30), for gate G3. Numbers measured in T22 on 13 pilot tiles.
 | Export, tiles at zoom 7 | About 50 MB per layer (estimate) | Measured in T40 |
 
 - **Resumable:** the ingest manifest lists done tiles; a rerun skips tiles whose output hash is present.
+- **After the first global run, only changes are recomputed** (ADR-009). A source update is costed per changed tile, not per planet.
 - **Parallel:** up to 8 workers locally, bounded by download bandwidth.
 - **Stop rule:** if the refinement measured on 100 tiles projects beyond 72 h, T40 reports it and proposes a narrower first run (for example the screening layer plus refinement of the top 10% of cells) before going further.

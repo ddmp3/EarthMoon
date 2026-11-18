@@ -30,6 +30,10 @@ ONLINE (docker compose, local)
                                    │ static: releases, profiles, scenarios, tiles, zones
                                    └──► apps/discovery (Python, internal only): cells in view, custom query
                                         over the Parquet cube; no outbound network, read-only data
+
+REFRESHER (docker compose, local, ADR-009; the only container with outbound network and write access)
+  watch sources on schedule ──► ingest changed objects ──► plan (keys changed?) ──► rerun only those units
+  ──► validate (full) ──► publish if checks pass, else hold for David ──► status.json (GET /api/v3/status)
 ```
 
 **New dependencies** (Python, for `tools/discovery` and `apps/discovery`). Each is the newest release at least 14 days old on 18 November 2026; `pip-audit` is clean on the full set.

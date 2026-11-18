@@ -84,6 +84,23 @@ A quantile–quantile plot per parameter:
 - the 1:1 line;
 - the planetary p5 to p95 band shaded.
 
+## Validity and freshness (ADR-009)
+
+Shown on every layer, zone card and provenance panel, from `GET /api/v3/status`:
+
+```
++-----------------------------------------------------------------+
+| Validated  protocol v1 · release r-3f2a · published 18/11       |
+| Up to date  Copernicus DEM, acquired 2011-2015, file 05/2022    |
+|             last check 3 h ago: no change · next in 4 days      |
++-----------------------------------------------------------------+
+| Newer data  ERA5-Land detected 18/11 · recomputing compare 40%  |
+|             about 2 h left · you are viewing release r-3f2a     |
++-----------------------------------------------------------------+
+```
+
+States: up to date, update in progress, update held, check failed, check overdue, not checkable, newer release published. Each has text, not only a colour.
+
 ## Provenance panel
 
 ```
@@ -93,6 +110,7 @@ slope_mean = 9.4 deg (median of 24 windows)
   step      resampled to 40 m (LAEA), 1 km windows, tools/... @ <commit>
   run       <run id>, parameters <link>
   compared  moon-polar-lit-highlands (LDEM_85S_40M, SHA-256 1609e9b8...)
+  freshness up to date, checked 18/11 06:00 (S3 ETag unchanged)
 ```
 
 ## Accessibility
