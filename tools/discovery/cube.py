@@ -94,7 +94,21 @@ def read_dem(grid: TileGrid, product: str, have: set, cache: Path | None) -> tup
     return dst, shas
 
 
+CODE_FILES = ("discovery/windows.py", "discovery/cells.py", "discovery/grid.py", "discovery/cube.py",
+              "discovery/copernicus.py", "discovery/worldcover.py", "discovery/keys.py", "precompute/terrain_metrics.py")
+
+
+def code_version(root: Path = Path(__file__).resolve().parents[1]) -> str:
+    """sha256 of the source files that compute the cube (line endings normalised). A commit that touches only
+    tests or docs leaves it unchanged, so it does not force a recompute (ADR-009)."""
+    h = hashlib.sha256()
+    for name in CODE_FILES:
+        h.update(name.encode() + b"\0" + (root / name).read_bytes().replace(b"\r\n", b"\n") + b"\0")
+    return h.hexdigest()
+
+
 def git_commit() -> str:
+    """The commit the run started from, for provenance only."""
     import subprocess
     try:
         out = subprocess.run(["git", "describe", "--always", "--dirty", "--abbrev=40"], capture_output=True, text=True,
@@ -141,7 +155,7 @@ def process(lat: int, lon: int, product: str, pixel: float, out: Path, listing: 
     sha_w = _write(out / f"{name}.windows.parquet", windows)
     sha_c = _write(out / f"{name}.cells.parquet", cell_cols)
     return {"tile": name, "lat": lat, "lon": lon, "key": content_key(inputs, commit, params), "inputs": inputs,
-            "code": commit, "params": params, "outputs": {"windows": sha_w, "cells": sha_c},
+            "code": commit, "commit": git_commit(), "params": params, "outputs": {"windows": sha_w, "cells": sha_c},
             "windows": int(len(windows["row"])), "valid_windows": int(np.isfinite(windows["slope_mean"]).sum()),
             "cells": coverage(cells), "seconds": {"read": round(t_read, 2), "mask": round(t_mask, 2),
                                                   "total": round(time.time() - t0, 2)}}
@@ -175,7 +189,7 @@ def main(argv=None) -> int:
     wc = None if a.no_mask else _cached(out / "worldcover-listing.json", worldcover.listing)
     tiles = sorted(listing) if a.tiles == "all" else [
         t for t in (tuple(int(x) for x in line.split(",")) for line in Path(a.tiles).read_text().split()) if t in listing]
-    commit = git_commit()
+    commit = code_version()
     manifest = out / "manifest.jsonl"
     done = done_keys(manifest)
     todo = [t for t in tiles if not _up_to_date(done.get(tile_name(*t, a.product)), t, listing, commit, out, a.product)]

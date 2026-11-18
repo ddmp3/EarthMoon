@@ -126,3 +126,41 @@ def test_worldcover_overview_is_the_coarsest_not_coarser_than_the_pixel():
     from discovery.worldcover import overview_level, tiles_around
     assert overview_level(90.0) == 2 and overview_level(40.0) == 1 and overview_level(15.0) is None
     assert tiles_around(1, 10) == ["N00E009"] and len(tiles_around(2, 2)) == 4
+
+
+def test_rebuild_gives_byte_identical_parquet(tmp_path):
+    from discovery.cube import _write, compute_tile
+    g = tile_grid(10, 20, 90.0, 990.0)
+    rng = np.random.default_rng(3)
+    z = np.cumsum(rng.normal(0, 5, g.shape), axis=1)
+    shas = []
+    for i in range(2):
+        windows, _ = compute_tile(z, g)
+        shas.append(_write(tmp_path / f"w{i}.parquet", windows))
+    assert shas[0] == shas[1]
+
+
+def test_a_tile_reruns_when_its_code_or_any_neighbour_etag_changes(tmp_path):
+    from discovery.cube import _up_to_date
+    listing = {(0, 0): {"key": "a", "etag": "1"}, (0, 1): {"key": "b", "etag": "2"}}
+    rec = {"code": "c1", "inputs": {"a": {"etag": "1"}, "b": {"etag": "2"}}}
+    name = "Copernicus_DSM_COG_30_N00_00_E000_00_DEM"
+    for t in ("windows", "cells"):
+        (tmp_path / f"{name}.{t}.parquet").write_bytes(b"x")
+    assert _up_to_date(rec, (0, 0), listing, "c1", tmp_path, "glo90")
+    assert not _up_to_date(rec, (0, 0), listing, "c2", tmp_path, "glo90")
+    listing[(0, 1)]["etag"] = "3"
+    assert not _up_to_date(rec, (0, 0), listing, "c1", tmp_path, "glo90")
+    assert not _up_to_date(None, (0, 0), listing, "c1", tmp_path, "glo90")
+
+
+def test_code_version_ignores_line_endings_and_changes_with_the_source(tmp_path):
+    from discovery.cube import CODE_FILES, code_version
+    for name in CODE_FILES:
+        (tmp_path / name).parent.mkdir(parents=True, exist_ok=True)
+        (tmp_path / name).write_bytes(b"a = 1\n")
+    v = code_version(tmp_path)
+    (tmp_path / CODE_FILES[0]).write_bytes(b"a = 1\r\n")
+    assert code_version(tmp_path) == v
+    (tmp_path / CODE_FILES[0]).write_bytes(b"a = 2\n")
+    assert code_version(tmp_path) != v
