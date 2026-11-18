@@ -30,3 +30,4 @@ Compute the topographic and geomorphological parameters for every land cell at t
 - Output: Parquet per tile, pixel scale and data version, with windows and cell statistics tables (ADR-002). GLO-30 is streamed, not stored.
 - Run the two-stage search of T22. First measure the COG range-read time on 100 tiles and apply the ADR-007 stop rule before any global run.
 - Check that the GLO-90 product matches GLO-30 resampled to 90 m on the pilot tiles, and count the GLO-90 tiles.
+- Record, for every source object read, its identifier and change signal (S3 ETag, size, LastModified), and key every output by `sha256(input keys + code commit + parameters)` (ADR-009). T52 builds incremental refresh on these keys.

@@ -10,6 +10,7 @@ v2 computes in TypeScript and keeps a Python scorer identical, with a parity tes
   - Dependencies: `fastapi` 0.162.0 (MIT), `pydantic` 2.14.2 (MIT), `uvicorn` 0.54.0 (BSD-3-Clause), `pyarrow` 26.0.1 (Apache-2.0).
   - Each is the newest release at least 14 days old on 18 November 2026; pip-audit is clean.
 - It runs in its own container, with **no public port**. Only the Node API calls it, on the Compose network. It has no write access to the data, and no outbound network.
+- Downloads and rebuilds belong to a separate `refresher` container (ADR-009), the only one with outbound network and write access. It has no port at all.
 - **One implementation of every v3 number (Python), so v3 needs no TypeScript port and no new parity risk.** The Node API forwards requests and formats responses; contract tests check the forwarded fields.
 - The v2 parity test (TypeScript vs Python on 37 sites) stays as long as v2 is served.
 

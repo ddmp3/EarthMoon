@@ -8,7 +8,7 @@ Status: proposed (T30), for gate G3. Specification: `docs/wiki/ui/map-spec.md` (
   - cells at zoom 8 and above are Leaflet GeoJSON;
   - hatching at those zooms uses an SVG `<pattern>` (pastel `#b9c6e8`, as in v2);
   - charts (strip plots, Q–Q plots) are hand-written SVG, as the v2 radar is.
-- **New views:** the scenario and environment pickers, the layer list (with "waiting for Txx" layers shown but disabled), the four-state legend, the zone list and zone card, comparison of 2 to 4 zones, a zone against the reference, the provenance panel, and the permanent "Earth cannot reproduce" line.
+- **New views:** the scenario and environment pickers, the layer list (with "waiting for Txx" layers shown but disabled), the four-state legend, the zone list and zone card, comparison of 2 to 4 zones, a zone against the reference, the provenance panel, the permanent "Earth cannot reproduce" line, and the **validity and freshness** indicators of ADR-009 on every layer, zone card and provenance panel (data date, last check, update in progress or held, newer release available).
 - **Tests:** the existing vitest suite plus Testing Library tests for each state and view; the UI audit (desktop and phone) extended to the v3 map.
 - **v2 views stay** until T50.
 

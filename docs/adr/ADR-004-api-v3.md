@@ -15,9 +15,11 @@ The public API stays the Node/TypeScript service (`apps/api`), with its OpenAPI 
 | `GET /api/v3/zones?scenario=…&env=…&tau=…&min_area=…` | Candidate zones (grid values only) | Static JSON |
 | `GET /api/v3/zones/{id}` | Zone card: per-dimension statistics, requirements, confidence, provenance, "cannot reproduce" | Static JSON |
 | `POST /api/v3/query` | Custom criteria over the cube (ADR-003 limits) | Discovery service |
+| `GET /api/v3/status` | Freshness per source and layer, last and next check, build in progress, held releases (ADR-009) | `status.json` written by the refresher |
 
 **Rules:**
 - Every response carries `release`, `methodology_version` and, for each value, its state (`evaluated`, `partial`, `not_evaluated`, `masked`).
+- `releases` lists the current release and the last 3, so a cited release id stays readable (ADR-009).
 - Numbers are never returned without their spread and their source.
 - `tau` and `min_area` accept only the values of the T26 sensitivity grid.
 - `POST /query` rejects unknown fields (strict schemas) and limits the body to 16 KB.

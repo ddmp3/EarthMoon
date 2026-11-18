@@ -2,6 +2,15 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T30 Automatic refresh (PR #17)
+- David's decision: refresh is automatic. New ADR-009:
+  - sources watched per family on a machine signal (S3 ETag, CMR `revision_date`, CDS update date, PDS file checksums and release tables, DOI versions), with the published cadences read on 18/11 and the rest labelled not verified;
+  - incremental recompute by content keys: a changed Earth tile reruns only its cells, zones and map tiles; a planetary change reruns compare without touching Earth features; validation always reruns in full;
+  - automatic publication only if validation, the regression anchor and a change threshold pass, otherwise held for David; the last 3 releases stay readable;
+  - validity and freshness shown to every user (up to date, update in progress, held, check failed, overdue, not checkable, newer release);
+  - a local `refresher` container, the only one with outbound network and write access; nothing in Azure.
+- ADR-003 to 007, `docs/ARCHITECTURE.md`, the map spec and tasks T40 and T45 aligned; new task T52.
+
 ## 2026-11-18 · T30 Target architecture (PR #16)
 - Gate G2 signed by David (18/11).
 - `docs/adr/` holds ADR-001 to 008, one page each:
