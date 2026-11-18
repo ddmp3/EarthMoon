@@ -50,3 +50,45 @@ def test_south_polar_cap_recomputed_from_ldem_matches_the_committed_profile():
     out = south_polar_cap(LDEM)
     v3 = json.loads((ROOT / "data/profiles/moon/moon-south-polar-cap-v2.json").read_text(encoding="utf-8"))
     assert out["metrics"] == v3["metrics"] and out["windows"] == v3["windows"]
+
+
+def test_window_fraction_is_the_mean_of_a_pixel_mask_and_nan_where_unknown():
+    from discovery.profiles import window_fraction
+    m = np.zeros((4, 4))
+    m[:2, :2] = 1.0
+    m[3, 3] = np.nan
+    out = window_fraction(m, 2)
+    assert out[0, 0] == 1.0 and out[0, 1] == 0.0 and out[1, 1] == pytest.approx(0.0)
+    assert np.isnan(window_fraction(np.full((2, 2), np.nan), 2)[0, 0])
+
+
+def test_threshold_selection_keeps_windows_on_the_right_side_and_never_unknown_ones():
+    from discovery.profiles import threshold
+    frac = np.array([[0.0, 0.05, 0.5], [0.9, np.nan, 1.0]])
+    assert threshold(frac, at_most=0.05).tolist() == [[True, True, False], [False, False, False]]
+    assert threshold(frac, at_least=0.75).tolist() == [[False, False, False], [True, False, True]]
+
+
+def test_connected_areas_above_q_drop_isolated_pixels_below_min_pixels():
+    from discovery.profiles import lit_areas
+    ill = np.zeros((6, 6))
+    ill[0:3, 0:3] = 0.8                          # a 9-pixel area
+    ill[5, 5] = 0.9                               # one isolated pixel
+    out = lit_areas(ill, q=0.6, min_pixels=2)
+    assert out[:3, :3].all() and not out[5, 5] and out.sum() == 9
+
+
+def _profile(name):
+    return json.loads((ROOT / f"data/profiles/moon/{name}.json").read_text(encoding="utf-8"))
+
+
+def test_polar_profiles_are_subsets_of_the_cap_and_thresholds_act_monotonically():
+    cap = _profile("moon-south-polar-cap-v2")["windows"]["selected"]
+    lit, psr = _profile("moon-polar-lit-highlands"), _profile("moon-psr")
+    assert 0 < psr["windows"]["selected"] < lit["windows"]["selected"] < cap
+    km = lambda p, k: [s["selected"] for s in p["sensitivity"] if s["window_m"] == 1000.0 and k in s]
+    assert km(lit, "f_lit") == sorted(km(lit, "f_lit"))                 # looser shadow limit, more windows
+    assert km(psr, "f_psr") == sorted(km(psr, "f_psr"), reverse=True)   # stricter shadow limit, fewer windows
+    assert lit["params"]["f_lit"] == 0.05 and psr["params"]["f_psr"] == 0.75
+    for p in (lit, psr):
+        assert p["inputs"]["lro-lola-ldem-85s-40m"]["sha256"] == _profile("moon-south-polar-cap-v2")["inputs"]["lro-lola-ldem-85s-40m"]["sha256"]
