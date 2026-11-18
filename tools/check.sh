@@ -62,8 +62,9 @@ check_python() {
     -e PYTHONDONTWRITEBYTECODE=1 -w /repo "$PY_IMG" bash -euo pipefail -c "
       pip install --quiet --upgrade pip setuptools wheel
       pip install --quiet -r tools/precompute/requirements.txt \
-        -r tools/analog_backend/requirements.txt -r tools/analog_backend/requirements-dev.txt         -r tools/catalog/requirements.txt pip-audit
+        -r tools/analog_backend/requirements.txt -r tools/analog_backend/requirements-dev.txt         -r tools/catalog/requirements.txt -r tools/discovery/requirements.txt pip-audit
       python -m pytest -q -p no:cacheprovider tools/precompute tools/scoring tools/validation tools/docs tools/catalog tools/research tools/profiles
+      (cd tools && python -m pytest -q -p no:cacheprovider discovery)
       python tools/docs/check_links.py
       python tools/catalog/catalog.py check
       python tools/profiles/profiles.py

@@ -25,3 +25,6 @@ Serve the v3 results: profiles, scenarios, layers, zones, zone detail, and custo
 - `cells` and `query` are forwarded by the Node API to the internal Python service `apps/discovery` (ADR-005). It has no public port and no outbound network, and its dependencies are pinned as in ADR-005.
 - Add the service to `docker-compose.yml` and a `discovery` stage to `tools/check.sh`.
 - The custom query limits are those of ADR-003.
+
+## Added by T40 (18/11/2026)
+- Measure the size of the exported map tiles per layer (ADR-007 had estimated about 50 MB per layer at zoom 7; T40 did not export).

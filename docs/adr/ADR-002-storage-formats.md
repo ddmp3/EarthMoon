@@ -1,6 +1,6 @@
 # ADR-002 Storage formats
 
-Status: proposed (T30), for gate G3.
+Status: accepted at gate G3 (signed 18/11/2026 by David).
 
 ## Context
 T22 measured the volumes:

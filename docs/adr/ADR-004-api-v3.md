@@ -1,6 +1,6 @@
 # ADR-004 API v3 endpoints
 
-Status: proposed (T30), for gate G3. Contract written in `apps/api/openapi.yaml` in T44, before the code.
+Status: accepted at gate G3 (signed 18/11/2026 by David). Contract written in `apps/api/openapi.yaml` in T44, before the code.
 
 ## Decision
 The public API stays the Node/TypeScript service (`apps/api`), with its OpenAPI contract, validation, CORS and rate limits. The v2 endpoints are unchanged. v3 endpoints are added under `/api/v3`:

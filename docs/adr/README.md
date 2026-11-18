@@ -1,6 +1,6 @@
 # Architecture decision records (v3)
 
-One page each. Proposed in T30 (18 November 2026); accepted when David signs gate G3.
+One page each. Proposed in T30 (18 November 2026); accepted at gate G3, signed 18/11/2026 by David.
 
 | ADR | Decision |
 |---|---|

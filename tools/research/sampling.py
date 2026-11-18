@@ -26,8 +26,12 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "precompute"))
 from terrain_metrics import slope_deg  # noqa: E402
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+# moved to tools/discovery in T40 (one implementation); re-exported for the T22 and T23 scripts
+from discovery.windows import (block_mean, cells_by_coordinate, screening_misses, window_px_m,  # noqa: E402,F401
+                               window_slope_means)
+
 BASE = "https://copernicus-dem-30m.s3.amazonaws.com"
-MIN_VALID = 0.9
 
 
 # --- pure functions (tested) -------------------------------------------------------------------------------
@@ -55,47 +59,6 @@ def contrast_rows(rows: list[dict], quantiles=(0.1, 0.5, 0.95)) -> list[dict]:
         target = np.quantile(values, q)
         picked.append(pool[int(np.argmin(np.abs(values - target)))])
     return picked
-
-
-def block_mean(z: np.ndarray, f: int) -> np.ndarray:
-    """Mean of f x f blocks; a block with any missing pixel is missing."""
-    h, w = (z.shape[0] // f) * f, (z.shape[1] // f) * f
-    return z[:h, :w].reshape(h // f, f, w // f, f).mean(axis=(1, 3))
-
-
-def window_slope_means(z: np.ndarray, pixel_m: float, window_m: float) -> np.ndarray:
-    """Mean slope of each non-overlapping window; NaN when fewer than 90% of its pixels have a slope."""
-    s = slope_deg(z.astype("float64"), pixel_m)
-    n = max(int(round(window_m / pixel_m)), 1)
-    h, w = (s.shape[0] // n) * n, (s.shape[1] // n) * n
-    blocks = s[:h, :w].reshape(h // n, n, w // n, n)
-    valid = np.isfinite(blocks).mean(axis=(1, 3))
-    with np.errstate(invalid="ignore"):
-        mean = np.nanmean(blocks, axis=(1, 3))
-    return np.where(valid >= MIN_VALID, mean, np.nan)
-
-
-def window_px_m(window_m: float, pixel_m: float) -> float:
-    """Actual window length: a whole number of pixels (1 km at 90 m is 11 pixels, 990 m)."""
-    return max(int(round(window_m / pixel_m)), 1) * pixel_m
-
-
-def cells_by_coordinate(values: np.ndarray, window_m: float, cell_m: float) -> dict:
-    """Group a grid of window values into square cells of cell_m by the coordinates of the window centres."""
-    cells: dict = {}
-    for r in range(values.shape[0]):
-        for c in range(values.shape[1]):
-            key = (int((r + 0.5) * window_m // cell_m), int((c + 0.5) * window_m // cell_m))
-            cells.setdefault(key, []).append(values[r, c])
-    return cells
-
-
-def screening_misses(fine: dict, passed: dict, lo: float, hi: float) -> dict:
-    """fine: cell -> fine-scale window values; passed: cell -> did the coarse stage keep it.
-    A fine match is a window inside [lo, hi]; a miss is a fine match inside a rejected cell."""
-    matches = {c: sum(lo <= v <= hi for v in vals) for c, vals in fine.items()}
-    return {"fine_matches": sum(matches.values()), "missed": sum(m for c, m in matches.items() if not passed[c]),
-            "cells": len(fine), "cells_passed": sum(bool(passed[c]) for c in fine)}
 
 
 def radial_spectrum(z: np.ndarray, pixel_m: float) -> tuple[np.ndarray, np.ndarray]:

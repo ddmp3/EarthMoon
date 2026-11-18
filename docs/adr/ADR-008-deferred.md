@@ -1,6 +1,6 @@
 # ADR-008 Deferred: AI assistant and deployment
 
-Status: proposed (T30), for gate G3.
+Status: accepted at gate G3 (signed 18/11/2026 by David).
 
 ## Decision
 - **AI assistant (T51):** not designed now. When it is, it can only read releases through the API v3 (no other data path), and must cite the provenance of every number it repeats. It is optional and comes after T50.

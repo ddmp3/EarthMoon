@@ -1,6 +1,6 @@
 # ADR-003 Caching, refresh and custom criteria
 
-Status: proposed (T30), for gate G3. Implements David's decision 6.3.
+Status: accepted at gate G3 (signed 18/11/2026 by David). Implements David's decision 6.3.
 
 ## Decision
 1. **Preset scenarios** (A to D, with their environments) are precomputed and served as static files (tiles and zone JSON). They are refreshed **automatically** when a source changes, recomputing only what changed (ADR-009). `tools/discovery/refresh.sh <scenario>` stays available to force a rebuild.
