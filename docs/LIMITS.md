@@ -31,7 +31,7 @@ Provisional choices, labelled `expert_judgement` in the API, until a named exper
 
 | # | Decision | Provisional choice | Who should decide |
 |---|---|---|---|
-| E1 | Rover climbing limit and required traversable share | 15° (VIPER; NTRS sources not yet re-verified), half the window | Rover mobility engineers |
+| E1 | Rover climbing limit and required traversable share | 15° (VIPER). Checked 18 Nov 2026: **not stated** in the NTRS abstracts (slides not readable). Apollo LRV: 20 to 23°, max 25° (verified, NTRS 20250011301). Half the window | Rover mobility engineers |
 | E2 | Slope limit to build a base | ≤ 5°, failure at 10° | Lander and surface systems engineers |
 | E3 | Should the colony scenario exist as it is? | Kept, all criteria labelled as proxies | Mission architects |
 | E4 | Frozen-ground threshold for drilling | ≤ -6 °C, zero at 0 °C [R32] | Permafrost scientists, drill engineers |

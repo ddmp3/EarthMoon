@@ -89,7 +89,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T10](tasks/T10-moon-data.md) | Lunar data inventory | T01 | done (PR #5; 9 products need a browser check before G1) |
 | [T11](tasks/T11-mars-data.md) | Mars data inventory | T01 | done (PR #6; 8 products need a browser check before G1) |
 | [T12](tasks/T12-earth-data.md) | Earth data inventory | T01 | done (PR #7; 6 products need a browser check before G1) |
-| [T13](tasks/T13-references.md) | Reference verification | T01 | todo |
+| [T13](tasks/T13-references.md) | Reference verification | T01 | done (PR #8; VIPER 15° and Lunar Sourcebook still unverified) |
 | G1 | Gate: data inventories | T10-T13 | todo |
 | [T20](tasks/T20-planetary-profiles.md) | Planetary environment profiles | G1 | todo |
 | [T21](tasks/T21-dimensions.md) | Dimensions, parameters, redundancy | G1 | todo |
