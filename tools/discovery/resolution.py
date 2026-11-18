@@ -94,7 +94,8 @@ def mosaic_on_ldem(dem5: Path, count5: Path, start: int, n: int):
             c = dc.read(1, window=win).astype("float64")
             zb = z.reshape(h, f, n, f)
             ok = np.isfinite(zb).all(axis=(1, 3))
-            z40[i:i + h] = np.where(ok, np.nanmean(zb, axis=(1, 3)) if ok.any() else np.nan, np.nan)
+            with np.errstate(invalid="ignore"):
+                z40[i:i + h] = np.where(ok, zb.mean(axis=(1, 3)), np.nan)
             c40[i:i + h] = (c.reshape(h, f, n, f) > 0).mean(axis=(1, 3))
     return z40, c40, off
 
@@ -154,15 +155,57 @@ def run(a) -> dict:
     return out
 
 
+def earth_match(listing: Path, tiles: Path, targets: list[dict], sigmas=(0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 4.0)) -> list[dict]:
+    """Step 3: Gaussian sigma (40 m pixels) that brings Copernicus GLO-30 blocks (5 km, read at 40 m on the pilot
+    tiles) down to the LOLA short-wave ratio of the same slope class."""
+    import os
+    from discovery.cube import GDAL_ENV, read_dem
+    from discovery.grid import tile_grid
+    from terrain_metrics import slope_deg
+    os.environ.update(GDAL_ENV)
+    have = {tuple(map(int, k.split(","))) for k in json.loads(listing.read_text())}
+    blocks: list[tuple[float, np.ndarray]] = []
+    for line in tiles.read_text().split():
+        la, lo = (int(v) for v in line.split(","))
+        g = tile_grid(la, lo, LDEM_PX, 1000.0)
+        z, _ = read_dem(g, "glo30", have, None)
+        for r in range(1, z.shape[0] - BLOCK, BLOCK):
+            for c in range(1, z.shape[1] - BLOCK, BLOCK):
+                b = z[r:r + BLOCK, c:c + BLOCK].astype("float64")
+                if np.isfinite(b).all() and np.ptp(b) > 0:
+                    blocks.append((float(np.mean(slope_deg(b, LDEM_PX))), b))
+    out = []
+    for t in targets:
+        lo, hi = t["slope"]
+        sel = [b for s, b in blocks if lo <= s < hi]
+        if len(sel) < 5:
+            out.append({"slope": t["slope"], "earth_blocks": len(sel), "sigma_px": None, "reason": "fewer than 5 Earth blocks"})
+            continue
+        m = match_sigma(sel, t["median_ratio_ldem"], sigmas, LDEM_PX)
+        raw = np.array([np.mean(slope_deg(b, LDEM_PX)) for b in sel])
+        for step in m["steps"]:                              # what the smoothing does to the compared metric
+            sm = np.array([np.mean(slope_deg(gaussian_smooth(b, step["sigma_px"]), LDEM_PX)) for b in sel])
+            step["median_slope_ratio_smoothed_over_raw"] = round(float(np.median(sm / raw)), 3)
+        out.append({"slope": t["slope"], "earth_blocks": len(sel),
+                    "earth_ratio_unsmoothed": m["steps"][0]["median_ratio"], "lola_ratio": t["median_ratio_ldem"],
+                    "sigma_px": m["sigma_px"], "sigma_m": None if m["sigma_px"] is None else m["sigma_px"] * LDEM_PX,
+                    "steps": m["steps"]})
+    return out
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--ldem", type=Path, required=True)
     ap.add_argument("--dem5", type=Path, required=True)
     ap.add_argument("--count5", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--earth-listing", type=Path)
+    ap.add_argument("--earth-tiles", type=Path)
     a = ap.parse_args(argv)
     out = run(a)
     out.pop("_blocks")
+    if a.earth_listing:
+        out["earth_match"] = earth_match(a.earth_listing, a.earth_tiles, [t for t in out["short_wave_ratio_160m_over_2km"] if t["slope"][0] >= 3])
     a.out.write_text(json.dumps(out, indent=1) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in out.items() if k != "inputs"}, indent=1))
     return 0
