@@ -193,7 +193,8 @@ def write(path: Path, rec: dict) -> None:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["south-polar-cap", "polar", "cube"])
+    ap.add_argument("what", choices=["south-polar-cap", "polar", "cube", "pits"])
+    ap.add_argument("--pits-html", type=Path)
     ap.add_argument("--cube", type=Path, help="moon cube folder (moon_cube.py --out)")
     ap.add_argument("--psr", type=Path)
     ap.add_argument("--illumination", type=Path)
@@ -212,7 +213,59 @@ def main(argv=None) -> int:
         polar(a)
     elif a.what == "cube":
         cube_profiles(a)
+    elif a.what == "pits":
+        pits_profile(a)
     return 0
+
+
+def pits_profile(a) -> None:
+    """moon-pits (site-set): each atlas pit with its geologic unit and the 1 km SLDEM window that contains it."""
+    import pyarrow.parquet as pq
+    from discovery.moon_cube import grid_lookup
+    codes = json.loads((a.cube / "units_codes.json").read_text())
+    units = np.load(a.cube / "units_64ppd.npy", mmap_mode="r")
+    pits = parse_pits(a.pits_html.read_text(encoding="utf-8"))
+    sites, tiles = [], {}
+    for pit in pits:
+        u = int(grid_lookup(units, np.array([pit["lat"]]), np.array([pit["lon"]]), 90, -180)[0])
+        site = {**pit, "map_unit": codes[u - 1] if u else None}
+        la, lo = int(np.floor(pit["lat"])), int(np.floor(pit["lon"])) % 360
+        name = f"moon_{'N' if la >= 0 else 'S'}{abs(la):02d}_E{lo:03d}.windows.parquet"
+        f = a.cube / "sldem2015-59m" / name
+        if -60 <= pit["lat"] < 60 and f.exists():
+            if name not in tiles:
+                tiles[name] = pq.read_table(f, columns=["lat", "lon", "slope_mean", "roughness_detrended"]).to_pydict()
+            t = tiles[name]
+            dlat = np.radians(np.asarray(t["lat"]) - pit["lat"])
+            dlon = np.radians((np.asarray(t["lon"]) - pit["lon"] + 180) % 360 - 180) * np.cos(np.radians(pit["lat"]))
+            i = int(np.argmin(np.hypot(dlat, dlon)))
+            dist_m = float(np.hypot(dlat[i], dlon[i]) * 1737400.0)
+            site.update({"window_distance_m": round(dist_m, 1),
+                         "context_slope_mean": None if dist_m > 720 else round(float(t["slope_mean"][i]), 3),
+                         "context_roughness_detrended": None if dist_m > 720 else round(float(t["roughness_detrended"][i]), 3)})
+        else:
+            site.update({"window_distance_m": None, "context_slope_mean": None, "context_roughness_detrended": None,
+                         "outside": "SLDEM2015 covers 60°S to 60°N"})
+        sites.append(site)
+    ctx = np.array([s["context_slope_mean"] for s in sites if s["context_slope_mean"] is not None])
+    by_unit: dict = {}
+    for s in sites:
+        by_unit[s["map_unit"] or "none"] = by_unit.get(s["map_unit"] or "none", 0) + 1
+    rec = record("moon-pits", {"windows": {"selected": len(sites), "valid": int(ctx.size)},
+                               "metrics": {"context_slope_mean": {"n": int(ctx.size), **{f"p{q}": round(float(np.percentile(ctx, q)), 3) for q in PERCENTILES}}}},
+                 {"lroc-pits-atlas/list": file_input(a.pits_html),
+                  "moon-cube/manifest": {"sha256": hashlib.sha256((a.cube / "sldem2015-59m" / "manifest.jsonl").read_bytes()).hexdigest()}},
+                 {"window": "the 1 km SLDEM window whose centre is nearest (at most 720 m, half a window diagonal)",
+                  "unit": "Unified Geologic Map unit at the pit centre (64 ppd raster)"})
+    rec["kind"] = "site-set"
+    rec["pits_by_map_unit"] = dict(sorted(by_unit.items(), key=lambda kv: -kv[1]))
+    rec["sites"] = sites
+    rec["not_computed"] = {
+        "nac_dtm_slopes": "public NAC DTMs are preliminary and their post spacing is not stated (lroc-nac-dtm-pipeline): not used",
+        "bouguer_anomaly": "GRAIL cannot resolve a single tube (spec): exploratory, left out",
+        "setting": "the atlas gives the host feature, not mare / impact melt / highland; the map unit at the pit is given instead"}
+    write(a.out / "moon-pits.json", rec)
+    print("moon-pits", len(sites), "sites,", ctx.size, "with context;", rec["pits_by_map_unit"])
 
 
 CUBE_SPECS = ("moon-mare-plains", "moon-fresh-craters", "moon-degraded-highlands")
