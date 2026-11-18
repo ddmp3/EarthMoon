@@ -98,8 +98,8 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T24](tasks/T24-scenarios.md) | Scenarios v3 (A base, B robotics, C instruments, D Mars) | T21 | done (PR #13; 4 scenarios, 7 instruments, E13 to E16 added) |
 | [T25](tasks/T25-validation-protocol.md) | Uncertainty and independent validation protocol | T23, T24 | done (PR #14; tag validation-protocol-v1; positives only for D and C4) |
 | [T26](tasks/T26-mapping.md) | Mapping methodology | T23 | done (PR #15; layers, four states, zones, comparison, provenance, wireframes) |
-| G2 | Gate: methodology | T20-T26 | todo |
-| [T30](tasks/T30-architecture.md) | Target architecture and ADRs | G2 | todo |
+| G2 | Gate: methodology | T20-T26 | G2 signed 18/11 by David |
+| [T30](tasks/T30-architecture.md) | Target architecture and ADRs | G2 | done (PR #16; ADR-001 to 008, for G3) |
 | G3 | Gate: architecture | T30 | todo |
 | [T40](tasks/T40-earth-feature-cube.md) | Earth feature cube, topography | G3 | todo |
 | [T41](tasks/T41-moon-profiles.md) | Lunar profiles computed | G3 | todo |

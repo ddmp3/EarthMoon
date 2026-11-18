@@ -2,6 +2,20 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T30 Target architecture (PR #16)
+- Gate G2 signed by David (18/11).
+- `docs/adr/` holds ADR-001 to 008, one page each:
+  - Python pipeline `tools/discovery/`, with a run manifest per stage;
+  - Parquet feature cube, PNG raster tiles with the four states drawn in, zone JSON;
+  - presets built offline; custom queries over the cube only, never live sources (the trade-off is explained);
+  - `/api/v3` beside v2;
+  - one Python implementation, with an internal service that has no public port;
+  - no new JavaScript dependency;
+  - a staged, resumable global run with a 72 h stop rule;
+  - the AI assistant and deployment deferred.
+- `docs/ARCHITECTURE.md`: target diagram and new dependencies. Each is the newest release at least 14 days old (FastAPI 0.164.0, published the same day, and pydantic 2.14.3 were therefore not taken), and pip-audit is clean.
+- Tasks T40 to T45 gained an "Alignment with the ADRs" section.
+
 ## 2026-11-18 · T26 Mapping methodology (PR #15)
 - `docs/wiki/methods/mapping.md`:
   - one layer per similarity parameter, with its value, legend text and valid scale;

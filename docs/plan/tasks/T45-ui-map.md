@@ -33,3 +33,6 @@ Scientists can choose a planetary environment and a scenario, display each dimen
 
 ## Done when
 `tools/check.sh all` passes (including ui-audit at 0 defects), screenshots are in the PR, and `apps/web/README.md` is updated.
+
+## Alignment with the ADRs (T30)
+No new runtime dependency (ADR-006): Leaflet tile layers for zoom 0 to 7, GeoJSON with an SVG hatching pattern above that, and hand-written SVG charts. Check the ADR-006 performance budget in the UI audit.

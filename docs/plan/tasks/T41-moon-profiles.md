@@ -20,3 +20,6 @@ Compute every lunar environment profile specified in T20 from primary data, with
 ## Done when
 - Every lunar environment of T20 is computed or documented as not computable (with the reason).
 - The regression anchor passes, checks pass, and `docs/wiki/runs/moon-profiles.md` summarizes each profile in a few lines.
+
+## Alignment with the ADRs (T30)
+Code goes in `tools/discovery/profiles` (ADR-001); outputs carry a run manifest. Run the effective resolution experiment designed in `docs/wiki/methods/profiles.md` (T22 gave a first look: about 5 times less 160 m relief on LOLA).

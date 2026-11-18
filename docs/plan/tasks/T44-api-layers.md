@@ -19,3 +19,9 @@ Serve the v3 results: profiles, scenarios, layers, zones, zone detail, and custo
 ## Done when
 - Contract and endpoint tests pass, `tools/check.sh all` passes (including Docker e2e, extended with v3 checks), and `docs/ARCHITECTURE.md` lists the endpoints.
 - `apps/web/src/api-schema.ts` is regenerated.
+
+## Alignment with the ADRs (T30)
+- Endpoints as listed in ADR-004, under `/api/v3`.
+- `cells` and `query` are forwarded by the Node API to the internal Python service `apps/discovery` (ADR-005). It has no public port and no outbound network, and its dependencies are pinned as in ADR-005.
+- Add the service to `docker-compose.yml` and a `discovery` stage to `tools/check.sh`.
+- The custom query limits are those of ADR-003.
