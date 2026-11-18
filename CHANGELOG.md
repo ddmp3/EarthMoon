@@ -2,6 +2,18 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T22 Spatial and statistical sampling (PR #11)
+- `tools/research/sampling.py` (8 tests): 10 random area-weighted GLO-30 land tiles (seed 20261117) and 3 contrasting tiles; resampling to 30, 40 and 90 m; a two-stage screening test; spectra; H3 cell areas; tile count from the bucket listing. Output: `data/research/sampling-t22.json`.
+- Decisions (`docs/wiki/methods/sampling.md`):
+  - **compare at the planetary pixel scale:** 30 m vs 90 m keeps the rank order (Spearman 0.87 to 0.99), but slope falls by a terrain-dependent factor of 0.47 to 0.96;
+  - **processing unit:** the 1° tile in a local equal-area projection (26,450 tiles);
+  - **statistics:** 5 km equal-area cells, with median, IQR, p5, p95 and valid fraction; partial or missing cells are hatched;
+  - **H3 for display only:** its cells vary by a factor of 1.95 in area at resolution 7;
+  - **two-stage search:** 90 m screening with a 2° margin misses 34 of 20,490 fine matches (0.17%) and keeps 48% of the cells.
+- **Effective resolution, first look:** at matched slope, LOLA blocks carry about 5 times less relief at 160 m than Earth blocks. This is consistent with L3; the T41 count-map test decides.
+- **Budget:** GLO-30 is about 0.96 TB, so it is streamed rather than stored; about 6 h of CPU at 40 m; stage 2 reads only the passing cells (to measure in T40).
+- A bug found and fixed during the run: windows of 25 and 11 pixels (1,000 m and 990 m) drift apart, so windows are now assigned to cells by coordinates (new test).
+
 ## 2026-11-18 · T21 Dimensions, parameters and redundancy (PR #10)
 - `tools/research/redundancy.py` (7 tests) measures Spearman, Pearson and partial correlations of the terrain metrics on all 71,731 lunar windows (LDEM_85S_40M, SHA-256 identical to v2) and on 4,000 seeded random Earth points (1,410 land windows kept; ocean and incomplete windows counted, not scored). Output: `data/research/redundancy-t21.json`, `docs/wiki/methods/redundancy.md`.
 - **Result:** the eight v2 terrain metrics carry one independent property, slope (Spearman 0.87 to 0.99 with `slope_mean` on both bodies). Finding L1 is confirmed beyond the 37 sites.
