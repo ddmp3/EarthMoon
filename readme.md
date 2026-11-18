@@ -34,6 +34,7 @@ From ranking known sites to **discovering** analogs anywhere on Earth, for sever
 | [docs/METHOD.md](docs/METHOD.md) | How scores are computed, and why |
 | [docs/DATA.md](docs/DATA.md) | Sources, processing, attributions |
 | [docs/VALIDATION.md](docs/VALIDATION.md) | What was checked and the results, including the misses |
+| [docs/SCENARIOS.md](docs/SCENARIOS.md) | v3 scenarios: targets, similarity, requirements, limits |
 | [docs/LIMITS.md](docs/LIMITS.md) | What results do not mean; decisions that need experts |
 | [docs/REFERENCES.md](docs/REFERENCES.md) | Scientific references and their verification status |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Components, quality gate, infrastructure |

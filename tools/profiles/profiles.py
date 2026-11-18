@@ -65,6 +65,53 @@ def validate_parameters(params: list[dict], pairs: list[dict], ids: dict[str, di
     return errors
 
 
+def validate_scenario(s: dict, ctx: dict, prefix: str = "") -> list[str]:
+    """Checks a scenario (data/scenarios/*.yaml) or one instrument of scenario C.
+    ctx: profiles (ids), parameters ({id: (decision, dimension)}), references (text of REFERENCES.md),
+    experts (E ids of docs/LIMITS.md)."""
+    name = prefix + s.get("id", "?")
+    errors = [f"{name}: missing field {f}" for f in ("id", "name", "objective", "targets", "similarity", "context",
+                                                     "requirements", "eliminating", "cannot_assess", "proxies")
+              if f not in s]
+    if errors:
+        return errors
+    for t in s["targets"]:
+        if t not in ctx["profiles"]:
+            errors.append(f"{name}: target profile {t} is not specified (T20)")
+    for item in s["similarity"]:
+        decision, dimension = ctx["parameters"].get(item.get("parameter"), (None, None))
+        if decision != "keep" or dimension == "operational":
+            errors.append(f"{name}: similarity parameter {item.get('parameter')} must be a kept, non-operational parameter")
+    for p in s["context"]:
+        if p not in ctx["parameters"]:
+            errors.append(f"{name}: context parameter {p} is not in data/parameters.yaml")
+    ids = set()
+    for r in s["requirements"]:
+        ids.add(r.get("id"))
+        if not r.get("value"):
+            errors.append(f"{name}: requirement {r.get('id')} needs a value")
+        if r.get("source"):
+            if r["source"] not in ctx["references"]:
+                errors.append(f"{name}: source {r['source']} is not in docs/REFERENCES.md")
+        elif r.get("expert_decision"):
+            if r["expert_decision"] not in ctx["experts"]:
+                errors.append(f"{name}: {r['expert_decision']} is not an expert decision of docs/LIMITS.md")
+        else:
+            errors.append(f"{name}: requirement {r.get('id')} needs a source or expert_decision")
+    for e in s["eliminating"]:
+        if e not in ids:
+            errors.append(f"{name}: eliminating constraint {e} is not a requirement")
+    if not s["cannot_assess"]:
+        errors.append(f"{name}: cannot_assess cannot be empty")
+    for p in s["proxies"]:
+        for f in ("name", "stands_for", "why"):
+            if not p.get(f):
+                errors.append(f"{name}: proxy needs {f}")
+    for inst in s.get("instruments", []):
+        errors += validate_scenario(inst, ctx, prefix=name + "/")
+    return errors
+
+
 def catalogue_ids(catalog_dir: Path, bodies: tuple[str, ...] = BODIES) -> dict[str, dict[str, str]]:
     """{body: {product id: status}} from data/catalog/<body>.yaml."""
     out: dict[str, dict[str, str]] = {}
@@ -141,9 +188,17 @@ def main(argv: list[str]) -> int:
     corr = json.loads((root / "data" / "research" / "redundancy-t21.json").read_text(encoding="utf-8"))["matrices"]
     all_ids = catalogue_ids(root / "data" / "catalog", bodies=("earth", "moon", "mars"))
     errors += validate_parameters(params["parameters"], params.get("pairs", []), all_ids, corr)
+    import re
+    ctx = {"profiles": {s["id"] for s in specs},
+           "parameters": {p["id"]: (p["decision"], p["dimension"]) for p in params["parameters"]},
+           "references": (root / "docs" / "REFERENCES.md").read_text(encoding="utf-8"),
+           "experts": set(re.findall(r"^\| (E\d+) \|", (root / "docs" / "LIMITS.md").read_text(encoding="utf-8"), re.M))}
+    scenarios = sorted((root / "data" / "scenarios").glob("*.yaml"))
+    for path in scenarios:
+        errors += validate_scenario(yaml.safe_load(path.read_text(encoding="utf-8")), ctx)
     for e in errors:
         print(e)
-    print(f"{len(specs)} specs, {len(params['parameters'])} parameters, {len(errors)} errors")
+    print(f"{len(specs)} specs, {len(params['parameters'])} parameters, {len(scenarios)} scenarios, {len(errors)} errors")
     return 1 if errors else 0
 
 
