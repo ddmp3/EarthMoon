@@ -11,7 +11,7 @@ import type {
 } from "../scoring/index.js";
 import { resolveRequest } from "./validate.js";
 
-/** Version of the scoring method (docs/SCIENTIFIC_METHODOLOGY.md). Bump on any change that can move a score. */
+/** Version of the scoring method (docs/METHOD.md). Bump on any change that can move a score. */
 export const METHODOLOGY_VERSION = "2.0.0";
 
 /** Coverage under which an assessment is labelled "low" confidence. */

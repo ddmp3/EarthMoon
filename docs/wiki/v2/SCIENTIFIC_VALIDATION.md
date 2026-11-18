@@ -102,7 +102,7 @@ What it shows:
 
 ## 5. Validation against known analogs
 
-Report of `tools/validation/rankings.py` on v2 (full report in [validation.md](validation.md)):
+Report of `tools/validation/rankings.py` on v2 (full report in [validation.md](../rankings.md)):
 
 | | v1 | v2 |
 |---|---|---|

@@ -1,4 +1,4 @@
-"""Checks the real API rankings against the expected ranking (docs/validation.md).
+"""Checks the real API rankings against the expected ranking (docs/wiki/rankings.md).
 
 Expected ranking: each known analog (role = validation) carries in data/candidates.json a known_for field,
 the modes it is really used for (Desert RATS, PISCES, AMASE...). An analog need not rank well in the other modes:
@@ -17,7 +17,7 @@ Also reported, for information (not pass/fail):
 
 Usage (API running, e.g. with docker compose up):
     python tools/validation/rankings.py
-    python tools/validation/rankings.py --api http://localhost:3001 --markdown docs/validation.md
+    python tools/validation/rankings.py --api http://localhost:3001 --markdown docs/wiki/rankings.md
 Exit code: 0 if the criteria are met, 1 otherwise. Standard library only.
 """
 from __future__ import annotations

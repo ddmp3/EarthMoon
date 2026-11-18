@@ -7,7 +7,7 @@ Inputs (all versioned in the repository):
 
 Each value carries: `value` (None = no measurement, never a default), `sigma` (1-sigma uncertainty, None when
 it has not been quantified), `sigma_basis` and `flags`. Transformations applied here, each documented in
-docs/SCIENTIFIC_METHODOLOGY.md:
+docs/METHOD.md:
 
     air temperatures   corrected from the elevation of the reanalysis grid cell to the elevation of the site
                        with the standard lapse rate (6.5 K/km)

@@ -8,7 +8,7 @@ export type CacheOptions = {
 };
 
 /**
- * In-memory cache for a connector (no database, see docs/architecture.md).
+ * In-memory cache for a connector (no database, see docs/ARCHITECTURE.md).
  * Key: coordinates rounded to ~100 m. Identical concurrent requests share a single call.
  * A failure is never cached: the next request retries.
  */

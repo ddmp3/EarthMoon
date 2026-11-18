@@ -1,6 +1,6 @@
 # Modes and parameters (methodology v1, superseded)
 
-> **Superseded on 17 November 2026.** This page describes methodology v1. The API now applies methodology v2: see [SCIENTIFIC_METHODOLOGY.md](SCIENTIFIC_METHODOLOGY.md) for the criteria, formulas and data, and [SCIENTIFIC_AUDIT.md](SCIENTIFIC_AUDIT.md) for why v1 was changed (volcano distance, earthquake catalog, temperature elevation, roughness, relative humidity, insolation). The v1 criteria are kept in `tools/scoring/score_sites.py` (`MODES_V1`) to reproduce the baseline.
+> **Superseded on 17 November 2026.** This page describes methodology v1. The API now applies methodology v2: see [SCIENTIFIC_METHODOLOGY.md](../METHOD.md) for the criteria, formulas and data, and [SCIENTIFIC_AUDIT.md](../wiki/v2/SCIENTIFIC_AUDIT.md) for why v1 was changed (volcano distance, earthquake catalog, temperature elevation, roughness, relative humidity, insolation). The v1 criteria are kept in `tools/scoring/score_sites.py` (`MODES_V1`) to reproduce the baseline.
 
 Intervals, tolerances and weights are orders of magnitude, each tied to a source. These were the v1 values.
 

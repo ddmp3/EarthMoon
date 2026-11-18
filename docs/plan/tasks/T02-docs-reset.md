@@ -30,7 +30,7 @@ A documentation set a human reads in minutes. History is kept, not deleted.
 3. Fix every internal link (`grep -rn "\.md" docs readme.md`), including links from code comments and from `apps/api/openapi.yaml`.
 4. `CHANGELOG.md`: add retroactive entries for v1 (hackathon, 15 Nov 2026) and v2 (PR #1, 17 Nov 2026), then this task.
 5. Remove from the README the claims that are no longer true.
-6. Write `tools/publish_wiki.sh`, which copies `docs/wiki/**/*.md` to the wiki repository `https://github.com/ddmp3/EarthMoon.wiki.git`:
+6. Write `tools/docs/publish_wiki.py` (done: Python, so that the link rewriting is tested), which copies `docs/wiki/**/*.md` to the wiki repository `https://github.com/ddmp3/EarthMoon.wiki.git`:
    - flatten paths into page names (`data/moon.md` becomes `data-moon.md`);
    - rewrite relative links;
    - generate `Home.md` and `_Sidebar.md`;

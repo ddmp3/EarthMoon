@@ -22,7 +22,7 @@ export const PARAM_IDS = [
   "latitude_abs",
   "quake_count",
   "volcano_distance",
-  // Methodology v2 (docs/SCIENTIFIC_METHODOLOGY.md)
+  // Methodology v2 (docs/METHOD.md)
   "slope_p95",
   "roughness_detrended",
   "traversable_15",

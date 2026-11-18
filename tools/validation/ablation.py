@@ -1,4 +1,4 @@
-"""Before / after comparison of the scientific corrections, one step at a time (docs/SCIENTIFIC_VALIDATION.md).
+"""Before / after comparison of the scientific corrections, one step at a time (docs/wiki/v2/SCIENTIFIC_VALIDATION.md).
 
 Each step applies one more correction to the previous one and is scored with the Python reference scorer.
 For every step and mode the script reports, against the v1 baseline:

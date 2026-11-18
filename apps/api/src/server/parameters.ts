@@ -1,6 +1,6 @@
 import type { ParamId } from "../scoring/index.js";
 
-/** Parameter catalog (docs/scenarios.md). `Record<ParamId, …>` forces every identifier to be covered. */
+/** Parameter catalog (docs/METHOD.md). `Record<ParamId, …>` forces every identifier to be covered. */
 export type ParameterInfo = {
   id: ParamId;
   label: string;

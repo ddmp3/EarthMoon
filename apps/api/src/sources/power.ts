@@ -6,7 +6,7 @@ import type { FetchJsonOptions } from "./http.js";
 /**
  * NASA POWER, point climatology (no account required):
  * https://power.larc.nasa.gov/docs/services/api/
- * POWER parameter -> catalog identifier (docs/scenarios.md).
+ * POWER parameter -> catalog identifier (docs/DATA.md).
  */
 export const POWER_PARAMETERS = {
   T2M: "t2m_mean",

@@ -7,7 +7,7 @@ polar stereographic projection centered on -90°, from 85°S to the pole:
 
 Same method as point_geometry.py for Earth (Copernicus DEM, ~30 m): gradient by central differences,
 then, per 1 km window, mean and maximum slope and standard deviation of elevation. The lunar DEM (40 m) is slightly
-coarser, so lunar slope is a little smoother than Earth slope (see docs/scenarios.md).
+coarser, so lunar slope is a little smoother than Earth slope (see docs/history/v1-scenarios.md).
 
 Usage:
     python lunar_reference.py ~/data/lola/ldem_85s_40m.img            # prints the JSON block

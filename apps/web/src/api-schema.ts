@@ -533,7 +533,7 @@ export interface components {
         };
         /** @description Versions needed to reproduce a result. */
         Methodology: {
-            /** @description Version of the scoring method (docs/SCIENTIFIC_METHODOLOGY.md). */
+            /** @description Version of the scoring method (docs/METHOD.md). */
             version: string;
             /** @description Version of the frozen data set (data/dataset-v2.json). Absent when sources are read live. */
             dataset?: string;

@@ -34,7 +34,7 @@ Reusable as is: `tools/precompute/terrain_metrics.py` (any grid), the value/sigm
 - Caching: preset scenarios use precomputed layers with a simple refresh command; custom criteria are computed on demand (see task T30 for the reproducibility constraint).
 - An AI assistant for scientists is an option for later (task T51), not now.
 - The project is rebuilt for demonstrated scientific value. All docs are rewritten short; detail goes to `docs/wiki/`.
-- The GitHub wiki is enabled (17 Nov 2026). Source of truth: `docs/wiki/` in the repository (versioned, reviewed in PRs). A script (T02) mirrors it to the GitHub wiki for reading. Never edit the GitHub wiki by hand: edits there would be overwritten.
+- The GitHub wiki is enabled (17 Nov 2026). Source of truth: `docs/wiki/` in the repository (versioned, reviewed in PRs). A script (`tools/docs/publish_wiki.py`, T02) mirrors it to the GitHub wiki for reading. Never edit the GitHub wiki by hand: edits there would be overwritten.
 
 ## 3. Rules for every task
 
@@ -85,7 +85,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | Task | Title | Depends on | Status |
 |---|---|---|---|
 | [T01](tasks/T01-quality-harness.md) | Quality harness and non-regression baseline | – | done (PR #3) |
-| [T02](tasks/T02-docs-reset.md) | Docs reset: short README, wiki, history | T01 | todo |
+| [T02](tasks/T02-docs-reset.md) | Docs reset: short README, wiki, history | T01 | done (PR #4; wiki publication waits for a first "Home" page on GitHub) |
 | [T10](tasks/T10-moon-data.md) | Lunar data inventory | T01 | todo |
 | [T11](tasks/T11-mars-data.md) | Mars data inventory | T01 | todo |
 | [T12](tasks/T12-earth-data.md) | Earth data inventory | T01 | todo |

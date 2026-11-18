@@ -7,7 +7,7 @@ import { API_ROOT } from "./config.js";
 
 const ROLES = ["validation", "negative", "candidate"] as const;
 
-/** Validates a list of sites (see docs/architecture.md, data files). Invalid entries are skipped and reported. */
+/** Validates a list of sites (see docs/ARCHITECTURE.md, data files). Invalid entries are skipped and reported. */
 export function parseSites(raw: unknown, onSkip?: (reason: string) => void): Site[] {
   const list = Array.isArray(raw) ? raw : (raw as { sites?: unknown } | null)?.sites;
   if (!Array.isArray(list)) throw new Error("The site list must be an array (or { sites: [...] })");

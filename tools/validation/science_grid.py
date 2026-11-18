@@ -1,6 +1,6 @@
 """Scientific evaluation grid: the automatable indicators, computed the same way for methodology v1 and v2.
 
-The grid itself (criteria, methods, reference levels, targets) is defined in docs/SCIENTIFIC_VALIDATION.md.
+The grid itself (criteria, methods, reference levels, targets) is defined in docs/wiki/v2/SCIENTIFIC_VALIDATION.md.
 This script computes every indicator that can be counted from the repository, so that the before / after
 comparison does not depend on anyone's opinion. Indicators that need a human judgement are listed in the
 document and are not computed here.
@@ -22,7 +22,7 @@ import score_sites as ss  # noqa: E402
 DATA = os.path.join(HERE, "..", "..", "data")
 MODES = ("robotics", "calibration", "colony")
 
-# Indicators the audit found scientifically invalid for their use (docs/SCIENTIFIC_AUDIT.md, findings).
+# Indicators the audit found scientifically invalid for their use (docs/wiki/v2/SCIENTIFIC_AUDIT.md, findings).
 INVALID = {
     "volcano_distance": "V1: distance to a vent is neither a rock type nor evidence of a lava tube",
     "quake_count": "S1: the M >= 2.5 catalog is complete only where networks are dense",
@@ -33,7 +33,7 @@ INVALID = {
 }
 # v1: values that were frozen in the repository (the others were read live at request time).
 V1_FROZEN = {"slope_mean", "slope_max", "roughness", "elevation", "ndvi", "lst_day", "lst_night", "lst_amplitude", "latitude_abs"}
-# v1: where each interval came from (docs/scenarios.md of v1).
+# v1: where each interval came from (docs/history/v1-scenarios.md).
 V1_BASIS = {"slope_mean": "lunar_measurement", "roughness": "lunar_measurement", "slope_max": "mission_requirement"}
 ELEVATION_LIMIT_M = 300.0
 TEMPERATURES = {"t2m_mean", "t2m_min", "t2m_max"}

@@ -114,8 +114,8 @@ Evidence levels used in the project documents:
 | Smithsonian GVP, Volcanoes of the World | Smithsonian Institution | https://volcano.si.edu/ | Volcano database | Nearest Holocene volcano: distance, major rock type, landform | One point per volcano | Holocene only; a point, not the extent of a field | Used only for a "predisposition" level, never as evidence of a cave |
 | MODIS MOD11A2 / MOD13A1 v6.1 | NASA LP DAAC, via Microsoft Planetary Computer | https://planetarycomputer.microsoft.com/dataset/group/modis | Satellite radiometry | Surface temperature, NDVI | 1 km and 500 m | Clear sky, 12 composites of 2024 | Seasonal gaps flagged |
 
-Proposed additional sources are in [SCIENTIFIC_ROADMAP.md](SCIENTIFIC_ROADMAP.md), section 4.
+Proposed additional sources are in [SCIENTIFIC_ROADMAP.md](wiki/v2/SCIENTIFIC_ROADMAP.md), section 4.
 
 ## 8. References cited by the team in v1 and not re-verified here
 
-`docs/scenarios.md` cites NASA NTRS reports for rover limits (VIPER 15°: NTRS 20240013903 and 20250004148; Apollo traverses: NTRS 20250011301; LRV: NASA SP-4214) and Moriarty and Petro, EPSC2022-295, for south pole geology. These identifiers were not checked during this audit. The 15° limit used by the robotics requirement rests on them and is therefore marked for verification in [SCIENTIFIC_LIMITATIONS.md](SCIENTIFIC_LIMITATIONS.md).
+`docs/scenarios.md` cites NASA NTRS reports for rover limits (VIPER 15°: NTRS 20240013903 and 20250004148; Apollo traverses: NTRS 20250011301; LRV: NASA SP-4214) and Moriarty and Petro, EPSC2022-295, for south pole geology. These identifiers were not checked during this audit. The 15° limit used by the robotics requirement rests on them and is therefore marked for verification in [SCIENTIFIC_LIMITATIONS.md](LIMITS.md).
