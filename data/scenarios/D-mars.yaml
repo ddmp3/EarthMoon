@@ -1,0 +1,35 @@
+id: D
+name: Mars exploration and settlement
+objective: >-
+  Find Earth places that share Martian processes and properties: ice-rich ground, aqueous minerals, aeolian dust,
+  dryness and rover-scale terrain. Mars is profiled from Martian data only; no lunar criterion is reused.
+targets: [mars-ice-rich-midlatitudes, mars-north-polar, mars-south-polar, mars-aqueous-mineral-sites, mars-hirise-terrain]
+similarity:
+  - {parameter: slope_mean, status: "waiting for T48", why: "MOLA and HiRISE terrain, at the planetary pixel scale (T22)"}
+  - {parameter: mineral_class, status: "waiting for T46", why: "clays, sulfates and other aqueous groups"}
+  - {parameter: ground_ice, status: "waiting for T47", why: "shallow ice, as classes"}
+  - {parameter: thermal_inertia, status: "waiting for T47", why: "grain size and induration of the surface"}
+  - {parameter: aerosol_optical_depth, status: "waiting for T47", why: "dust lifting, a shared process"}
+  - {parameter: wind_speed, status: "waiting for T47", why: "aeolian activity; models on both sides"}
+  - {parameter: specific_humidity, status: "waiting for T47", why: "dryness of the air"}
+  - {parameter: precipitation, status: "waiting for T47", why: "little liquid water erosion"}
+context: [latitude_abs]
+requirements:
+  - id: mars_mobility
+    what: Rover slope and terrain limits on Mars
+    value: "not set (R43 cited, figures not read)"
+    expert_decision: E14
+  - id: target_environment
+    what: Which Martian environment each campaign targets
+    value: "one of the five targets, chosen by the user"
+    expert_decision: E16
+eliminating: []
+cannot_assess:
+  - A CO2 atmosphere at about 1% of Earth's surface pressure, and its temperatures.
+  - Martian gravity and the radiation at the surface.
+  - Ice content and depth (indicators and models only).
+  - Subsurface structure beyond what radar interpretations show.
+proxies:
+  - name: permafrost
+    stands_for: Martian ground ice
+    why: Earth's ground ice layers are models (R32, R64); Martian ones are interpretations (SWIM). Compared as classes only.

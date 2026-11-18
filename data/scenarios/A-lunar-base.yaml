@@ -1,0 +1,36 @@
+# Scenario A, v3 (task T24). Schema: tools/profiles/profiles.py validate_scenario.
+id: A
+name: Permanent lunar base
+objective: >-
+  Find Earth places where the terrain, materials and thermal behaviour of a lunar south polar base area can be
+  studied, to rehearse site characterization, construction on slopes and mobility around a base.
+targets: [moon-polar-lit-highlands, moon-persistently-lit, moon-psr, moon-pits]
+similarity:
+  - {parameter: slope_mean, status: available, why: "buildability and mobility depend on slope first"}
+  - {parameter: lithology_class, status: "waiting for T46", why: "construction materials and geology"}
+  - {parameter: lst_amplitude, status: "waiting for T47", why: "thermal behaviour of the surface, as a relative quantity"}
+context: [traversable_20, latitude_abs]
+requirements:
+  - id: base_slope
+    what: Slope of the base footprint
+    value: "at most 5° preferred, unsuitable above 10°"
+    expert_decision: E2
+  - id: base_site_beyond_slope
+    what: Bearing capacity, boulder density, landing hazards
+    value: "not set"
+    expert_decision: E13
+  - id: target_environment
+    what: Which environments the base area spans
+    value: "lit highlands for the base; persistently lit areas for power; shadowed regions and pits as nearby targets"
+    expert_decision: E16
+eliminating: []
+cannot_assess:
+  - Lunar gravity, vacuum and radiation.
+  - Illumination by a Sun grazing the horizon; permanently shadowed cryogenic surfaces.
+  - Regolith mechanics (no layer in the catalogues; E9).
+  - Volatile resources (lunar indicators have no Earth equivalent).
+  - Mass wasting under lunar gravity (only slope is compared).
+proxies:
+  - name: lava_tube_evidence
+    stands_for: Natural shelter
+    why: No global cave inventory exists (T12); a curated, referenced list is the only source (E7). Proximity to a volcano is never used.

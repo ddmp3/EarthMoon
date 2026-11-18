@@ -1,0 +1,31 @@
+id: B
+name: Robotic lunar exploration
+objective: >-
+  Find Earth terrain whose slope distribution matches a lunar target environment, to test rover mobility,
+  navigation and traverse planning.
+targets: [moon-polar-lit-highlands, moon-psr, moon-mare-plains, moon-south-polar-cap-v2]
+similarity:
+  - {parameter: slope_mean, status: available, why: "the only independent terrain property at 1 km and 40 m (T21)"}
+  - {parameter: lithology_class, status: "waiting for T46", why: "regolith parent material, indirect"}
+context: [traversable_20, traversable_15, roughness_detrended]
+requirements:
+  - id: climbing_limit_lrv
+    what: Slope a crewed lunar rover was designed for
+    value: "20 to 23° in favourable conditions, maximum 25° (Apollo LRV)"
+    source: NTRS 20250011301
+  - id: climbing_limit_viper
+    what: Slope limit of a polar robotic rover
+    value: "15° (VIPER), not stated in the NTRS abstracts read"
+    expert_decision: E1
+  - id: traversable_share
+    what: Share of a window that must be at or below the climbing limit
+    value: "half of the window"
+    expert_decision: E1
+eliminating: [climbing_limit_lrv]
+cannot_assess:
+  - Obstacles below the DEM pixel (rocks, small craters, the slope under a wheel).
+  - Traction and sinkage in regolith under lunar gravity.
+  - Thermal limits of the lunar night and of shadowed regions.
+  - Communication and navigation conditions (no GNSS on the Moon).
+  - Roughness, until the T41 effective resolution test (context only).
+proxies: []

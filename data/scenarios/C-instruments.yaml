@@ -1,0 +1,107 @@
+id: C
+name: Instrument calibration and validation
+objective: >-
+  Find Earth places where an instrument can be calibrated or validated against a property it will measure on the
+  Moon or Mars. Each instrument has its own targets and requirements; no instrument is scored on comfort
+  conditions (cold, dry, quiet), which v2 did (finding K2).
+targets: [moon-south-polar-cap-v2, moon-mare-plains, mars-aqueous-mineral-sites]
+similarity: []
+context: [latitude_abs]
+requirements:
+  - id: instrument_requirements
+    what: Site requirements of each instrument
+    value: "set per instrument below; all open"
+    expert_decision: E15
+eliminating: []
+cannot_assess:
+  - Instrument performance in vacuum, lunar thermal cycles or Martian atmosphere.
+  - Anything not measured by an open global layer (see each instrument).
+proxies: []
+instruments:
+  - id: C1-geology
+    name: Geology instruments (cameras, field spectrometers)
+    objective: Rehearse geological interpretation on rocks of lunar or Martian type.
+    targets: [moon-mare-plains, mars-volcanic-plains]
+    similarity:
+      - {parameter: lithology_class, status: "waiting for T46"}
+    context: []
+    requirements:
+      - {id: rock_exposure, what: "Bare rock exposure", value: "not set", expert_decision: E15}
+    eliminating: []
+    cannot_assess: ["Weathering state and surface coatings at instrument scale"]
+    proxies: []
+  - id: C2-navigation
+    name: Navigation systems (terrain-relative navigation, hazard detection)
+    objective: Test navigation on terrain with lunar slope statistics.
+    targets: [moon-polar-lit-highlands, moon-psr]
+    similarity:
+      - {parameter: slope_mean, status: available}
+    context: [roughness_detrended]
+    requirements:
+      - {id: texture, what: "Terrain texture and contrast for vision", value: "not set", expert_decision: E15}
+    eliminating: []
+    cannot_assess: ["Low Sun angle and long shadows of the lunar poles", "Lack of GNSS"]
+    proxies: []
+  - id: C3-thermal
+    name: Thermal sensors
+    objective: Calibrate retrievals of thermal behaviour on surfaces with comparable relative response.
+    targets: [moon-mare-plains, mars-hirise-terrain]
+    similarity:
+      - {parameter: lst_amplitude, status: "waiting for T47"}
+      - {parameter: thermal_inertia, status: "waiting for T47"}
+    context: []
+    requirements:
+      - {id: thermal_stability, what: "Cloud-free and stable conditions during campaigns", value: "not set", expert_decision: E15}
+    eliminating: []
+    cannot_assess: ["Absolute lunar temperatures (L5)", "Cryogenic shadowed surfaces"]
+    proxies: []
+  - id: C4-radar
+    name: Radar (ground-penetrating, sounding)
+    objective: Validate subsurface detection of ice or voids.
+    targets: [moon-pits, mars-ice-rich-midlatitudes]
+    similarity:
+      - {parameter: ground_ice, status: "waiting for T47"}
+    context: []
+    requirements:
+      - {id: known_subsurface, what: "Independently known subsurface structure (ground truth)", value: "not set", expert_decision: E15}
+    eliminating: []
+    cannot_assess: ["Dry regolith dielectric properties", "Subsurface voids (no global cave inventory)"]
+    proxies: []
+  - id: C5-mineralogy
+    name: Mineralogy analysers (imaging and point spectroscopy)
+    objective: Validate mineral detection on Earth surfaces with the same mineral groups as Martian detections.
+    targets: [mars-aqueous-mineral-sites]
+    similarity:
+      - {parameter: mineral_class, status: "waiting for T46"}
+    context: []
+    requirements:
+      - {id: ground_truth, what: "Field or laboratory mineralogy available", value: "not set", expert_decision: E15}
+    eliminating: []
+    cannot_assess: ["Abundances (detections only)", "Lunar mineralogy (no matching Earth layer)"]
+    proxies: []
+  - id: C6-sampling
+    name: Sampling systems (drills, scoops)
+    objective: Rehearse sampling in materials of lunar or Martian type.
+    targets: [moon-mare-plains, mars-ice-rich-midlatitudes]
+    similarity:
+      - {parameter: lithology_class, status: "waiting for T46"}
+      - {parameter: ground_ice, status: "waiting for T47"}
+    context: []
+    requirements:
+      - {id: frozen_ground, what: "Frozen ground for drilling", value: "at most -6 °C, zero at 0 °C (v2 proxy)", expert_decision: E4}
+    eliminating: []
+    cannot_assess: ["Regolith grain size and cohesion (E9)", "Lunar ice is not permafrost"]
+    proxies:
+      - {name: permafrost, stands_for: "ice-cemented regolith", why: "the only global ground ice layer on Earth; a model (R32)"}
+  - id: C7-mobility
+    name: Mobility systems
+    objective: Same as scenario B.
+    targets: [moon-polar-lit-highlands]
+    similarity:
+      - {parameter: slope_mean, status: available}
+    context: [traversable_20]
+    requirements:
+      - {id: climbing_limit_lrv, what: "Slope a crewed rover was designed for", value: "20 to 23°, maximum 25°", source: NTRS 20250011301}
+    eliminating: [climbing_limit_lrv]
+    cannot_assess: ["Traction under lunar gravity"]
+    proxies: []

@@ -2,6 +2,17 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T24 Scenarios v3 (PR #13)
+- `data/scenarios/{A-lunar-base,B-lunar-robotics,C-instruments,D-mars}.yaml` and `docs/SCENARIOS.md`. They replace `scenarios-v2.json` in T42.
+- Each scenario lists its target environments (T20), its similarity parameters (only those kept in T21, either available or waiting for a task), its requirements and eliminating constraints, its proxies, and what it cannot assess. Scenario C covers 7 instruments.
+- The only number with a checked source is the Apollo LRV slope (20 to 23°, maximum 25°, NTRS 20250011301), which eliminates in B and C7. All other numbers carry an expert label.
+- `docs/LIMITS.md`: E3 and E5 updated (colony scenario replaced; no weights); E13 to E16 added (base site requirements beyond slope, Mars rover limits, instrument requirements, target environment per scenario).
+- The validator `validate_scenario` (8 tests) refuses:
+  - a similarity parameter that is not kept or is operational;
+  - a requirement without a source in REFERENCES.md or an E label in LIMITS.md;
+  - an eliminating constraint that is not a requirement;
+  - a proxy that does not say what it stands for.
+
 ## 2026-11-18 · T23 Comparison methods benchmark (PR #12)
 - The protocol was committed before the run (`4580530`). `tools/research/compare_methods.py` (7 analytic tests) benchmarks six candidates on 71,503 lunar windows, 20,000 pilot windows and the 1,410 random T21 windows. Output: `data/research/comparison-t23.json`, `docs/wiki/methods/comparison.md`.
 - **Chosen: the two-sided percentile per parameter.** It is calibrated (KS 0.014), the most discriminating (AUC 0.80, 0.86 on random Earth), and robust at 0.5° of noise (0.95). At 1° it falls to 0.891, just below the rule, so the uncertainty is propagated in T25.
