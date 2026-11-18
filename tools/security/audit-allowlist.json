@@ -1,0 +1,14 @@
+{
+  "policy": "Production dependencies: 0 vulnerabilities, no exception (npm audit --omit=dev). Development dependencies: an advisory may be listed here only if no patched version exists, it does not reach production, and it is not exploitable in our use. Each entry is reviewed again by its reviewBy date (30 days at most).",
+  "advisories": [
+    {
+      "id": "GHSA-fc5q-39xc-vjpf",
+      "package": "picomatch",
+      "scope": "dev",
+      "reachedThrough": "vite, vitest, tinyglobby, fdir (api and web)",
+      "reason": "ReDoS through crafted extglob patterns. Affects all versions <= 4.0.7; no patched version exists (checked 2026-11-17, advisory published 2026-10-19). Used only by the build and test tools with glob patterns written in our own config, never with user input. Not in production: the API image installs with --omit=dev and the web app ships static files built by vite.",
+      "checked": "2026-11-17",
+      "reviewBy": "2026-12-17"
+    }
+  ]
+}

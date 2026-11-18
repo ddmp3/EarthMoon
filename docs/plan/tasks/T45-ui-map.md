@@ -10,9 +10,11 @@ Scientists can choose a planetary environment and a scenario, display each dimen
   - Components: `Home.tsx`, `Mission.tsx` (map with 37 `CircleMarker`), `SiteDetail.tsx`, `Stability.tsx`.
   - Content: `content-fr.ts` and `i18n.ts` (FR and EN).
   - Design: dark theme, Inter and Space Grotesk fonts.
+- **Already fixed in T01:** labels of the v2 parameters; a missing value shown as "—" with pastel hatching in the scorecard and radar (`.match-bar-missing`, `.radar-axis-missing` in `styles.css`). Reuse that style for the map.
 - **v2 gaps to fix here:**
-  - raw identifiers are shown for the new v2 parameters (`roughness_detrended`, `traversable_15/20/25`, `slope_p95`, `specific_humidity`, `quake_m45_count`, `lava_tube_evidence`);
+  - deprecated parameters are offered in the free-criteria builder without warning (mark or hide them);
   - confidence, coverage, failed requirements and explanation are not displayed;
+  - radar labels can touch the frame edge on long names;
   - the "See the match" panel uses the v1 manifest (`apps/web/public/sites/manifest.json`, built by `tools/precompute/site_visuals.py`). Regenerate it from `terrain_v2`: Atacama shows 7.97° in the panel and 7.85° in the scorecard.
 - **David's decision:** areas with partial or missing data are labelled and hatched in a soft pastel colour.
 - **Quality (decision 6.1):** no TypeScript error, no lint error, no vulnerable dependency, TDD, no regression.

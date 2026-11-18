@@ -1,0 +1,27 @@
+# Quality gate on every pull request: tools/check.sh (types, lint, tests, dependency audit, Docker e2e, browser audit).
+# Test only: no secrets, no cloud login, no deployment. Deployment stays manual and is frozen during the NASA evaluation.
+name: check
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Quality gate
+        run: bash tools/check.sh all
+      - name: Browser audit screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-audit-shots
+          path: .check/shots
+          if-no-files-found: ignore
+          retention-days: 14

@@ -25,3 +25,6 @@ coverage/
 
 .pytest_cache/
 __pycache__/
+
+# Quality gate output (tools/check.sh)
+.check/

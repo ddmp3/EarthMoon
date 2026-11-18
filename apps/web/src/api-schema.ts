@@ -396,7 +396,7 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** @enum {string} */
-        ParamId: "slope_mean" | "slope_max" | "roughness" | "elevation" | "ndvi" | "lst_day" | "lst_night" | "lst_amplitude" | "t2m_mean" | "t2m_min" | "t2m_max" | "wind" | "humidity" | "precipitation" | "solar" | "latitude_abs" | "quake_count" | "volcano_distance";
+        ParamId: "slope_mean" | "slope_max" | "roughness" | "elevation" | "ndvi" | "lst_day" | "lst_night" | "lst_amplitude" | "t2m_mean" | "t2m_min" | "t2m_max" | "wind" | "humidity" | "precipitation" | "solar" | "latitude_abs" | "quake_count" | "volcano_distance" | "slope_p95" | "roughness_detrended" | "traversable_15" | "traversable_20" | "traversable_25" | "specific_humidity" | "quake_m45_count" | "lava_tube_evidence";
         /** @enum {string} */
         ModeId: "robotics" | "calibration" | "colony";
         /**
@@ -404,26 +404,56 @@ export interface components {
          * @enum {string}
          */
         Verdict: "match" | "partial" | "mismatch" | "missing";
-        /** @description Target interval [min, max]; score 1 inside, linear decrease to 0 at `tolerance` distance. */
+        /** @description Target interval [min, max]; score 1 inside, linear decrease to 0 at `tolerance` distance (`toleranceBelow` / `toleranceAbove` when the two sides differ). */
         Criterion: {
             param: components["schemas"]["ParamId"];
             min?: number;
             max?: number;
             tolerance: number;
+            /** @description Tolerance below `min`, if different from `tolerance`. */
+            toleranceBelow?: number;
+            /** @description Tolerance above `max`, if different from `tolerance`. */
+            toleranceAbove?: number;
             weight: number;
+            /** @description Hard requirement. A site scoring 0 on it fails the scenario and ranks after every site that passes; it is never averaged away. */
+            required?: boolean;
             /** @description Instrument (mode 2) or need (mode 3), to filter and group in the interface. */
             group?: string;
+            /**
+             * @description similarity: compared with a measured lunar distribution · requirement: operational need of the vehicle, instrument or mission · proxy: indirect Earth indicator of a lunar condition.
+             * @enum {string}
+             */
+            role?: "similarity" | "requirement" | "proxy";
+            /**
+             * @description Where the interval and tolerance come from.
+             * @enum {string}
+             */
+            basis?: "lunar_measurement" | "mission_requirement" | "expert_judgement";
+            /** @description Why the criterion is there and where its numbers come from. */
+            rationale?: string;
         };
         CriterionScore: {
             param: components["schemas"]["ParamId"];
-            /** @description null = source indisponible */
+            /** @description null = no measurement */
             value: number | null;
             score: number;
             verdict: components["schemas"]["Verdict"];
+            /** @description Points (out of 100) this criterion adds to the total; 0 when missing. */
+            contribution: number;
+            /** @description Points this criterion could add at most, given the criteria that have data. */
+            maxContribution: number;
+            /** @description 1-sigma uncertainty of the value, when quantified. */
+            sigma?: number;
+            /** @description Data-quality flags of the value (for example large_elevation_correction, seasonal_gaps, flat_artifact). */
+            flags?: string[];
+            /** @description Present (true) on hard requirements. */
+            required?: boolean;
         };
         Mode: {
             id: components["schemas"]["ModeId"];
             name: string;
+            /** @description Lunar environment the scenario targets. */
+            target: string;
             criteria: components["schemas"]["Criterion"][];
         };
         ParameterInfo: {
@@ -464,8 +494,28 @@ export interface components {
             /** @description Present if the bare-soil filter lowered the total (NDVI between 0.2 and 0.6). The total is multiplied by this factor. */
             vegetationFactor?: number;
             stability?: components["schemas"]["Stability"];
+            /** @description Share of the criteria weight that has data. A missing value counts neither for nor against the site. */
+            coverage: number;
+            /** @description Total if every missing criterion scored 0 (min) and if it scored 1 (max). Equal to the total when nothing is missing. */
+            totalRange: {
+                min: number;
+                max: number;
+            };
+            /**
+             * @description Hard requirements of the scenario. failed: the site ranks after every site that passes · unknown: a required criterion has no data.
+             * @enum {string}
+             */
+            requirements: "met" | "failed" | "unknown";
+            failedRequirements?: components["schemas"]["ParamId"][];
+            /** @description Criteria with no data for this site. */
+            missing?: components["schemas"]["ParamId"][];
+            /**
+             * @description Confidence in the assessment, separate from the score. low: coverage under 0.6, a required criterion without data, or a 10th to 90th percentile interval of the total wider than 30 points. high: coverage of 0.9 or more and an interval of 15 points or less. Absent for excluded sites.
+             * @enum {string}
+             */
+            confidence?: "high" | "medium" | "low";
         };
-        /** @description Rank of the site when weights, tolerances and interval bounds are perturbed (see AnalyzeResponse.sensitivity). Absent for excluded sites. */
+        /** @description Rank and total of the site when weights, tolerances, interval bounds and the site values (within their uncertainty) are perturbed (see AnalyzeResponse.sensitivity). Absent for excluded sites. */
         Stability: {
             /** @description Best-case rank (10th percentile of the scenarios). */
             rankP10: number;
@@ -474,6 +524,43 @@ export interface components {
             rankP90: number;
             /** @description Share of scenarios where the site stays in the top half of the ranked sites. */
             topHalfShare: number;
+            /** @description 10th percentile of the total over the scenarios. */
+            totalP10: number;
+            /** @description 90th percentile of the total over the scenarios. */
+            totalP90: number;
+            /** @description Share of scenarios where the site meets every hard requirement. */
+            requirementsShare: number;
+        };
+        /** @description Versions needed to reproduce a result. */
+        Methodology: {
+            /** @description Version of the scoring method (docs/SCIENTIFIC_METHODOLOGY.md). */
+            version: string;
+            /** @description Version of the frozen data set (data/dataset-v2.json). Absent when sources are read live. */
+            dataset?: string;
+        };
+        ExplainedCriterion: {
+            param: components["schemas"]["ParamId"];
+            /** @description Points added to the total. */
+            contribution: number;
+            /** @description Points lost compared with a perfect score on this criterion. */
+            loss: number;
+            role?: string;
+            basis?: string;
+            rationale?: string;
+        };
+        /** @description Why the site gets its result. Orders what the assessment already contains; adds no information. */
+        Explanation: {
+            strengths: components["schemas"]["ExplainedCriterion"][];
+            weaknesses: components["schemas"]["ExplainedCriterion"][];
+            /** @description Required criteria the site fails. */
+            decisive: components["schemas"]["ParamId"][];
+            missing: components["schemas"]["ParamId"][];
+            flagged: {
+                param: components["schemas"]["ParamId"];
+                flags: string[];
+            }[];
+            /** @description Share of the total resting on criteria whose numbers are expert judgements rather than measurements. */
+            expertShare: number;
         };
         /** @description How the stability of the ranks was computed. */
         Sensitivity: {
@@ -487,9 +574,12 @@ export interface components {
             mode: "robotics" | "calibration" | "colony" | "custom";
             sites: components["schemas"]["AnalyzedSite"][];
             sensitivity: components["schemas"]["Sensitivity"];
+            methodology: components["schemas"]["Methodology"];
         };
         SiteDetail: components["schemas"]["AnalyzedSite"] & {
             terrain?: string;
+            explanation: components["schemas"]["Explanation"];
+            methodology: components["schemas"]["Methodology"];
             mode: components["schemas"]["ModeId"];
             /** @description Raw values of all available parameters (null = source unavailable). */
             values: {

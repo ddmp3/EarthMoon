@@ -1,3 +1,4 @@
+import { parameterCatalog } from '../api'
 import { useT } from '../i18n'
 import { MISSION_ORDER, missionImage } from '../shared'
 import type { SelectedMode } from '../store'
@@ -5,7 +6,7 @@ import type { SelectedMode } from '../store'
 /** Home: full-bleed Artemis II photo, then the four missions as cards. */
 export function Home({ onPick, siteCount }: { onPick: (mode: SelectedMode) => void; siteCount: number }) {
   const { t } = useT()
-  const figures = [String(siteCount), '18', '8', '71,731']
+  const figures = [String(siteCount), String(parameterCatalog.length), '8', '71,731']
 
   return (
     <>
