@@ -164,3 +164,18 @@ def test_code_version_ignores_line_endings_and_changes_with_the_source(tmp_path)
     assert code_version(tmp_path) == v
     (tmp_path / CODE_FILES[0]).write_bytes(b"a = 2\n")
     assert code_version(tmp_path) != v
+
+
+def test_summary_keeps_the_latest_record_per_tile_and_reports_coverage_shares():
+    from discovery.measure import summary
+    old = {"tile": "A", "code": "old", "commit": "c0", "windows": 9, "valid_windows": 9,
+           "cells": {"evaluated": 9, "partial": 0, "missing": 0}, "seconds": {"total": 9.0, "read": 1.0, "mask": 1.0}}
+    a = {**old, "code": "new", "commit": "c1", "cells": {"evaluated": 6, "partial": 1, "missing": 3}, "windows": 10,
+         "valid_windows": 7, "seconds": {"total": 2.0, "read": 1.0, "mask": 0.5}}
+    b = {**a, "tile": "B", "cells": {"evaluated": 0, "partial": 0, "missing": 10}, "valid_windows": 0,
+         "seconds": {"total": 4.0, "read": 2.0, "mask": 0.5}}
+    s = summary([old, a, b])
+    assert s["tiles"] == 2 and s["code"] == ["new"] and s["commits"] == ["c1"]
+    assert s["cells"] == {"evaluated": 6, "partial": 1, "missing": 13, "total": 20}
+    assert s["cell_shares"] == {"evaluated": 0.3, "partial": 0.05, "missing": 0.65}
+    assert s["windows"] == {"total": 20, "valid": 7} and s["seconds"]["median_total"] == 3.0
