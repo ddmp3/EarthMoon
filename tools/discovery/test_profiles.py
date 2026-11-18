@@ -92,3 +92,21 @@ def test_polar_profiles_are_subsets_of_the_cap_and_thresholds_act_monotonically(
     assert lit["params"]["f_lit"] == 0.05 and psr["params"]["f_psr"] == 0.75
     for p in (lit, psr):
         assert p["inputs"]["lro-lola-ldem-85s-40m"]["sha256"] == _profile("moon-south-polar-cap-v2")["inputs"]["lro-lola-ldem-85s-40m"]["sha256"]
+
+
+PSR = LDEM.parent / "pgda" / "LPSR_85S_060M_201608.TIF"
+
+
+@pytest.mark.skipif(not (LDEM.exists() and PSR.exists()), reason="LDEM or PSR map not present (data folder)")
+def test_psr_map_is_read_in_the_ldem_orientation_shadow_lies_in_topographic_lows():
+    import sys
+    sys.path.insert(0, str(ROOT / "tools" / "precompute"))
+    from lunar_reference import read_ldem
+    from discovery.profiles import read_polar
+    from discovery.resolution import gaussian_smooth
+    z = read_ldem(str(LDEM), 7584).astype("float64")[::4, ::4]
+    rel = z - gaussian_smooth(z, 25)
+    p = read_polar(PSR, 7584, 40.0, psr=True)[::4, ::4]
+    as_read = np.nanmedian(rel[p == 1])
+    flipped = [np.nanmedian(rel[f(p) == 1]) for f in (np.flipud, np.fliplr, lambda a: a.T)]
+    assert as_read < -100 and all(as_read < 3 * f for f in flipped)     # measured: -215 m against -18 to -39 m
