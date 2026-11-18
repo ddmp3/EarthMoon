@@ -1,0 +1,43 @@
+id: moon-psr
+body: moon
+name: South polar permanently shadowed regions
+kind: distribution
+status: ready
+catalogue_environments: [psr]
+selection:
+  rule: Windows of the v2 domain whose fraction of permanently shadowed pixels is at least f_psr.
+  steps:
+    - {product: lro-lola-ldem-85s-40m, condition: "window entirely south of 85°S", uses: [latitude]}
+    - {product: lola-polar-illumination, condition: "permanent shadow fraction >= f_psr (60 m map)", uses: [psr_fraction]}
+  parameters:
+    - {name: f_psr, value: "to fix in T22", sensitivity: [0.5, 0.75, 0.9]}
+    - {name: window_m, value: "to fix in T22", sensitivity: [200, 500, 1000], reason: "shadowed areas smaller than 1 km are lost in 1 km windows; their size distribution is not measured yet"}
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: lro-lola-ldem-85s-40m
+    scale: windows of window_m with 40 m pixels; the 5 m mosaic (87°S to 90°S) for windows below 1 km
+    effective_resolution: LOLA is an active laser, so it measures inside shadow; interpolation between tracks remains (L3)
+  - dimension: volatiles
+    names: [lamp_h2o_absorption_depth]
+    product: lro-lamp-gdr
+    scale: 240 m pixels
+    effective_resolution: 240 m (stated); an absorption feature depth, an indicator, not an abundance
+  - dimension: thermal
+    names: [annual_max_temperature, ice_stability_depth]
+    product: lro-diviner-prp
+    scale: triangular mesh resampled to the window
+    effective_resolution: not stated on the source page; model output
+  - dimension: radar
+    names: [minirf_cpr]
+    product: lro-minirf-polar-mosaics
+    scale: 256 pixels per degree
+    effective_resolution: not stated on the source page; CPR also responds to surface roughness
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - Shadow is modelled from topography, not observed.
+  - Volatile indicators (LAMP, Mini-RF) are not abundances and respond to other properties.
+  - Earth has no permanently dark surface at cryogenic temperature; the analog can only be topographic or a process.
+cannot_characterize: [cryogenic temperatures, vacuum, cold trapping of volatiles, radiation]

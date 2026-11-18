@@ -1,0 +1,32 @@
+# Regression anchor: the v2 lunar reference, reproduced as an environment (T41 must match it to 0.01).
+id: moon-south-polar-cap-v2
+body: moon
+name: South polar cap, all terrain (v2 reference)
+kind: distribution
+status: ready
+catalogue_environments: [polar-highlands, psr]
+selection:
+  rule: Every non-overlapping 1 km window (25 x 25 pixels) of LDEM_85S_40M lying entirely south of 85°S.
+  steps:
+    - {product: lro-lola-ldem-85s-40m, condition: "window entirely at latitude <= max_lat", uses: [latitude]}
+  parameters:
+    - {name: max_lat, value: -85, unit: "°", reason: "v2 value, kept for the regression"}
+parameters:
+  # Candidate list from v2. T21 removes the redundant ones (finding L1).
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: lro-lola-ldem-85s-40m
+    scale: 1 km windows of 40 m pixels
+    effective_resolution: coarser than 40 m away from the pole (grid interpolated between laser tracks); measured in T41
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept (71,731 windows)
+regression:
+  script: tools/precompute/lunar_reference_v2.py
+  file_sha256: 1609e9b860748e0b9952a7239c51b37d3b2a799d35e9fc3c258526711cc1e51d
+  windows: 71731
+  tolerance: 0.01
+biases:
+  - Mixes permanently shadowed crater floors and walls with lit ridges (open expert decision E8).
+  - Interpolation between tracks smooths the terrain, so slopes and roughness may be underestimated (L3, not quantified).
+cannot_characterize: [gravity, vacuum, radiation, space weathering]

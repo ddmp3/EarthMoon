@@ -1,0 +1,25 @@
+id: mars-hirise-terrain
+body: mars
+name: Rover-scale terrain of all public HiRISE DTMs
+kind: distribution
+status: ready
+catalogue_environments: []
+selection:
+  rule: Every window entirely inside the valid area of a public HiRISE DTM; each window keeps the DTM id so results can be grouped by site.
+  steps:
+    - {product: mro-hirise-dtm, condition: "window inside valid DTM pixels", uses: []}
+  parameters:
+    - {name: window_m, value: "to fix in T22", sensitivity: [50, 100, 250], reason: "rover scale; must stay above 4 times the post spacing"}
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: mro-hirise-dtm
+    scale: windows of window_m with 1 to 2 m posts
+    effective_resolution: about 4 times the input pixel scale (stated); manual edits can leave interpolation patterns
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept, with its DTM id
+biases:
+  - The 1,377 DTMs are targeted sites (landing candidates, scientific interest), not a random sample of Mars.
+  - Each DTM weighs by its area; T22 decides whether to weight per site instead.
+cannot_characterize: [gravity, atmosphere, regolith strength]

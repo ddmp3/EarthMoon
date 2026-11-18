@@ -1,0 +1,29 @@
+id: moon-persistently-lit
+body: moon
+name: Persistently lit south polar ridges and crater rims
+kind: distribution
+status: ready
+catalogue_environments: [persistently-lit]
+selection:
+  rule: Connected areas of the 60 m average illumination map (south of 85°S) whose average illumination is at least q; terrain of those areas only.
+  steps:
+    - {product: lola-polar-illumination, condition: "average illumination >= q (60 m map), connected areas", uses: [mean_illumination]}
+    - {product: lola-south-pole-5m-mosaic, condition: "5 m terrain where the area lies in 87°S to 90°S", uses: []}
+    - {product: lro-lola-ldem-85s-40m, condition: "40 m terrain elsewhere, flagged", uses: []}
+  parameters:
+    - {name: q, value: "to fix in T22", sensitivity: [0.5, 0.6, 0.7]}
+    - {name: window_m, value: "to fix in T22", sensitivity: [100, 200, 500], reason: "the extent of these areas is not measured yet"}
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: lola-south-pole-5m-mosaic
+    scale: windows of window_m with 5 m pixels (40 m outside the mosaic, flagged)
+    effective_resolution: empty 5 m pixels are interpolated; the mosaic count map gives laser returns per pixel
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept, with its pixel scale
+biases:
+  - Illumination is a model, so the areas exist only as computed.
+  - Illumination selects the areas and is not compared (that would be circular).
+  - Two pixel scales coexist (5 m and 40 m); results are reported separately per scale.
+cannot_characterize: [a polar Sun grazing the horizon, vacuum, radiation]

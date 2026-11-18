@@ -63,9 +63,10 @@ check_python() {
       pip install --quiet --upgrade pip setuptools wheel
       pip install --quiet -r tools/precompute/requirements.txt \
         -r tools/analog_backend/requirements.txt -r tools/analog_backend/requirements-dev.txt         -r tools/catalog/requirements.txt pip-audit
-      python -m pytest -q -p no:cacheprovider tools/precompute tools/scoring tools/validation tools/docs tools/catalog tools/research
+      python -m pytest -q -p no:cacheprovider tools/precompute tools/scoring tools/validation tools/docs tools/catalog tools/research tools/profiles
       python tools/docs/check_links.py
       python tools/catalog/catalog.py check
+      python tools/profiles/profiles.py
       (cd tools/analog_backend && python -m pytest -q -p no:cacheprovider)
       pip-audit --progress-spinner off"
 }

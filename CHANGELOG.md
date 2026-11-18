@@ -1,6 +1,16 @@
-# Changelog
+﻿# Changelog
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
+
+## 2026-11-18 · T20 Planetary environment profiles (PR #9)
+- Gate G1 signed by David (18/11): sources that could not be read stay "not verified".
+- `data/profiles/spec/`: 16 environment specs, each selected from planetary data by a written rule.
+  - Moon, ready: south polar cap (v2 regression anchor, SHA-256 `1609e9b8…`, 71,731 windows), lit polar highlands, permanently shadowed regions, persistently lit areas, mare plains, pits (site set).
+  - Mars, ready: ice-rich mid-latitudes (SWIM), north and south polar terrain, aqueous mineral sites (site set), HiRISE rover-scale terrain.
+  - Conditional, blocked by unverified maps or catalogues: lunar fresh craters and degraded highlands, Martian volcanic plains, sedimentary basins and caves.
+  - `rejected.yaml`: 5 environments rejected, with reasons (for example Mars dune fields: no catalogue, and images alone would select on appearance).
+- `tools/profiles/profiles.py` (31 tests, in the gate) checks the specs: products exist in the catalogues; ready specs use no unverified product; thresholds without values carry a sensitivity grid; no circular selection; distributions keep percentiles and joint data.
+- `docs/wiki/methods/profiles.md`: one line per environment and the design of the effective resolution experiment (L3) for T41.
 
 ## 2026-11-18 · T13 Reference verification (PR #8)
 - `tools/research/verify_refs.py` (7 tests, in the gate) checks every DOI of `docs/REFERENCES.md` on Crossref: 59 of 59 verified. Report: `docs/wiki/references-check.md`.

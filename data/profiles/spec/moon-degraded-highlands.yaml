@@ -1,0 +1,25 @@
+id: moon-degraded-highlands
+body: moon
+name: Ancient degraded highland terrain
+kind: distribution
+status: conditional
+blocked_by: [usgs-unified-geologic-map]
+catalogue_environments: [degraded-highlands]
+selection:
+  rule: 1 km windows of SLDEM2015 inside pre-Nectarian and Nectarian highland units of the USGS Unified Geologic Map.
+  steps:
+    - {product: sldem2015, condition: "1 km window inside 60°S to 60°N", uses: [latitude]}
+    - {product: usgs-unified-geologic-map, condition: "highland material of pre-Nectarian or Nectarian age", uses: [map_unit_age]}
+  parameters: []
+parameters:
+  - dimension: topography
+    names: [slope_mean, slope_p95, slope_max, roughness, roughness_detrended, traversable_15, traversable_20, traversable_25]
+    product: sldem2015
+    scale: 1 km windows of about 60 m pixels
+    effective_resolution: near 512 ppd (stated)
+statistics:
+  percentiles: [5, 10, 25, 50, 75, 90, 95]
+  joint: every window vector kept
+biases:
+  - Unit boundaries at 1:5,000,000 mix younger craters into old units.
+cannot_characterize: [vacuum, gravity, space weathering]

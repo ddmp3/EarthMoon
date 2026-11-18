@@ -1,0 +1,36 @@
+id: mars-aqueous-mineral-sites
+body: mars
+name: Sites with hydrated mineral detections (clays, sulfates and similar)
+kind: site-set
+status: ready
+catalogue_environments: [ancient-aqueous]
+selection:
+  rule: Every detection site of the OMEGA hydrated mineral map, and every CRISM targeted footprint whose spectral parameters pass the detection rule defined in T48.
+  steps:
+    - {product: mex-omega-global-maps, condition: "hydrated mineral detection site", uses: [hydrated_detection]}
+    - {product: mro-crism-mtrdr, condition: "footprint passes the T48 detection rule", uses: [crism_detection]}
+  parameters:
+    - {name: crism_rule, value: "to define in T48", sensitivity: ["rule as published", "stricter threshold", "looser threshold"]}
+parameters:
+  - dimension: mineralogy
+    names: [mineral_class]
+    product: mex-omega-global-maps
+    scale: detection site (resolution not stated on the source page)
+    effective_resolution: not stated; interpretation, presence only, not abundance
+  - dimension: topography
+    names: [slope_mean, slope_p95, roughness_detrended]
+    product: mro-hirise-dtm
+    scale: rover-scale windows where a DTM overlaps the site
+    effective_resolution: about 4 times the input pixel scale (stated)
+  - dimension: topography
+    names: [context_slope_mean]
+    product: mgs-mola-megdr
+    scale: window centred on the site (128 ppd)
+    effective_resolution: binned from tracks
+statistics:
+  per_site: true
+  note: Detections are sites, not a continuous map; the mineral class is used to group sites and is compared with Earth only as an interpretation.
+biases:
+  - Targeted observations favour landing candidates and known deposits.
+  - A detection is presence of a spectral signature, not an abundance or an age.
+cannot_characterize: [abundance, alteration age, past water chemistry]
