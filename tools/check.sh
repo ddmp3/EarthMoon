@@ -63,7 +63,7 @@ check_python() {
       pip install --quiet --upgrade pip setuptools wheel
       pip install --quiet -r tools/precompute/requirements.txt \
         -r tools/analog_backend/requirements.txt -r tools/analog_backend/requirements-dev.txt         -r tools/catalog/requirements.txt pip-audit
-      python -m pytest -q -p no:cacheprovider tools/precompute tools/scoring tools/validation tools/docs tools/catalog
+      python -m pytest -q -p no:cacheprovider tools/precompute tools/scoring tools/validation tools/docs tools/catalog tools/research
       python tools/docs/check_links.py
       python tools/catalog/catalog.py check
       (cd tools/analog_backend && python -m pytest -q -p no:cacheprovider)

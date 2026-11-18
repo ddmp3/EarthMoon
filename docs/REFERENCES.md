@@ -1,6 +1,6 @@
 # Scientific references and data sources
 
-How this list was built: every DOI below marked **verified** was resolved against the Crossref registry on 17 November 2026 and its authors, title, journal and pages were compared with the citation. Entries marked **not verified** are well-known books or agency reports without a DOI; their bibliographic details were written from memory and must be checked before being quoted in a publication. Where Crossref returned no page range or article number, the one given here was filled from memory: the DOI is the authoritative identifier. No reference was added that could not be identified. Three DOIs recalled from memory pointed to unrelated papers during verification and were corrected or dropped.
+How this list was built: every DOI below was resolved on Crossref and compared with the citation by `tools/research/verify_refs.py` (first author, year, title words). The last run, on 18 November 2026, verified **59 of 59 DOIs**: R3 and R50 carry an online-first year one year before the print year, and R51 has a corporate author. Report: [wiki/references-check.md](wiki/references-check.md). Entries marked **not verified** have no DOI, and their source page could not be read. No reference was added that could not be identified. During v2, three DOIs recalled from memory pointed to unrelated papers: they were corrected or dropped.
 
 Evidence levels used in the project documents:
 
@@ -38,6 +38,7 @@ Evidence levels used in the project documents:
 | R48 | Barker, M. K. et al. (2021). Improved LOLA elevation maps for south pole landing sites: error estimates and their impact on illumination conditions. *Planetary and Space Science* 203, 105119. doi:10.1016/j.pss.2020.105119 | verified | 5 m LOLA elevation models of landing regions and their errors | Established |
 | R44 | Bickel, V. T. and Kring, D. A. (2020). Lunar south pole boulders and boulder tracks: implications for crew and rover traverses. *Icarus* 348, 113850. doi:10.1016/j.icarus.2020.113850 | verified | Bearing capacity and boulder hazards at the pole | Strongly documented |
 | R62 | Kreslavsky, M. A. and Head, J. W. (2016). The steepest slopes on the Moon from Lunar Orbiter Laser Altimeter (LOLA) data: spatial distribution and correlation with geologic features. *Icarus* 273, 329-336. doi:10.1016/j.icarus.2016.02.036 | verified | Steep slopes and their meaning | Established |
+| R63 | Moriarty, D. and Petro, N. (2022). Insights into lunar differentiation, evolution, and chronology from the Artemis Program. *Europlanet Science Congress 2022*, EPSC2022-295. doi:10.5194/epsc2022-295 | verified (abstract page read 18 Nov 2026) | The south pole lies in highlands crust, near the South Pole-Aitken basin | Established |
 
 ## 2. Regolith, dust and simulants
 
@@ -89,6 +90,7 @@ Evidence levels used in the project documents:
 | R33 | Wan, Z. (2014). New refinements and validation of the collection-6 MODIS land-surface temperature/emissivity product. *Remote Sensing of Environment* 140, 36-45. doi:10.1016/j.rse.2013.08.027 | verified | Accuracy of MODIS land surface temperature |
 | R37 | Guth, P. L. and Geoffroy, T. M. (2021). LiDAR point cloud and ICESat-2 evaluation of 1 second global digital elevation models: Copernicus wins. *Transactions in GIS* 25, 2245-2261. doi:10.1111/tgis.12825 | verified (DOI resolves; title as recalled) | Quality of Copernicus DEM GLO-30 |
 | R32 | Obu, J. et al. (2019). Northern Hemisphere permafrost map based on TTOP modelling for 2000-2016 at 1 km² scale. *Earth-Science Reviews* 193, 299-316. doi:10.1016/j.earscirev.2019.04.023 | verified (DOI resolves; title as recalled) | Relation between air temperature and permafrost; future permafrost data source |
+| R64 | Obu, J., Westermann, S., Kääb, A. and Bartsch, A. (2018). Ground temperature map, 2000-2016, Northern Hemisphere permafrost. PANGAEA. doi:10.1594/PANGAEA.888600 | verified (data page read 18 Nov 2026) | The data set behind R32 (1 km, RMS 2.0 °C against boreholes) |
 | R36 | Peterson, J. (1993). Observations and modeling of seismic background noise. U.S. Geological Survey Open-File Report 93-322. doi:10.3133/ofr93322 | verified | Ambient seismic noise is what limits a seismometer, not the regional earthquake count |
 | R31 | Hartmann, J. and Moosdorf, N. (2012). The new global lithological map database GLiM: a representation of rock properties at the Earth surface. *Geochemistry, Geophysics, Geosystems* 13, Q12004. doi:10.1029/2012GC004370 | verified | Proposed lithology source |
 | R35 | Green, R. O. et al. (2020). The Earth Surface Mineral Dust Source Investigation: an Earth science imaging spectroscopy mission. *2020 IEEE Aerospace Conference*, 1-15. doi:10.1109/AERO47225.2020.9172731 | verified | Proposed mineralogy source (EMIT) |
@@ -116,6 +118,19 @@ Evidence levels used in the project documents:
 
 Proposed additional sources are in [SCIENTIFIC_ROADMAP.md](wiki/v2/SCIENTIFIC_ROADMAP.md), section 4.
 
-## 8. References cited by the team in v1 and not re-verified here
+## 8. Agency reports cited by the team in v1 (checked 18 November 2026)
 
-`docs/scenarios.md` cites NASA NTRS reports for rover limits (VIPER 15°: NTRS 20240013903 and 20250004148; Apollo traverses: NTRS 20250011301; LRV: NASA SP-4214) and Moriarty and Petro, EPSC2022-295, for south pole geology. These identifiers were not checked during this audit. The 15° limit used by the robotics requirement rests on them and is therefore marked for verification in [SCIENTIFIC_LIMITATIONS.md](LIMITS.md).
+The NASA records were read through the NTRS API (`https://ntrs.nasa.gov/api/citations/<id>`).
+
+| Identifier | What it is | What it supports |
+|---|---|---|
+| NTRS 20240013903 | "VIPER Rover Overview and Mobility and Hardware" (B. Bluethmann, presentation, 2024) | **The 15° VIPER climbing limit is not in the abstract.** The slides could not be read. This limit is the only hard requirement of the v2 mobility scenario, so it stays an unverified expert decision (E1 in [LIMITS.md](LIMITS.md)) |
+| NTRS 20250004148 | "VIPER Rover Design and Mission Operations" (T. Fong, presentation, 2025) | Same: no slope figure in the abstract |
+| NTRS 20250011301 | "Apollo Lunar Roving Vehicle as Traversed Performance Metrics: Preparing for Artemis Mobile Vehicle Traverse Planning" (S. R. Jacob et al., abstract) | **Verified:** "The LRVs were designed to navigate a 20–23° slope in favorable conditions with a max of 25°." Slopes computed from 2 m NAC DTMs |
+| NTRS 19930008250 | "A seismic risk for the lunar base" (J. Oberst and Y. Nakamura, conference paper, 1992). The v1 docs attributed it to Nakamura alone | Shallow moonquakes exist. The v1 figure "28 shallow moonquakes in 8 years" was not found on the page read |
+| NTRS 19780005006 | "Results From the Apollo Passive Seismic Experiment" (conference paper, 1977) | Title verified; content not read |
+| NASA SP-4214 (Apollo LRV chapter) | PDF larger than the fetch limit | Not verified |
+| Lunar Sourcebook (R9, R10) | LPI page refused automated access | Not verified (book) |
+| EPSC2022-295 | Now R63 | Verified |
+
+Data set citations recommended by producers are recorded in the `attribution` field of `data/catalog/earth.yaml`, and in the URL fields of `moon.yaml` and `mars.yaml`.

@@ -2,6 +2,15 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T13 Reference verification (PR #8)
+- `tools/research/verify_refs.py` (7 tests, in the gate) checks every DOI of `docs/REFERENCES.md` on Crossref: 59 of 59 verified. Report: `docs/wiki/references-check.md`.
+- NTRS reports read through the NTRS API:
+  - the **VIPER 15° limit is not stated** in the abstracts, so expert decision E1 stays unverified;
+  - the Apollo LRV capability (20 to 23°, max 25°) is verified;
+  - NTRS 19930008250 is by Oberst and Nakamura (1992), not Nakamura alone.
+- Added R63 (Moriarty and Petro 2022, EPSC, verified) and R64 (Obu et al. 2018 permafrost data).
+- The Lunar Sourcebook and SP-4214 remain not verified.
+
 ## 2026-11-18 · T12 Earth data inventory (PR #7)
 - `data/catalog/earth.yaml`: 41 Earth products (22 verified, 12 partly verified, 6 not verified, 1 not available: no global cave inventory exists). Each records its licence, attribution and use (similarity, mask, qualification, operations). The schema requires these for Earth entries (2 new tests).
 - `docs/wiki/data/earth.md`:

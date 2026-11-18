@@ -15,6 +15,7 @@ Scientists can choose a planetary environment and a scenario, display each dimen
   - deprecated parameters are offered in the free-criteria builder without warning (mark or hide them);
   - confidence, coverage, failed requirements and explanation are not displayed;
   - radar labels can touch the frame edge on long names;
+  - the lunar note of `quake_count` ("28 shallow moonquakes in 8 years", `apps/web/src/api.ts` MOON_NOTES and `content-fr.ts`) is not confirmed by its cited source (T13, `docs/REFERENCES.md` section 8): source it or remove it;
   - the "See the match" panel uses the v1 manifest (`apps/web/public/sites/manifest.json`, built by `tools/precompute/site_visuals.py`). Regenerate it from `terrain_v2`: Atacama shows 7.97° in the panel and 7.85° in the scorecard.
 - **David's decision:** areas with partial or missing data are labelled and hatched in a soft pastel colour.
 - **Quality (decision 6.1):** no TypeScript error, no lint error, no vulnerable dependency, TDD, no regression.
