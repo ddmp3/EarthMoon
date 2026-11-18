@@ -2,6 +2,12 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T14 Catalogue coverage review (PR #19)
+- David's request: review Earth, Moon and Mars sources for the widest reliable coverage. Review: `docs/wiki/data/coverage-review.md`.
+- Added: Antarctic rock outcrops (mask south of 60°S, where WorldCover has no tile) and GeoMAP geology of Antarctica; FABDEM (forest and buildings removed) to check slopes; MOCAAS aqueous minerals of Mars; CaSSIS chloride candidates and the Osterloo chloride deposits; Kaguya MI mineral maps of the Moon.
+- Verified from pages David read in a browser (hosts refuse automated reading): geologic maps of the Moon and Mars, Kaguya MI, CaSSIS chlorides, Global Aridity Index (moved to v3.1: v3.0 is deprecated for a dry bias). THEMIS thermal inertia: the page returns 404, still not verified.
+- Parameters: `lithology_class` uses GeoMAP on Earth; `mineral_class` uses MOCAAS on Mars and Kaguya MI on the Moon (which had no mineralogy source). FABDEM and MOCAAS licences approved by David (non-commercial project).
+
 ## 2026-11-18 · T40 Earth feature cube, topography (PR #18)
 - Gate G3 signed by David (18/11); ADR-001 to 009 accepted.
 - New package `tools/discovery/`: vectorised 1 km window metrics, 5 km cell statistics (n, valid fraction, p5 to p95, sigma, state), one local equal-area grid per tile with each window owned once, WorldCover 2021 mask fractions, content keys from source signals (ETag, size, date, SHA-256) and a code version hashed from the sources.

@@ -91,7 +91,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T11](tasks/T11-mars-data.md) | Mars data inventory | T01 | done (PR #6; 8 products need a browser check before G1) |
 | [T12](tasks/T12-earth-data.md) | Earth data inventory | T01 | done (PR #7; 6 products need a browser check before G1) |
 | [T13](tasks/T13-references.md) | Reference verification | T01 | done (PR #8; VIPER 15° and Lunar Sourcebook still unverified) |
-| [T14](tasks/T14-catalog-coverage.md) | Catalogue coverage review (David, 18/11) | T12, T40 findings | doing |
+| [T14](tasks/T14-catalog-coverage.md) | Catalogue coverage review (David, 18/11) | T12, T40 findings | done (PR #19; 7 sources added, 5 verified from pages David read; THEMIS TI page 404) |
 | G1 | Gate: data inventories | T10-T13 | G1 signed 18/11 by David (unreadable sources stay "not verified") |
 | [T20](tasks/T20-planetary-profiles.md) | Planetary environment profiles | G1 | done (PR #9; 6 lunar and 5 Martian ready specs, 5 conditional) |
 | [T21](tasks/T21-dimensions.md) | Dimensions, parameters, redundancy | G1 | done (PR #10; terrain metrics reduce to slope; detrended roughness differs between bodies) |
