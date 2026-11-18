@@ -1,7 +1,7 @@
 # Earth data: what can be compared, masked or used to qualify
 
 Synthesis of task T12 (18 November 2026). Source catalogue: `data/catalog/earth.yaml`.
-- **41 products:** 22 verified, 12 partly verified, 6 not verified, 1 not available.
+- **41 products at T12; 44 after T14** ([coverage review](coverage-review.md)): Antarctic rock outcrops and geology, FABDEM added.
 - Every entry states its licence, its attribution and its **use**: similarity, mask, qualification or operations.
 
 Full table: [earth-table.md](earth-table.md).
@@ -48,7 +48,7 @@ Full table: [earth-table.md](earth-table.md).
 
 ## Not verified (needs a browser)
 
-- Global Aridity Index v3;
+- Global Aridity Index v3: now v3.1, verified (verified 18/11 in T14, see [coverage review](coverage-review.md));
 - OneGeology;
 - Earth Impact Database;
 - MERRA-2 dust;

@@ -171,7 +171,7 @@ products:
     units: "not verified"
     nature: derived
     uncertainty: "not verified"
-    limitations: "Not listed on the PDS and ASU pages read; data volumes at static.mars.asu.edu/pds not read"
+    limitations: "Not listed on the PDS and ASU pages read; the USGS THEMIS thermal inertia product page returned 404 in a browser (David, 18/11/2026): find its current location before use"
     dimensions: [thermal, regolith]
     environments: [global]
     status: not verified
@@ -511,24 +511,24 @@ products:
   - id: usgs-mars-geologic-map-2014
     body: mars
     mission: compilation
-    instrument: multiple
+    instrument: multiple (topography, thermal infrared and other orbital data since Viking)
     product: Geologic map of Mars, Tanaka et al. 2014 (USGS SIM 3292), 1:20,000,000
-    producer: USGS
-    url: https://www.usgs.gov/maps/geologic-map-mars
-    access: {format: "PDF map sheet, pamphlet and unit descriptions; GIS database not listed on the page read", size: "not stated on page", licence: "not stated on page", account: false}
-    coverage: "global (page: global geologic map of Mars)"
-    resolution_spatial: "1:20,000,000 (from the title; not stated on the page read)"
+    producer: "K. L. Tanaka, J. A. Skinner, J. M. Dohm, R. P. Irwin III, E. J. Kolb, C. M. Fortezzo, T. Platz, G. G. Michael, T. M. Hare; USGS"
+    url: https://doi.org/10.3133/sim3292
+    access: {format: "database ZIP (GIS), map sheet, pamphlet and unit descriptions (PDF), metadata", size: "database ZIP 790 MB; map sheet 35.3 MB", licence: "not stated on page", account: false}
+    coverage: "global"
+    resolution_spatial: "1:20,000,000 (Robinson projection)"
     resolution_effective: "not stated on page"
-    resolution_temporal: "published 14 July 2014"
-    units: "geologic units"
+    resolution_temporal: "published 2014"
+    units: "geologic units and landforms through time"
     nature: interpretation
     uncertainty: "not stated on page"
-    limitations: "Authors Tanaka, Skinner, Dohm, Irwin, Kolb, Fortezzo, Platz, Michael, Hare; doi:10.3133/sim3292. Unit attributes and GIS files on pubs.usgs.gov, which refuses automated reading: check in a browser"
+    limitations: "Synoptic map: units are morphology and age, not measured composition. Cite: Tanaka et al. (2014), Geologic map of Mars, USGS SIM 3292, doi:10.3133/sim3292. page read in a browser by David on 18/11/2026 (host refuses automated reading)"
     dimensions: [geology]
     environments: [global]
-    status: partly verified
+    status: verified
     verified_on: "2026-11-18"
-    verified_url: https://www.usgs.gov/maps/geologic-map-mars
+    verified_url: https://pubs.usgs.gov/publication/sim3292
 
   - id: robbins-hynek-mars-craters
     body: mars
@@ -621,21 +621,21 @@ products:
   - id: cassis-chloride-candidates-2024
     body: mars
     mission: ExoMars Trace Gas Orbiter
-    instrument: CaSSIS
-    product: "A Global Dataset of Potential Chloride Deposits on Mars as Identified by TGO CaSSIS (Bickel et al. 2024)"
-    producer: "University of Bern (V. T. Bickel et al.)"
-    url: https://doi.org/10.1038/s41597-024-03685-3
-    access: {format: "not verified", size: "not verified", licence: "not verified", account: "not verified"}
-    coverage: "not verified"
-    resolution_spatial: "not verified"
-    resolution_effective: "not verified"
-    resolution_temporal: "not verified"
-    units: "candidate deposits"
+    instrument: CaSSIS (colour-infrared, about 4 m per pixel), YOLOv5 neural network
+    product: "A Global Dataset of Potential Chloride Deposits on Mars as Identified by TGO CaSSIS (Bickel et al. 2024, Scientific Data 11, 845)"
+    producer: "V. T. Bickel, N. Thomas, A. Pommerol, L. L. Tornabene, M. R. El-Maarry, V. G. Rangarajan (University of Bern)"
+    url: https://doi.org/10.48620/35230
+    access: {format: "one CSV (23 columns, centre latitude and longitude, size, confidence) and the same as shapefile; one TIFF thumbnail per candidate", size: "not stated on page", licence: "not stated in the article text read (CaSSIS images CC-BY-SA 3.0 IGO)", account: false}
+    coverage: "where CaSSIS imaged: 38,995 images, about 7.1% of the surface, to 17 February 2024; candidates up to about 36°N"
+    resolution_spatial: "point per candidate; deposits under 300 m to over 3,000 m (mean 1,043 m, bounding box overestimates)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "CaSSIS images to orbit 27,816 (17 February 2024); later versions under the same DOI"
+    units: "965 chloride deposit candidates"
     nature: interpretation
-    uncertainty: "not verified"
-    limitations: "Article (Nature, PMC) and BORIS record refused automated reading on 18/11/2026; read in a browser before use. Candidates, not confirmed deposits"
+    uncertainty: "test set: average precision 94.5%, precision about 78% at the threshold used; the expert review removed about 50% of detections as false positives"
+    limitations: "Candidates, not confirmed: 4 bands cannot identify chloride unambiguously. Coverage follows CaSSIS imaging, so absence of a candidate is not absence of chloride. Article read in a browser by David on 18/11/2026"
     dimensions: [mineralogy]
     environments: [ancient-aqueous]
-    status: not verified
-    verified_on: null
-    verified_url: null
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://doi.org/10.1038/s41597-024-03685-3

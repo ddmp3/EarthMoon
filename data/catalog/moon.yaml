@@ -713,25 +713,25 @@ products:
 
   - id: usgs-unified-geologic-map
     body: moon
-    mission: compilation
-    instrument: multiple
-    product: Unified Geologic Map of the Moon, 1:5,000,000 (Fortezzo, Spudis and Harrel 2020)
-    producer: USGS Astrogeology
-    url: https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020
-    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
-    coverage: "not verified"
-    resolution_spatial: "1:5,000,000 (from the title)"
-    resolution_effective: "not verified"
+    mission: compilation (Kaguya, Lunar Reconnaissance Orbiter)
+    instrument: six renovated 1:5M geologic maps, drawn on Kaguya TC and LOLA shaded relief
+    product: "Unified Geologic Map of the Moon, 1:5M, 2020 (edition 2.0, 3 March 2020)"
+    producer: "C. M. Fortezzo (USGS), P. D. Spudis (LPI), S. L. Harrel (SD Mines); USGS Astrogeology Science Center"
+    url: https://asc-astropedia.s3.us-west-2.amazonaws.com/Moon/Geology/Unified_Geologic_Map_of_the_Moon_GIS_v2.zip
+    access: {format: "zipped ESRI GIS (unit polygons, contacts, linear features, annotation), PDF and JPG map", size: "224,413,040 bytes", licence: "CC0, but please cite authors", account: false}
+    coverage: "global, 90°S to 90°N"
+    resolution_spatial: "1:5,000,000; vertices about 3 km apart, smoothed with a tolerance of about 16 km"
+    resolution_effective: "not stated on page"
     resolution_temporal: "not applicable"
-    units: "geologic units"
+    units: "geologic units by type and age (Copernican, Eratosthenian, Imbrian, Nectarian, pre-Nectarian); craters are discrete units since version 2"
     nature: interpretation
-    uncertainty: "not verified"
-    limitations: "USGS hosts refused automated access (HTTP 403); verify in a browser"
+    uncertainty: "attribute accuracy: best effort; horizontal position: accurate to the LOLA control net"
+    limitations: "Photogeologic units, not measured composition; subject to update after community review. Cite Fortezzo, Spudis and Harrel (2020), LPSC 51, abstract 2760. page read in a browser by David on 18/11/2026 (host refuses automated reading)"
     dimensions: [geology]
     environments: [global]
-    status: not verified
-    verified_on: null
-    verified_url: null
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020
 
   - id: robbins-2019-crater-database
     body: moon
@@ -780,21 +780,21 @@ products:
   - id: kaguya-mi-mineral-maps
     body: moon
     mission: SELENE (Kaguya)
-    instrument: Multiband Imager
-    product: "Kaguya MI derived mineral maps, 512 ppd (plagioclase, olivine, clinopyroxene, orthopyroxene, FeO, optical maturity; Lemelin et al.)"
-    producer: "USGS Astrogeology distribution; JAXA SELENE data"
-    url: https://astrogeology.usgs.gov/search/map/kaguya_lunar_multiband_imager_59mpp
-    access: {format: "not verified", size: "not verified", licence: "not verified", account: "not verified"}
-    coverage: "not verified"
-    resolution_spatial: "not verified"
-    resolution_effective: "not verified"
-    resolution_temporal: "not applicable"
-    units: "not verified"
+    instrument: Multiband Imager (UV-visible bands 415 to 1001 nm)
+    product: "Kaguya Lunar Multiband Imager 59mpp: mineral maps (plagioclase, olivine, clinopyroxene, orthopyroxene), FeO, OMAT, SMFe, plagioclase grain size, model error (Lemelin et al.)"
+    producer: "USGS Astrogeology Science Center, Lemelin et al. (University of Hawaii), JAXA SELENE MI team (M. Ohtake, PI)"
+    url: https://planetarymaps.usgs.gov/mosaic/Lunar_MI_mineral_maps/
+    access: {format: "GeoTIFF, 32-bit, one band per map (184,320 x 51,200 pixels)", size: "41 GB", licence: "JAXA conditions for material usage (jda.jaxa.jp/en/service.php); credit JAXA and the SELENE/Kaguya data", account: false}
+    coverage: "50°S to 50°N; data gaps set to NoData"
+    resolution_spatial: "512 ppd (59.2 m), resampled from 2048 ppd (15 m)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "published 1 September 2016"
+    units: "mineral abundance in weight percent (wt%)"
     nature: interpretation
-    uncertainty: "not verified"
-    limitations: "USGS Astrogeology refused automated reading (HTTP 403) on 18/11/2026; verify in a browser. Would give the Moon a mineral_class source, which has none today"
+    uncertainty: "a model error map is one of the 9 products; horizontal position: best effort"
+    limitations: "Hapke radiative transfer model; limited to ±50° by topographic shading; details of limitations announced for a future publication. Cite Lemelin et al. (2016) LPSC 47 abstract 2994 and Lemelin et al. (2019) PSS 165. page read in a browser by David on 18/11/2026 (host refuses automated reading)"
     dimensions: [mineralogy]
     environments: [global]
-    status: not verified
-    verified_on: null
-    verified_url: null
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://astrogeology.usgs.gov/search/map/kaguya_lunar_multiband_imager_59mpp

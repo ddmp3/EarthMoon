@@ -9,8 +9,8 @@ Synthesis of task T11 (18 November 2026). Source catalogue: `data/catalog/mars.y
 | Ice-rich mid-latitudes | SWIM ice consistency map (3 km, interpretation, 0 to 60°N; south not read) | MOLA MEGDR; HiRISE DTMs where available | Neutron flux (Odyssey); SHARAD radargrams; TES thermal inertia | **Yes**, with SWIM as an interpretation, not an ice measurement |
 | Polar layered deposits | Latitude plus MOLA polar grids (up to 512 ppd) | MOLA polar grids | SHARAD (and 3D volumes), MARSIS | **Yes** for terrain and radar |
 | Ancient aqueous terrain (clays, sulfates, chlorides) | OMEGA / CRISM hydrated mineral detection sites (interpretation) | HiRISE DTMs (1 to 2 m) at targeted sites; MOLA | CRISM targeted cubes; GRS Cl and water (5° bins) | **Partly**: detections are sites, not a continuous map |
-| Sedimentary basins (landing sites such as Jezero, Gale) | Needs the geologic map (not verified) | HiRISE DTMs; CTX 5 m mosaic | CRISM | **Partly** |
-| Volcanic plains | Needs the geologic map (not verified) | MOLA, CTX, HiRISE | TES thermal inertia | **Partly** |
+| Sedimentary basins (landing sites such as Jezero, Gale) | Geologic map (verified in T14) | HiRISE DTMs; CTX 5 m mosaic | CRISM | **Partly** |
+| Volcanic plains | Geologic map (verified in T14) | MOLA, CTX, HiRISE | TES thermal inertia | **Partly** |
 | Dune fields | Needs a dune catalogue (not inventoried yet) | HiRISE, CTX | Thermal inertia, Climate Database winds (model) | **No**, the mask is missing |
 | Caves and skylights | Cave candidate catalogue (not verified) | HiRISE DTMs | THEMIS night IR (not verified) | **No**, until the catalogue is verified |
 
@@ -32,11 +32,11 @@ Synthesis of task T11 (18 November 2026). Source catalogue: `data/catalog/mars.y
 
 ## To finish before gate G1 (needs a browser)
 
-- Geologic map of Mars (Tanaka et al. 2014);
+- Geologic map of Mars (Tanaka et al. 2014) (verified 18/11 in T14, see [coverage review](coverage-review.md));
 - Robbins and Hynek crater database;
 - the cave candidate catalogue;
 - MOLA-HRSC blended DEM;
-- THEMIS mosaics and thermal inertia;
+- THEMIS mosaics and thermal inertia (USGS page returned 404 in a browser on 18/11);
 - TES albedo and dust cover index;
 - EMM and Tianwen-1 access;
 - a dune field catalogue (not yet inventoried).
