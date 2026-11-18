@@ -40,6 +40,22 @@ export const parameterCatalog = [
     help: 'Number of magnitude 2.5+ earthquakes within 300 km since 2000. The Moon is seismically very quiet.' },
   { id: 'volcano_distance', unit: 'km', label: 'Distance to a volcano',
     help: 'Distance to the nearest recent volcano: volcanic rock (basalt) stands in for lunar ground.' },
+  { id: 'slope_p95', unit: '°', label: 'Steep slope (95th percentile)',
+    help: 'Slope exceeded by only 5% of the ground over 1 km (40 m baseline). A robust replacement for the maximum slope. Lunar south pole: 9.4 to 17.9° for half of the 1 km areas (LOLA).' },
+  { id: 'roughness_detrended', unit: 'm', label: 'Relief (tilt removed)',
+    help: 'Variation of elevation over 1 km once the overall tilt is removed: craters, ridges, gullies. Lunar south pole: 5.1 to 10.5 m for half of the 1 km areas (LOLA).' },
+  { id: 'traversable_15', unit: '', label: 'Ground under 15°',
+    help: 'Share of the 1 km area whose slope is 15° or less, the climbing limit cited for the VIPER rover. Slope alone does not make ground drivable: soil matters too.' },
+  { id: 'traversable_20', unit: '', label: 'Ground under 20°',
+    help: 'Share of the 1 km area whose slope is 20° or less.' },
+  { id: 'traversable_25', unit: '', label: 'Ground under 25°',
+    help: 'Share of the 1 km area whose slope is 25° or less.' },
+  { id: 'specific_humidity', unit: 'g/kg', label: 'Water vapour in the air',
+    help: 'Grams of water vapour per kilogram of air (specific humidity). Unlike relative humidity, it does not depend on temperature, so it measures how dry the air really is. The Moon has no air.' },
+  { id: 'quake_m45_count', unit: '', label: 'Earthquakes M 4.5+ (since 2000)',
+    help: 'Magnitude 4.5+ earthquakes within 300 km, 2000 to November 2026. Counted from M 4.5 because smaller events are only complete near dense seismic networks. Regional activity, not the noise at the site.' },
+  { id: 'lava_tube_evidence', unit: '', label: 'Lava tube evidence',
+    help: '3: a tube has been entered or mapped (published reference). 2: probable (collapse pits reported). 1: only a basaltic volcano nearby, which proves nothing. Empty: not assessed, which does not mean there is no cave.' },
 ] as const
 
 // Types generated from apps/api/openapi.yaml: run `npm run generate:api` after every contract change.

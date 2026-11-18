@@ -44,7 +44,8 @@ Reusable as is: `tools/precompute/terrain_metrics.py` (any grid), the value/sigm
 
 **Quality gate (`tools/check.sh`, created by T01; must pass before every merge)**
 - API: `tsc --noEmit`, vitest. Web: `tsc -b`, `oxlint`, unit tests, `vite build`. Python: pytest.
-- Security: `npm audit` with 0 vulnerabilities in `apps/api` and `apps/web`; `pip-audit` on every `requirements.txt`. New dependency: exact version, maintained, no known CVE, justified in the PR.
+- Security: production dependencies have 0 vulnerabilities, no exception (`npm audit --omit=dev`). Development dependencies: every advisory must be in `tools/security/audit-allowlist.json` with a reason and a review date (allowed only if no patch exists, it does not reach production and is not exploitable in our use). Python: `pip-audit` on the installed environment, 0. New dependency: exact version, maintained, no known CVE, justified in the PR. To add an npm dependency use `npx npm@11 install --save-exact`, then check that `npm ci` (npm 10) still works.
+- CI: `.github/workflows/check.yml` runs `tools/check.sh all` on every pull request (no secrets, no deployment).
 - Docker: `docker compose up --build`, then `tools/validation/e2e.py` and `tools/validation/ui-audit/audit.mjs` (desktop and phone).
 - TDD: write the failing test first. No regression: existing tests keep passing unless the PR explains why a result changed.
 
@@ -83,7 +84,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 
 | Task | Title | Depends on | Status |
 |---|---|---|---|
-| [T01](tasks/T01-quality-harness.md) | Quality harness and non-regression baseline | – | todo |
+| [T01](tasks/T01-quality-harness.md) | Quality harness and non-regression baseline | – | done (PR #3) |
 | [T02](tasks/T02-docs-reset.md) | Docs reset: short README, wiki, history | T01 | todo |
 | [T10](tasks/T10-moon-data.md) | Lunar data inventory | T01 | todo |
 | [T11](tasks/T11-mars-data.md) | Mars data inventory | T01 | todo |

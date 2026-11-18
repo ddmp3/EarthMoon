@@ -237,6 +237,8 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .match-bar { display: inline-block; width: 84px; height: 7px; border-radius: 4px; background: var(--panel-2); overflow: hidden; vertical-align: middle; margin-right: 8px; }
 .match-bar i { display: block; height: 100%; background: var(--tone); border-radius: 4px; }
 .match-bar-none { background: repeating-linear-gradient(135deg, var(--panel-2) 0 5px, color-mix(in srgb, var(--limit) 45%, transparent) 5px 7px); }
+/* Missing data: soft pastel hatching, never an empty or zero bar (docs/plan/README.md, section 2). */
+.match-bar-missing { background: repeating-linear-gradient(135deg, var(--panel-2) 0 5px, color-mix(in srgb, #b9c6e8 40%, transparent) 5px 7px); }
 .match-value { font-size: 0.82rem; color: var(--muted); }
 .pill { display: inline-block; font-size: 0.74rem; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; color: var(--tone); background: color-mix(in srgb, var(--tone) 16%, transparent); }
 .source-cell { color: var(--muted); font-size: 0.8rem; max-width: 210px; }
@@ -252,6 +254,8 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .radar-label { fill: var(--muted); font-size: 12px; font-family: var(--font-body); }
 .radar-shape { fill: color-mix(in srgb, var(--accent) 22%, transparent); stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
 .radar-dot { fill: var(--tone); stroke: var(--panel-2); stroke-width: 2; }
+.radar-axis-missing { stroke: color-mix(in srgb, #b9c6e8 55%, transparent); stroke-dasharray: 3 4; }
+.radar-label-missing { fill: color-mix(in srgb, var(--muted) 70%, transparent); font-style: italic; }
 
 /* ------------------------------------------------------------------ credits */
 .credits { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; padding: 32px var(--gutter); border-top: 1px solid var(--line); color: var(--muted); font-size: 0.82rem; }

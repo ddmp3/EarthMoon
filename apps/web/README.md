@@ -5,7 +5,7 @@ React + TypeScript + Vite + Leaflet + zustand. The interface opens in English (S
 ```bash
 npm ci
 npm run dev            # http://localhost:5173, expects the API on http://localhost:3001 (VITE_API_URL to change it)
-npm run build && npm run lint
+npm run build && npm run lint && npm test   # or, from the repository root: tools/check.sh web
 npm run generate:api   # regenerate src/api-schema.ts after any change to ../api/openapi.yaml
 ```
 

@@ -1,0 +1,98 @@
+{
+  "id": "mauna-kea",
+  "name": "Mauna Kea, upper slopes (Hawaii)",
+  "lat": 19.8,
+  "lon": -155.46,
+  "role": "validation",
+  "criteria": [
+    {
+      "param": "t2m_mean",
+      "value": 0.79,
+      "score": 0,
+      "verdict": "mismatch",
+      "contribution": 0,
+      "maxContribution": 33.333333333333336,
+      "sigma": 6.37,
+      "flags": [
+        "elevation_corrected",
+        "large_elevation_correction"
+      ]
+    },
+    {
+      "param": "wind",
+      "value": null,
+      "score": 0,
+      "verdict": "missing",
+      "contribution": 0,
+      "maxContribution": 0
+    },
+    {
+      "param": "specific_humidity",
+      "value": null,
+      "score": 0,
+      "verdict": "missing",
+      "contribution": 0,
+      "maxContribution": 0
+    },
+    {
+      "param": "precipitation",
+      "value": null,
+      "score": 0,
+      "verdict": "missing",
+      "contribution": 0,
+      "maxContribution": 0
+    },
+    {
+      "param": "quake_m45_count",
+      "value": 140,
+      "score": 0,
+      "verdict": "mismatch",
+      "contribution": 0,
+      "maxContribution": 33.333333333333336,
+      "sigma": 11.83
+    },
+    {
+      "param": "lst_amplitude",
+      "value": 35.14,
+      "score": 1,
+      "verdict": "match",
+      "contribution": 16.666666666666668,
+      "maxContribution": 16.666666666666668
+    },
+    {
+      "param": "t2m_min",
+      "value": -7.36,
+      "score": 0,
+      "verdict": "mismatch",
+      "contribution": 0,
+      "maxContribution": 16.666666666666668,
+      "sigma": 6.37,
+      "flags": [
+        "elevation_corrected",
+        "large_elevation_correction"
+      ]
+    }
+  ],
+  "total": 17,
+  "coverage": 0.6,
+  "totalRange": {
+    "min": 10,
+    "max": 50
+  },
+  "requirements": "met",
+  "missing": [
+    "wind",
+    "specific_humidity",
+    "precipitation"
+  ],
+  "stability": {
+    "rankP10": 25,
+    "rankMedian": 33,
+    "rankP90": 34,
+    "topHalfShare": 0.02,
+    "totalP10": 12.4,
+    "totalP90": 49.8,
+    "requirementsShare": 1
+  },
+  "confidence": "low"
+}
