@@ -112,7 +112,7 @@ parameters:
     definition: Rock class of the mapped unit (for example basalt, anorthosite, sedimentary)
     unit: class
     scale: map unit (GLiM open grid 0.5°; Macrostrat multi-scale; lunar 1:5M, Mars 1:20M maps)
-    sources: {earth: [glim, macrostrat], moon: [usgs-unified-geologic-map], mars: [usgs-mars-geologic-map-2014]}
+    sources: {earth: [glim, macrostrat, scar-geomap-v2022-08], moon: [usgs-unified-geologic-map], mars: [usgs-mars-geologic-map-2014]}
     comparability: indirect
     decision: keep
     reason: Rock type is the first geological match. Planetary maps are not verified yet, so the Moon and Mars side waits (T46).
@@ -132,7 +132,7 @@ parameters:
     definition: Presence of a mineral group from imaging spectroscopy (for example clays, sulfates, carbonates)
     unit: class (presence)
     scale: EMIT 60 m (52°N to 52°S); OMEGA and CRISM detection sites
-    sources: {earth: [emit-l2b-minerals], mars: [mex-omega-global-maps, mro-crism-mtrdr]}
+    sources: {earth: [emit-l2b-minerals], moon: [kaguya-mi-mineral-maps], mars: [mex-omega-global-maps, mro-crism-mtrdr, mocaas-2023]}
     comparability: indirect
     decision: keep
     reason: The only mineralogy available on both Earth and Mars. Interpretation on both sides, presented as presence only.

@@ -35,8 +35,9 @@ These need a person to open the page in a browser (the hosts refuse automated re
 
 ## Parameters
 
-Proposed changes to `data/parameters.yaml`, to apply only once the entries are verified:
-- `lithology_class`, Earth: add `scar-geomap-v2022-08` (verified now).
-- `mineral_class`, Mars: add `mocaas-2023`.
-- `mineral_class`, Moon: add `kaguya-mi-mineral-maps` once verified.
-- Mask south of 60°S: `add-rock-outcrop-v7-3`, in T40 or T43.
+Applied on 18/11/2026 with David's agreement:
+- `lithology_class`, Earth: `scar-geomap-v2022-08` added.
+- `mineral_class`, Mars: `mocaas-2023` added.
+- `mineral_class`, Moon: `kaguya-mi-mineral-maps` added; it stays unusable until its page is verified.
+- Mask south of 60°S: `add-rock-outcrop-v7-3`, to wire into the feature cube (T43).
+- Licences: FABDEM (non-commercial) and MOCAAS (licence not stated) approved by David; EarthMoon is not commercial.

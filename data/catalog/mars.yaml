@@ -589,7 +589,7 @@ products:
     units: "five spectral-mineral classes: Fe/Mg clays; polyhydrated sulfates (or zeolites); monohydrated sulfates; carbonates (or serpentine); Al clays and hydrated silica"
     nature: interpretation
     uncertainty: "not stated on page; local maps not suitable to pinpoint detections at metre scale (georeferencing)"
-    limitations: "Licence not stated: ask before redistribution. Cite Carter et al. (2023) Icarus 389, 115164, doi:10.1016/j.icarus.2022.115164. Presence classes, not abundances"
+    limitations: "Licence not stated on page; use approved by David on 18/11/2026 (non-commercial project), credit the authors. Cite Carter et al. (2023) Icarus 389, 115164, doi:10.1016/j.icarus.2022.115164. Presence classes, not abundances"
     dimensions: [mineralogy]
     environments: [ancient-aqueous]
     status: verified

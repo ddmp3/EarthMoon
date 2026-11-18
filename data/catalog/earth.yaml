@@ -1058,7 +1058,7 @@ products:
     units: "m"
     nature: derived
     uncertainty: "MAE vs lidar: forests 5.15 to 2.88 m, built-up 1.61 to 1.12 m (Copernicus to FABDEM); ICESat-2 RMSE 14.32 to 11.13 m"
-    limitations: "Non-commercial licence; corrected only in built and forested areas; pits and artefacts of GLO-30 remain; steep slopes less reliable. Use: check that forest and buildings do not create the slope or roughness of a candidate (Copernicus is a surface model)"
+    limitations: "Non-commercial licence: use approved by David on 18/11/2026 (EarthMoon is not commercial); corrected only in built and forested areas; pits and artefacts of GLO-30 remain; steep slopes less reliable. Use: check that forest and buildings do not create the slope or roughness of a candidate (Copernicus is a surface model)"
     dimensions: [topography]
     environments: [global-land]
     status: verified
