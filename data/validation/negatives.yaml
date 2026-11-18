@@ -1,0 +1,78 @@
+rule: uniform points on the sphere, seed 20261119, draw order, ESA WorldCover 2021
+  class in 10 Tree cover, 40 Cropland, 50 Built-up, 80 Permanent water bodies, 90
+  Herbaceous wetland, 95 Mangroves; 3 per class
+source: https://esa-worldcover.s3.eu-central-1.amazonaws.com/v200/2021/map (legend
+  read from the file metadata)
+negatives:
+- lat: -24.74451
+  lon: -59.80577
+  class: 10
+  class_name: Tree cover
+- lat: -14.27833
+  lon: 27.62983
+  class: 90
+  class_name: Herbaceous wetland
+- lat: 60.2508
+  lon: 126.42008
+  class: 10
+  class_name: Tree cover
+- lat: -2.03268
+  lon: 102.86246
+  class: 10
+  class_name: Tree cover
+- lat: 47.65239
+  lon: -4.49236
+  class: 80
+  class_name: Permanent water bodies
+- lat: 40.41076
+  lon: 114.81135
+  class: 40
+  class_name: Cropland
+- lat: 25.31917
+  lon: 36.47288
+  class: 80
+  class_name: Permanent water bodies
+- lat: -6.46227
+  lon: 131.60289
+  class: 80
+  class_name: Permanent water bodies
+- lat: 62.95809
+  lon: 69.60863
+  class: 90
+  class_name: Herbaceous wetland
+- lat: 55.18539
+  lon: 30.95912
+  class: 40
+  class_name: Cropland
+- lat: -35.86273
+  lon: -60.25775
+  class: 40
+  class_name: Cropland
+- lat: 43.40703
+  lon: 13.20335
+  class: 50
+  class_name: Built-up
+- lat: 68.81483
+  lon: -82.14648
+  class: 90
+  class_name: Herbaceous wetland
+- lat: 15.03911
+  lon: 75.40412
+  class: 50
+  class_name: Built-up
+- lat: 25.9822
+  lon: -81.64236
+  class: 95
+  class_name: Mangroves
+- lat: 46.96149
+  lon: 32.01609
+  class: 50
+  class_name: Built-up
+- lat: 12.37286
+  lon: -15.57398
+  class: 95
+  class_name: Mangroves
+- lat: 16.0458
+  lon: 81.11548
+  class: 95
+  class_name: Mangroves

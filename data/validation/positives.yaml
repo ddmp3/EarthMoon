@@ -1,0 +1,40 @@
+# Positive controls of the v3 validation protocol (task T25). Frozen with the tag validation-protocol-v1.
+# Inclusion rule (docs/VALIDATION_PROTOCOL.md): a place is a positive control for a scenario only if
+#   1. it is named in the title or abstract of a reference marked "verified" in docs/REFERENCES.md;
+#   2. that text describes it as an analog field site, or as a test site for the function of the scenario;
+#   3. a public gazetteer (OpenStreetMap Nominatim, queried 18 November 2026) locates it by name.
+# Abstracts were read through the Crossref API on 18 November 2026. No place was added from memory.
+scenarios:
+  D:
+    reference: R29
+    quote: "five analog target regions: (1) Big Craters and (2) Highway lava flows at Craters of the Moon National Monument and Preserve, Idaho, and (3) Mauna Ulu low shield, (4) Kīlauea Iki lava lake, and (5) Kīlauea caldera"
+    function: Earth analogs to Mars basaltic geology (present-day and early Mars)
+    targets: [mars-volcanic-plains]
+    controls:
+      - {name: Big Craters, lat: 43.44379, lon: -113.56113, gazetteer: "Big Craters, Butte County, Idaho (volcano)"}
+      - {name: Mauna Ulu, lat: 19.36733, lon: -155.20157, gazetteer: "Mauna Ulu, Hawaiʻi County (volcano)"}
+      - {name: Kīlauea Iki, lat: 19.41374, lon: -155.24662, gazetteer: "Kīlauea Iki, Hawaiʻi County (volcano)"}
+      - {name: Kīlauea caldera, lat: 19.39591, lon: -155.28608, gazetteer: "Kilauea Caldera, Hawaiʻi County (cliff)"}
+    excluded:
+      - {name: Highway lava flow, reason: "not found by the gazetteer"}
+  C4-radar:
+    reference: R25
+    quote: "We have tested the capacity of GPR to sense lava tube geometry at Lava Beds National Monument in California, USA ... Skull Cave ... and Valentine Cave"
+    function: Ground-penetrating radar test on lava tubes
+    targets: [moon-pits]
+    controls:
+      - {name: Skull Cave, lat: 41.73138, lon: -121.51066, gazetteer: "Skull Cave, Siskiyou County, California (cave entrance)"}
+      - {name: Valentine Cave, lat: 41.70926, lon: -121.47779, gazetteer: "Valentine Cave, Siskiyou County, California (cave entrance)"}
+    excluded:
+      - {name: "Fuji volcano lava tube (R24)", reason: "the abstract names the volcano, not a locatable tube"}
+  A: {controls: [], note: "no verified reference names a lunar base analog site in its title or abstract"}
+  B: {controls: [], note: "no verified reference names a lunar rover test site in its title or abstract"}
+  C1-geology: {controls: [], note: "R29 sites apply to Mars geology (D), not to lunar geology instruments"}
+  C2-navigation: {controls: [], note: "none found"}
+  C3-thermal: {controls: [], note: "none found"}
+  C5-mineralogy: {controls: [], note: "none found"}
+  C6-sampling: {controls: [], note: "none found"}
+  C7-mobility: {controls: [], note: "none found"}
+not_eligible:
+  - {name: "Mistastin Lake (R54, R55)", reason: "the abstracts describe anorthosite impactites but do not call the place an analog"}
+  - {name: "v2 known_for list (data/candidates.json)", reason: "written by the team that built the model (finding L6)"}

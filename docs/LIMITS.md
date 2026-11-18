@@ -45,6 +45,6 @@ Provisional choices, labelled `expert_judgement` in the API, until a named exper
 | E11 | Confidence label thresholds | Coverage 0.6 / 0.9, interval 15 / 30 points | Users of the tool |
 | E12 | Reanalysis values more than 1 km off in elevation | Set to missing | Climatologists |
 | E13 | Base site requirements beyond slope (bearing capacity, boulder density, landing hazards) | Not assessed: no Earth or lunar layer in the catalogues measures them | Lander and surface systems engineers |
-| E14 | Mars rover mobility limits | None set. R43 (MSL traverse performance) is cited, but its figures were not read | Mars rover mobility engineers |
+| E14 | Mars rover mobility limit per terrain | R43 abstract (read 18 Nov 2026): up to 22° on smooth bedrock, 28° on some cohesive soils, embedding at 17° in loose sand. Which applies needs the terrain type, which no global layer gives | Mars rover mobility engineers |
 | E15 | Site requirements of each instrument in scenario C | None set; every instrument row is marked as an open requirement | Instrument teams |
 | E16 | Which planetary environment each scenario targets | Proposed in [SCENARIOS.md](SCENARIOS.md) from the T20 environments (refines E8) | Lunar and Mars landing-site teams |
