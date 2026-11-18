@@ -514,21 +514,21 @@ products:
     instrument: multiple
     product: Geologic map of Mars, Tanaka et al. 2014 (USGS SIM 3292), 1:20,000,000
     producer: USGS
-    url: https://astrogeology.usgs.gov/
-    access: {format: "not verified", size: "not verified", licence: "not verified", account: false}
-    coverage: "global (from the title)"
-    resolution_spatial: "1:20,000,000 (from the title)"
-    resolution_effective: "not verified"
-    resolution_temporal: "not applicable"
+    url: https://www.usgs.gov/maps/geologic-map-mars
+    access: {format: "PDF map sheet, pamphlet and unit descriptions; GIS database not listed on the page read", size: "not stated on page", licence: "not stated on page", account: false}
+    coverage: "global (page: global geologic map of Mars)"
+    resolution_spatial: "1:20,000,000 (from the title; not stated on the page read)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "published 14 July 2014"
     units: "geologic units"
     nature: interpretation
-    uncertainty: "not verified"
-    limitations: "USGS hosts and ADS refused automated access; verify in a browser"
+    uncertainty: "not stated on page"
+    limitations: "Authors Tanaka, Skinner, Dohm, Irwin, Kolb, Fortezzo, Platz, Michael, Hare; doi:10.3133/sim3292. Unit attributes and GIS files on pubs.usgs.gov, which refuses automated reading: check in a browser"
     dimensions: [geology]
     environments: [global]
-    status: not verified
-    verified_on: null
-    verified_url: null
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://www.usgs.gov/maps/geologic-map-mars
 
   - id: robbins-hynek-mars-craters
     body: mars
@@ -570,6 +570,72 @@ products:
     limitations: "Not read; candidates are not confirmed caves"
     dimensions: [subsurface]
     environments: [caves]
+    status: not verified
+    verified_on: null
+    verified_url: null
+
+  - id: mocaas-2023
+    body: mars
+    mission: Mars Express and MRO
+    instrument: OMEGA and CRISM (near-infrared imaging spectroscopy)
+    product: "MOCAAS, A Mars Orbital Catalog of Aqueous Alteration Signatures (database v2, November 2023)"
+    producer: "J. Carter et al., Institut d'Astrophysique Spatiale (Université Paris-Saclay)"
+    url: https://www.ias.universite-paris-saclay.fr/moccas/
+    access: {format: "tiled geo-referenced GeoTIFF (raster only for now)", size: "not stated on page", licence: "not stated on page", account: "no account mentioned; direct download link"}
+    coverage: "non-polar latitudes, up to ±70°; polar maps on request"
+    resolution_spatial: "native 500 m (OMEGA) and 100 m (CRISM); 10 m local maps of Gale, Nili Fossae, Oxia Planum, Mawrth Vallis"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "version November 2023; yearly updates planned"
+    units: "five spectral-mineral classes: Fe/Mg clays; polyhydrated sulfates (or zeolites); monohydrated sulfates; carbonates (or serpentine); Al clays and hydrated silica"
+    nature: interpretation
+    uncertainty: "not stated on page; local maps not suitable to pinpoint detections at metre scale (georeferencing)"
+    limitations: "Licence not stated: ask before redistribution. Cite Carter et al. (2023) Icarus 389, 115164, doi:10.1016/j.icarus.2022.115164. Presence classes, not abundances"
+    dimensions: [mineralogy]
+    environments: [ancient-aqueous]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://www.ias.universite-paris-saclay.fr/moccas/
+
+  - id: osterloo-chlorides-leask-ehlmann-2021
+    body: mars
+    mission: Mars Odyssey (detection), MRO (follow-up)
+    instrument: THEMIS (Osterloo et al. 2010 detections); MOLA, CTX, CRISM, HiRISE statistics
+    product: "Data accompanying Evidence for deposition of chloride on Mars from small-volume surface water events (Leask and Ehlmann 2021)"
+    producer: "E. K. Leask and B. L. Ehlmann, Caltech"
+    url: https://data.caltech.edu/records/kasms-vp209
+    access: {format: "CSV (54.5 kB) and two xlsx", size: "639.5 kB", licence: CC0, account: "not stated on page"}
+    coverage: "not stated on page"
+    resolution_spatial: "not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "version 1.0, 9 November 2021"
+    units: "deposits of Osterloo et al. 2010 with their Tanaka et al. 2014 unit and statistics"
+    nature: interpretation
+    uncertainty: "not stated on page"
+    limitations: "Whether the CSV holds coordinates is not stated (file name says points): open it before use. doi:10.22002/D1.2176"
+    dimensions: [mineralogy]
+    environments: [ancient-aqueous]
+    status: partly verified
+    verified_on: "2026-11-18"
+    verified_url: https://data.caltech.edu/records/kasms-vp209
+
+  - id: cassis-chloride-candidates-2024
+    body: mars
+    mission: ExoMars Trace Gas Orbiter
+    instrument: CaSSIS
+    product: "A Global Dataset of Potential Chloride Deposits on Mars as Identified by TGO CaSSIS (Bickel et al. 2024)"
+    producer: "University of Bern (V. T. Bickel et al.)"
+    url: https://doi.org/10.1038/s41597-024-03685-3
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: "not verified"}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not verified"
+    units: "candidate deposits"
+    nature: interpretation
+    uncertainty: "not verified"
+    limitations: "Article (Nature, PMC) and BORIS record refused automated reading on 18/11/2026; read in a browser before use. Candidates, not confirmed deposits"
+    dimensions: [mineralogy]
+    environments: [ancient-aqueous]
     status: not verified
     verified_on: null
     verified_url: null

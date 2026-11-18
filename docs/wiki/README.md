@@ -4,7 +4,7 @@ Long-form material that the short docs in `docs/` summarize: data inventories, m
 
 | Folder | Content | Written by |
 |---|---|---|
-| `data/` | Lunar ([moon.md](data/moon.md)), Martian ([mars.md](data/mars.md)) and Earth ([earth.md](data/earth.md)) data inventories | T10, T11, T12 |
+| `data/` | Lunar ([moon.md](data/moon.md)), Martian ([mars.md](data/mars.md)) and Earth ([earth.md](data/earth.md)) data inventories; [coverage review](data/coverage-review.md) | T10, T11, T12, T14 |
 | `methods/` | Environment profiles ([profiles.md](methods/profiles.md)), [parameters](methods/parameters.md), [sampling](methods/sampling.md), [comparison](methods/comparison.md), [mapping](methods/mapping.md), sampling, comparison, mapping | T20 to T26 |
 | `runs/` | Reports of computation runs, with hashes and numbers | T40 onwards |
 | `ui/` | Interface specifications ([map-spec.md](ui/map-spec.md)) | T26 |

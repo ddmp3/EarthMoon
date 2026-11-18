@@ -776,3 +776,25 @@ products:
     status: not verified
     verified_on: null
     verified_url: null
+
+  - id: kaguya-mi-mineral-maps
+    body: moon
+    mission: SELENE (Kaguya)
+    instrument: Multiband Imager
+    product: "Kaguya MI derived mineral maps, 512 ppd (plagioclase, olivine, clinopyroxene, orthopyroxene, FeO, optical maturity; Lemelin et al.)"
+    producer: "USGS Astrogeology distribution; JAXA SELENE data"
+    url: https://astrogeology.usgs.gov/search/map/kaguya_lunar_multiband_imager_59mpp
+    access: {format: "not verified", size: "not verified", licence: "not verified", account: "not verified"}
+    coverage: "not verified"
+    resolution_spatial: "not verified"
+    resolution_effective: "not verified"
+    resolution_temporal: "not applicable"
+    units: "not verified"
+    nature: interpretation
+    uncertainty: "not verified"
+    limitations: "USGS Astrogeology refused automated reading (HTTP 403) on 18/11/2026; verify in a browser. Would give the Moon a mineral_class source, which has none today"
+    dimensions: [mineralogy]
+    environments: [global]
+    status: not verified
+    verified_on: null
+    verified_url: null

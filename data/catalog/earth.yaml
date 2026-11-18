@@ -992,3 +992,75 @@ products:
     status: not available
     verified_on: null
     verified_url: null
+
+  - id: add-rock-outcrop-v7-3
+    body: earth
+    mission: Landsat 8
+    instrument: OLI and TIRS (automated rock, snow, cloud and sea classification)
+    product: "Automatically extracted rock outcrop dataset for Antarctica, version 7.3 (SCAR Antarctic Digital Database)"
+    producer: "L. Gerrish, UK Polar Data Centre (British Antarctic Survey); method by Burton-Johnson et al. 2016"
+    url: https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01426
+    access: {format: "GeoPackage (about 203 MB) and Shapefile (about 40 MB)", size: "243 MB", licence: CC BY 4.0, account: "not stated on page"}
+    attribution: "Gerrish, L. (2020). Automatically extracted rock outcrop dataset for Antarctica (7.3). UK Polar Data Centre, NERC, UKRI. doi:10.5285/9DF510E3-EA1C-450B-9950-D742DB1EFD96; method: Burton-Johnson et al. (2016), The Cryosphere 10, 1665-1677"
+    use: [mask]
+    coverage: "Antarctica, 60°S to 90°S; Landsat 8 method north of 82°40'S, older ADD outcrops south of it (paper)"
+    resolution_spatial: "vector polygons; Landsat pixel size not stated on page"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "1993-01-01 to 2020-10-28 (record)"
+    units: "rock outcrop polygons"
+    nature: derived
+    uncertainty: "no figure on the pages read; the paper finds exposed rock is 0.18% of Antarctica (21,745 km2), half of previous estimates"
+    limitations: "Two DOIs on the record (178ec50d... and 9DF510E3...); shaded snow is the known confusion of simpler indices. Fills the gap south of 60°S, where WorldCover has no tile (T40): everything outside the polygons is ice or snow"
+    dimensions: [volatiles, geology]
+    environments: [antarctica]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01426
+
+  - id: scar-geomap-v2022-08
+    body: earth
+    mission: compilation
+    instrument: 589 source maps and publications
+    product: "The GeoMAP (v.2022-08) continent-wide detailed geological dataset of Antarctica"
+    producer: "Cox, S.C. et al., SCAR GeoMAP Action Group and GNS Science"
+    url: https://doi.pangaea.de/10.1594/PANGAEA.951482
+    access: {format: "zipped ArcGIS geodatabase (115 MB), QGIS geopackage (187 MB), Google Earth kmz (298 MB)", size: "115 to 298 MB per format", licence: CC BY 4.0, account: "not stated on page"}
+    attribution: "Cox, S.C. et al. (2023): The GeoMAP (v.2022-08) continent-wide detailed geological dataset of Antarctica. PANGAEA, doi:10.1594/PANGAEA.951482"
+    use: [similarity, qualification]
+    coverage: "all of Antarctica: known rock exposures and surficial geology, not interpreted sub-ice geology"
+    resolution_spatial: "1:250,000 (locally more precise), 99,080 polygons"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "version 2022-08"
+    units: "geological units, mixed chronostratigraphic and lithostratigraphic classification (GeoSciML attributes)"
+    nature: interpretation
+    uncertainty: "positional accuracy not stated on page"
+    limitations: "Exposed rock only; attribute names not listed on the page (read the documentation geomap.readthedocs.io before use). Lithology south of 60°S, where GLiM and Macrostrat are coarse or empty"
+    dimensions: [geology]
+    environments: [antarctica]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://doi.pangaea.de/10.1594/PANGAEA.951482
+
+  - id: fabdem-v1-2
+    body: earth
+    mission: Copernicus DEM GLO-30, corrected
+    instrument: random forest correction of trees and buildings
+    product: "FABDEM V1-2 (Forest And Buildings removed Copernicus DEM)"
+    producer: "University of Bristol (Neal, Hawker et al.) with Fathom"
+    url: https://data.bris.ac.uk/data/dataset/s5hqmjcdj8yo2ibzi9b4ew3sn
+    access: {format: "zip per 10° tile (raster format inside not stated on page), tile index geojson", size: "296.7 GiB", licence: "CC BY-NC-SA 4.0 in the description; the metadata field says Non-Commercial Government Licence (conflict on the page)", account: "not stated on page"}
+    attribution: "Hawker, L. et al. (2022) A 30 m global map of elevation with forests and buildings removed, Environ. Res. Lett. 17, 024016, doi:10.1088/1748-9326/ac4d4f; data doi:10.5523/bris.s5hqmjcdj8yo2ibzi9b4ew3sn"
+    use: [qualification]
+    coverage: "60°S to 80°N (article)"
+    resolution_spatial: "1 arc second (about 30 m)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "version 1-2, published 18 January 2023"
+    units: "m"
+    nature: derived
+    uncertainty: "MAE vs lidar: forests 5.15 to 2.88 m, built-up 1.61 to 1.12 m (Copernicus to FABDEM); ICESat-2 RMSE 14.32 to 11.13 m"
+    limitations: "Non-commercial licence; corrected only in built and forested areas; pits and artefacts of GLO-30 remain; steep slopes less reliable. Use: check that forest and buildings do not create the slope or roughness of a candidate (Copernicus is a surface model)"
+    dimensions: [topography]
+    environments: [global-land]
+    status: verified
+    verified_on: "2026-11-18"
+    verified_url: https://data.bris.ac.uk/data/dataset/s5hqmjcdj8yo2ibzi9b4ew3sn
