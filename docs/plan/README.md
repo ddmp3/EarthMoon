@@ -31,6 +31,7 @@ Reusable as is: `tools/precompute/terrain_metrics.py` (any grid), the value/sigm
 - The interface may change, under the quality rules of section 3.
 - Order: lunar profiles, then global discovery on topography, then lithology, then other dimensions, then Mars.
 - **Missing data is shown, never hidden**: regions or sites with partial or missing data are labelled as such, and map areas where one or more criteria have no data are **hatched in a soft pastel colour**, so that comparisons stay honest.
+- **Coverage overlay (19 Nov 2026):** the hatching is a layer the user switches on and off, showing where data are missing or weak, with a "Data and method" panel: what we cover, the validated sources, how the data were processed (T44, T45).
 - Caching: preset scenarios use precomputed layers with a simple refresh command; custom criteria are computed on demand (see task T30 for the reproducibility constraint).
 - An AI assistant for scientists is an option for later (task T51), not now.
 - **Refresh is automatic (18 Nov 2026):** sources are watched on their own cadence, only what changed is recomputed, and every user sees the data date, whether it is validated, the last check, and any newer version being computed (ADR-009, task T52).
