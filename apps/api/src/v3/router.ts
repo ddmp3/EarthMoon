@@ -7,7 +7,11 @@ const DEFAULT_LIMIT = 50;
 const MAX_LIMIT = 200;
 
 /** Routes of /api/v3 served from static releases (ADR-004). Every answer carries `release` and `methodology_version`. */
-export function v3Router(store: ReleaseStore | undefined, log: (message: string, error?: unknown) => void): express.Router {
+export function v3Router(
+  store: ReleaseStore | undefined,
+  log: (message: string, error?: unknown) => void,
+  discoveryUrl?: string,
+): express.Router {
   const r = express.Router();
 
   const handle =
@@ -23,8 +27,10 @@ export function v3Router(store: ReleaseStore | undefined, log: (message: string,
       } catch (error) {
         if (error instanceof BadRequest) res.status(400).json({ error: error.message });
         else if (error instanceof NotFound) res.status(404).json({ error: error.message });
+        else if (error instanceof Unavailable) res.status(503).json({ error: error.message });
+        else if (error instanceof TooLarge) res.status(413).json({ error: error.message });
         else {
-          log(`GET ${req.path} failed`, error);
+          log(`${req.method} ${req.path} failed`, error);
           res.status(500).json({ error: "Internal error" });
         }
       }
@@ -109,8 +115,70 @@ export function v3Router(store: ReleaseStore | undefined, log: (message: string,
     }),
   );
 
+  // --- on-demand work, forwarded to the internal discovery service (ADR-005) ---
+
+  const forward = async (pathAndQuery: string, init?: { body: unknown }): Promise<unknown> => {
+    if (!discoveryUrl) throw new Unavailable("The discovery service is not configured on this server");
+    let res: globalThis.Response;
+    try {
+      res = await fetch(`${discoveryUrl}${pathAndQuery}`, {
+        method: init ? "POST" : "GET",
+        headers: init ? { "content-type": "application/json" } : {},
+        ...(init ? { body: JSON.stringify(init.body) } : {}),
+        signal: AbortSignal.timeout(QUERY_TIMEOUT_MS),
+      });
+    } catch (error) {
+      log(`discovery service call failed: ${pathAndQuery.split("?")[0]}`, error);
+      throw new Unavailable(
+        (error as Error).name === "TimeoutError"
+          ? `The discovery service took longer than ${QUERY_TIMEOUT_MS / 1000} s: narrow the request`
+          : "The discovery service is unavailable; the preset layers and zones still work",
+      );
+    }
+    const body = (await res.json().catch(() => ({}))) as { detail?: unknown };
+    if (res.status === 400 || res.status === 404) {
+      const message = typeof body.detail === "string" ? body.detail : "Request refused by the discovery service";
+      throw res.status === 400 ? new BadRequest(message) : new NotFound(message);
+    }
+    if (!res.ok) throw new Unavailable("The discovery service failed on this request");
+    return body;
+  };
+
+  r.get(
+    "/cells",
+    handle(async (req, release) => {
+      const s = await store!.selection(release, req.query.scenario, req.query.env, undefined, undefined);
+      const raw = typeof req.query.bbox === "string" ? req.query.bbox : "";
+      const box = raw.split(",").map(Number);
+      if (box.length !== 4 || !box.every(Number.isFinite)) throw new BadRequest("bbox must be west,south,east,north in degrees");
+      const q = new URLSearchParams({ bbox: box.join(","), env: s.target, release });
+      return forward(`/cells?${q.toString()}`);
+    }),
+  );
+
+  r.post(
+    "/query",
+    handle(async (req, release) => {
+      if (Number(req.headers["content-length"] ?? 0) > QUERY_MAX_BYTES) throw new TooLarge(`The query body is limited to ${QUERY_MAX_BYTES / 1024} KB`);
+      const body = req.body as Record<string, unknown> | undefined;
+      if (!body || typeof body !== "object" || Array.isArray(body)) throw new BadRequest("The query must be a JSON object");
+      const unknown = Object.keys(body).filter((k) => !QUERY_FIELDS.includes(k));
+      if (unknown.length > 0) throw new BadRequest(`Unknown field: ${unknown[0].slice(0, 40)}`);
+      const s = await store!.selection(release, body.scenario, body.env, undefined, undefined);
+      const { scenario: _scenario, ...rest } = body;
+      return forward(`/query?${new URLSearchParams({ release }).toString()}`, { body: { ...rest, env: s.target } });
+    }),
+  );
+
   return r;
 }
+
+const QUERY_TIMEOUT_MS = 30_000;
+const QUERY_MAX_BYTES = 16 * 1024;
+const QUERY_FIELDS = ["scenario", "env", "min_typicality", "min_confidence", "requirements_met", "bbox", "limit"];
+
+class Unavailable extends Error {}
+class TooLarge extends Error {}
 
 export const LAYER_PARAMETERS = ["typicality", "coverage"] as const;
 export const MAX_ZOOM = 7;

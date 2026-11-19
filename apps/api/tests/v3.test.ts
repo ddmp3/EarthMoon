@@ -180,7 +180,7 @@ describe("API v3 (static release)", () => {
     const doc = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { paths: Record<string, unknown> };
     for (const p of ["/api/v3/releases", "/api/v3/releases/{id}", "/api/v3/profiles", "/api/v3/profiles/{id}",
       "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}", "/api/v3/coverage", "/api/v3/method",
-      "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png"]) {
+      "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png", "/api/v3/cells", "/api/v3/query"]) {
       expect(doc.paths[p], p).toBeDefined();
     }
   });
@@ -194,5 +194,100 @@ describe("API v3 without a release", () => {
     expect(v3.body.error).toMatch(/release/);
     expect((await fetch(`${api.url}/api/modes`)).status).toBe(200);
     await api.close();
+  });
+});
+
+describe("API v3 forwarding to the discovery service", () => {
+  let dir: string;
+  let api: Running;
+  let fake: Server;
+  const seen: { url: string; body: string }[] = [];
+  beforeAll(async () => {
+    dir = await mkdtemp(path.join(tmpdir(), "releases-"));
+    await writeRelease(dir);
+    const { createServer } = await import("node:http");
+    fake = createServer((req, res) => {
+      let body = "";
+      req.on("data", (c) => (body += c));
+      req.on("end", () => {
+        seen.push({ url: req.url ?? "", body });
+        res.setHeader("content-type", "application/json");
+        if (req.url?.startsWith("/cells")) {
+          res.end(JSON.stringify({ release: RID, methodology_version: "v3", type: "FeatureCollection", features: [] }));
+        } else if (body.includes("tooBig")) {
+          res.statusCode = 400;
+          res.end(JSON.stringify({ detail: "2000000 cells in the query area, 1,000,000 cells at most: narrow the box" }));
+        } else {
+          res.end(JSON.stringify({ release: RID, methodology_version: "v3", matched: 3, cells: [] }));
+        }
+      });
+    });
+    await new Promise<void>((r) => fake.listen(0, "127.0.0.1", () => r()));
+    const { port } = fake.address() as AddressInfo;
+    const openapi = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as Record<string, unknown>;
+    const app = createApp({ sites: [], connectors: [], sourceNames: [], openapi, releases: await ReleaseStore.open(dir),
+      discoveryUrl: `http://127.0.0.1:${port}` });
+    const server: Server = await new Promise((resolve) => {
+      const s = app.listen(0, "127.0.0.1", () => resolve(s));
+    });
+    const a = server.address() as AddressInfo;
+    api = { url: `http://127.0.0.1:${a.port}`, close: () => new Promise((r) => server.close(() => r())) };
+  });
+  afterAll(async () => {
+    await api.close();
+    await new Promise((r) => fake.close(() => r(undefined)));
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("cells in view are checked, then forwarded with the release", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/cells?scenario=B&env=moon-psr&bbox=20,10,20.5,10.5`);
+    expect(status).toBe(200);
+    expect(body.type).toBe("FeatureCollection");
+    expect(seen.at(-1)?.url).toBe(`/cells?bbox=20%2C10%2C20.5%2C10.5&env=moon-psr&release=${RID}`);
+  });
+
+  it("invalid views never reach the service", async () => {
+    const before = seen.length;
+    for (const p of ["cells?scenario=B&env=moon-psr", "cells?scenario=B&env=moon-psr&bbox=1,2,3",
+      "cells?scenario=B&env=moon-psr&bbox=a,b,c,d", "cells?scenario=B&env=moon-mare-plains&bbox=0,0,1,1"]) {
+      expect((await json(`${api.url}/api/v3/${p}`)).status, p).toBe(400);
+    }
+    expect(seen.length).toBe(before);
+  });
+
+  it("a query is checked strictly, forwarded, and the service's refusal keeps its reason", async () => {
+    const ok = await fetch(`${api.url}/api/v3/query`, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ scenario: "B", env: "moon-psr", min_typicality: 0.7, min_confidence: "high" }) });
+    expect(ok.status).toBe(200);
+    expect(((await ok.json()) as { matched: number }).matched).toBe(3);
+    expect(JSON.parse(seen.at(-1)!.body)).toEqual({ env: "moon-psr", min_typicality: 0.7, min_confidence: "high" });
+    const unknown = await fetch(`${api.url}/api/v3/query`, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ scenario: "B", env: "moon-psr", colour: "red" }) });
+    expect(unknown.status).toBe(400);
+    expect(((await unknown.json()) as { error: string }).error).toMatch(/colour/);
+    const big = await fetch(`${api.url}/api/v3/query`, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ scenario: "B", env: "moon-psr", bbox: [-180, -90, 180, 90], tooBig: 1 }) });
+    expect(big.status).toBe(400);
+  });
+
+  it("a query body over 16 KB is refused", async () => {
+    const res = await fetch(`${api.url}/api/v3/query`, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ scenario: "B", env: "moon-psr", requirements_met: Array(3000).fill("base_slope") }) });
+    expect(res.status).toBe(413);
+  });
+
+  it("when the service is down, cells and query answer 503 and the static routes keep working", async () => {
+    const openapi = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as Record<string, unknown>;
+    const app = createApp({ sites: [], connectors: [], sourceNames: [], openapi, releases: await ReleaseStore.open(dir),
+      discoveryUrl: "http://127.0.0.1:9" });
+    const server: Server = await new Promise((resolve) => {
+      const s = app.listen(0, "127.0.0.1", () => resolve(s));
+    });
+    const url = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+    const down = await json(`${url}/api/v3/cells?scenario=B&env=moon-psr&bbox=20,10,20.5,10.5`);
+    expect(down.status).toBe(503);
+    expect(down.body.error).toMatch(/discovery service/);
+    expect((await json(`${url}/api/v3/zones?scenario=B&env=moon-psr`)).status).toBe(200);
+    await new Promise((r) => server.close(() => r(undefined)));
   });
 });

@@ -225,7 +225,7 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
             "tile", "suitability_A", "suitability_B", "req:base_slope", "req:climbing_limit_lrv", "req:climbing_limit_viper"]
     targets = sorted({t for ts in SCENARIO_TARGETS.values() for t in ts})
     for t in targets:
-        cols += [f"{t}:{k}" for k in ("windows", "valid", "screened_out", "median")]
+        cols += [f"{t}:{k}" for k in ("windows", "valid", "screened_out", "median", "p25", "p75")]
     cells = load_cells(str(run / "cells.parquet"), cols)
     land = land_km2(cube)
     validation = json.loads((run / "validation.json").read_text()) if (run / "validation.json").exists() else {}
@@ -246,6 +246,9 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
 
     from datetime import date
     head = {"release": rid, "methodology_version": METHODOLOGY_VERSION}
+    import pyarrow.parquet as pq                                  # the cells the discovery service reads (ADR-005)
+    pq.write_table(pq.read_table(run / "cells.parquet", columns=[c for c in cols if c not in ("lat", "lon", "area_km2", "tile")]),
+                   d / "cells.parquet", compression="zstd")
     write(d / "release.json", {**head, **content, "created": date.today().isoformat(),
                                "grid": {"tau": list(TAUS), "min_cells": list(MIN_CELLS), "nominal": {"tau": TAU, "min_cells": MIN}}})
     write(d / "profiles.json", {**head, "profiles": profs})

@@ -836,6 +836,122 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/cells": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Cells in view (zoom 8 and above) as GeoJSON polygons, at most 5,000
+         * @description Computed by the internal discovery service over the release's cells (ADR-005). Each cell carries its typicality with spread, its windows, coverage class, confidence, masked share and requirement states. 503 when the service is unavailable (the preset layers and zones keep working).
+         */
+        get: {
+            parameters: {
+                query: {
+                    scenario: components["parameters"]["Scenario"];
+                    /** @description Lunar target environment of the scenario */
+                    env: components["parameters"]["Env"];
+                    /** @description west,south,east,north in degrees */
+                    bbox: string;
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description GeoJSON FeatureCollection, with release and methodology_version */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/query": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Custom criteria over the precomputed cells (ADR-003 limits)
+         * @description Never calls an external source. Unknown fields are refused; the body is limited to 16 KB, the area to 1,000,000 cells and the time to 30 s. At most `limit` cells are returned, all are counted.
+         */
+        post: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example B */
+                        scenario: string;
+                        /** @example moon-psr */
+                        env: string;
+                        /** @default 0 */
+                        min_typicality?: number;
+                        /**
+                         * @default low
+                         * @enum {string}
+                         */
+                        min_confidence?: "low" | "medium" | "high";
+                        requirements_met?: ("base_slope" | "climbing_limit_lrv" | "climbing_limit_viper")[];
+                        /** @description west, south, east, north */
+                        bbox?: number[];
+                        /** @default 100 */
+                        limit?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Matching cells, ranked by typicality, with the criteria, count and area */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                413: components["responses"]["BadRequest"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v3/method": {
         parameters: {
             query?: never;

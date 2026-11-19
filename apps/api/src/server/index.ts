@@ -34,6 +34,7 @@ async function main(): Promise<void> {
     onConnectorError: (error, site) => log(`connector failed for ${site.id}`, error),
     log,
     ...(releases ? { releases } : {}),
+    ...(config.discoveryUrl ? { discoveryUrl: config.discoveryUrl } : {}),
   });
 
   const server = app.listen(config.port, "0.0.0.0", () => {
