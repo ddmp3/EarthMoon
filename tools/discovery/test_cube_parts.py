@@ -235,3 +235,10 @@ def test_worldcover_fractions_cover_the_seven_hidden_ground_classes():
     fr = fractions(np.array([[40, 90], [95, 30]], dtype="uint8"))
     assert fr["cropland"][0, 0] == 1 and fr["wetland"][0, 1] == 1 and fr["mangroves"][1, 0] == 1
     assert all(fr[n][1, 1] == 0 for n in MASK_CLASSES.values())              # grassland (30) is bare enough
+
+
+def test_prefetch_needs_each_tile_and_its_existing_neighbours_once():
+    from discovery.prefetch import needed
+    have = {(la, lo) for la in range(0, 3) for lo in range(0, 3)}
+    assert needed([(1, 1)], have) == sorted(have)
+    assert len(needed([(0, 0), (0, 1)], have)) == 6                   # shared neighbours counted once
