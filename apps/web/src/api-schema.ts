@@ -777,6 +777,65 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Raster map tile (zoom 0 to 7) of one target - typicality, or the coverage overlay
+         * @description Pixels show the 5 km cell that holds their centre. Typicality tiles draw the states (value colour, pastel hatching on partial cells, grey dots where nothing was evaluated, an outline where the ground is hidden); coverage tiles are transparent on evaluated cells and patterned elsewhere. A tile with no cell is 204. Rate limit ten times the general one.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path: {
+                    scenario: string;
+                    env: string;
+                    parameter: "typicality" | "coverage";
+                    z: number;
+                    x: number;
+                    y: number;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description PNG tile (256 x 256, RGBA) */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "image/png": string;
+                    };
+                };
+                /** @description No cell in this tile */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v3/method": {
         parameters: {
             query?: never;

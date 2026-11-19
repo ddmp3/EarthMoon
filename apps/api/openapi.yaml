@@ -329,6 +329,33 @@ paths:
         "400": { $ref: "#/components/responses/BadRequest" }
         "404": { $ref: "#/components/responses/NotFound" }
         "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png:
+    get:
+      tags: [V3]
+      summary: Raster map tile (zoom 0 to 7) of one target - typicality, or the coverage overlay
+      description: >-
+        Pixels show the 5 km cell that holds their centre. Typicality tiles draw the states (value colour, pastel
+        hatching on partial cells, grey dots where nothing was evaluated, an outline where the ground is hidden);
+        coverage tiles are transparent on evaluated cells and patterned elsewhere. A tile with no cell is 204.
+        Rate limit ten times the general one.
+      parameters:
+        - { name: scenario, in: path, required: true, schema: { type: string } }
+        - { name: env, in: path, required: true, schema: { type: string } }
+        - { name: parameter, in: path, required: true, schema: { type: string, enum: [typicality, coverage] } }
+        - { name: z, in: path, required: true, schema: { type: integer, minimum: 0, maximum: 7 } }
+        - { name: x, in: path, required: true, schema: { type: integer, minimum: 0 } }
+        - { name: y, in: path, required: true, schema: { type: integer, minimum: 0 } }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: PNG tile (256 x 256, RGBA)
+          content:
+            image/png:
+              schema: { type: string, format: binary }
+        "204": { description: No cell in this tile }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
   /api/v3/method:
     get:
       tags: [V3]

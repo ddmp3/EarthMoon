@@ -1,4 +1,4 @@
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 
 /**
@@ -40,7 +40,7 @@ export class ReleaseStore {
     if (!index.current || !Array.isArray(index.releases) || !index.releases.some((r) => r.id === index.current)) {
       throw new Error(`invalid releases index in ${root}`);
     }
-    return new ReleaseStore(root, index);
+    return new ReleaseStore(path.resolve(root), index);
   }
 
   /** The release id to read: the current one, or a listed one. */
@@ -101,6 +101,17 @@ export class ReleaseStore {
     if (!grid.tau.includes(t)) throw new BadRequest(`tau must be one of ${grid.tau.join(", ")}`);
     if (!grid.min_cells.includes(m)) throw new BadRequest(`min_cells must be one of ${grid.min_cells.join(", ")}`);
     return { scenario: sc, target, tau: grid.tau[grid.tau.indexOf(t)], minCells: grid.min_cells[grid.min_cells.indexOf(m)] };
+  }
+
+  /** Path of one layer tile, or undefined when the release has no tile there (no cell in it). */
+  async layerTile(release: string, target: string, parameter: string, z: number, x: number, y: number): Promise<string | undefined> {
+    const file = path.join(this.root, release, "layers", target, parameter, String(z), String(x), `${y}.png`);
+    try {
+      await access(file);
+      return file;
+    } catch {
+      return undefined;
+    }
   }
 
   async zones(release: string, s: { scenario: Scenario; target: string; tau: number; minCells: number }): Promise<Doc & { zones: Zone[] }> {

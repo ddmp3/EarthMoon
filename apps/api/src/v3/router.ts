@@ -111,3 +111,47 @@ export function v3Router(store: ReleaseStore | undefined, log: (message: string,
 
   return r;
 }
+
+export const LAYER_PARAMETERS = ["typicality", "coverage"] as const;
+export const MAX_ZOOM = 7;
+
+/** Raster tiles of a release (zoom 0 to 7). Mounted before the general rate limit: a map view asks for many tiles. */
+export function v3LayersRouter(store: ReleaseStore | undefined, log: (message: string, error?: unknown) => void): express.Router {
+  const r = express.Router();
+  r.get("/:scenario/:env/:parameter/:z/:x/:file", async (req, res) => {
+    if (!store) {
+      res.status(503).json({ error: "No v3 release is installed on this server (run tools/discovery/release.py)" });
+      return;
+    }
+    try {
+      const release = store.releaseId(req.query.release);
+      const s = await store.selection(release, req.params.scenario, req.params.env, undefined, undefined);
+      const parameter = LAYER_PARAMETERS.find((p) => p === req.params.parameter);
+      if (!parameter) throw new NotFound(`Unknown layer parameter: ${req.params.parameter.slice(0, 40)}`);
+      const m = /^([0-9]{1,3})\.png$/.exec(req.params.file);
+      const z = Number(req.params.z);
+      const x = Number(req.params.x);
+      const y = m ? Number(m[1]) : NaN;
+      const n = 2 ** z;
+      if (![z, x, y].every(Number.isInteger) || z < 0 || z > MAX_ZOOM || x < 0 || x >= n || y < 0 || y >= n || !/^[0-9]+$/.test(req.params.x)) {
+        throw new BadRequest(`Tiles exist for zoom 0 to ${MAX_ZOOM}, with x and y inside the zoom`);
+      }
+      const file = await store.layerTile(release, s.target, parameter, z, x, y);
+      res.setHeader("X-Release", release);
+      res.setHeader("Cache-Control", "public, max-age=3600");
+      if (!file) {
+        res.status(204).end();
+        return;
+      }
+      res.type("png").sendFile(file);
+    } catch (error) {
+      if (error instanceof BadRequest) res.status(400).json({ error: error.message });
+      else if (error instanceof NotFound) res.status(404).json({ error: error.message });
+      else {
+        log(`GET layer tile failed`, error);
+        res.status(500).json({ error: "Internal error" });
+      }
+    }
+  });
+  return r;
+}

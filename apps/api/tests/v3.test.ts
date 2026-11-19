@@ -13,6 +13,7 @@ import { ReleaseStore } from "../src/v3/store.js";
 const RID = "r-0a1b2c3d";
 const OLD = "r-99999999";
 const head = { release: RID, methodology_version: "v3" };
+const PNG = Buffer.from("89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c4890000000d49444154789c6360000002000001e221bc330000000049454e44ae426082", "hex");
 
 function zone(rank: number) {
   return {
@@ -43,6 +44,8 @@ async function writeRelease(dir: string): Promise<void> {
   await w(`${RID}/coverage.json`, { ...head, scenarios: { B: { "moon-psr": { land_km2: 1000, classes: { evaluated: { km2: 400, share: 0.4, meaning: "x" } } } } } });
   await w(`${RID}/zones/B/moon-psr/t0.5-m3.json`, { ...head, scenario: "B", target: "moon-psr", tau: 0.5, min_cells: 3,
     zones: Array.from({ length: 250 }, (_, k) => zone(k + 1)) });
+  await mkdir(path.join(dir, RID, "layers/moon-psr/coverage/3/4"), { recursive: true });
+  await writeFile(path.join(dir, RID, "layers/moon-psr/coverage/3/4/3.png"), PNG);
   await w(`${OLD}/release.json`, { release: OLD, methodology_version: "v3", run: "run-001", grid: { tau: [0.5], min_cells: [3], nominal: { tau: 0.5, min_cells: 3 } } });
 }
 
@@ -155,10 +158,29 @@ describe("API v3 (static release)", () => {
     expect((await json(`${api.url}/api/v3/releases/r-deadbeef`)).status).toBe(404);
   });
 
+  it("layer tiles are served as PNG from the release, and a tile with no cell is empty, not an error", async () => {
+    const res = await fetch(`${api.url}/api/v3/layers/B/moon-psr/coverage/3/4/3.png`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toBe("image/png");
+    expect(res.headers.get("x-release")).toBe(RID);
+    expect(Buffer.from(await res.arrayBuffer()).equals(PNG)).toBe(true);
+    expect((await fetch(`${api.url}/api/v3/layers/B/moon-psr/coverage/3/0/0.png`)).status).toBe(204);
+  });
+
+  it("layer tiles reject anything outside the release and the zoom range", async () => {
+    for (const p of ["B/moon-psr/coverage/8/0/0.png", "B/moon-psr/coverage/3/8/0.png", "B/moon-psr/elevation/3/4/3.png",
+      "B/moon-mare-plains/coverage/3/4/3.png", "B/..%2F..%2Findex/coverage/3/4/3.png", "B/moon-psr/coverage/3/4/-1.png",
+      "Z/moon-psr/coverage/3/4/3.png", "B/moon-psr/coverage/3/4/3.jpg"]) {
+      const res = await fetch(`${api.url}/api/v3/layers/${p}`);
+      expect([400, 404], p).toContain(res.status);
+    }
+  });
+
   it("the contract documents every v3 route", async () => {
     const doc = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { paths: Record<string, unknown> };
     for (const p of ["/api/v3/releases", "/api/v3/releases/{id}", "/api/v3/profiles", "/api/v3/profiles/{id}",
-      "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}", "/api/v3/coverage", "/api/v3/method"]) {
+      "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}", "/api/v3/coverage", "/api/v3/method",
+      "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png"]) {
       expect(doc.paths[p], p).toBeDefined();
     }
   });
