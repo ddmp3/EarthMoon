@@ -240,13 +240,72 @@ def assess_all(tiles: list[str], cube: str, refs_path: str, rock_path: str, out:
     return {"tiles": len(tiles), "cells": len(rows), "failed": failed, "hours": round((time.time() - t0) / 3600, 2)}
 
 
+def load_cells(path: str) -> dict:
+    import pyarrow.parquet as pq
+    t = pq.read_table(path)
+    return {k: t.column(k).to_numpy(zero_copy_only=False) for k in t.column_names}
+
+
+def _num(a) -> np.ndarray:
+    return np.array([np.nan if v is None else v for v in a], dtype=float)
+
+
+def zones_for(cells: dict, scenario: str, target: str, tau: float, min_cells: int) -> list[dict]:
+    from discovery.zones import zone_table
+    med = _num(cells.get(f"{target}:median", [None] * len(cells["cell"])))
+    elim = np.zeros(med.size, bool)
+    for r in ELIMINATING[scenario]:
+        elim |= np.asarray(cells.get(f"req:{r}", [None] * med.size)) == "failed"
+    cand = candidates(med, elim, np.nan_to_num(_num(cells["masked_share"]), nan=1.0), tau)
+    idx = np.flatnonzero(cand)
+    if idx.size == 0:
+        return []
+    zs = zone_table(_num(cells["lat"])[idx], _num(cells["lon"])[idx], np.nan_to_num(_num(cells["area_km2"])[idx]), min_cells)
+    out = []
+    for z in zs:
+        m = idx[z["members"]]
+        conf = np.asarray(cells["confidence"])[m]
+        row = {"target": target, "scenario": scenario, "cells": z["cells"], "area_km2": round(z["area_km2"], 1),
+               "lat": round(z["lat"], 5), "lon": round(z["lon"], 5), "median": round(float(np.median(med[m])), 4),
+               "cell_median_p25": round(float(np.percentile(med[m], 25)), 4),
+               "cell_median_p75": round(float(np.percentile(med[m], 75)), 4),
+               "high_confidence_share": round(float(np.mean(conf == "high")), 3),
+               "tiles": sorted(set(np.asarray(cells["tile"])[m].tolist())), "cell_ids": np.asarray(cells["cell"])[m].tolist()}
+        for r in ("base_slope", "climbing_limit_lrv", "climbing_limit_viper"):
+            st = np.asarray(cells.get(f"req:{r}", [None] * med.size))[m]
+            row[f"req:{r}"] = {k: int(np.sum(st == k)) for k in ("met", "failed", "unknown")}
+        su = _num(cells.get(f"suitability_{scenario}", [None] * med.size))[m]
+        row["suitability_median"] = round(float(np.nanmedian(su)), 3) if np.isfinite(su).any() else None
+        out.append(row)
+    return rank_zones(out)
+
+
+def zones_command(run, top: int = 20) -> dict:
+    import json
+    cells = load_cells(str(run / "cells.parquet"))
+    summary = {"rule": {"tau": TAU, "min_cells": MIN, "grid": {"tau": TAUS, "min_cells": MIN_CELLS}}, "scenarios": {}}
+    for sc, targets in SCENARIO_TARGETS.items():
+        allz, per = [], {}
+        for t in targets:
+            grid = {f"tau={tau},min={mc}": (lambda z: {"zones": len(z), "area_km2": round(sum(x["area_km2"] for x in z), 1)})(
+                zones_for(cells, sc, t, tau, mc)) for tau in TAUS for mc in MIN_CELLS}
+            zs = zones_for(cells, sc, t, TAU, MIN)
+            (run / f"zones-{sc}-{t}.json").write_text(json.dumps(zs, indent=1) + "\n")
+            per[t] = {"grid": grid, "zones": len(zs), "top": [{k: v for k, v in z.items() if k != "cell_ids"} for z in zs[:top]]}
+            allz.extend(zs)
+        dz = dossier_zones([{k: v for k, v in z.items() if k != "cell_ids"} for z in allz], top=top)
+        summary["scenarios"][sc] = {"targets": per, "dossier_zones": dz}
+    (run / "zones.json").write_text(json.dumps(summary, indent=1) + "\n")
+    return summary
+
+
 def main(argv=None) -> int:
     import argparse
     import json
     import sys
     from pathlib import Path
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["refs", "assess"])
+    ap.add_argument("what", choices=["refs", "assess", "zones"])
     ap.add_argument("--cube", default="/data/cube")
     ap.add_argument("--run", default="/data/run001")
     ap.add_argument("--profiles-windows", default="/data/profiles/moon")
@@ -259,6 +318,10 @@ def main(argv=None) -> int:
     run.mkdir(parents=True, exist_ok=True)
     if a.what == "refs":
         print(json.dumps(build_refs(a.profiles_windows, a.pits, str(run / "refs.npz"))))
+    elif a.what == "zones":
+        out = zones_command(run)
+        for sc, v in out["scenarios"].items():
+            print(sc, {t: x["zones"] for t, x in v["targets"].items()}, "dossiers", len(v["dossier_zones"]))
     else:
         tiles = sorted({x.strip() for f in a.tiles for x in Path(f).read_text().split()})
         out = assess_all(tiles, a.cube, str(run / "refs.npz"), a.rock, str(run / "cells.parquet"), a.workers)
