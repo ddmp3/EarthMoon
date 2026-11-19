@@ -105,7 +105,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | G3 | Gate: architecture | T30 | G3 signed 18/11 by David |
 | [T40](tasks/T40-earth-feature-cube.md) | Earth feature cube, topography | G3 | done (PR #18; global 90 m cube, 113 tiles at 40 m, 29 h projected for the fine stage) |
 | [T41](tasks/T41-moon-profiles.md) | Lunar profiles computed | G3 | done (PR #20; 8 environments, v2 anchor exact; Earth smoothing decision open for David) |
-| [T42](tasks/T42-comparison-engine.md) | Comparison engine | T40, T41 | todo |
+| [T42](tasks/T42-comparison-engine.md) | Comparison engine | T40, T41 | done (PR #21; scenarios A and B on the pilot tiles; smoothing sensitivity reported) |
 | [T43](tasks/T43-discovery-topography.md) | First global discovery run and validation | T42 | todo |
 | G4 | Gate: first discovery map | T43 | todo |
 | [T44](tasks/T44-api-layers.md) | API: layers and zones | G4 | todo |

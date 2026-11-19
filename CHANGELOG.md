@@ -2,6 +2,22 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T42 Comparison engine (PR #21)
+- New engine `tools/discovery/compare.py`, `compare_run.py`. Per 5 km cell, separate outputs, none averaged with another:
+  - similarity per lunar target (two-sided percentile, T23; median, quartiles, share above 0.5);
+  - requirements `met` / `failed` / `unknown`;
+  - operational suitability;
+  - coverage (masked and unknown cover counted apart);
+  - confidence;
+  - a Monte Carlo rank interval.
+- Earth is compared at the scale of each lunar product (40 m, 59.2 m). Persistently lit (5 m) is not comparable.
+- Pilot run, scenarios A and B on 13 tiles (5,714 cells):
+  - base slope met in 3,801 cells; LRV limit eliminates 538 cells, still shown with their similarity;
+  - high-confidence top cells on 37°N 105°E (polar targets) and 25°S 135°E (mare plains), stable in 100% of 500 runs.
+- Ranking among high-confidence cells added: a median of a few unmasked windows can be high by chance.
+- Earth smoothing, as decided by David: none by default. A 1-pixel smoothing lowers Earth slopes by 17 to 18%, keeps the order (Spearman 0.92 to 0.93), but changes a quarter to half of the top decile.
+- Held-out lunar blocks: mean typicality 0.4996, KS 0.005. `docs/METHOD.md` has a short section on the engine. Report: `docs/wiki/runs/compare-pilot.md`.
+
 ## 2026-11-18 · T41 Lunar profiles (PR #20)
 - All 8 lunar environments of T20 computed with the Earth window code; profiles in `data/profiles/moon/`, every selected window kept in Parquet with its hash.
 - v2 anchor reproduced exactly (71,731 windows, same percentiles).

@@ -1,0 +1,7378 @@
+{
+ "scenario": "B",
+ "tiles": 13,
+ "targets": {
+  "moon-polar-lit-highlands": {
+   "comparable": true,
+   "earth_scale": "glo30-40m",
+   "reference_windows": 58245,
+   "reference_sha256": "64008b58af47c6187224674b496c6f4d05433d051002069b2f98af95e4204b6d"
+  },
+  "moon-psr": {
+   "comparable": true,
+   "earth_scale": "glo30-40m",
+   "reference_windows": 6162,
+   "reference_sha256": "4c6a5b6cb573f98afffc46fffc9cdd37c4bb61bcc76b6488088503ab94b86ee4"
+  },
+  "moon-mare-plains": {
+   "comparable": true,
+   "earth_scale": "glo30-59m",
+   "reference_windows": 5699377,
+   "reference_sha256": "353cdcc0b703d12923c9e536307833bed10bc1a8618dbd289f5b26f1ef35fd36"
+  },
+  "moon-south-polar-cap-v2": {
+   "comparable": true,
+   "earth_scale": "glo30-40m",
+   "reference_windows": 71731,
+   "reference_sha256": "224408ebaef5ed6204485861054301bdf3704e5240948458434353add8afa314"
+  }
+ },
+ "monte_carlo": {
+  "moon-polar-lit-highlands": {
+   "runs": 500,
+   "seed": 20261119,
+   "slope_sigma_deg": 0.5,
+   "cells": 5714,
+   "cells_in_top_decile_in_90pct_of_runs": 480
+  },
+  "moon-psr": {
+   "runs": 500,
+   "seed": 20261119,
+   "slope_sigma_deg": 0.5,
+   "cells": 5714,
+   "cells_in_top_decile_in_90pct_of_runs": 499
+  },
+  "moon-mare-plains": {
+   "runs": 500,
+   "seed": 20261119,
+   "slope_sigma_deg": 0.5,
+   "cells": 5408,
+   "cells_in_top_decile_in_90pct_of_runs": 228
+  },
+  "moon-south-polar-cap-v2": {
+   "runs": 500,
+   "seed": 20261119,
+   "slope_sigma_deg": 0.5,
+   "cells": 5714,
+   "cells_in_top_decile_in_90pct_of_runs": 485
+  }
+ },
+ "rules": {
+  "climbing_limit_lrv": {
+   "param": "traversable_20",
+   "at_least": 0.5,
+   "scale": "glo30-40m",
+   "why": "LRV 20 to 23°, max 25° (NTRS 20250011301); 20° used, the stored lower bound; half of the window (E1)"
+  },
+  "climbing_limit_viper": {
+   "param": "traversable_15",
+   "at_least": 0.5,
+   "scale": "glo30-40m",
+   "why": "VIPER 15° not verified (E1); reported, never eliminating"
+  },
+  "base_slope": {
+   "param": "slope_mean",
+   "at_most": 10.0,
+   "scale": "glo30-40m",
+   "why": "unsuitable above 10° (E2)"
+  }
+ },
+ "suitability_rule": {
+  "id": "traversable_share_20",
+  "param": "traversable_20",
+  "good": 1.0,
+  "bad": 0.0,
+  "scale": "glo30-40m",
+  "why": "share of the window at or below 20°"
+ },
+ "not_evaluated": {
+  "base_site_beyond_slope": "value not set (E13); no layer for bearing capacity or boulders",
+  "target_environment": "descriptive: it chooses the targets, it is not a test",
+  "traversable_share": "part of the climbing limit rules (half of the window)"
+ },
+ "cells": 5714,
+ "requirements": {
+  "climbing_limit_lrv": {
+   "met": 4582,
+   "failed": 538,
+   "unknown": 594
+  },
+  "climbing_limit_viper": {
+   "met": 4270,
+   "failed": 850,
+   "unknown": 594
+  }
+ },
+ "eliminated_cells": 538,
+ "confidence": {
+  "high": 2746,
+  "medium": 610,
+  "low": 2358
+ },
+ "top": {
+  "moon-polar-lit-highlands": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-3:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.995965,
+      "share_above_half": 1.0,
+      "p25": 0.995965,
+      "p75": 0.995965
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.908471,
+      "share_above_half": 1.0,
+      "p25": 0.908471,
+      "p75": 0.908471
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.073101,
+      "share_above_half": 0.0,
+      "p25": 0.073101,
+      "p75": 0.073101
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.994075,
+      "share_above_half": 1.0,
+      "p25": 0.994075,
+      "p75": 0.994075
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 15,
+      "failed": 10,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.5872,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 31.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 35.0,
+      "rank_p5": 3.950000000000003,
+      "rank_p95": 173.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1481.5,
+      "rank_p5": 1353.85,
+      "rank_p95": 1612.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 30.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:2:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.985664,
+      "share_above_half": 1.0,
+      "p25": 0.985664,
+      "p75": 0.985664
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.91334,
+      "share_above_half": 1.0,
+      "p25": 0.91334,
+      "p75": 0.91334
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.06302,
+      "share_above_half": 0.0,
+      "p25": 0.058675,
+      "p75": 0.067365
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.983285,
+      "share_above_half": 1.0,
+      "p25": 0.983285,
+      "p75": 0.983285
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 15,
+      "failed": 10,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.704,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 29.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 25.0,
+      "rank_p5": 2.0,
+      "rank_p95": 138.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1556.0,
+      "rank_p5": 1460.95,
+      "rank_p95": 1646.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 29.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-3:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.971586,
+      "share_above_half": 1.0,
+      "p25": 0.971586,
+      "p75": 0.971586
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.890295,
+      "share_above_half": 1.0,
+      "p25": 0.890295,
+      "p75": 0.890295
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.053762,
+      "share_above_half": 0.0,
+      "p25": 0.053762,
+      "p75": 0.053762
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.973805,
+      "share_above_half": 1.0,
+      "p25": 0.973805,
+      "p75": 0.973805
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 13,
+      "failed": 12,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 7,
+      "failed": 18,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.5648,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 38.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 47.5,
+      "rank_p5": 5.0,
+      "rank_p95": 207.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1648.0,
+      "rank_p5": 1508.0,
+      "rank_p95": 1761.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 36.049999999999955,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N11_00_E098_00_DEM:5:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.970246,
+      "share_above_half": 1.0,
+      "p25": 0.970246,
+      "p75": 0.970246
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.888997,
+      "share_above_half": 1.0,
+      "p25": 0.888997,
+      "p75": 0.888997
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.972494,
+      "share_above_half": 1.0,
+      "p25": 0.972494,
+      "p75": 0.972494
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 21,
+      "failed": 0,
+      "unknown": 4
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 21,
+      "failed": 0,
+      "unknown": 4
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9392,
+     "valid": 21
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 37.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 52.0,
+      "rank_p5": 6.0,
+      "rank_p95": 205.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 4493.0,
+      "rank_p5": 4493.0,
+      "rank_p95": 4493.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 35.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:0:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.945489,
+      "share_above_half": 1.0,
+      "p25": 0.937694,
+      "p75": 0.95955
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.890944,
+      "share_above_half": 1.0,
+      "p25": 0.881207,
+      "p75": 0.917397
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.071782,
+      "share_above_half": 0.0,
+      "p25": 0.064788,
+      "p75": 0.079001
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.947875,
+      "share_above_half": 1.0,
+      "p25": 0.938172,
+      "p75": 0.961913
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 24,
+      "failed": 1,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.928,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 6.0,
+      "rank_p5": 1.0,
+      "rank_p95": 26.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 38.0,
+      "rank_p5": 8.0,
+      "rank_p95": 137.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1496.0,
+      "rank_p5": 1388.85,
+      "rank_p95": 1594.1,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 6.0,
+      "rank_p5": 1.0,
+      "rank_p95": 26.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.944733,
+      "share_above_half": 1.0,
+      "p25": 0.944733,
+      "p75": 0.944733
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.933139,
+      "share_above_half": 1.0,
+      "p25": 0.933139,
+      "p75": 0.933139
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.055304,
+      "share_above_half": 0.0,
+      "p25": 0.055304,
+      "p75": 0.055304
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.943135,
+      "share_above_half": 1.0,
+      "p25": 0.943135,
+      "p75": 0.943135
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.5744,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 45.29999999999973,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 11.0,
+      "rank_p5": 1.0,
+      "rank_p95": 91.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1628.5,
+      "rank_p5": 1506.9,
+      "rank_p95": 1749.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 48.19999999999982,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:1:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.931016,
+      "share_above_half": 1.0,
+      "p25": 0.886196,
+      "p75": 0.955876
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.907984,
+      "share_above_half": 1.0,
+      "p25": 0.884859,
+      "p75": 0.943525
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.059416,
+      "share_above_half": 0.0,
+      "p25": 0.030346,
+      "p75": 0.073648
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.931285,
+      "share_above_half": 1.0,
+      "p25": 0.884659,
+      "p75": 0.958379
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 24,
+      "failed": 1,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.8672,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 12.0,
+      "rank_p5": 5.0,
+      "rank_p95": 36.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 24.0,
+      "rank_p5": 8.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1606.0,
+      "rank_p5": 1488.0,
+      "rank_p95": 1703.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 12.0,
+      "rank_p5": 4.0,
+      "rank_p95": 36.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:1:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.928904,
+      "share_above_half": 1.0,
+      "p25": 0.873414,
+      "p75": 0.95403
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.930704,
+      "share_above_half": 1.0,
+      "p25": 0.904414,
+      "p75": 0.948231
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 7,
+      "median": 0.062008,
+      "share_above_half": 0.0,
+      "p25": 0.053758,
+      "p75": 0.064904
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.927368,
+      "share_above_half": 1.0,
+      "p25": 0.871548,
+      "p75": 0.952071
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 21,
+      "failed": 4,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.7584,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 12.0,
+      "rank_p5": 4.0,
+      "rank_p95": 33.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 16.0,
+      "rank_p5": 5.0,
+      "rank_p95": 46.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1590.0,
+      "rank_p5": 1513.95,
+      "rank_p95": 1660.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 12.0,
+      "rank_p5": 4.0,
+      "rank_p95": 34.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-4:7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.92571,
+      "share_above_half": 1.0,
+      "p25": 0.92571,
+      "p75": 0.92571
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.945472,
+      "share_above_half": 1.0,
+      "p25": 0.945472,
+      "p75": 0.945472
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.924398,
+      "share_above_half": 1.0,
+      "p25": 0.924398,
+      "p75": 0.924398
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.944,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 80.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 67.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 4991.0,
+      "rank_p5": 4991.0,
+      "rank_p95": 4991.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 83.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:7:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.917572,
+      "share_above_half": 1.0,
+      "p25": 0.780479,
+      "p75": 0.940218
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.850698,
+      "share_above_half": 1.0,
+      "p25": 0.764038,
+      "p75": 0.887699
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.088657,
+      "share_above_half": 0.0,
+      "p25": 0.061965,
+      "p75": 0.13503
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.919184,
+      "share_above_half": 1.0,
+      "p25": 0.780165,
+      "p75": 0.939831
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 22,
+      "failed": 3,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 11,
+      "failed": 14,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.6608,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 14.0,
+      "rank_p5": 3.0,
+      "rank_p95": 92.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 115.0,
+      "rank_p5": 25.0,
+      "rank_p95": 291.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1375.5,
+      "rank_p5": 1235.75,
+      "rank_p95": 1489.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 14.0,
+      "rank_p5": 3.0,
+      "rank_p95": 91.09999999999991,
+      "share_top_decile": 1.0
+     }
+    }
+   }
+  ],
+  "moon-psr": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N24_00_E121_00_DEM:0:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.821701,
+      "share_above_half": 1.0,
+      "p25": 0.821701,
+      "p75": 0.821701
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.977929,
+      "share_above_half": 1.0,
+      "p25": 0.977929,
+      "p75": 0.977929
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.03037,
+      "share_above_half": 0.0,
+      "p25": 0.03037,
+      "p75": 0.03037
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.819506,
+      "share_above_half": 1.0,
+      "p25": 0.819506,
+      "p75": 0.819506
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "failed",
+      "met": 1,
+      "failed": 24,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 1,
+      "failed": 24,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.1984,
+     "valid": 25
+    },
+    "eliminated": true,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 58.5,
+      "rank_p5": 8.0,
+      "rank_p95": 197.29999999999973,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 23.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1905.5,
+      "rank_p5": 1839.9,
+      "rank_p95": 1978.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 61.5,
+      "rank_p5": 8.950000000000003,
+      "rank_p95": 195.19999999999982,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:7:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.821667,
+      "share_above_half": 1.0,
+      "p25": 0.821667,
+      "p75": 0.821667
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.977605,
+      "share_above_half": 1.0,
+      "p25": 0.977605,
+      "p75": 0.977605
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.03592,
+      "share_above_half": 0.0,
+      "p25": 0.03592,
+      "p75": 0.03592
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.81945,
+      "share_above_half": 1.0,
+      "p25": 0.81945,
+      "p75": 0.81945
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 21,
+      "failed": 4,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.8224,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 61.5,
+      "rank_p5": 7.950000000000003,
+      "rank_p95": 203.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 27.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1844.0,
+      "rank_p5": 1765.0,
+      "rank_p95": 1914.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 64.0,
+      "rank_p5": 8.0,
+      "rank_p95": 202.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-2:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.801064,
+      "share_above_half": 1.0,
+      "p25": 0.801064,
+      "p75": 0.801064
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.964946,
+      "share_above_half": 1.0,
+      "p25": 0.964946,
+      "p75": 0.964946
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.038096,
+      "share_above_half": 0.0,
+      "p25": 0.038096,
+      "p75": 0.038096
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.800045,
+      "share_above_half": 1.0,
+      "p25": 0.800045,
+      "p75": 0.800045
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 21,
+      "failed": 4,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.8928,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 87.0,
+      "rank_p5": 11.0,
+      "rank_p95": 231.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 35.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1818.5,
+      "rank_p5": 1725.9,
+      "rank_p95": 1896.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 89.0,
+      "rank_p5": 12.0,
+      "rank_p95": 228.0999999999999,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:0:-6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.850682,
+      "share_above_half": 1.0,
+      "p25": 0.817581,
+      "p75": 0.883784
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.955047,
+      "share_above_half": 1.0,
+      "p25": 0.953343,
+      "p75": 0.956751
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.086053,
+      "share_above_half": 0.0,
+      "p25": 0.086053,
+      "p75": 0.086053
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.8498,
+      "share_above_half": 1.0,
+      "p25": 0.817004,
+      "p75": 0.882596
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 21,
+      "failed": 4,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9696,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 37.0,
+      "rank_p5": 11.0,
+      "rank_p95": 104.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 27.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1395.0,
+      "rank_p5": 1246.0,
+      "rank_p95": 1537.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 37.0,
+      "rank_p5": 11.950000000000003,
+      "rank_p95": 103.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-3:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.871903,
+      "share_above_half": 1.0,
+      "p25": 0.829196,
+      "p75": 0.928311
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.948556,
+      "share_above_half": 1.0,
+      "p25": 0.924619,
+      "p75": 0.977361
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 8,
+      "median": 0.060331,
+      "share_above_half": 0.0,
+      "p25": 0.048022,
+      "p75": 0.067926
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.869973,
+      "share_above_half": 1.0,
+      "p25": 0.827013,
+      "p75": 0.926817
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.952,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 24.0,
+      "rank_p5": 8.0,
+      "rank_p95": 71.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 8.0,
+      "rank_p5": 3.0,
+      "rank_p95": 26.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1599.0,
+      "rank_p5": 1535.0,
+      "rank_p95": 1673.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 25.0,
+      "rank_p5": 8.0,
+      "rank_p95": 74.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:3:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 21,
+      "median": 0.880213,
+      "share_above_half": 1.0,
+      "p25": 0.797493,
+      "p75": 0.923993
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 21,
+      "median": 0.947095,
+      "share_above_half": 1.0,
+      "p25": 0.919507,
+      "p75": 0.974684
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 21,
+      "median": 0.053189,
+      "share_above_half": 0.0,
+      "p25": 0.047437,
+      "p75": 0.059451
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 21,
+      "median": 0.87856,
+      "share_above_half": 1.0,
+      "p25": 0.796504,
+      "p75": 0.922586
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 21,
+     "masked": 4,
+     "cover_unknown": 0
+    },
+    "confidence": "medium",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 31.0,
+      "rank_p5": 16.0,
+      "rank_p95": 56.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 9.0,
+      "rank_p5": 4.0,
+      "rank_p95": 17.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1662.0,
+      "rank_p5": 1617.95,
+      "rank_p95": 1705.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 32.0,
+      "rank_p5": 16.0,
+      "rank_p95": 58.049999999999955,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-4:7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.92571,
+      "share_above_half": 1.0,
+      "p25": 0.92571,
+      "p75": 0.92571
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.945472,
+      "share_above_half": 1.0,
+      "p25": 0.945472,
+      "p75": 0.945472
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.924398,
+      "share_above_half": 1.0,
+      "p25": 0.924398,
+      "p75": 0.924398
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.944,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 80.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 67.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 4991.0,
+      "rank_p5": 4991.0,
+      "rank_p95": 4991.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 83.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.778024,
+      "share_above_half": 1.0,
+      "p25": 0.725212,
+      "p75": 0.849309
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.9432,
+      "share_above_half": 1.0,
+      "p25": 0.906524,
+      "p75": 0.962999
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.046539,
+      "share_above_half": 0.0,
+      "p25": 0.03993,
+      "p75": 0.057402
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.777962,
+      "share_above_half": 1.0,
+      "p25": 0.727022,
+      "p75": 0.846886
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9712,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 102.0,
+      "rank_p5": 60.0,
+      "rank_p95": 149.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 5.0,
+      "rank_p95": 22.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1722.0,
+      "rank_p5": 1679.0,
+      "rank_p95": 1762.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 103.0,
+      "rank_p5": 62.0,
+      "rank_p95": 148.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-8:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.885982,
+      "share_above_half": 1.0,
+      "p25": 0.794437,
+      "p75": 0.933883
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.938007,
+      "share_above_half": 1.0,
+      "p25": 0.904576,
+      "p75": 0.97371
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.05701,
+      "share_above_half": 0.0,
+      "p25": 0.051304,
+      "p75": 0.074127
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.884276,
+      "share_above_half": 1.0,
+      "p25": 0.795388,
+      "p75": 0.935662
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9904,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 27.0,
+      "rank_p5": 14.0,
+      "rank_p95": 51.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 6.0,
+      "rank_p95": 23.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1603.0,
+      "rank_p5": 1550.0,
+      "rank_p95": 1647.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 28.0,
+      "rank_p5": 14.950000000000003,
+      "rank_p95": 52.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:2:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.842922,
+      "share_above_half": 1.0,
+      "p25": 0.795708,
+      "p75": 0.890136
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.936547,
+      "share_above_half": 1.0,
+      "p25": 0.935816,
+      "p75": 0.937277
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.048804,
+      "share_above_half": 0.0,
+      "p25": 0.047501,
+      "p75": 0.052742
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.842913,
+      "share_above_half": 1.0,
+      "p25": 0.796427,
+      "p75": 0.889399
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9216,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 45.0,
+      "rank_p5": 15.0,
+      "rank_p95": 115.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 10.0,
+      "rank_p5": 2.0,
+      "rank_p95": 44.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1694.0,
+      "rank_p5": 1611.95,
+      "rank_p95": 1773.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 43.0,
+      "rank_p5": 15.0,
+      "rank_p95": 114.09999999999991,
+      "share_top_decile": 1.0
+     }
+    }
+   }
+  ],
+  "moon-mare-plains": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:-4:9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.033891,
+      "share_above_half": 0.0,
+      "p25": 0.033891,
+      "p75": 0.033891
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.078546,
+      "share_above_half": 0.0,
+      "p25": 0.078546,
+      "p75": 0.078546
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.985437,
+      "share_above_half": 1.0,
+      "p25": 0.985437,
+      "p75": 0.985437
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.03449,
+      "share_above_half": 0.0,
+      "p25": 0.03449,
+      "p75": 0.03449
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1692.5,
+      "rank_p5": 1285.75,
+      "rank_p95": 2296.8999999999974,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1722.5,
+      "rank_p5": 1331.3500000000001,
+      "rank_p95": 2307.199999999997,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 47.5,
+      "rank_p5": 2.0,
+      "rank_p95": 1410.199999999999,
+      "share_top_decile": 0.852
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1709.0,
+      "rank_p5": 1293.8,
+      "rank_p95": 2302.449999999997,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N11_00_E098_00_DEM:3:5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.119907,
+      "share_above_half": 0.0,
+      "p25": 0.062151,
+      "p75": 0.226165
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.21876,
+      "share_above_half": 0.0,
+      "p25": 0.116196,
+      "p75": 0.330899
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.965023,
+      "share_above_half": 1.0,
+      "p25": 0.965023,
+      "p75": 0.965023
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.11861,
+      "share_above_half": 0.0,
+      "p25": 0.061689,
+      "p75": 0.22148
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 19,
+      "failed": 0,
+      "unknown": 6
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 19,
+      "failed": 0,
+      "unknown": 6
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9984,
+     "valid": 19
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 18,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1299.5,
+      "rank_p5": 1019.75,
+      "rank_p95": 1755.6999999999994,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1345.5,
+      "rank_p5": 1088.65,
+      "rank_p95": 1780.3499999999997,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 42.5,
+      "rank_p5": 2.0,
+      "rank_p95": 1274.3999999999987,
+      "share_top_decile": 0.872
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1308.5,
+      "rank_p5": 1032.85,
+      "rank_p95": 1773.1999999999998,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:7:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.022835,
+      "share_above_half": 0.0,
+      "p25": 0.022835,
+      "p75": 0.022835
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.056475,
+      "share_above_half": 0.0,
+      "p25": 0.056475,
+      "p75": 0.056475
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.959858,
+      "share_above_half": 1.0,
+      "p25": 0.951671,
+      "p75": 0.968045
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.023504,
+      "share_above_half": 0.0,
+      "p25": 0.023504,
+      "p75": 0.023504
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1828.5,
+      "rank_p5": 1326.8,
+      "rank_p95": 2558.6499999999996,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1843.0,
+      "rank_p5": 1372.8,
+      "rank_p95": 2538.1,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 62.5,
+      "rank_p5": 5.0,
+      "rank_p95": 603.4999999999995,
+      "share_top_decile": 0.93
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1834.5,
+      "rank_p5": 1335.85,
+      "rank_p95": 2561.6499999999996,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:6:-8",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.035059,
+      "share_above_half": 0.0,
+      "p25": 0.032604,
+      "p75": 0.037514
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.079682,
+      "share_above_half": 0.0,
+      "p25": 0.076031,
+      "p75": 0.083333
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.93445,
+      "share_above_half": 1.0,
+      "p25": 0.93445,
+      "p75": 0.93445
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.035619,
+      "share_above_half": 0.0,
+      "p25": 0.033256,
+      "p75": 0.037982
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1617.0,
+      "rank_p5": 1319.85,
+      "rank_p95": 2004.1499999999999,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1664.0,
+      "rank_p5": 1408.65,
+      "rank_p95": 2012.2999999999997,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 38.5,
+      "rank_p5": 1.0,
+      "rank_p95": 1150.6499999999994,
+      "share_top_decile": 0.89
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1631.0,
+      "rank_p5": 1331.9,
+      "rank_p95": 2011.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:4:3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.072796,
+      "share_above_half": 0.0,
+      "p25": 0.072796,
+      "p75": 0.072796
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.149302,
+      "share_above_half": 0.0,
+      "p25": 0.149302,
+      "p75": 0.149302
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.883481,
+      "share_above_half": 1.0,
+      "p25": 0.842215,
+      "p75": 0.924748
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.073302,
+      "share_above_half": 0.0,
+      "p25": 0.073302,
+      "p75": 0.073302
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1443.5,
+      "rank_p5": 1104.95,
+      "rank_p95": 2046.1999999999998,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1484.5,
+      "rank_p5": 1165.8,
+      "rank_p95": 2054.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 59.5,
+      "rank_p5": 6.0,
+      "rank_p95": 602.05,
+      "share_top_decile": 0.94
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1458.5,
+      "rank_p5": 1123.55,
+      "rank_p95": 2050.3499999999995,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:-3:9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.176118,
+      "share_above_half": 0.0,
+      "p25": 0.126397,
+      "p75": 0.225839
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.270367,
+      "share_above_half": 0.0,
+      "p25": 0.213405,
+      "p75": 0.327329
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.868355,
+      "share_above_half": 0.6666666666666666,
+      "p25": 0.563064,
+      "p75": 0.872511
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.172464,
+      "share_above_half": 0.0,
+      "p25": 0.124793,
+      "p75": 0.220135
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1152.5,
+      "rank_p5": 973.85,
+      "rank_p95": 1383.1,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1241.0,
+      "rank_p5": 1046.8,
+      "rank_p95": 1464.4499999999996,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 159.0,
+      "rank_p5": 7.0,
+      "rank_p95": 748.6999999999994,
+      "share_top_decile": 0.842
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1172.0,
+      "rank_p5": 985.85,
+      "rank_p95": 1403.1999999999998,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-10:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.090995,
+      "share_above_half": 0.0,
+      "p25": 0.070427,
+      "p75": 0.125504
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.176891,
+      "share_above_half": 0.0,
+      "p25": 0.146056,
+      "p75": 0.226874
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.844013,
+      "share_above_half": 0.8,
+      "p25": 0.684247,
+      "p75": 0.87543
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.090756,
+      "share_above_half": 0.0,
+      "p25": 0.071043,
+      "p75": 0.124075
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1403.0,
+      "rank_p5": 1304.95,
+      "rank_p95": 1513.05,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1449.0,
+      "rank_p5": 1353.85,
+      "rank_p95": 1555.1,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 79.0,
+      "rank_p5": 24.950000000000003,
+      "rank_p95": 206.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1418.5,
+      "rank_p5": 1316.0,
+      "rank_p95": 1521.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.040278,
+      "share_above_half": 0.0,
+      "p25": 0.025856,
+      "p75": 0.068641
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.087634,
+      "share_above_half": 0.0,
+      "p25": 0.062967,
+      "p75": 0.143135
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.836471,
+      "share_above_half": 0.88,
+      "p25": 0.622699,
+      "p75": 0.906507
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.040652,
+      "share_above_half": 0.0,
+      "p25": 0.026516,
+      "p75": 0.069315
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1630.5,
+      "rank_p5": 1505.95,
+      "rank_p95": 1791.1999999999998,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1672.5,
+      "rank_p5": 1547.95,
+      "rank_p95": 1812.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 79.0,
+      "rank_p5": 20.0,
+      "rank_p95": 222.04999999999995,
+      "share_top_decile": 0.998
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1646.5,
+      "rank_p5": 1515.0,
+      "rank_p95": 1802.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:8:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.019641,
+      "share_above_half": 0.0,
+      "p25": 0.001408,
+      "p75": 0.068847
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.049984,
+      "share_above_half": 0.0,
+      "p25": 0.00357,
+      "p75": 0.143135
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.834592,
+      "share_above_half": 0.8,
+      "p25": 0.619919,
+      "p75": 0.88292
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.020326,
+      "share_above_half": 0.0,
+      "p25": 0.00145,
+      "p75": 0.069482
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 5,
+     "masked": 20,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1841.5,
+      "rank_p5": 1485.9,
+      "rank_p95": 2289.05,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1854.0,
+      "rank_p5": 1526.85,
+      "rank_p95": 2294.45,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 166.0,
+      "rank_p5": 11.950000000000003,
+      "rank_p95": 1459.6499999999967,
+      "share_top_decile": 0.776
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1848.0,
+      "rank_p5": 1497.9,
+      "rank_p95": 2295.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-9:-4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.06428,
+      "share_above_half": 0.0,
+      "p25": 0.032964,
+      "p75": 0.091373
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.132749,
+      "share_above_half": 0.0,
+      "p25": 0.078546,
+      "p75": 0.177215
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.833331,
+      "share_above_half": 0.8,
+      "p25": 0.665863,
+      "p75": 0.926343
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.064714,
+      "share_above_half": 0.0,
+      "p25": 0.033737,
+      "p75": 0.091118
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1558.5,
+      "rank_p5": 1416.0,
+      "rank_p95": 1723.0,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1600.0,
+      "rank_p5": 1461.9,
+      "rank_p95": 1748.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 90.0,
+      "rank_p5": 24.950000000000003,
+      "rank_p95": 265.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1567.5,
+      "rank_p5": 1432.0,
+      "rank_p95": 1736.05,
+      "share_top_decile": 0.0
+     }
+    }
+   }
+  ],
+  "moon-south-polar-cap-v2": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-3:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.995965,
+      "share_above_half": 1.0,
+      "p25": 0.995965,
+      "p75": 0.995965
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.908471,
+      "share_above_half": 1.0,
+      "p25": 0.908471,
+      "p75": 0.908471
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.073101,
+      "share_above_half": 0.0,
+      "p25": 0.073101,
+      "p75": 0.073101
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.994075,
+      "share_above_half": 1.0,
+      "p25": 0.994075,
+      "p75": 0.994075
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 15,
+      "failed": 10,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.5872,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 31.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 35.0,
+      "rank_p5": 3.950000000000003,
+      "rank_p95": 173.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1481.5,
+      "rank_p5": 1353.85,
+      "rank_p95": 1612.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 30.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:2:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.985664,
+      "share_above_half": 1.0,
+      "p25": 0.985664,
+      "p75": 0.985664
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.91334,
+      "share_above_half": 1.0,
+      "p25": 0.91334,
+      "p75": 0.91334
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.06302,
+      "share_above_half": 0.0,
+      "p25": 0.058675,
+      "p75": 0.067365
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.983285,
+      "share_above_half": 1.0,
+      "p25": 0.983285,
+      "p75": 0.983285
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 15,
+      "failed": 10,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.704,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 29.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 25.0,
+      "rank_p5": 2.0,
+      "rank_p95": 138.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1556.0,
+      "rank_p5": 1460.95,
+      "rank_p95": 1646.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 29.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-3:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.971586,
+      "share_above_half": 1.0,
+      "p25": 0.971586,
+      "p75": 0.971586
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.890295,
+      "share_above_half": 1.0,
+      "p25": 0.890295,
+      "p75": 0.890295
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.053762,
+      "share_above_half": 0.0,
+      "p25": 0.053762,
+      "p75": 0.053762
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.973805,
+      "share_above_half": 1.0,
+      "p25": 0.973805,
+      "p75": 0.973805
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 13,
+      "failed": 12,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 7,
+      "failed": 18,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.5648,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 38.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 47.5,
+      "rank_p5": 5.0,
+      "rank_p95": 207.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1648.0,
+      "rank_p5": 1508.0,
+      "rank_p95": 1761.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 36.049999999999955,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N11_00_E098_00_DEM:5:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.970246,
+      "share_above_half": 1.0,
+      "p25": 0.970246,
+      "p75": 0.970246
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.888997,
+      "share_above_half": 1.0,
+      "p25": 0.888997,
+      "p75": 0.888997
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.972494,
+      "share_above_half": 1.0,
+      "p25": 0.972494,
+      "p75": 0.972494
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 21,
+      "failed": 0,
+      "unknown": 4
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 21,
+      "failed": 0,
+      "unknown": 4
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9392,
+     "valid": 21
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 37.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 52.0,
+      "rank_p5": 6.0,
+      "rank_p95": 205.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 4493.0,
+      "rank_p5": 4493.0,
+      "rank_p95": 4493.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 35.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:0:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.945489,
+      "share_above_half": 1.0,
+      "p25": 0.937694,
+      "p75": 0.95955
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.890944,
+      "share_above_half": 1.0,
+      "p25": 0.881207,
+      "p75": 0.917397
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.071782,
+      "share_above_half": 0.0,
+      "p25": 0.064788,
+      "p75": 0.079001
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.947875,
+      "share_above_half": 1.0,
+      "p25": 0.938172,
+      "p75": 0.961913
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 24,
+      "failed": 1,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.928,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 6.0,
+      "rank_p5": 1.0,
+      "rank_p95": 26.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 38.0,
+      "rank_p5": 8.0,
+      "rank_p95": 137.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1496.0,
+      "rank_p5": 1388.85,
+      "rank_p95": 1594.1,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 6.0,
+      "rank_p5": 1.0,
+      "rank_p95": 26.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.944733,
+      "share_above_half": 1.0,
+      "p25": 0.944733,
+      "p75": 0.944733
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.933139,
+      "share_above_half": 1.0,
+      "p25": 0.933139,
+      "p75": 0.933139
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.055304,
+      "share_above_half": 0.0,
+      "p25": 0.055304,
+      "p75": 0.055304
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.943135,
+      "share_above_half": 1.0,
+      "p25": 0.943135,
+      "p75": 0.943135
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.5744,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 45.29999999999973,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 11.0,
+      "rank_p5": 1.0,
+      "rank_p95": 91.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1628.5,
+      "rank_p5": 1506.9,
+      "rank_p95": 1749.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 48.19999999999982,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:1:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.931016,
+      "share_above_half": 1.0,
+      "p25": 0.886196,
+      "p75": 0.955876
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.907984,
+      "share_above_half": 1.0,
+      "p25": 0.884859,
+      "p75": 0.943525
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.059416,
+      "share_above_half": 0.0,
+      "p25": 0.030346,
+      "p75": 0.073648
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.931285,
+      "share_above_half": 1.0,
+      "p25": 0.884659,
+      "p75": 0.958379
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 24,
+      "failed": 1,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.8672,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 12.0,
+      "rank_p5": 5.0,
+      "rank_p95": 36.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 24.0,
+      "rank_p5": 8.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1606.0,
+      "rank_p5": 1488.0,
+      "rank_p95": 1703.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 12.0,
+      "rank_p5": 4.0,
+      "rank_p95": 36.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:1:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.928904,
+      "share_above_half": 1.0,
+      "p25": 0.873414,
+      "p75": 0.95403
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.930704,
+      "share_above_half": 1.0,
+      "p25": 0.904414,
+      "p75": 0.948231
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 7,
+      "median": 0.062008,
+      "share_above_half": 0.0,
+      "p25": 0.053758,
+      "p75": 0.064904
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.927368,
+      "share_above_half": 1.0,
+      "p25": 0.871548,
+      "p75": 0.952071
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 21,
+      "failed": 4,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.7584,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 12.0,
+      "rank_p5": 4.0,
+      "rank_p95": 33.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 16.0,
+      "rank_p5": 5.0,
+      "rank_p95": 46.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1590.0,
+      "rank_p5": 1513.95,
+      "rank_p95": 1660.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 12.0,
+      "rank_p5": 4.0,
+      "rank_p95": 34.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-4:7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.92571,
+      "share_above_half": 1.0,
+      "p25": 0.92571,
+      "p75": 0.92571
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.945472,
+      "share_above_half": 1.0,
+      "p25": 0.945472,
+      "p75": 0.945472
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.924398,
+      "share_above_half": 1.0,
+      "p25": 0.924398,
+      "p75": 0.924398
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.944,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 80.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 67.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 4991.0,
+      "rank_p5": 4991.0,
+      "rank_p95": 4991.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 83.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:7:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.917572,
+      "share_above_half": 1.0,
+      "p25": 0.780479,
+      "p75": 0.940218
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.850698,
+      "share_above_half": 1.0,
+      "p25": 0.764038,
+      "p75": 0.887699
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.088657,
+      "share_above_half": 0.0,
+      "p25": 0.061965,
+      "p75": 0.13503
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.919184,
+      "share_above_half": 1.0,
+      "p25": 0.780165,
+      "p75": 0.939831
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 22,
+      "failed": 3,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "failed",
+      "met": 11,
+      "failed": 14,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.6608,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 14.0,
+      "rank_p5": 3.0,
+      "rank_p95": 92.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 115.0,
+      "rank_p5": 25.0,
+      "rank_p95": 291.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1375.5,
+      "rank_p5": 1235.75,
+      "rank_p95": 1489.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 14.0,
+      "rank_p5": 3.0,
+      "rank_p95": 91.09999999999991,
+      "share_top_decile": 1.0
+     }
+    }
+   }
+  ]
+ },
+ "top_high_confidence": {
+  "moon-polar-lit-highlands": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-8:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.885982,
+      "share_above_half": 1.0,
+      "p25": 0.794437,
+      "p75": 0.933883
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.938007,
+      "share_above_half": 1.0,
+      "p25": 0.904576,
+      "p75": 0.97371
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.05701,
+      "share_above_half": 0.0,
+      "p25": 0.051304,
+      "p75": 0.074127
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.884276,
+      "share_above_half": 1.0,
+      "p25": 0.795388,
+      "p75": 0.935662
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9904,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 27.0,
+      "rank_p5": 14.0,
+      "rank_p95": 51.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 6.0,
+      "rank_p95": 23.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1603.0,
+      "rank_p5": 1550.0,
+      "rank_p95": 1647.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 28.0,
+      "rank_p5": 14.950000000000003,
+      "rank_p95": 52.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:2:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.865928,
+      "share_above_half": 1.0,
+      "p25": 0.743171,
+      "p75": 0.956408
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.880558,
+      "share_above_half": 1.0,
+      "p25": 0.806232,
+      "p75": 0.920156
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.088504,
+      "share_above_half": 0.0,
+      "p25": 0.06909,
+      "p75": 0.125332
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.867547,
+      "share_above_half": 1.0,
+      "p25": 0.742329,
+      "p75": 0.959027
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.992,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 30.0,
+      "rank_p5": 14.0,
+      "rank_p95": 62.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 72.0,
+      "rank_p5": 38.95,
+      "rank_p95": 131.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1375.0,
+      "rank_p5": 1314.9,
+      "rank_p95": 1431.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 30.0,
+      "rank_p5": 14.0,
+      "rank_p95": 62.049999999999955,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:8:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.864435,
+      "share_above_half": 1.0,
+      "p25": 0.719495,
+      "p75": 0.939377
+     },
+     "moon-psr": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.817429,
+      "share_above_half": 1.0,
+      "p25": 0.720708,
+      "p75": 0.869929
+     },
+     "moon-mare-plains": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.119111,
+      "share_above_half": 0.0,
+      "p25": 0.100032,
+      "p75": 0.160562
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.866236,
+      "share_above_half": 1.0,
+      "p25": 0.718218,
+      "p75": 0.940298
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 20,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 20,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 20
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 20,
+     "valid_unmasked": 20,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 37.5,
+      "rank_p5": 17.0,
+      "rank_p95": 81.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 206.0,
+      "rank_p5": 144.0,
+      "rank_p95": 284.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1208.0,
+      "rank_p5": 1137.0,
+      "rank_p95": 1272.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 36.0,
+      "rank_p5": 16.0,
+      "rank_p95": 80.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-4:-11",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.862975,
+      "share_above_half": 0.92,
+      "p25": 0.6758,
+      "p75": 0.928286
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.89062,
+      "share_above_half": 1.0,
+      "p25": 0.834469,
+      "p75": 0.9815
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.078244,
+      "share_above_half": 0.0,
+      "p25": 0.062094,
+      "p75": 0.094819
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.860995,
+      "share_above_half": 0.92,
+      "p25": 0.674771,
+      "p75": 0.929891
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9856,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 44.0,
+      "rank_p5": 20.950000000000003,
+      "rank_p95": 88.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 38.0,
+      "rank_p5": 17.950000000000003,
+      "rank_p95": 69.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1449.0,
+      "rank_p5": 1398.0,
+      "rank_p95": 1500.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 45.0,
+      "rank_p5": 21.0,
+      "rank_p95": 89.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.857344,
+      "share_above_half": 0.92,
+      "p25": 0.747669,
+      "p75": 0.943154
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.917559,
+      "share_above_half": 1.0,
+      "p25": 0.842908,
+      "p75": 0.949367
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.069041,
+      "share_above_half": 0.0,
+      "p25": 0.05585,
+      "p75": 0.07903
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.855125,
+      "share_above_half": 0.92,
+      "p25": 0.749104,
+      "p75": 0.941601
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9712,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 35.5,
+      "rank_p5": 16.0,
+      "rank_p95": 72.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 30.0,
+      "rank_p5": 15.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1524.0,
+      "rank_p5": 1477.0,
+      "rank_p95": 1571.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 36.0,
+      "rank_p5": 17.0,
+      "rank_p95": 73.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-7:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.856486,
+      "share_above_half": 1.0,
+      "p25": 0.731737,
+      "p75": 0.908044
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.844206,
+      "share_above_half": 1.0,
+      "p25": 0.795521,
+      "p75": 0.896462
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 22,
+      "median": 0.075057,
+      "share_above_half": 0.0,
+      "p25": 0.048004,
+      "p75": 0.090477
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.858402,
+      "share_above_half": 1.0,
+      "p25": 0.732027,
+      "p75": 0.909467
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 23,
+     "masked": 2,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 57.5,
+      "rank_p5": 26.0,
+      "rank_p95": 113.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 134.0,
+      "rank_p5": 74.0,
+      "rank_p95": 197.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1484.0,
+      "rank_p5": 1430.95,
+      "rank_p95": 1536.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 56.0,
+      "rank_p5": 26.950000000000003,
+      "rank_p95": 113.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-2:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.853807,
+      "share_above_half": 0.92,
+      "p25": 0.694206,
+      "p75": 0.91201
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.848101,
+      "share_above_half": 1.0,
+      "p25": 0.790328,
+      "p75": 0.900357
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.105496,
+      "share_above_half": 0.0,
+      "p25": 0.065128,
+      "p75": 0.120197
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.855836,
+      "share_above_half": 0.96,
+      "p25": 0.692755,
+      "p75": 0.913357
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9968,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 52.0,
+      "rank_p5": 24.0,
+      "rank_p95": 98.19999999999982,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 125.0,
+      "rank_p5": 71.0,
+      "rank_p95": 188.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1344.5,
+      "rank_p5": 1272.9,
+      "rank_p95": 1410.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 50.5,
+      "rank_p5": 23.950000000000003,
+      "rank_p95": 99.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-6:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.852262,
+      "share_above_half": 0.88,
+      "p25": 0.655129,
+      "p75": 0.909812
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.916261,
+      "share_above_half": 1.0,
+      "p25": 0.839013,
+      "p75": 0.956508
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.046335,
+      "share_above_half": 0.0,
+      "p25": 0.036384,
+      "p75": 0.061912
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.849898,
+      "share_above_half": 0.92,
+      "p25": 0.659743,
+      "p75": 0.908199
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9904,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 69.5,
+      "rank_p5": 32.900000000000006,
+      "rank_p95": 126.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 28.0,
+      "rank_p5": 13.0,
+      "rank_p95": 55.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1727.0,
+      "rank_p5": 1679.95,
+      "rank_p95": 1767.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 71.0,
+      "rank_p5": 33.900000000000006,
+      "rank_p95": 125.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.851575,
+      "share_above_half": 0.84,
+      "p25": 0.685243,
+      "p75": 0.971002
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.867251,
+      "share_above_half": 0.88,
+      "p25": 0.722493,
+      "p75": 0.908796
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.094151,
+      "share_above_half": 0.04,
+      "p25": 0.074219,
+      "p75": 0.129959
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.85355,
+      "share_above_half": 0.84,
+      "p25": 0.683526,
+      "p75": 0.968591
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 48.0,
+      "rank_p5": 17.950000000000003,
+      "rank_p95": 100.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 133.0,
+      "rank_p5": 66.95,
+      "rank_p95": 209.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1358.0,
+      "rank_p5": 1292.95,
+      "rank_p95": 1417.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 47.0,
+      "rank_p5": 17.0,
+      "rank_p95": 102.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:5:9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.845738,
+      "share_above_half": 0.96,
+      "p25": 0.738055,
+      "p75": 0.900953
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.90555,
+      "share_above_half": 1.0,
+      "p25": 0.82668,
+      "p75": 0.960727
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.069408,
+      "share_above_half": 0.0,
+      "p25": 0.05279,
+      "p75": 0.087816
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.844572,
+      "share_above_half": 1.0,
+      "p25": 0.739597,
+      "p75": 0.899527
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9872,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 56.0,
+      "rank_p5": 27.0,
+      "rank_p95": 107.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 35.0,
+      "rank_p5": 17.0,
+      "rank_p95": 61.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1540.0,
+      "rank_p5": 1478.95,
+      "rank_p95": 1592.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 56.0,
+      "rank_p5": 27.0,
+      "rank_p95": 107.0,
+      "share_top_decile": 1.0
+     }
+    }
+   }
+  ],
+  "moon-psr": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.778024,
+      "share_above_half": 1.0,
+      "p25": 0.725212,
+      "p75": 0.849309
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.9432,
+      "share_above_half": 1.0,
+      "p25": 0.906524,
+      "p75": 0.962999
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.046539,
+      "share_above_half": 0.0,
+      "p25": 0.03993,
+      "p75": 0.057402
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.777962,
+      "share_above_half": 1.0,
+      "p25": 0.727022,
+      "p75": 0.846886
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9712,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 102.0,
+      "rank_p5": 60.0,
+      "rank_p95": 149.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 5.0,
+      "rank_p95": 22.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1722.0,
+      "rank_p5": 1679.0,
+      "rank_p95": 1762.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 103.0,
+      "rank_p5": 62.0,
+      "rank_p95": 148.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-8:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.885982,
+      "share_above_half": 1.0,
+      "p25": 0.794437,
+      "p75": 0.933883
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.938007,
+      "share_above_half": 1.0,
+      "p25": 0.904576,
+      "p75": 0.97371
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.05701,
+      "share_above_half": 0.0,
+      "p25": 0.051304,
+      "p75": 0.074127
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.884276,
+      "share_above_half": 1.0,
+      "p25": 0.795388,
+      "p75": 0.935662
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9904,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 27.0,
+      "rank_p5": 14.0,
+      "rank_p95": 51.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 6.0,
+      "rank_p95": 23.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1603.0,
+      "rank_p5": 1550.0,
+      "rank_p95": 1647.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 28.0,
+      "rank_p5": 14.950000000000003,
+      "rank_p95": 52.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.827711,
+      "share_above_half": 0.96,
+      "p25": 0.722534,
+      "p75": 0.872453
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.925998,
+      "share_above_half": 0.96,
+      "p25": 0.870821,
+      "p75": 0.983772
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.072935,
+      "share_above_half": 0.0,
+      "p25": 0.062615,
+      "p75": 0.082012
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.825501,
+      "share_above_half": 0.96,
+      "p25": 0.724512,
+      "p75": 0.870893
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9872,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 67.0,
+      "rank_p5": 34.0,
+      "rank_p95": 111.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 18.0,
+      "rank_p5": 8.0,
+      "rank_p95": 35.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1479.5,
+      "rank_p5": 1434.0,
+      "rank_p95": 1530.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 68.0,
+      "rank_p5": 34.95,
+      "rank_p95": 112.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:0:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.780737,
+      "share_above_half": 0.96,
+      "p25": 0.675457,
+      "p75": 0.868401
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.920156,
+      "share_above_half": 1.0,
+      "p25": 0.831873,
+      "p75": 0.954885
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.059216,
+      "share_above_half": 0.0,
+      "p25": 0.054223,
+      "p75": 0.085677
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.781336,
+      "share_above_half": 0.96,
+      "p25": 0.679706,
+      "p75": 0.86685
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9456,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 112.0,
+      "rank_p5": 62.95,
+      "rank_p95": 168.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 30.0,
+      "rank_p5": 14.0,
+      "rank_p95": 55.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1560.0,
+      "rank_p5": 1500.0,
+      "rank_p95": 1612.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 112.0,
+      "rank_p5": 63.0,
+      "rank_p95": 167.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.857344,
+      "share_above_half": 0.92,
+      "p25": 0.747669,
+      "p75": 0.943154
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.917559,
+      "share_above_half": 1.0,
+      "p25": 0.842908,
+      "p75": 0.949367
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.069041,
+      "share_above_half": 0.0,
+      "p25": 0.05585,
+      "p75": 0.07903
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.855125,
+      "share_above_half": 0.92,
+      "p25": 0.749104,
+      "p75": 0.941601
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9712,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 35.5,
+      "rank_p5": 16.0,
+      "rank_p95": 72.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 30.0,
+      "rank_p5": 15.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1524.0,
+      "rank_p5": 1477.0,
+      "rank_p95": 1571.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 36.0,
+      "rank_p5": 17.0,
+      "rank_p95": 73.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-6:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.852262,
+      "share_above_half": 0.88,
+      "p25": 0.655129,
+      "p75": 0.909812
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.916261,
+      "share_above_half": 1.0,
+      "p25": 0.839013,
+      "p75": 0.956508
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.046335,
+      "share_above_half": 0.0,
+      "p25": 0.036384,
+      "p75": 0.061912
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.849898,
+      "share_above_half": 0.92,
+      "p25": 0.659743,
+      "p75": 0.908199
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9904,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 69.5,
+      "rank_p5": 32.900000000000006,
+      "rank_p95": 126.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 28.0,
+      "rank_p5": 13.0,
+      "rank_p95": 55.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1727.0,
+      "rank_p5": 1679.95,
+      "rank_p95": 1767.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 71.0,
+      "rank_p5": 33.900000000000006,
+      "rank_p95": 125.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-9:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.717126,
+      "share_above_half": 1.0,
+      "p25": 0.644562,
+      "p75": 0.826208
+     },
+     "moon-psr": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.911068,
+      "share_above_half": 1.0,
+      "p25": 0.860678,
+      "p75": 0.971925
+     },
+     "moon-mare-plains": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.045835,
+      "share_above_half": 0.0,
+      "p25": 0.038955,
+      "p75": 0.053962
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.719326,
+      "share_above_half": 1.0,
+      "p25": 0.649608,
+      "p75": 0.8241
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 20,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 20,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9776,
+     "valid": 20
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 20,
+     "valid_unmasked": 20,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 196.0,
+      "rank_p5": 139.9,
+      "rank_p95": 258.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 28.0,
+      "rank_p5": 12.0,
+      "rank_p95": 53.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1720.0,
+      "rank_p5": 1677.0,
+      "rank_p95": 1764.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 193.0,
+      "rank_p5": 138.95,
+      "rank_p95": 254.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:-4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.751034,
+      "share_above_half": 0.84,
+      "p25": 0.641463,
+      "p75": 0.850408
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.90977,
+      "share_above_half": 1.0,
+      "p25": 0.797468,
+      "p75": 0.951315
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.048837,
+      "share_above_half": 0.0,
+      "p25": 0.03645,
+      "p75": 0.06322
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.751056,
+      "share_above_half": 0.84,
+      "p25": 0.646694,
+      "p75": 0.847974
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9664,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 165.5,
+      "rank_p5": 108.0,
+      "rank_p95": 233.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 39.5,
+      "rank_p5": 18.0,
+      "rank_p95": 76.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1698.0,
+      "rank_p5": 1647.0,
+      "rank_p95": 1744.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 165.0,
+      "rank_p5": 109.0,
+      "rank_p95": 231.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:2:-10",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.824208,
+      "share_above_half": 0.9130434782608695,
+      "p25": 0.683286,
+      "p75": 0.92626
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.90912,
+      "share_above_half": 1.0,
+      "p25": 0.827329,
+      "p75": 0.948556
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 24,
+      "median": 0.07194,
+      "share_above_half": 0.0,
+      "p25": 0.045606,
+      "p75": 0.10004
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.821904,
+      "share_above_half": 0.9130434782608695,
+      "p25": 0.687011,
+      "p75": 0.926657
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9888,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 23,
+     "masked": 2,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 66.0,
+      "rank_p5": 29.950000000000003,
+      "rank_p95": 121.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 34.0,
+      "rank_p5": 16.0,
+      "rank_p95": 63.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1490.0,
+      "rank_p5": 1435.0,
+      "rank_p95": 1552.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 68.0,
+      "rank_p5": 31.950000000000003,
+      "rank_p95": 121.14999999999986,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:-6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.736407,
+      "share_above_half": 0.8,
+      "p25": 0.546553,
+      "p75": 0.831213
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.908471,
+      "share_above_half": 1.0,
+      "p25": 0.73937,
+      "p75": 0.953262
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.051918,
+      "share_above_half": 0.0,
+      "p25": 0.038455,
+      "p75": 0.062446
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.738007,
+      "share_above_half": 0.8,
+      "p25": 0.554572,
+      "p75": 0.82893
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.968,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 192.0,
+      "rank_p5": 130.95,
+      "rank_p95": 249.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 32.0,
+      "rank_p5": 15.0,
+      "rank_p95": 61.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1692.0,
+      "rank_p5": 1643.95,
+      "rank_p95": 1743.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 189.5,
+      "rank_p5": 129.95,
+      "rank_p95": 246.0,
+      "share_top_decile": 1.0
+     }
+    }
+   }
+  ],
+  "moon-mare-plains": [
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-10:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.090995,
+      "share_above_half": 0.0,
+      "p25": 0.070427,
+      "p75": 0.125504
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.176891,
+      "share_above_half": 0.0,
+      "p25": 0.146056,
+      "p75": 0.226874
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.844013,
+      "share_above_half": 0.8,
+      "p25": 0.684247,
+      "p75": 0.87543
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.090756,
+      "share_above_half": 0.0,
+      "p25": 0.071043,
+      "p75": 0.124075
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1403.0,
+      "rank_p5": 1304.95,
+      "rank_p95": 1513.05,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1449.0,
+      "rank_p5": 1353.85,
+      "rank_p95": 1555.1,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 79.0,
+      "rank_p5": 24.950000000000003,
+      "rank_p95": 206.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1418.5,
+      "rank_p5": 1316.0,
+      "rank_p95": 1521.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.040278,
+      "share_above_half": 0.0,
+      "p25": 0.025856,
+      "p75": 0.068641
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.087634,
+      "share_above_half": 0.0,
+      "p25": 0.062967,
+      "p75": 0.143135
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.836471,
+      "share_above_half": 0.88,
+      "p25": 0.622699,
+      "p75": 0.906507
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.040652,
+      "share_above_half": 0.0,
+      "p25": 0.026516,
+      "p75": 0.069315
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1630.5,
+      "rank_p5": 1505.95,
+      "rank_p95": 1791.1999999999998,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1672.5,
+      "rank_p5": 1547.95,
+      "rank_p95": 1812.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 79.0,
+      "rank_p5": 20.0,
+      "rank_p95": 222.04999999999995,
+      "share_top_decile": 0.998
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1646.5,
+      "rank_p5": 1515.0,
+      "rank_p95": 1802.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-9:-4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.06428,
+      "share_above_half": 0.0,
+      "p25": 0.032964,
+      "p75": 0.091373
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.132749,
+      "share_above_half": 0.0,
+      "p25": 0.078546,
+      "p75": 0.177215
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.833331,
+      "share_above_half": 0.8,
+      "p25": 0.665863,
+      "p75": 0.926343
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.064714,
+      "share_above_half": 0.0,
+      "p25": 0.033737,
+      "p75": 0.091118
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1558.5,
+      "rank_p5": 1416.0,
+      "rank_p95": 1723.0,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1600.0,
+      "rank_p5": 1461.9,
+      "rank_p95": 1748.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 90.0,
+      "rank_p5": 24.950000000000003,
+      "rank_p95": 265.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1567.5,
+      "rank_p5": 1432.0,
+      "rank_p95": 1736.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E017_00_DEM:-6:-6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.05106,
+      "share_above_half": 0.0,
+      "p25": 0.028397,
+      "p75": 0.076024
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.107108,
+      "share_above_half": 0.0,
+      "p25": 0.068484,
+      "p75": 0.155144
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.808571,
+      "share_above_half": 0.84,
+      "p25": 0.585944,
+      "p75": 0.85648
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.051498,
+      "share_above_half": 0.0,
+      "p25": 0.029137,
+      "p75": 0.076452
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1578.5,
+      "rank_p5": 1461.95,
+      "rank_p95": 1729.1999999999998,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1621.0,
+      "rank_p5": 1501.95,
+      "rank_p95": 1758.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 90.5,
+      "rank_p5": 27.0,
+      "rank_p95": 221.24999999999977,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1590.0,
+      "rank_p5": 1474.0,
+      "rank_p95": 1746.1,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E017_00_DEM:-2:3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.044914,
+      "share_above_half": 0.0,
+      "p25": 0.032621,
+      "p75": 0.060331
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.095099,
+      "share_above_half": 0.0,
+      "p25": 0.078546,
+      "p75": 0.126258
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.806867,
+      "share_above_half": 0.88,
+      "p25": 0.633501,
+      "p75": 0.923064
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.045169,
+      "share_above_half": 0.0,
+      "p25": 0.033458,
+      "p75": 0.060811
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1608.0,
+      "rank_p5": 1489.95,
+      "rank_p95": 1750.1,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1652.0,
+      "rank_p5": 1532.95,
+      "rank_p95": 1776.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 90.0,
+      "rank_p5": 27.0,
+      "rank_p95": 251.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1622.5,
+      "rank_p5": 1500.8,
+      "rank_p95": 1765.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-6:-11",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.036535,
+      "share_above_half": 0.0,
+      "p25": 0.028912,
+      "p75": 0.059576
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.082116,
+      "share_above_half": 0.0,
+      "p25": 0.069133,
+      "p75": 0.123986
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.8023,
+      "share_above_half": 0.76,
+      "p25": 0.592995,
+      "p75": 0.910967
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.036999,
+      "share_above_half": 0.0,
+      "p25": 0.029611,
+      "p75": 0.059974
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1643.0,
+      "rank_p5": 1513.8,
+      "rank_p95": 1808.0,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1685.0,
+      "rank_p5": 1557.8,
+      "rank_p95": 1824.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 90.0,
+      "rank_p5": 25.0,
+      "rank_p95": 253.19999999999982,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1660.5,
+      "rank_p5": 1523.85,
+      "rank_p95": 1813.1499999999999,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-5:-8",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.054254,
+      "share_above_half": 0.0,
+      "p25": 0.021736,
+      "p75": 0.062357
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.113924,
+      "share_above_half": 0.0,
+      "p25": 0.054203,
+      "p75": 0.12853
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.800988,
+      "share_above_half": 0.92,
+      "p25": 0.67874,
+      "p75": 0.885661
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.054704,
+      "share_above_half": 0.0,
+      "p25": 0.022417,
+      "p75": 0.062707
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1618.5,
+      "rank_p5": 1487.0,
+      "rank_p95": 1765.1,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1661.0,
+      "rank_p5": 1531.95,
+      "rank_p95": 1786.0,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 68.0,
+      "rank_p5": 21.0,
+      "rank_p95": 208.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1633.5,
+      "rank_p5": 1499.95,
+      "rank_p95": 1776.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-6:-6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.031144,
+      "share_above_half": 0.0,
+      "p25": 0.016242,
+      "p75": 0.047455
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.0753,
+      "share_above_half": 0.0,
+      "p25": 0.040896,
+      "p75": 0.099318
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.798759,
+      "share_above_half": 0.8,
+      "p25": 0.56765,
+      "p75": 0.913123
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.031953,
+      "share_above_half": 0.0,
+      "p25": 0.016785,
+      "p75": 0.047762
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1756.5,
+      "rank_p5": 1608.0,
+      "rank_p95": 1919.0,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1779.5,
+      "rank_p5": 1650.95,
+      "rank_p95": 1934.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 123.5,
+      "rank_p5": 28.0,
+      "rank_p95": 393.14999999999986,
+      "share_top_decile": 0.988
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1767.5,
+      "rank_p5": 1621.9,
+      "rank_p95": 1927.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-3:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.032037,
+      "share_above_half": 0.0,
+      "p25": 0.018062,
+      "p75": 0.044742
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.077897,
+      "share_above_half": 0.0,
+      "p25": 0.047387,
+      "p75": 0.094774
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.797896,
+      "share_above_half": 0.68,
+      "p25": 0.438525,
+      "p75": 0.926063
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.032901,
+      "share_above_half": 0.0,
+      "p25": 0.01882,
+      "p75": 0.044974
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1748.5,
+      "rank_p5": 1600.0,
+      "rank_p95": 1921.1,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1773.5,
+      "rank_p5": 1641.0,
+      "rank_p95": 1938.05,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 122.0,
+      "rank_p5": 30.0,
+      "rank_p95": 425.0999999999999,
+      "share_top_decile": 0.982
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1761.0,
+      "rank_p5": 1613.95,
+      "rank_p95": 1929.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E135_00_DEM:-7:-11",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.058202,
+      "share_above_half": 0.0,
+      "p25": 0.030732,
+      "p75": 0.098996
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.122038,
+      "share_above_half": 0.0,
+      "p25": 0.073353,
+      "p75": 0.186952
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.792021,
+      "share_above_half": 0.92,
+      "p25": 0.654951,
+      "p75": 0.84221
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.058692,
+      "share_above_half": 0.0,
+      "p25": 0.031451,
+      "p75": 0.098479
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1514.0,
+      "rank_p5": 1390.0,
+      "rank_p95": 1645.3499999999997,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1559.0,
+      "rank_p5": 1436.9,
+      "rank_p95": 1685.2999999999997,
+      "share_top_decile": 0.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 72.0,
+      "rank_p5": 22.0,
+      "rank_p95": 199.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 1523.5,
+      "rank_p5": 1407.95,
+      "rank_p95": 1662.2499999999998,
+      "share_top_decile": 0.0
+     }
+    }
+   }
+  ],
+  "moon-south-polar-cap-v2": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-8:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.885982,
+      "share_above_half": 1.0,
+      "p25": 0.794437,
+      "p75": 0.933883
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.938007,
+      "share_above_half": 1.0,
+      "p25": 0.904576,
+      "p75": 0.97371
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.05701,
+      "share_above_half": 0.0,
+      "p25": 0.051304,
+      "p75": 0.074127
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.884276,
+      "share_above_half": 1.0,
+      "p25": 0.795388,
+      "p75": 0.935662
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9904,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 27.0,
+      "rank_p5": 14.0,
+      "rank_p95": 51.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 6.0,
+      "rank_p95": 23.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1603.0,
+      "rank_p5": 1550.0,
+      "rank_p95": 1647.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 28.0,
+      "rank_p5": 14.950000000000003,
+      "rank_p95": 52.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:2:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.865928,
+      "share_above_half": 1.0,
+      "p25": 0.743171,
+      "p75": 0.956408
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.880558,
+      "share_above_half": 1.0,
+      "p25": 0.806232,
+      "p75": 0.920156
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.088504,
+      "share_above_half": 0.0,
+      "p25": 0.06909,
+      "p75": 0.125332
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.867547,
+      "share_above_half": 1.0,
+      "p25": 0.742329,
+      "p75": 0.959027
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.992,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 30.0,
+      "rank_p5": 14.0,
+      "rank_p95": 62.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 72.0,
+      "rank_p5": 38.95,
+      "rank_p95": 131.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1375.0,
+      "rank_p5": 1314.9,
+      "rank_p95": 1431.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 30.0,
+      "rank_p5": 14.0,
+      "rank_p95": 62.049999999999955,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:8:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.864435,
+      "share_above_half": 1.0,
+      "p25": 0.719495,
+      "p75": 0.939377
+     },
+     "moon-psr": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.817429,
+      "share_above_half": 1.0,
+      "p25": 0.720708,
+      "p75": 0.869929
+     },
+     "moon-mare-plains": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.119111,
+      "share_above_half": 0.0,
+      "p25": 0.100032,
+      "p75": 0.160562
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.866236,
+      "share_above_half": 1.0,
+      "p25": 0.718218,
+      "p75": 0.940298
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 20,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 20,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 20
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 20,
+     "valid_unmasked": 20,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 37.5,
+      "rank_p5": 17.0,
+      "rank_p95": 81.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 206.0,
+      "rank_p5": 144.0,
+      "rank_p95": 284.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1208.0,
+      "rank_p5": 1137.0,
+      "rank_p95": 1272.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 36.0,
+      "rank_p5": 16.0,
+      "rank_p95": 80.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-4:-11",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.862975,
+      "share_above_half": 0.92,
+      "p25": 0.6758,
+      "p75": 0.928286
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.89062,
+      "share_above_half": 1.0,
+      "p25": 0.834469,
+      "p75": 0.9815
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.078244,
+      "share_above_half": 0.0,
+      "p25": 0.062094,
+      "p75": 0.094819
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.860995,
+      "share_above_half": 0.92,
+      "p25": 0.674771,
+      "p75": 0.929891
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9856,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 44.0,
+      "rank_p5": 20.950000000000003,
+      "rank_p95": 88.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 38.0,
+      "rank_p5": 17.950000000000003,
+      "rank_p95": 69.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1449.0,
+      "rank_p5": 1398.0,
+      "rank_p95": 1500.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 45.0,
+      "rank_p5": 21.0,
+      "rank_p95": 89.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-7:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.856486,
+      "share_above_half": 1.0,
+      "p25": 0.731737,
+      "p75": 0.908044
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.844206,
+      "share_above_half": 1.0,
+      "p25": 0.795521,
+      "p75": 0.896462
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 22,
+      "median": 0.075057,
+      "share_above_half": 0.0,
+      "p25": 0.048004,
+      "p75": 0.090477
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.858402,
+      "share_above_half": 1.0,
+      "p25": 0.732027,
+      "p75": 0.909467
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 23,
+     "masked": 2,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 57.5,
+      "rank_p5": 26.0,
+      "rank_p95": 113.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 134.0,
+      "rank_p5": 74.0,
+      "rank_p95": 197.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1484.0,
+      "rank_p5": 1430.95,
+      "rank_p95": 1536.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 56.0,
+      "rank_p5": 26.950000000000003,
+      "rank_p95": 113.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-2:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.853807,
+      "share_above_half": 0.92,
+      "p25": 0.694206,
+      "p75": 0.91201
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.848101,
+      "share_above_half": 1.0,
+      "p25": 0.790328,
+      "p75": 0.900357
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.105496,
+      "share_above_half": 0.0,
+      "p25": 0.065128,
+      "p75": 0.120197
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.855836,
+      "share_above_half": 0.96,
+      "p25": 0.692755,
+      "p75": 0.913357
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9968,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 52.0,
+      "rank_p5": 24.0,
+      "rank_p95": 98.19999999999982,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 125.0,
+      "rank_p5": 71.0,
+      "rank_p95": 188.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1344.5,
+      "rank_p5": 1272.9,
+      "rank_p95": 1410.05,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 50.5,
+      "rank_p5": 23.950000000000003,
+      "rank_p95": 99.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.857344,
+      "share_above_half": 0.92,
+      "p25": 0.747669,
+      "p75": 0.943154
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.917559,
+      "share_above_half": 1.0,
+      "p25": 0.842908,
+      "p75": 0.949367
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.069041,
+      "share_above_half": 0.0,
+      "p25": 0.05585,
+      "p75": 0.07903
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.855125,
+      "share_above_half": 0.92,
+      "p25": 0.749104,
+      "p75": 0.941601
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9712,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 35.5,
+      "rank_p5": 16.0,
+      "rank_p95": 72.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 30.0,
+      "rank_p5": 15.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1524.0,
+      "rank_p5": 1477.0,
+      "rank_p95": 1571.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 36.0,
+      "rank_p5": 17.0,
+      "rank_p95": 73.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.851575,
+      "share_above_half": 0.84,
+      "p25": 0.685243,
+      "p75": 0.971002
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.867251,
+      "share_above_half": 0.88,
+      "p25": 0.722493,
+      "p75": 0.908796
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.094151,
+      "share_above_half": 0.04,
+      "p25": 0.074219,
+      "p75": 0.129959
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.85355,
+      "share_above_half": 0.84,
+      "p25": 0.683526,
+      "p75": 0.968591
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 48.0,
+      "rank_p5": 17.950000000000003,
+      "rank_p95": 100.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 133.0,
+      "rank_p5": 66.95,
+      "rank_p95": 209.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1358.0,
+      "rank_p5": 1292.95,
+      "rank_p95": 1417.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 47.0,
+      "rank_p5": 17.0,
+      "rank_p95": 102.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-6:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.852262,
+      "share_above_half": 0.88,
+      "p25": 0.655129,
+      "p75": 0.909812
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.916261,
+      "share_above_half": 1.0,
+      "p25": 0.839013,
+      "p75": 0.956508
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.046335,
+      "share_above_half": 0.0,
+      "p25": 0.036384,
+      "p75": 0.061912
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.849898,
+      "share_above_half": 0.92,
+      "p25": 0.659743,
+      "p75": 0.908199
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9904,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 69.5,
+      "rank_p5": 32.900000000000006,
+      "rank_p95": 126.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 28.0,
+      "rank_p5": 13.0,
+      "rank_p95": 55.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1727.0,
+      "rank_p5": 1679.95,
+      "rank_p95": 1767.0,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 71.0,
+      "rank_p5": 33.900000000000006,
+      "rank_p95": 125.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:4:-10",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.845188,
+      "share_above_half": 0.96,
+      "p25": 0.750622,
+      "p75": 0.960597
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.907822,
+      "share_above_half": 0.96,
+      "p25": 0.855566,
+      "p75": 0.93606
+     },
+     "moon-mare-plains": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.090931,
+      "share_above_half": 0.0,
+      "p25": 0.070071,
+      "p75": 0.10604
+     },
+     "moon-south-polar-cap-v2": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.847444,
+      "share_above_half": 0.96,
+      "p25": 0.751837,
+      "p75": 0.963238
+     }
+    },
+    "requirements": {
+     "climbing_limit_lrv": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     },
+     "climbing_limit_viper": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "traversable_share_20",
+     "median": 0.9984,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 32.0,
+      "rank_p5": 15.0,
+      "rank_p95": 62.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 38.0,
+      "rank_p5": 19.0,
+      "rank_p95": 66.0,
+      "share_top_decile": 1.0
+     },
+     "moon-mare-plains": {
+      "rank_median": 1386.0,
+      "rank_p5": 1335.85,
+      "rank_p95": 1431.1,
+      "share_top_decile": 0.0
+     },
+     "moon-south-polar-cap-v2": {
+      "rank_median": 32.0,
+      "rank_p5": 15.0,
+      "rank_p95": 63.09999999999991,
+      "share_top_decile": 1.0
+     }
+    }
+   }
+  ]
+ },
+ "commit": "validation-protocol-v1-46-ge5350bcbdad8d19a15abc52566a6c74fff494df4",
+ "cells_parquet_sha256": "bc6d780b34054c516ac3dc10559d78f0da83d640f5f5cbbafb7b8bca5ac2617a",
+ "smoothing_sensitivity": {
+  "glo30-40m": {
+   "sigma_px": 1.0,
+   "sigma_m": 40.0,
+   "earth_slope_median_ratio_smoothed_over_raw": 0.827,
+   "targets": {
+    "moon-polar-lit-highlands": {
+     "cells": 4168,
+     "spearman_cell_medians": 0.9313,
+     "top_decile_overlap": 0.746,
+     "median_typicality_raw": 0.0049,
+     "median_typicality_smoothed": 0.0006
+    },
+    "moon-psr": {
+     "cells": 4168,
+     "spearman_cell_medians": 0.932,
+     "top_decile_overlap": 0.782,
+     "median_typicality_raw": 0.0149,
+     "median_typicality_smoothed": 0.0013
+    },
+    "moon-south-polar-cap-v2": {
+     "cells": 4168,
+     "spearman_cell_medians": 0.932,
+     "top_decile_overlap": 0.741,
+     "median_typicality_raw": 0.0053,
+     "median_typicality_smoothed": 0.0006
+    }
+   }
+  },
+  "glo30-59m": {
+   "sigma_px": 1.0,
+   "sigma_m": 59.225293836,
+   "earth_slope_median_ratio_smoothed_over_raw": 0.819,
+   "targets": {
+    "moon-mare-plains": {
+     "cells": 3980,
+     "spearman_cell_medians": 0.9205,
+     "top_decile_overlap": 0.5,
+     "median_typicality_raw": 0.0215,
+     "median_typicality_smoothed": 0.0104
+    }
+   }
+  }
+ }
+}

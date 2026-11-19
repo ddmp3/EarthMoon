@@ -32,3 +32,9 @@ Implement the comparison methods chosen in T23, with separate outputs per cell o
 
 ## Alignment with the ADRs (T30)
 Every v3 number is computed once, in Python (`tools/discovery/compare` and `zones`, ADR-005), so no TypeScript port is needed. The parity rule above applies to v2 only, as long as v2 is served.
+
+## As built (18/11/2026)
+- Code: `tools/discovery/compare.py` (methods moved from T23, cell summaries, requirements, suitability, masks, Monte Carlo) and `compare_run.py` (scenario runs). One package level, as T40 and T41.
+- Earth is compared at the scale of each lunar product (40 m, 59.2 m); persistently lit (5 m) is reported as not comparable.
+- David's decision (18/11/2026): no Earth smoothing by default; the 1-pixel smoothing ranking is in every run summary.
+- Report: `docs/wiki/runs/compare-pilot.md`.
