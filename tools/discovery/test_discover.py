@@ -146,15 +146,16 @@ def test_protocol_v3_candidates_must_have_high_confidence():
     assert candidates(med, np.zeros(3, bool), np.zeros(3), 0.5).tolist() == [True, True, True]   # v2 behaviour kept
 
 
-def _cube(tmp_path, tiles):
-    """Synthetic 40 m cube: windows on a 1 km grid, each tile holding the windows inside its 1° square."""
+def _cube(tmp_path, tiles, scales=("glo30-40m",)):
+    """Synthetic cube: windows on a 1 km grid, each tile holding the windows inside its 1° square, at each scale."""
     import json
     import pyarrow as pa
     import pyarrow.parquet as pq
     from discovery.compare import MASK_CLASSES
     from discovery.copernicus import tile_name
     rng = np.random.default_rng(7)
-    (tmp_path / "glo30-40m").mkdir()
+    for sc in scales:
+        (tmp_path / sc).mkdir()
     lat, lon = np.meshgrid(np.arange(10.40, 10.60, 0.009), np.arange(19.90, 20.10, 0.009), indexing="ij")
     lat, lon = lat.ravel(), lon.ravel()
     for key in tiles:
@@ -165,7 +166,8 @@ def _cube(tmp_path, tiles):
                 "slope_mean": rng.uniform(0, 20, n), "traversable_15": rng.uniform(0, 1, n),
                 "traversable_20": rng.uniform(0, 1, n), "wc_covered": np.ones(n)}
         cols.update({c: np.zeros(n) for c in MASK_CLASSES})
-        pq.write_table(pa.table(cols), tmp_path / "glo30-40m" / f"{tile_name(la, lo, 'glo30')}.windows.parquet")
+        for sc in scales:
+            pq.write_table(pa.table(cols), tmp_path / sc / f"{tile_name(la, lo, 'glo30')}.windows.parquet")
     from discovery.discover import TARGET_SCALE
     np.savez(tmp_path / "refs.npz", **{t: np.sort(rng.uniform(0, 20, 500)) for t in TARGET_SCALE})
     np.save(tmp_path / "rock.npy", np.zeros((2, 2), "uint8"))
@@ -225,3 +227,27 @@ def test_window_tiles_hold_every_point_of_the_cells():
         assert inside.sum() > 50
         tiles = {f"{int(np.floor(a))},{int(np.floor((b + 180) % 360 - 180))}" for a, b in zip(plat[inside], plon[inside])}
         assert tiles <= set(window_tiles([str(c[0])])), (lat0, lon0)
+
+
+def test_every_cell_gets_coverage_and_confidence_at_its_own_finest_scale(tmp_path):
+    """A tile owning cells at 40 m (from a neighbour) and cells at 59 m only: none is left without confidence."""
+    import discovery.discover as d
+    _cube(tmp_path, ["10,19", "10,20"], scales=("glo30-40m", "glo30-59m"))
+    d._CTX.clear()
+    refined = {"10,19": ["glo30-40m", "glo30-59m"], "10,20": ["glo30-59m"]}
+    rows = d.assess_tile("10,20", str(tmp_path), str(tmp_path / "refs.npz"), str(tmp_path / "rock"), refined)
+    scales = {r.get("assessed_at") for r in rows}
+    assert scales == {"glo30-40m", "glo30-59m"}                        # both kinds of cell exist in this tile
+    assert all(r.get("confidence") in ("high", "medium", "low") for r in rows)
+    assert all(r.get("windows", 0) > 0 and "req:base_slope" in r for r in rows)
+
+
+def test_a_cell_with_no_window_at_a_target_scale_is_screened_out_for_that_target(tmp_path):
+    import discovery.discover as d
+    _cube(tmp_path, ["10,19", "10,20"], scales=("glo30-40m", "glo30-59m"))
+    d._CTX.clear()
+    refined = {"10,19": ["glo30-40m", "glo30-59m"], "10,20": ["glo30-59m"]}
+    rows = d.assess_tile("10,20", str(tmp_path), str(tmp_path / "refs.npz"), str(tmp_path / "rock"), refined)
+    only59 = [r for r in rows if r["assessed_at"] == "glo30-59m"]
+    assert only59 and all(r.get("moon-psr:screened_out") is True for r in only59)        # moon-psr is a 40 m target
+    assert all(r.get("moon-mare-plains:windows", 0) > 0 for r in rows)                  # a 59 m target is assessed
