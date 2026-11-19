@@ -99,7 +99,17 @@ def rasterize_units(shp: Path, ppd: int = UNITS_PPD) -> tuple[np.ndarray, list[s
 
 # --- one tile ----------------------------------------------------------------------------------------------
 
-def process(lat: int, lon: int, sldem: Path, units: np.ndarray, iron: np.ndarray, out: Path) -> dict:
+_UNITS: dict = {}
+
+
+def _units(path: Path) -> np.ndarray:
+    """The unit grid, opened once per worker process (passing the array to every task copied 265 MB each time)."""
+    if path not in _UNITS:
+        _UNITS[path] = np.load(path, mmap_mode="r")
+    return _UNITS[path]
+
+
+def process(lat: int, lon: int, sldem: Path, units_path: Path, iron: np.ndarray, out: Path) -> dict:
     import pyarrow as pa
     import pyarrow.parquet as pq
     from rasterio.transform import from_origin
@@ -122,7 +132,7 @@ def process(lat: int, lon: int, sldem: Path, units: np.ndarray, iron: np.ndarray
     sx = (x[own][:, None] + ox.ravel()[None, :]).ravel()
     sy = (y[own][:, None] - oy.ravel()[None, :]).ravel()
     slon, slat = transform(g.crs, GEO, sx.tolist(), sy.tolist())
-    samples = grid_lookup(units, np.array(slat), np.array(slon), 90, -180).reshape(-1, SAMPLES * SAMPLES)
+    samples = grid_lookup(_units(units_path), np.array(slat), np.array(slon), 90, -180).reshape(-1, SAMPLES * SAMPLES)
     unit, share = unit_share(samples) if samples.size else (np.zeros(0, int), np.zeros(0))
     table = {"lat": clat[own], "lon": clon[own] % 360, "valid_frac": w["valid_frac"][own].astype("float32"),
              "fe": grid_lookup(iron, clat[own], clon[own], 90, -180).astype("float32"),
@@ -173,19 +183,19 @@ def main(argv=None) -> int:
         files = sorted(a.sldem.glob("SLDEM2015_512_*_FLOAT.IMG")) + [a.iron] + sorted(a.geology.parent.glob(a.geology.stem + ".*"))
         inputs_json.write_text(json.dumps({f.name: {"size": f.stat().st_size, "sha256": _sha(f)} for f in files},
                                           indent=1) + "\n")
-    units = np.load(units_npy, mmap_mode="r")
     iron = read_iron(a.iron)
     tiles = [(la, lo) for la in range(-60, 60) for lo in range(360)] if a.tiles == "all" else \
         [tuple(int(v) for v in t.split(",")) for t in a.tiles.split(";")]
     manifest = out / "manifest.jsonl"
-    done = {json.loads(x)["tile"] for x in manifest.read_text().splitlines()} if manifest.exists() else set()
     code = code_version()
+    recs = [json.loads(x) for x in manifest.read_text().splitlines() if x.strip()] if manifest.exists() else []
+    done = {r["tile"] for r in recs if r.get("code") == code}       # a tile made by other code reruns
     commit = os.environ.get("EARTHMOON_COMMIT", "unknown")
     todo = [t for t in tiles if f"moon_{'N' if t[0] >= 0 else 'S'}{abs(t[0]):02d}_E{t[1]:03d}" not in done]
     print(f"{len(tiles)} tiles, {len(todo)} to run", flush=True)
     t0, n, failed = time.time(), 0, []
     with ProcessPoolExecutor(max_workers=a.workers) as pool, manifest.open("a", encoding="utf-8") as fh:
-        futs = {pool.submit(process, la, lo, a.sldem, units, iron, out): (la, lo) for la, lo in todo}
+        futs = {pool.submit(process, la, lo, a.sldem, units_npy, iron, out): (la, lo) for la, lo in todo}
         for f in as_completed(futs):
             try:
                 rec = f.result()
