@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # Quality gate. Must pass before every merge (docs/plan/README.md, section 3).
 #
-#   tools/check.sh [api|web|python|e2e|all]      default: all
+#   tools/check.sh [api|web|python|discovery|e2e|all]      default: all
 #
 # Everything runs in Docker with pinned images, so no host Node or Python is needed.
 # Stages:
 #   api     npm ci, tsc --noEmit, vitest, dependency audit
 #   web     npm ci, API contract up to date (src/api-schema.ts), tsc -b, oxlint, vitest, vite build, dependency audit
 #   python  pytest on every Python package, Markdown link check, pip-audit on the installed environment
+#   discovery  internal service (apps/discovery, ADR-005): pytest and pip-audit with its exact pins
 #   e2e     docker compose up --build, wait for health, tools/validation/e2e.py, browser audit (desktop and phone)
 # Dependency audit, two levels (tools/security/audit-allowlist.json explains the policy):
 #   production dependencies   npm audit --omit=dev: 0 vulnerabilities, no exception
@@ -72,6 +73,15 @@ check_python() {
       pip-audit --progress-spinner off"
 }
 
+check_discovery() {
+  step "Discovery service: tests and dependency audit"
+  docker run --rm     -v "$ROOT_DOCKER:/repo" -v earthmoon-pip-cache:/root/.cache/pip     -e PYTHONDONTWRITEBYTECODE=1 -w /repo/apps/discovery "$PY_IMG" bash -euo pipefail -c "
+      pip install --quiet --upgrade pip setuptools wheel
+      pip install --quiet -r /repo/tools/discovery/requirements.txt -r requirements.txt pytest pip-audit
+      python -m pytest -q -p no:cacheprovider .
+      pip-audit --progress-spinner off"
+}
+
 wait_for() {  # wait_for <url> <seconds>
   local url="$1" limit="$2" i
   for ((i = 0; i < limit; i += 2)); do
@@ -107,8 +117,9 @@ case "$stage" in
   api) check_api ;;
   web) check_web ;;
   python) check_python ;;
+  discovery) check_discovery ;;
   e2e) check_e2e ;;
-  all) check_api; check_web; check_python; check_e2e ;;
-  *) echo "usage: $0 [api|web|python|e2e|all]" >&2; exit 2 ;;
+  all) check_api; check_web; check_python; check_discovery; check_e2e ;;
+  *) echo "usage: $0 [api|web|python|discovery|e2e|all]" >&2; exit 2 ;;
 esac
 step "check.sh $stage: passed"
