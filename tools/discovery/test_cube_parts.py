@@ -226,3 +226,12 @@ def test_latest_keeps_the_last_record_of_each_tile_in_order_of_first_appearance(
     from discovery.measure import latest
     recs = [{"tile": "A", "v": 1}, {"tile": "B", "v": 1}, {"tile": "A", "v": 2}]
     assert latest(recs) == [{"tile": "A", "v": 2}, {"tile": "B", "v": 1}]
+
+
+def test_worldcover_fractions_cover_the_seven_hidden_ground_classes():
+    from discovery.worldcover import MASK_CLASSES, fractions
+    assert MASK_CLASSES == {10: "tree", 40: "cropland", 50: "built", 70: "snow_ice", 80: "water", 90: "wetland",
+                            95: "mangroves"}
+    fr = fractions(np.array([[40, 90], [95, 30]], dtype="uint8"))
+    assert fr["cropland"][0, 0] == 1 and fr["wetland"][0, 1] == 1 and fr["mangroves"][1, 0] == 1
+    assert all(fr[n][1, 1] == 0 for n in MASK_CLASSES.values())              # grassland (30) is bare enough

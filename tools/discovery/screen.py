@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from discovery.compare import masked_windows  # noqa: E402
+from discovery.compare import MASK_CLASSES, masked_windows  # noqa: E402
 
 WIDEN_DEG = 2.0
 SCENARIO_TARGETS = {"A": ["moon-polar-lit-highlands", "moon-psr", "moon-pits"],
@@ -64,7 +64,7 @@ def main(argv=None) -> int:
     by_scale = {s: {t: intervals[t] for t in targets if SCALE[t] == s} for s in sorted(set(SCALE.values()))}
     outcrops = set(json.loads(a.outcrops.read_text()))
     listing = json.loads((a.cube / "glo90-90m" / "listing.json").read_text())
-    cols = ["slope_mean", "wc_tree", "wc_built", "wc_water", "wc_snow_ice", "wc_covered"]
+    cols = ["slope_mean", *MASK_CLASSES, "wc_covered"]
     keep = {s: [] for s in by_scale}
     stats = {"tiles": 0, "south_of_60_without_outcrops": 0, "fully_masked_or_missing": 0}
     from discovery.copernicus import tile_name

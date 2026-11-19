@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import numpy as np
 
+from discovery.compare import MASK_CLASSES
 from discovery.zones import EARTH_R_KM, _xyz
 
 TAUS, MIN_CELLS = (0.5, 0.7, 0.9), (1, 3, 9)
@@ -108,8 +109,7 @@ TARGET_SCALE = {"moon-south-polar-cap-v2": "glo30-40m", "moon-polar-lit-highland
 SCENARIO_TARGETS = {"A": ["moon-polar-lit-highlands", "moon-psr", "moon-pits"],
                     "B": ["moon-polar-lit-highlands", "moon-psr", "moon-mare-plains", "moon-south-polar-cap-v2"]}
 ELIMINATING = {"A": [], "B": ["climbing_limit_lrv"]}
-WCOLS = ["i", "j", "lat", "lon", "slope_mean", "traversable_15", "traversable_20", "wc_tree", "wc_built", "wc_water",
-         "wc_snow_ice", "wc_covered"]
+WCOLS = ["i", "j", "lat", "lon", "slope_mean", "traversable_15", "traversable_20", *MASK_CLASSES, "wc_covered"]
 _CTX: dict = {}
 
 

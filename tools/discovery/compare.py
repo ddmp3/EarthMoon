@@ -117,11 +117,12 @@ def cell_medians(values: np.ndarray, cell: np.ndarray) -> tuple[np.ndarray, np.n
     return ids, med
 
 
-MASK_CLASSES = ("wc_tree", "wc_built", "wc_water", "wc_snow_ice")
+MASK_CLASSES = ("wc_tree", "wc_cropland", "wc_built", "wc_water", "wc_wetland", "wc_mangroves", "wc_snow_ice")
 
 
 def masked_windows(w: dict, share: float = 0.5) -> tuple[np.ndarray, np.ndarray]:
-    """Windows whose ground is hidden (forest, buildings, water, snow or ice cover at least `share`), and windows
+    """Windows whose ground is hidden (forest, cropland, buildings, water, wetland, mangroves, snow or ice cover at
+    least `share`), and windows
     whose cover is unknown (no WorldCover data): those stay unknown, never treated as bare ground or as masked."""
     covered = np.nan_to_num(np.asarray(w["wc_covered"], dtype="float64")) > 0
     total = sum(np.nan_to_num(np.asarray(w[k], dtype="float64")) for k in MASK_CLASSES)

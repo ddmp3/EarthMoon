@@ -13,7 +13,9 @@ BUCKET = "https://esa-worldcover.s3.eu-central-1.amazonaws.com"
 PREFIX = "v200/2021/map/"
 NATIVE_M = 10.0
 OVERVIEWS = (2, 4, 8, 16, 32, 64)           # read from the files (18/11/2026)
-MASK_CLASSES = {10: "tree", 50: "built", 70: "snow_ice", 80: "water"}
+# Classes where the ground is hidden (validation-protocol-v2): the negatives of the protocol are drawn in 10, 40, 50,
+# 80, 90 and 95; snow and ice (70) hide rock too. v1 of the engine masked only 10, 50, 70 and 80 (T43 finding).
+MASK_CLASSES = {10: "tree", 40: "cropland", 50: "built", 70: "snow_ice", 80: "water", 90: "wetland", 95: "mangroves"}
 
 
 def tile3(lat: int, lon: int) -> str:
