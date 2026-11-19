@@ -138,3 +138,11 @@ def test_lit_nominal_falls_back_to_the_strictest_run_with_enough_windows():
     assert lit_nominal(runs) == run(0.5, 100.0, 859)
     assert lit_nominal(runs + [run(0.6, 500.0, 150)]) == run(0.6, 500.0, 150)
     assert lit_nominal([run(0.6, 200.0, 120), run(0.7, 500.0, 500)])["window_m"] == 200.0   # the middle when enough
+
+
+def test_persistently_lit_profile_states_its_fallback_and_has_enough_windows():
+    p = _profile("moon-persistently-lit")
+    assert p["windows"]["selected"] >= 100 and p["params"]["pixel_m"] == 5.0
+    middle = next(s for s in p["sensitivity"] if s["q"] == 0.6 and s["window_m"] == 200.0)
+    assert middle["selected"] < 100                                  # why the nominal is not the middle of the lists
+    assert "strictest" in p["params"]["nominal_rule"]

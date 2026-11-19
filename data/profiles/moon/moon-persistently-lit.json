@@ -1,0 +1,1022 @@
+{
+ "id": "moon-persistently-lit",
+ "body": "moon",
+ "spec": "data/profiles/spec/moon-persistently-lit.yaml",
+ "inputs": {
+  "lola-south-pole-5m-mosaic/elevation": {
+   "file": "ldem_87s_5mpp.tif",
+   "size": 3465285714,
+   "sha256": "417a85715406c346e2ecb2fc3abc93d3717121466e3d4950e1a6b977f207b881"
+  },
+  "lola-polar-illumination/average": {
+   "file": "AVGVISIB_85S_060M_201608.TIF",
+   "size": 33994464,
+   "sha256": "ccf67d4f39e0a970c111196da7d6551ffcf50d075470b93067fb3904c0b05806"
+  }
+ },
+ "code": "59a2d7606a0b9964c7444513781c3277ecf8b1b529b95a1bc3fcc54ad86de4e8",
+ "commit": "validation-protocol-v1-34-g6d70b85b75d68f7cc9431fb0a297c6ee94601c96",
+ "params": {
+  "q": 0.5,
+  "window_m": 100.0,
+  "pixel_m": 5.0,
+  "window_px": 20,
+  "min_valid": 0.9,
+  "domain": "87°S to 90°S (5 m mosaic)",
+  "min_area": "connected lit area of at least one window",
+  "nominal_rule": "middle of the spec lists (q 0.6, 200 m) unless it has fewer than 100 windows; then the strictest q, then the largest window, that has at least that many (T41)"
+ },
+ "percentiles": [
+  5,
+  10,
+  25,
+  50,
+  75,
+  90,
+  95
+ ],
+ "windows": {
+  "selected": 859,
+  "valid": 622
+ },
+ "metrics": {
+  "slope_mean": {
+   "n": 622,
+   "p5": 1.785,
+   "p10": 2.149,
+   "p25": 3.001,
+   "p50": 4.347,
+   "p75": 6.179,
+   "p90": 8.755,
+   "p95": 9.921
+  },
+  "slope_p95": {
+   "n": 622,
+   "p5": 3.688,
+   "p10": 4.137,
+   "p25": 5.388,
+   "p50": 7.078,
+   "p75": 9.674,
+   "p90": 12.657,
+   "p95": 14.469
+  },
+  "slope_max": {
+   "n": 622,
+   "p5": 5.6,
+   "p10": 6.279,
+   "p25": 7.916,
+   "p50": 10.232,
+   "p75": 13.365,
+   "p90": 17.696,
+   "p95": 21.158
+  },
+  "roughness": {
+   "n": 622,
+   "p5": 0.56,
+   "p10": 0.739,
+   "p25": 1.158,
+   "p50": 1.984,
+   "p75": 2.933,
+   "p90": 4.18,
+   "p95": 4.872
+  },
+  "roughness_detrended": {
+   "n": 622,
+   "p5": 0.251,
+   "p10": 0.283,
+   "p25": 0.362,
+   "p50": 0.466,
+   "p75": 0.622,
+   "p90": 0.887,
+   "p95": 1.062
+  },
+  "traversable_15": {
+   "n": 622,
+   "p5": 0.965,
+   "p10": 0.988,
+   "p25": 1.0,
+   "p50": 1.0,
+   "p75": 1.0,
+   "p90": 1.0,
+   "p95": 1.0
+  },
+  "traversable_20": {
+   "n": 622,
+   "p5": 0.998,
+   "p10": 1.0,
+   "p25": 1.0,
+   "p50": 1.0,
+   "p75": 1.0,
+   "p90": 1.0,
+   "p95": 1.0
+  },
+  "traversable_25": {
+   "n": 622,
+   "p5": 1.0,
+   "p10": 1.0,
+   "p25": 1.0,
+   "p50": 1.0,
+   "p75": 1.0,
+   "p90": 1.0,
+   "p95": 1.0
+  },
+  "mean_illumination": {
+   "n": 859,
+   "p5": 0.51,
+   "p10": 0.513,
+   "p25": 0.519,
+   "p50": 0.53,
+   "p75": 0.549,
+   "p90": 0.576,
+   "p95": 0.602
+  }
+ },
+ "sensitivity": [
+  {
+   "q": 0.5,
+   "window_m": 100.0,
+   "selected": 859,
+   "valid": 622,
+   "metrics": {
+    "slope_mean": {
+     "n": 622,
+     "p5": 1.785,
+     "p10": 2.149,
+     "p25": 3.001,
+     "p50": 4.347,
+     "p75": 6.179,
+     "p90": 8.755,
+     "p95": 9.921
+    },
+    "slope_p95": {
+     "n": 622,
+     "p5": 3.688,
+     "p10": 4.137,
+     "p25": 5.388,
+     "p50": 7.078,
+     "p75": 9.674,
+     "p90": 12.657,
+     "p95": 14.469
+    },
+    "slope_max": {
+     "n": 622,
+     "p5": 5.6,
+     "p10": 6.279,
+     "p25": 7.916,
+     "p50": 10.232,
+     "p75": 13.365,
+     "p90": 17.696,
+     "p95": 21.158
+    },
+    "roughness": {
+     "n": 622,
+     "p5": 0.56,
+     "p10": 0.739,
+     "p25": 1.158,
+     "p50": 1.984,
+     "p75": 2.933,
+     "p90": 4.18,
+     "p95": 4.872
+    },
+    "roughness_detrended": {
+     "n": 622,
+     "p5": 0.251,
+     "p10": 0.283,
+     "p25": 0.362,
+     "p50": 0.466,
+     "p75": 0.622,
+     "p90": 0.887,
+     "p95": 1.062
+    },
+    "traversable_15": {
+     "n": 622,
+     "p5": 0.965,
+     "p10": 0.988,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "traversable_20": {
+     "n": 622,
+     "p5": 0.998,
+     "p10": 1.0,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "traversable_25": {
+     "n": 622,
+     "p5": 1.0,
+     "p10": 1.0,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "mean_illumination": {
+     "n": 859,
+     "p5": 0.51,
+     "p10": 0.513,
+     "p25": 0.519,
+     "p50": 0.53,
+     "p75": 0.549,
+     "p90": 0.576,
+     "p95": 0.602
+    }
+   }
+  },
+  {
+   "q": 0.6,
+   "window_m": 100.0,
+   "selected": 7,
+   "valid": 7,
+   "metrics": {
+    "slope_mean": {
+     "n": 7,
+     "p5": 2.472,
+     "p10": 2.531,
+     "p25": 2.764,
+     "p50": 3.679,
+     "p75": 4.064,
+     "p90": 4.931,
+     "p95": 5.43
+    },
+    "slope_p95": {
+     "n": 7,
+     "p5": 4.688,
+     "p10": 4.853,
+     "p25": 5.755,
+     "p50": 6.554,
+     "p75": 9.395,
+     "p90": 10.9,
+     "p95": 11.899
+    },
+    "slope_max": {
+     "n": 7,
+     "p5": 6.449,
+     "p10": 6.581,
+     "p25": 7.334,
+     "p50": 9.302,
+     "p75": 11.391,
+     "p90": 13.783,
+     "p95": 15.533
+    },
+    "roughness": {
+     "n": 7,
+     "p5": 0.534,
+     "p10": 0.563,
+     "p25": 0.684,
+     "p50": 1.018,
+     "p75": 1.604,
+     "p90": 1.799,
+     "p95": 1.93
+    },
+    "roughness_detrended": {
+     "n": 7,
+     "p5": 0.472,
+     "p10": 0.508,
+     "p25": 0.571,
+     "p50": 0.666,
+     "p75": 0.848,
+     "p90": 1.151,
+     "p95": 1.331
+    },
+    "traversable_15": {
+     "n": 7,
+     "p5": 0.983,
+     "p10": 0.99,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "traversable_20": {
+     "n": 7,
+     "p5": 1.0,
+     "p10": 1.0,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "traversable_25": {
+     "n": 7,
+     "p5": 1.0,
+     "p10": 1.0,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "mean_illumination": {
+     "n": 7,
+     "p5": 0.633,
+     "p10": 0.646,
+     "p25": 0.664,
+     "p50": 0.703,
+     "p75": 0.73,
+     "p90": 0.756,
+     "p95": 0.767
+    }
+   }
+  },
+  {
+   "q": 0.7,
+   "window_m": 100.0,
+   "selected": 0,
+   "valid": 0,
+   "metrics": {
+    "slope_mean": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_p95": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_max": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness_detrended": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_15": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_20": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_25": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "mean_illumination": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    }
+   }
+  },
+  {
+   "q": 0.5,
+   "window_m": 200.0,
+   "selected": 2,
+   "valid": 1,
+   "metrics": {
+    "slope_mean": {
+     "n": 1,
+     "p5": 3.322,
+     "p10": 3.322,
+     "p25": 3.322,
+     "p50": 3.322,
+     "p75": 3.322,
+     "p90": 3.322,
+     "p95": 3.322
+    },
+    "slope_p95": {
+     "n": 1,
+     "p5": 6.088,
+     "p10": 6.088,
+     "p25": 6.088,
+     "p50": 6.088,
+     "p75": 6.088,
+     "p90": 6.088,
+     "p95": 6.088
+    },
+    "slope_max": {
+     "n": 1,
+     "p5": 8.464,
+     "p10": 8.464,
+     "p25": 8.464,
+     "p50": 8.464,
+     "p75": 8.464,
+     "p90": 8.464,
+     "p95": 8.464
+    },
+    "roughness": {
+     "n": 1,
+     "p5": 2.434,
+     "p10": 2.434,
+     "p25": 2.434,
+     "p50": 2.434,
+     "p75": 2.434,
+     "p90": 2.434,
+     "p95": 2.434
+    },
+    "roughness_detrended": {
+     "n": 1,
+     "p5": 1.433,
+     "p10": 1.433,
+     "p25": 1.433,
+     "p50": 1.433,
+     "p75": 1.433,
+     "p90": 1.433,
+     "p95": 1.433
+    },
+    "traversable_15": {
+     "n": 1,
+     "p5": 1.0,
+     "p10": 1.0,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "traversable_20": {
+     "n": 1,
+     "p5": 1.0,
+     "p10": 1.0,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "traversable_25": {
+     "n": 1,
+     "p5": 1.0,
+     "p10": 1.0,
+     "p25": 1.0,
+     "p50": 1.0,
+     "p75": 1.0,
+     "p90": 1.0,
+     "p95": 1.0
+    },
+    "mean_illumination": {
+     "n": 2,
+     "p5": 0.53,
+     "p10": 0.531,
+     "p25": 0.534,
+     "p50": 0.539,
+     "p75": 0.544,
+     "p90": 0.547,
+     "p95": 0.548
+    }
+   }
+  },
+  {
+   "q": 0.6,
+   "window_m": 200.0,
+   "selected": 0,
+   "valid": 0,
+   "metrics": {
+    "slope_mean": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_p95": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_max": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness_detrended": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_15": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_20": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_25": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "mean_illumination": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    }
+   }
+  },
+  {
+   "q": 0.7,
+   "window_m": 200.0,
+   "selected": 0,
+   "valid": 0,
+   "metrics": {
+    "slope_mean": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_p95": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_max": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness_detrended": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_15": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_20": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_25": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "mean_illumination": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    }
+   }
+  },
+  {
+   "q": 0.5,
+   "window_m": 500.0,
+   "selected": 0,
+   "valid": 0,
+   "metrics": {
+    "slope_mean": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_p95": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_max": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness_detrended": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_15": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_20": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_25": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "mean_illumination": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    }
+   }
+  },
+  {
+   "q": 0.6,
+   "window_m": 500.0,
+   "selected": 0,
+   "valid": 0,
+   "metrics": {
+    "slope_mean": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_p95": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_max": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness_detrended": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_15": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_20": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_25": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "mean_illumination": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    }
+   }
+  },
+  {
+   "q": 0.7,
+   "window_m": 500.0,
+   "selected": 0,
+   "valid": 0,
+   "metrics": {
+    "slope_mean": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_p95": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "slope_max": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "roughness_detrended": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_15": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_20": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "traversable_25": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    },
+    "mean_illumination": {
+     "n": 0,
+     "p5": null,
+     "p10": null,
+     "p25": null,
+     "p50": null,
+     "p75": null,
+     "p90": null,
+     "p95": null
+    }
+   }
+  }
+ ],
+ "not_computed": {
+  "ldem_40m_outside_87s": "85°S to 87°S is not covered at 5 m; 200 m windows at 40 m (5 pixels) are not comparable, so left out",
+  "earth_scale": "windows below 1 km need an Earth cube at the same window size (T42)"
+ }
+}
