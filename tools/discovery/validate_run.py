@@ -185,26 +185,38 @@ def _mc_target(args) -> dict:
     keys = [(sc, t) for sc, ts in SCENARIO_TARGETS.items() if t in ts]
     zones = {key: json.loads((Path(run) / f"zones-{key[0]}-{t}.json").read_text()) for key in keys}
     need = set(sample_ids) | {c for zs in zones.values() for z in zs for c in z["cell_ids"]}
+    tiles = sorted({c.split(":")[0] for c in need})
+    tix = {name: k for k, name in enumerate(tiles)}
+
+    def code_of(c: str) -> int:                                     # integer id: no text ids in memory
+        name, i, j = c.split(":")
+        return (tix[name] * 4000 + int(i) + 2000) * 4000 + int(j) + 2000
+
     by_tile: dict = {}
     for c in need:                                                  # grouped once: per-tile lookups stay small
-        by_tile.setdefault(c.split(":")[0], []).append(c)
+        by_tile.setdefault(c.split(":")[0], []).append(code_of(c))
     ids, slopes = [], []
-    for name in sorted(by_tile):
+    for name in tiles:
         f = Path(cube) / scale / f"{name}.windows.parquet"
         if not f.exists():
             continue
         tab = pq.read_table(f, columns=["i", "j", "lat", "lon", "slope_mean", *MASK_CLASSES, "wc_covered"])
         w = {c: tab.column(c).to_numpy() for c in tab.column_names}
-        cid = np.array([f"{name}:{i}:{j}" for i, j in zip(w["i"], w["j"])])
-        keep = np.isin(cid, np.array(by_tile[name]))
+        cid = (tix[name] * 4000 + w["i"].astype(np.int64) + 2000) * 4000 + w["j"].astype(np.int64) + 2000
+        keep = np.isin(cid, np.array(by_tile[name], dtype=np.int64))
         masked, _ = window_masks(w, ctx)
         ids.append(cid[keep])
         slopes.append(np.where(masked, np.nan, w["slope_mean"])[keep])
     uniq, code = np.unique(np.concatenate(ids), return_inverse=True)
     base = np.concatenate(slopes).astype("float64")
-    pos = {c: i for i, c in enumerate(uniq)}
-    s_idx = np.array([pos[c] for c in sample_ids if c in pos])
-    z_idx = {key: [np.array([pos[c] for c in z["cell_ids"] if c in pos], dtype=int) for z in zones[key]] for key in keys}
+    def index(codes: list[int]) -> np.ndarray:
+        a = np.asarray(codes, dtype=np.int64)
+        k = np.searchsorted(uniq, a)
+        ok = (k < uniq.size) & (uniq[np.minimum(k, uniq.size - 1)] == a)
+        return k[ok]
+
+    s_idx = index([code_of(c) for c in sample_ids])
+    z_idx = {key: [index([code_of(c) for c in z["cell_ids"]]) for z in zones[key]] for key in keys}
     hits = {key: np.zeros(len(zones[key])) for key in keys}
     rng = np.random.default_rng([SEED, k])                         # one stream per target, fixed order
     ref = ctx["refs"][t]
@@ -239,7 +251,9 @@ def monte_carlo(run: Path, cells: dict, cube: Path, refs_path: str, rock_path: s
         pick = np.random.default_rng([SEED, k, 0]).choice(idx, size=min(SAMPLE, idx.size), replace=False)
         jobs.append((t, k, str(run), str(cube), refs_path, rock_path, sorted(np.asarray(cells["cell"])[pick].tolist())))
     out = {}
-    with ProcessPoolExecutor(max_workers=MC_PARALLEL) as pool:      # memory, not CPU, is the limit (Docker VM 15 GB)
+    import multiprocessing
+    # spawned workers start empty: forked ones copied the parent's 6.7 M-row cell table (OOM, 19/11/2026)
+    with ProcessPoolExecutor(max_workers=MC_PARALLEL, mp_context=multiprocessing.get_context("spawn")) as pool:
         for res in pool.map(_mc_target, jobs):
             out.update(res)
     return out
