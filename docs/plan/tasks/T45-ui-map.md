@@ -18,6 +18,7 @@ Scientists can choose a planetary environment and a scenario, display each dimen
   - the lunar note of `quake_count` ("28 shallow moonquakes in 8 years", `apps/web/src/api.ts` MOON_NOTES and `content-fr.ts`) is not confirmed by its cited source (T13, `docs/REFERENCES.md` section 8): source it or remove it;
   - the "See the match" panel uses the v1 manifest (`apps/web/public/sites/manifest.json`, built by `tools/precompute/site_visuals.py`). Regenerate it from `terrain_v2`: Atacama shows 7.97° in the panel and 7.85° in the scorecard.
 - **David's decision:** areas with partial or missing data are labelled and hatched in a soft pastel colour.
+- **David's clarification (19/11/2026):** the hatching is a **coverage overlay** that the user switches on and off, showing where data are missing or weak (classes in the map spec). It comes with a **Data and method** panel: what we cover, the validated sources used at that place, how the data were processed, and what Earth cannot reproduce, so that users understand what our statements rest on.
 - **Quality (decision 6.1):** no TypeScript error, no lint error, no vulnerable dependency, TDD, no regression.
 
 ## Steps (TDD)
@@ -27,7 +28,7 @@ Scientists can choose a planetary environment and a scenario, display each dimen
    - zone card content;
    - FR and EN keys complete;
    - every parameter id has a label.
-2. Implement the layer selector, the hatching (SVG pattern), the confidence channel, zone cards, the comparison of 2 to 4 zones, and the provenance panel. Keep the existing pages working.
+2. Implement the layer selector, the coverage overlay with its on/off switch and legend (SVG patterns), the Data and method panel, the confidence channel, zone cards, the comparison of 2 to 4 zones, and the provenance panel. Keep the existing pages working.
 3. Extend `tools/validation/ui-audit/audit.mjs`: the new screens on desktop and phone, no console error, no layout overflow, contrast checks on the pastel hatching.
 4. Screenshot comparison of the existing pages before and after: differences only where intended.
 
