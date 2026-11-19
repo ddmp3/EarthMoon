@@ -82,3 +82,24 @@ Confidence label (presentation choices):
 `GET /api/sites/{id}` adds an explanation: strengths, weaknesses, decisive criteria, missing values, flagged values, and the share of the result that rests on judgement.
 
 What the uncertainty does not include: values without a sigma (wind, humidity, precipitation, MODIS), correlated errors, the choice of criteria, the 40 m scale. Limits: [LIMITS.md](LIMITS.md).
+
+## v3 comparison engine (T42, not served yet)
+
+Code: `tools/discovery/compare.py` and `compare_run.py`. Every v3 number is computed once, in Python (ADR-005). The v2 engine above is unchanged.
+
+- **Scale:** Earth is measured at the pixel scale of the lunar product it is compared with: 40 m against LOLA polar targets, 59.2 m against SLDEM2015 targets. Lunar targets without an Earth equivalent (5 m windows) are reported as not comparable.
+- **Similarity:**
+  - per parameter and target: the two-sided percentile typicality of each 1 km window against the lunar windows (T23);
+  - per 5 km cell: the median, the quartiles and the share of windows above 0.5, never one number alone;
+  - checked on held-out lunar blocks: mean 0.500, Kolmogorov–Smirnov distance 0.005 to uniform.
+- **Hidden ground:** a window with at least half forest, buildings, water, snow or ice (WorldCover) is not compared; it is counted as masked. Without WorldCover data the cover is unknown, never assumed bare.
+- **Requirements:**
+  - each is `met`, `failed` or `unknown` per window; a cell meets it when at least half of its windows with data do;
+  - a failed eliminating requirement marks the cell as eliminated, and its similarity stays visible;
+  - no output is averaged with another.
+- **Operational suitability:** its own value (scenario A: base slope, 1 at 5° or less, 0 at 10°; scenario B: share of the window at or below 20°).
+- **Coverage and confidence:**
+  - coverage counts windows, valid windows, masked windows and windows of unknown cover;
+  - confidence is high with at least 20 valid windows and under 10% masked or unknown, medium with at least 10, low otherwise.
+- **Uncertainty:** 500 Monte Carlo runs (seed 20261119, slope noise 0.5°) give each cell a rank interval and the share of runs in the top decile.
+- **Earth smoothing** (David, 18/11/2026): none by default; the ranking with a 1-pixel smoothing is reported as a sensitivity run.

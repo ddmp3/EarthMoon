@@ -142,6 +142,18 @@ def run(a) -> dict:
     return {"scenario": a.scenario, "tiles": len(tiles), "targets": targets_out, "cells": cells, "monte_carlo": mc}
 
 
+def _read_with_retry(read_dem, g, have, tries: int = 4):
+    """Streamed COG reads can come back short (truncated tile, seen on 18/11/2026); retry a few times."""
+    from rasterio.errors import RasterioError
+    for k in range(tries):
+        try:
+            return read_dem(g, "glo30", have, None)[0]
+        except RasterioError:
+            if k == tries - 1:
+                raise
+    raise RuntimeError("unreachable")
+
+
 def smoothing_sensitivity(a, sc: dict, sigma_px: float = 1.0) -> dict:
     """David's decision (T41): no Earth smoothing by default; report the ranking with a 1-pixel Gaussian smoothing.
     The DEM of each tile is read again, smoothed (missing pixels stay missing), measured with the same code, and
@@ -161,7 +173,7 @@ def smoothing_sensitivity(a, sc: dict, sigma_px: float = 1.0) -> dict:
         smooth = []
         for la, lo in pairs:
             g = tile_grid(la, lo, pixel[scale], 1000.0)
-            z, _ = read_dem(g, "glo30", have, None)
+            z = _read_with_retry(read_dem, g, have)
             w, _ = compute_tile(gaussian_smooth_nan(z.astype("float64"), sigma_px).astype("float32"), g)
             smooth.append(w["slope_mean"])
         s_slope = np.concatenate(smooth)
