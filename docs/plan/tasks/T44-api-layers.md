@@ -10,6 +10,10 @@ Serve the v3 results: profiles, scenarios, layers, zones, zone detail, and custo
 - `apps/web/src/api-schema.ts` is generated from `openapi.yaml` (`npm run generate:api`).
 - **Caching (decision 6.3):** preset layers are static and precomputed, rebuilt with the refresh command. Custom queries are computed on demand over the precomputed cube, never against live external sources.
 
+## Added on 19/11/2026 (David's clarification)
+- Serve a **coverage layer** per scenario and target: the overlay class of each cell (no data, ground hidden, screened out, partial, low confidence), and the share of land in each class.
+- Serve the **Data and method** content: the sources used (from the catalogues, with status and verification date), and the processing chain read from the run manifest.
+
 ## Steps (TDD)
 1. Write the OpenAPI contract first, then contract tests.
 2. Endpoint tests: unknown ids return 404; oversize or invalid queries return 400 with a message; responses carry the method and data versions; missing data and coverage are present in zone detail.
