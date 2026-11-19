@@ -387,8 +387,9 @@ def cube_profiles(a) -> None:
     folder = a.cube / "sldem2015-59m"
     codes = json.loads((a.cube / "units_codes.json").read_text())
     cols = ["lat", "lon", "unit", "unit_share", "fe", *ALL_METRICS]
-    t = ds.dataset(sorted(folder.glob("*.windows.parquet")), format="parquet").to_table(columns=cols).to_pydict()
-    w = {k: np.asarray(v) for k, v in t.items()}
+    t = ds.dataset(sorted(folder.glob("*.windows.parquet")), format="parquet").to_table(columns=cols)
+    w = {k: t.column(k).to_numpy() for k in cols}          # numpy columns: Python lists of 32 M rows exhaust memory
+    del t
     manifest = folder / "manifest.jsonl"
     inputs = {"moon-cube/manifest": {"file": manifest.name, "sha256": hashlib.sha256(manifest.read_bytes()).hexdigest()},
               "moon-cube/inputs": json.loads((a.cube / "inputs.json").read_text())}

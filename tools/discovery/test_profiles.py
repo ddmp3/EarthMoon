@@ -146,3 +146,21 @@ def test_persistently_lit_profile_states_its_fallback_and_has_enough_windows():
     middle = next(s for s in p["sensitivity"] if s["q"] == 0.6 and s["window_m"] == 200.0)
     assert middle["selected"] < 100                                  # why the nominal is not the middle of the lists
     assert "strictest" in p["params"]["nominal_rule"]
+
+
+def test_cube_profiles_are_subsets_of_the_domain_and_unit_share_acts_monotonically():
+    for name in ("moon-mare-plains", "moon-fresh-craters", "moon-degraded-highlands"):
+        p = _profile(name)
+        assert 0 < p["windows"]["selected"] < p["domain"]["windows"]
+        by_share = {s["min_unit_share"]: s["selected"] for s in p["sensitivity"]
+                    if s.get("units") == p["params"]["units"]}
+        assert by_share[0.5] >= p["windows"]["selected"] >= by_share[1.0]
+    mare, fresh = _profile("moon-mare-plains"), _profile("moon-fresh-craters")
+    assert mare["metrics"]["slope_mean"]["p50"] < fresh["metrics"]["slope_mean"]["p50"]   # plains are flatter
+    assert mare["params"]["fe_split_wt_pct"] > 5
+
+
+def test_pits_site_set_lists_every_atlas_pit_with_its_unit():
+    p = _profile("moon-pits")
+    assert p["kind"] == "site-set" and len(p["sites"]) == 278
+    assert all(s["map_unit"] for s in p["sites"]) and p["windows"]["valid"] == sum(s["context_slope_mean"] is not None for s in p["sites"])
