@@ -1,0 +1,4353 @@
+{
+ "scenario": "A",
+ "tiles": 13,
+ "targets": {
+  "moon-polar-lit-highlands": {
+   "comparable": true,
+   "earth_scale": "glo30-40m",
+   "reference_windows": 58245,
+   "reference_sha256": "64008b58af47c6187224674b496c6f4d05433d051002069b2f98af95e4204b6d"
+  },
+  "moon-persistently-lit": {
+   "comparable": false,
+   "reason": "100 m windows at 5 m: no Earth cube at 5 m (national lidar only)"
+  },
+  "moon-psr": {
+   "comparable": true,
+   "earth_scale": "glo30-40m",
+   "reference_windows": 6162,
+   "reference_sha256": "4c6a5b6cb573f98afffc46fffc9cdd37c4bb61bcc76b6488088503ab94b86ee4"
+  },
+  "moon-pits": {
+   "comparable": true,
+   "earth_scale": "glo30-59m",
+   "reference_windows": 271,
+   "reference_sha256": "cd6c63fd235f3449abd5d8ea30133a42a271acbdedac802814ad4c1d116e2424"
+  }
+ },
+ "monte_carlo": {
+  "moon-polar-lit-highlands": {
+   "runs": 500,
+   "seed": 20261119,
+   "slope_sigma_deg": 0.5,
+   "cells": 5714,
+   "cells_in_top_decile_in_90pct_of_runs": 480
+  },
+  "moon-psr": {
+   "runs": 500,
+   "seed": 20261119,
+   "slope_sigma_deg": 0.5,
+   "cells": 5714,
+   "cells_in_top_decile_in_90pct_of_runs": 499
+  },
+  "moon-pits": {
+   "runs": 500,
+   "seed": 20261119,
+   "slope_sigma_deg": 0.5,
+   "cells": 5408,
+   "cells_in_top_decile_in_90pct_of_runs": 337
+  }
+ },
+ "rules": {
+  "climbing_limit_lrv": {
+   "param": "traversable_20",
+   "at_least": 0.5,
+   "scale": "glo30-40m",
+   "why": "LRV 20 to 23°, max 25° (NTRS 20250011301); 20° used, the stored lower bound; half of the window (E1)"
+  },
+  "climbing_limit_viper": {
+   "param": "traversable_15",
+   "at_least": 0.5,
+   "scale": "glo30-40m",
+   "why": "VIPER 15° not verified (E1); reported, never eliminating"
+  },
+  "base_slope": {
+   "param": "slope_mean",
+   "at_most": 10.0,
+   "scale": "glo30-40m",
+   "why": "unsuitable above 10° (E2)"
+  }
+ },
+ "suitability_rule": {
+  "id": "base_slope_suitability",
+  "param": "slope_mean",
+  "good": 5.0,
+  "bad": 10.0,
+  "scale": "glo30-40m",
+  "why": "5° preferred, unsuitable above 10° (E2), linear between"
+ },
+ "not_evaluated": {
+  "base_site_beyond_slope": "value not set (E13); no layer for bearing capacity or boulders",
+  "target_environment": "descriptive: it chooses the targets, it is not a test",
+  "traversable_share": "part of the climbing limit rules (half of the window)"
+ },
+ "cells": 5714,
+ "requirements": {
+  "base_slope": {
+   "met": 3801,
+   "failed": 1319,
+   "unknown": 594
+  }
+ },
+ "eliminated_cells": 0,
+ "confidence": {
+  "high": 2746,
+  "medium": 610,
+  "low": 2358
+ },
+ "top": {
+  "moon-polar-lit-highlands": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-3:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.995965,
+      "share_above_half": 1.0,
+      "p25": 0.995965,
+      "p75": 0.995965
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.908471,
+      "share_above_half": 1.0,
+      "p25": 0.908471,
+      "p75": 0.908471
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.420664,
+      "share_above_half": 0.0,
+      "p25": 0.420664,
+      "p75": 0.420664
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 2,
+      "failed": 23,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 31.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 35.0,
+      "rank_p5": 3.950000000000003,
+      "rank_p95": 173.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 955.5,
+      "rank_p5": 791.4000000000001,
+      "rank_p95": 1152.0,
+      "share_top_decile": 0.002
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:2:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.985664,
+      "share_above_half": 1.0,
+      "p25": 0.985664,
+      "p75": 0.985664
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.91334,
+      "share_above_half": 1.0,
+      "p25": 0.91334,
+      "p75": 0.91334
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.335793,
+      "share_above_half": 0.0,
+      "p25": 0.304428,
+      "p75": 0.367159
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 7,
+      "failed": 18,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 29.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 25.0,
+      "rank_p5": 2.0,
+      "rank_p95": 138.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1047.0,
+      "rank_p5": 983.95,
+      "rank_p95": 1227.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-3:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.971586,
+      "share_above_half": 1.0,
+      "p25": 0.971586,
+      "p75": 0.971586
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.890295,
+      "share_above_half": 1.0,
+      "p25": 0.890295,
+      "p75": 0.890295
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.265683,
+      "share_above_half": 0.0,
+      "p25": 0.265683,
+      "p75": 0.265683
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 3,
+      "failed": 22,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 38.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 47.5,
+      "rank_p5": 5.0,
+      "rank_p95": 207.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1270.0,
+      "rank_p5": 999.0,
+      "rank_p95": 1375.1,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N11_00_E098_00_DEM:5:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.970246,
+      "share_above_half": 1.0,
+      "p25": 0.970246,
+      "p75": 0.970246
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.888997,
+      "share_above_half": 1.0,
+      "p25": 0.888997,
+      "p75": 0.888997
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 7,
+      "failed": 14,
+      "unknown": 4
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 21
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 5.0,
+      "rank_p5": 1.0,
+      "rank_p95": 37.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 52.0,
+      "rank_p5": 6.0,
+      "rank_p95": 205.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 4493.0,
+      "rank_p5": 4493.0,
+      "rank_p95": 4493.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:0:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.945489,
+      "share_above_half": 1.0,
+      "p25": 0.937694,
+      "p75": 0.95955
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.890944,
+      "share_above_half": 1.0,
+      "p25": 0.881207,
+      "p75": 0.917397
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.398524,
+      "share_above_half": 0.0,
+      "p25": 0.343173,
+      "p75": 0.428044
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 16,
+      "failed": 9,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.372035,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 6.0,
+      "rank_p5": 1.0,
+      "rank_p95": 26.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 38.0,
+      "rank_p5": 8.0,
+      "rank_p95": 137.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 979.5,
+      "rank_p5": 817.95,
+      "rank_p95": 1117.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.944733,
+      "share_above_half": 1.0,
+      "p25": 0.944733,
+      "p75": 0.944733
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.933139,
+      "share_above_half": 1.0,
+      "p25": 0.933139,
+      "p75": 0.933139
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.280443,
+      "share_above_half": 0.0,
+      "p25": 0.280443,
+      "p75": 0.280443
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 1,
+      "failed": 24,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 45.29999999999973,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 11.0,
+      "rank_p5": 1.0,
+      "rank_p95": 91.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1210.0,
+      "rank_p5": 996.0,
+      "rank_p95": 1330.1499999999999,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:1:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.931016,
+      "share_above_half": 1.0,
+      "p25": 0.886196,
+      "p75": 0.955876
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.907984,
+      "share_above_half": 1.0,
+      "p25": 0.884859,
+      "p75": 0.943525
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.295203,
+      "share_above_half": 0.0,
+      "p25": 0.140221,
+      "p75": 0.420664
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 12.0,
+      "rank_p5": 5.0,
+      "rank_p95": 36.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 24.0,
+      "rank_p5": 8.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1141.0,
+      "rank_p5": 975.9,
+      "rank_p95": 1318.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:1:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.928904,
+      "share_above_half": 1.0,
+      "p25": 0.873414,
+      "p75": 0.95403
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.930704,
+      "share_above_half": 1.0,
+      "p25": 0.904414,
+      "p75": 0.948231
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 7,
+      "median": 0.302583,
+      "share_above_half": 0.14285714285714285,
+      "p25": 0.273063,
+      "p75": 0.332103
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 7,
+      "failed": 18,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 12.0,
+      "rank_p5": 4.0,
+      "rank_p95": 33.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 16.0,
+      "rank_p5": 5.0,
+      "rank_p95": 46.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1106.0,
+      "rank_p5": 1001.95,
+      "rank_p95": 1281.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-4:7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.92571,
+      "share_above_half": 1.0,
+      "p25": 0.92571,
+      "p75": 0.92571
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.945472,
+      "share_above_half": 1.0,
+      "p25": 0.945472,
+      "p75": 0.945472
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 80.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 67.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 4991.0,
+      "rank_p5": 4991.0,
+      "rank_p95": 4991.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:7:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.917572,
+      "share_above_half": 1.0,
+      "p25": 0.780479,
+      "p75": 0.940218
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.850698,
+      "share_above_half": 1.0,
+      "p25": 0.764038,
+      "p75": 0.887699
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.457565,
+      "share_above_half": 0.4,
+      "p25": 0.302583,
+      "p75": 0.605166
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 5,
+      "failed": 20,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 14.0,
+      "rank_p5": 3.0,
+      "rank_p95": 92.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 115.0,
+      "rank_p5": 25.0,
+      "rank_p95": 291.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 818.5,
+      "rank_p5": 606.95,
+      "rank_p95": 980.0,
+      "share_top_decile": 0.012
+     }
+    }
+   }
+  ],
+  "moon-psr": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N24_00_E121_00_DEM:0:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.821701,
+      "share_above_half": 1.0,
+      "p25": 0.821701,
+      "p75": 0.821701
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.977929,
+      "share_above_half": 1.0,
+      "p25": 0.977929,
+      "p75": 0.977929
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.140221,
+      "share_above_half": 0.0,
+      "p25": 0.140221,
+      "p75": 0.140221
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 1,
+      "failed": 24,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 58.5,
+      "rank_p5": 8.0,
+      "rank_p95": 197.29999999999973,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 23.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1562.0,
+      "rank_p5": 1489.0,
+      "rank_p95": 1714.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:7:1",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.821667,
+      "share_above_half": 1.0,
+      "p25": 0.821667,
+      "p75": 0.821667
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.977605,
+      "share_above_half": 1.0,
+      "p25": 0.977605,
+      "p75": 0.977605
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.162362,
+      "share_above_half": 0.0,
+      "p25": 0.162362,
+      "p75": 0.162362
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 4,
+      "failed": 21,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 61.5,
+      "rank_p5": 7.950000000000003,
+      "rank_p95": 203.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 27.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1514.5,
+      "rank_p5": 1378.0,
+      "rank_p95": 1579.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-2:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.801064,
+      "share_above_half": 1.0,
+      "p25": 0.801064,
+      "p75": 0.801064
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.964946,
+      "share_above_half": 1.0,
+      "p25": 0.964946,
+      "p75": 0.964946
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.162362,
+      "share_above_half": 0.0,
+      "p25": 0.162362,
+      "p75": 0.162362
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 87.0,
+      "rank_p5": 11.0,
+      "rank_p95": 231.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 4.0,
+      "rank_p5": 1.0,
+      "rank_p95": 35.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1489.0,
+      "rank_p5": 1303.9,
+      "rank_p95": 1554.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:0:-6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.850682,
+      "share_above_half": 1.0,
+      "p25": 0.817581,
+      "p75": 0.883784
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.955047,
+      "share_above_half": 1.0,
+      "p25": 0.953343,
+      "p75": 0.956751
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.457565,
+      "share_above_half": 0.0,
+      "p25": 0.457565,
+      "p75": 0.457565
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 9,
+      "failed": 16,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 37.0,
+      "rank_p5": 11.0,
+      "rank_p95": 104.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 27.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 824.0,
+      "rank_p5": 637.6,
+      "rank_p95": 1046.05,
+      "share_top_decile": 0.006
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-3:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.871903,
+      "share_above_half": 1.0,
+      "p25": 0.829196,
+      "p75": 0.928311
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 6,
+      "median": 0.948556,
+      "share_above_half": 1.0,
+      "p25": 0.924619,
+      "p75": 0.977361
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 8,
+      "median": 0.298893,
+      "share_above_half": 0.125,
+      "p25": 0.254613,
+      "p75": 0.370849
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 11,
+      "failed": 14,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 6,
+     "masked": 19,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 24.0,
+      "rank_p5": 8.0,
+      "rank_p95": 71.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 8.0,
+      "rank_p5": 3.0,
+      "rank_p95": 26.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1136.0,
+      "rank_p5": 1032.95,
+      "rank_p95": 1283.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:3:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 21,
+      "median": 0.880213,
+      "share_above_half": 1.0,
+      "p25": 0.797493,
+      "p75": 0.923993
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 21,
+      "median": 0.947095,
+      "share_above_half": 1.0,
+      "p25": 0.919507,
+      "p75": 0.974684
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 21,
+      "median": 0.265683,
+      "share_above_half": 0.0,
+      "p25": 0.258303,
+      "p75": 0.295203
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.149473,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 21,
+     "masked": 4,
+     "cover_unknown": 0
+    },
+    "confidence": "medium",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 31.0,
+      "rank_p5": 16.0,
+      "rank_p95": 56.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 9.0,
+      "rank_p5": 4.0,
+      "rank_p95": 17.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1289.0,
+      "rank_p5": 1158.0,
+      "rank_p95": 1342.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-4:7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.92571,
+      "share_above_half": 1.0,
+      "p25": 0.92571,
+      "p75": 0.92571
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.945472,
+      "share_above_half": 1.0,
+      "p25": 0.945472,
+      "p75": 0.945472
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 8,
+      "failed": 17,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 9.0,
+      "rank_p5": 1.0,
+      "rank_p95": 80.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 7.0,
+      "rank_p5": 1.0,
+      "rank_p95": 67.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 4991.0,
+      "rank_p5": 4991.0,
+      "rank_p95": 4991.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.778024,
+      "share_above_half": 1.0,
+      "p25": 0.725212,
+      "p75": 0.849309
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.9432,
+      "share_above_half": 1.0,
+      "p25": 0.906524,
+      "p75": 0.962999
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.258303,
+      "share_above_half": 0.0,
+      "p25": 0.199262,
+      "p75": 0.287823
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 12,
+      "failed": 13,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 102.0,
+      "rank_p5": 60.0,
+      "rank_p95": 149.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 5.0,
+      "rank_p95": 22.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1308.0,
+      "rank_p5": 1287.95,
+      "rank_p95": 1374.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-8:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.885982,
+      "share_above_half": 1.0,
+      "p25": 0.794437,
+      "p75": 0.933883
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.938007,
+      "share_above_half": 1.0,
+      "p25": 0.904576,
+      "p75": 0.97371
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.287823,
+      "share_above_half": 0.04,
+      "p25": 0.258303,
+      "p75": 0.420664
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.162256,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 27.0,
+      "rank_p5": 14.0,
+      "rank_p95": 51.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 6.0,
+      "rank_p95": 23.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1129.0,
+      "rank_p5": 1068.0,
+      "rank_p95": 1226.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:2:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.842922,
+      "share_above_half": 1.0,
+      "p25": 0.795708,
+      "p75": 0.890136
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.936547,
+      "share_above_half": 1.0,
+      "p25": 0.935816,
+      "p75": 0.937277
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.258303,
+      "share_above_half": 0.0,
+      "p25": 0.258303,
+      "p75": 0.273063
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 13,
+      "failed": 12,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.02666,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 45.0,
+      "rank_p5": 15.0,
+      "rank_p95": 115.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 10.0,
+      "rank_p5": 2.0,
+      "rank_p95": 44.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1307.0,
+      "rank_p5": 1141.95,
+      "rank_p95": 1388.1,
+      "share_top_decile": 0.0
+     }
+    }
+   }
+  ],
+  "moon-pits": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:4:6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.630303,
+      "share_above_half": 0.5,
+      "p25": 0.490497,
+      "p75": 0.770109
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.652061,
+      "share_above_half": 0.5,
+      "p25": 0.555826,
+      "p75": 0.748296
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.99631,
+      "share_above_half": 1.0,
+      "p25": 0.99631,
+      "p75": 0.99631
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 11,
+      "failed": 14,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 367.0,
+      "rank_p5": 215.0,
+      "rank_p95": 539.05,
+      "share_top_decile": 0.978
+     },
+     "moon-psr": {
+      "rank_median": 556.0,
+      "rank_p5": 408.85,
+      "rank_p95": 724.05,
+      "share_top_decile": 0.574
+     },
+     "moon-pits": {
+      "rank_median": 19.0,
+      "rank_p5": 1.9500000000000028,
+      "rank_p95": 244.0999999999999,
+      "share_top_decile": 0.998
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:4:-11",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.382265,
+      "share_above_half": 0.5,
+      "p25": 0.294901,
+      "p75": 0.469628
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 2,
+      "median": 0.464784,
+      "share_above_half": 0.5,
+      "p25": 0.389646,
+      "p75": 0.539922
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.98893,
+      "share_above_half": 1.0,
+      "p25": 0.98893,
+      "p75": 0.98893
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 5,
+      "failed": 20,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 2,
+     "masked": 23,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 795.0,
+      "rank_p5": 629.9,
+      "rank_p95": 934.05,
+      "share_top_decile": 0.016
+     },
+     "moon-psr": {
+      "rank_median": 904.5,
+      "rank_p5": 744.85,
+      "rank_p95": 1050.0,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 23.0,
+      "rank_p5": 2.0,
+      "rank_p95": 205.14999999999986,
+      "share_top_decile": 0.996
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:-5:6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.280642,
+      "share_above_half": 0.0,
+      "p25": 0.280642,
+      "p75": 0.280642
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.390458,
+      "share_above_half": 0.0,
+      "p25": 0.390458,
+      "p75": 0.390458
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.97417,
+      "share_above_half": 1.0,
+      "p25": 0.97417,
+      "p75": 0.97417
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 959.5,
+      "rank_p5": 709.7,
+      "rank_p95": 1253.1499999999999,
+      "share_top_decile": 0.01
+     },
+     "moon-psr": {
+      "rank_median": 1024.5,
+      "rank_p5": 790.95,
+      "rank_p95": 1295.05,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 20.0,
+      "rank_p5": 1.0,
+      "rank_p95": 280.1999999999998,
+      "share_top_decile": 0.99
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:-4:-2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.348837,
+      "share_above_half": 0.0,
+      "p25": 0.308627,
+      "p75": 0.396944
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.459266,
+      "share_above_half": 0.3333333333333333,
+      "p25": 0.41691,
+      "p75": 0.496267
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.95941,
+      "share_above_half": 1.0,
+      "p25": 0.911439,
+      "p75": 0.97786
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 843.5,
+      "rank_p5": 658.7,
+      "rank_p95": 1036.0,
+      "share_top_decile": 0.006
+     },
+     "moon-psr": {
+      "rank_median": 916.5,
+      "rank_p5": 751.95,
+      "rank_p95": 1102.05,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 26.0,
+      "rank_p5": 3.0,
+      "rank_p95": 130.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:2:7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.277655,
+      "share_above_half": 0.0,
+      "p25": 0.14039,
+      "p75": 0.371277
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.386563,
+      "share_above_half": 0.3333333333333333,
+      "p25": 0.198475,
+      "p75": 0.468354
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.95941,
+      "share_above_half": 0.6666666666666666,
+      "p25": 0.549815,
+      "p75": 0.96679
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 942.0,
+      "rank_p5": 727.9,
+      "rank_p95": 1298.05,
+      "share_top_decile": 0.002
+     },
+     "moon-psr": {
+      "rank_median": 1004.0,
+      "rank_p5": 801.95,
+      "rank_p95": 1343.1,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 47.0,
+      "rank_p5": 5.0,
+      "rank_p95": 307.0999999999999,
+      "share_top_decile": 0.99
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:5:-11",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.132132,
+      "share_above_half": 0.0,
+      "p25": 0.125247,
+      "p75": 0.149867
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.235313,
+      "share_above_half": 0.0,
+      "p25": 0.226712,
+      "p75": 0.253976
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.929889,
+      "share_above_half": 0.8,
+      "p25": 0.789668,
+      "p75": 0.95941
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1265.0,
+      "rank_p5": 1040.7,
+      "rank_p95": 1528.1,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1307.0,
+      "rank_p5": 1109.8,
+      "rank_p95": 1570.1,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 52.0,
+      "rank_p5": 8.0,
+      "rank_p95": 235.9999999999991,
+      "share_top_decile": 0.998
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:-2:10",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 8,
+      "median": 0.513314,
+      "share_above_half": 0.5,
+      "p25": 0.431677,
+      "p75": 0.574092
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 8,
+      "median": 0.584064,
+      "share_above_half": 1.0,
+      "p25": 0.525722,
+      "p75": 0.628124
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 5,
+      "median": 0.922509,
+      "share_above_half": 1.0,
+      "p25": 0.782288,
+      "p75": 0.929889
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.872788,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 8,
+     "masked": 17,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 573.0,
+      "rank_p5": 442.0,
+      "rank_p95": 690.05,
+      "share_top_decile": 0.498
+     },
+     "moon-psr": {
+      "rank_median": 686.0,
+      "rank_p5": 583.0,
+      "rank_p95": 774.0,
+      "share_top_decile": 0.024
+     },
+     "moon-pits": {
+      "rank_median": 48.0,
+      "rank_p5": 10.0,
+      "rank_p95": 205.19999999999982,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N43_00_E142_00_DEM:-7:6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.470598,
+      "share_above_half": 0.3333333333333333,
+      "p25": 0.438716,
+      "p75": 0.580153
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.552743,
+      "share_above_half": 1.0,
+      "p25": 0.531483,
+      "p75": 0.628043
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 3,
+      "median": 0.922509,
+      "share_above_half": 1.0,
+      "p25": 0.819188,
+      "p75": 0.948339
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 15,
+      "failed": 10,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.124681,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 3,
+     "masked": 22,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 598.0,
+      "rank_p5": 383.95,
+      "rank_p95": 795.0999999999999,
+      "share_top_decile": 0.398
+     },
+     "moon-psr": {
+      "rank_median": 706.0,
+      "rank_p5": 540.95,
+      "rank_p95": 863.1499999999999,
+      "share_top_decile": 0.096
+     },
+     "moon-pits": {
+      "rank_median": 41.0,
+      "rank_p5": 6.0,
+      "rank_p95": 237.0,
+      "share_top_decile": 0.998
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:-10:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 0,
+      "median": null,
+      "share_above_half": null,
+      "p25": null,
+      "p75": null
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.915129,
+      "share_above_half": 1.0,
+      "p25": 0.915129,
+      "p75": 0.915129
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 0,
+     "masked": 25,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 4173.0,
+      "rank_p5": 4173.0,
+      "rank_p95": 4173.0,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 4173.0,
+      "rank_p5": 4173.0,
+      "rank_p95": 4173.0,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 26.0,
+      "rank_p5": 1.0,
+      "rank_p95": 380.1999999999998,
+      "share_top_decile": 0.986
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N02_00_W062_00_DEM:-5:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.203314,
+      "share_above_half": 0.0,
+      "p25": 0.203314,
+      "p75": 0.203314
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.308341,
+      "share_above_half": 0.0,
+      "p25": 0.308341,
+      "p75": 0.308341
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 1,
+      "median": 0.915129,
+      "share_above_half": 1.0,
+      "p25": 0.915129,
+      "p75": 0.915129
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 1,
+     "masked": 24,
+     "cover_unknown": 0
+    },
+    "confidence": "low",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1099.5,
+      "rank_p5": 818.0,
+      "rank_p95": 1418.3499999999997,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1164.5,
+      "rank_p5": 889.85,
+      "rank_p95": 1461.2499999999998,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 26.0,
+      "rank_p5": 1.9500000000000028,
+      "rank_p95": 386.3499999999997,
+      "share_top_decile": 0.98
+     }
+    }
+   }
+  ]
+ },
+ "top_high_confidence": {
+  "moon-polar-lit-highlands": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-8:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.885982,
+      "share_above_half": 1.0,
+      "p25": 0.794437,
+      "p75": 0.933883
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.938007,
+      "share_above_half": 1.0,
+      "p25": 0.904576,
+      "p75": 0.97371
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.287823,
+      "share_above_half": 0.04,
+      "p25": 0.258303,
+      "p75": 0.420664
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.162256,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 27.0,
+      "rank_p5": 14.0,
+      "rank_p95": 51.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 6.0,
+      "rank_p95": 23.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1129.0,
+      "rank_p5": 1068.0,
+      "rank_p95": 1226.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:2:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.865928,
+      "share_above_half": 1.0,
+      "p25": 0.743171,
+      "p75": 0.956408
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.880558,
+      "share_above_half": 1.0,
+      "p25": 0.806232,
+      "p75": 0.920156
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.457565,
+      "share_above_half": 0.4,
+      "p25": 0.376384,
+      "p75": 0.553506
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.336034,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 30.0,
+      "rank_p5": 14.0,
+      "rank_p95": 62.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 72.0,
+      "rank_p5": 38.95,
+      "rank_p95": 131.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 800.0,
+      "rank_p5": 711.9,
+      "rank_p95": 894.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:8:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.864435,
+      "share_above_half": 1.0,
+      "p25": 0.719495,
+      "p75": 0.939377
+     },
+     "moon-psr": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.817429,
+      "share_above_half": 1.0,
+      "p25": 0.720708,
+      "p75": 0.869929
+     },
+     "moon-pits": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.546125,
+      "share_above_half": 0.75,
+      "p25": 0.490775,
+      "p75": 0.715867
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 20,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.520141,
+     "valid": 20
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 20,
+     "valid_unmasked": 20,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 37.5,
+      "rank_p5": 17.0,
+      "rank_p95": 81.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 206.0,
+      "rank_p5": 144.0,
+      "rank_p95": 284.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 583.0,
+      "rank_p5": 499.9,
+      "rank_p95": 660.0,
+      "share_top_decile": 0.188
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-4:-11",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.862975,
+      "share_above_half": 0.92,
+      "p25": 0.6758,
+      "p75": 0.928286
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.89062,
+      "share_above_half": 1.0,
+      "p25": 0.834469,
+      "p75": 0.9815
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.428044,
+      "share_above_half": 0.16,
+      "p25": 0.302583,
+      "p75": 0.464945
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 18,
+      "failed": 7,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.140466,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 44.0,
+      "rank_p5": 20.950000000000003,
+      "rank_p95": 88.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 38.0,
+      "rank_p5": 17.950000000000003,
+      "rank_p95": 69.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 924.5,
+      "rank_p5": 797.9,
+      "rank_p95": 986.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.857344,
+      "share_above_half": 0.92,
+      "p25": 0.747669,
+      "p75": 0.943154
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.917559,
+      "share_above_half": 1.0,
+      "p25": 0.842908,
+      "p75": 0.949367
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.376384,
+      "share_above_half": 0.08,
+      "p25": 0.280443,
+      "p75": 0.428044
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.217726,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 35.5,
+      "rank_p5": 16.0,
+      "rank_p95": 72.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 30.0,
+      "rank_p5": 15.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1009.0,
+      "rank_p5": 940.95,
+      "rank_p95": 1093.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-7:0",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.856486,
+      "share_above_half": 1.0,
+      "p25": 0.731737,
+      "p75": 0.908044
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.844206,
+      "share_above_half": 1.0,
+      "p25": 0.795521,
+      "p75": 0.896462
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 22,
+      "median": 0.420664,
+      "share_above_half": 0.09090909090909091,
+      "p25": 0.265683,
+      "p75": 0.457565
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.439238,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 23,
+     "masked": 2,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 57.5,
+      "rank_p5": 26.0,
+      "rank_p95": 113.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 134.0,
+      "rank_p5": 74.0,
+      "rank_p95": 197.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 965.0,
+      "rank_p5": 905.9,
+      "rank_p95": 1046.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-2:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.853807,
+      "share_above_half": 0.92,
+      "p25": 0.694206,
+      "p75": 0.91201
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.848101,
+      "share_above_half": 1.0,
+      "p25": 0.790328,
+      "p75": 0.900357
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.501845,
+      "share_above_half": 0.52,
+      "p25": 0.317343,
+      "p75": 0.546125
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 20,
+      "failed": 5,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.408602,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 52.0,
+      "rank_p5": 24.0,
+      "rank_p95": 98.19999999999982,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 125.0,
+      "rank_p5": 71.0,
+      "rank_p95": 188.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 777.0,
+      "rank_p5": 651.95,
+      "rank_p95": 812.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-6:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.852262,
+      "share_above_half": 0.88,
+      "p25": 0.655129,
+      "p75": 0.909812
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.916261,
+      "share_above_half": 1.0,
+      "p25": 0.839013,
+      "p75": 0.956508
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.258303,
+      "share_above_half": 0.0,
+      "p25": 0.162362,
+      "p75": 0.302583
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 14,
+      "failed": 11,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.104675,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 69.5,
+      "rank_p5": 32.900000000000006,
+      "rank_p95": 126.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 28.0,
+      "rank_p5": 13.0,
+      "rank_p95": 55.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1326.0,
+      "rank_p5": 1308.0,
+      "rank_p95": 1388.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:-3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.851575,
+      "share_above_half": 0.84,
+      "p25": 0.685243,
+      "p75": 0.971002
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.867251,
+      "share_above_half": 0.88,
+      "p25": 0.722493,
+      "p75": 0.908796
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.435424,
+      "share_above_half": 0.4,
+      "p25": 0.383764,
+      "p75": 0.516605
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 23,
+      "failed": 2,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.389004,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 48.0,
+      "rank_p5": 17.950000000000003,
+      "rank_p95": 100.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 133.0,
+      "rank_p5": 66.95,
+      "rank_p95": 209.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 799.0,
+      "rank_p5": 717.9,
+      "rank_p95": 900.1999999999998,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:5:9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.845738,
+      "share_above_half": 0.96,
+      "p25": 0.738055,
+      "p75": 0.900953
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.90555,
+      "share_above_half": 1.0,
+      "p25": 0.82668,
+      "p75": 0.960727
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.383764,
+      "share_above_half": 0.16,
+      "p25": 0.265683,
+      "p75": 0.457565
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 18,
+      "failed": 7,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.182922,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 56.0,
+      "rank_p5": 27.0,
+      "rank_p95": 107.09999999999991,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 35.0,
+      "rank_p5": 17.0,
+      "rank_p95": 61.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1054.5,
+      "rank_p5": 964.85,
+      "rank_p95": 1105.0,
+      "share_top_decile": 0.0
+     }
+    }
+   }
+  ],
+  "moon-psr": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.778024,
+      "share_above_half": 1.0,
+      "p25": 0.725212,
+      "p75": 0.849309
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.9432,
+      "share_above_half": 1.0,
+      "p25": 0.906524,
+      "p75": 0.962999
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.258303,
+      "share_above_half": 0.0,
+      "p25": 0.199262,
+      "p75": 0.287823
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 12,
+      "failed": 13,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 102.0,
+      "rank_p5": 60.0,
+      "rank_p95": 149.0999999999999,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 5.0,
+      "rank_p95": 22.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1308.0,
+      "rank_p5": 1287.95,
+      "rank_p95": 1374.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-8:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.885982,
+      "share_above_half": 1.0,
+      "p25": 0.794437,
+      "p75": 0.933883
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.938007,
+      "share_above_half": 1.0,
+      "p25": 0.904576,
+      "p75": 0.97371
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.287823,
+      "share_above_half": 0.04,
+      "p25": 0.258303,
+      "p75": 0.420664
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.162256,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 27.0,
+      "rank_p5": 14.0,
+      "rank_p95": 51.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 12.0,
+      "rank_p5": 6.0,
+      "rank_p95": 23.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1129.0,
+      "rank_p5": 1068.0,
+      "rank_p95": 1226.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.827711,
+      "share_above_half": 0.96,
+      "p25": 0.722534,
+      "p75": 0.872453
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.925998,
+      "share_above_half": 0.96,
+      "p25": 0.870821,
+      "p75": 0.983772
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.420664,
+      "share_above_half": 0.2,
+      "p25": 0.302583,
+      "p75": 0.435424
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 20,
+      "failed": 5,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.09597,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 67.0,
+      "rank_p5": 34.0,
+      "rank_p95": 111.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 18.0,
+      "rank_p5": 8.0,
+      "rank_p95": 35.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 947.0,
+      "rank_p5": 910.95,
+      "rank_p95": 1010.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:0:2",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.780737,
+      "share_above_half": 0.96,
+      "p25": 0.675457,
+      "p75": 0.868401
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.920156,
+      "share_above_half": 1.0,
+      "p25": 0.831873,
+      "p75": 0.954885
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.295203,
+      "share_above_half": 0.24,
+      "p25": 0.273063,
+      "p75": 0.457565
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 15,
+      "failed": 10,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.116405,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 112.0,
+      "rank_p5": 62.95,
+      "rank_p95": 168.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 30.0,
+      "rank_p5": 14.0,
+      "rank_p95": 55.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1077.0,
+      "rank_p5": 987.95,
+      "rank_p95": 1148.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-3:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.857344,
+      "share_above_half": 0.92,
+      "p25": 0.747669,
+      "p75": 0.943154
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.917559,
+      "share_above_half": 1.0,
+      "p25": 0.842908,
+      "p75": 0.949367
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.376384,
+      "share_above_half": 0.08,
+      "p25": 0.280443,
+      "p75": 0.428044
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 19,
+      "failed": 6,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.217726,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 35.5,
+      "rank_p5": 16.0,
+      "rank_p95": 72.04999999999995,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 30.0,
+      "rank_p5": 15.0,
+      "rank_p95": 62.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1009.0,
+      "rank_p5": 940.95,
+      "rank_p95": 1093.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:-6:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.852262,
+      "share_above_half": 0.88,
+      "p25": 0.655129,
+      "p75": 0.909812
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.916261,
+      "share_above_half": 1.0,
+      "p25": 0.839013,
+      "p75": 0.956508
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.258303,
+      "share_above_half": 0.0,
+      "p25": 0.162362,
+      "p75": 0.302583
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 14,
+      "failed": 11,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.104675,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 69.5,
+      "rank_p5": 32.900000000000006,
+      "rank_p95": 126.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 28.0,
+      "rank_p5": 13.0,
+      "rank_p95": 55.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1326.0,
+      "rank_p5": 1308.0,
+      "rank_p95": 1388.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-9:-5",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.717126,
+      "share_above_half": 1.0,
+      "p25": 0.644562,
+      "p75": 0.826208
+     },
+     "moon-psr": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.911068,
+      "share_above_half": 1.0,
+      "p25": 0.860678,
+      "p75": 0.971925
+     },
+     "moon-pits": {
+      "windows": 20,
+      "valid": 20,
+      "median": 0.258303,
+      "share_above_half": 0.0,
+      "p25": 0.190037,
+      "p75": 0.267528
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 8,
+      "failed": 12,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 20
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 20,
+     "valid_unmasked": 20,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 196.0,
+      "rank_p5": 139.9,
+      "rank_p95": 258.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 28.0,
+      "rank_p5": 12.0,
+      "rank_p95": 53.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1303.0,
+      "rank_p5": 1281.95,
+      "rank_p95": 1375.0,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:-4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.751034,
+      "share_above_half": 0.84,
+      "p25": 0.641463,
+      "p75": 0.850408
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.90977,
+      "share_above_half": 1.0,
+      "p25": 0.797468,
+      "p75": 0.951315
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.258303,
+      "share_above_half": 0.04,
+      "p25": 0.162362,
+      "p75": 0.302583
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 11,
+      "failed": 14,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 165.5,
+      "rank_p5": 108.0,
+      "rank_p95": 233.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 39.5,
+      "rank_p5": 18.0,
+      "rank_p95": 76.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1293.0,
+      "rank_p5": 1269.0,
+      "rank_p95": 1314.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S29_00_E031_00_DEM:2:-10",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.824208,
+      "share_above_half": 0.9130434782608695,
+      "p25": 0.683286,
+      "p75": 0.92626
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.90912,
+      "share_above_half": 1.0,
+      "p25": 0.827329,
+      "p75": 0.948556
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 24,
+      "median": 0.405904,
+      "share_above_half": 0.25,
+      "p25": 0.252768,
+      "p75": 0.49631
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 18,
+      "failed": 7,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.173764,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 23,
+     "masked": 2,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 66.0,
+      "rank_p5": 29.950000000000003,
+      "rank_p95": 121.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 34.0,
+      "rank_p5": 16.0,
+      "rank_p95": 63.049999999999955,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 977.0,
+      "rank_p5": 909.95,
+      "rank_p95": 1062.05,
+      "share_top_decile": 0.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:-6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.736407,
+      "share_above_half": 0.8,
+      "p25": 0.546553,
+      "p75": 0.831213
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.908471,
+      "share_above_half": 1.0,
+      "p25": 0.73937,
+      "p75": 0.953262
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.258303,
+      "share_above_half": 0.04,
+      "p25": 0.184502,
+      "p75": 0.302583
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "failed",
+      "met": 10,
+      "failed": 15,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 192.0,
+      "rank_p5": 130.95,
+      "rank_p95": 249.0,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 32.0,
+      "rank_p5": 15.0,
+      "rank_p95": 61.0,
+      "share_top_decile": 1.0
+     },
+     "moon-pits": {
+      "rank_median": 1294.0,
+      "rank_p5": 1230.95,
+      "rank_p95": 1314.0,
+      "share_top_decile": 0.0
+     }
+    }
+   }
+  ],
+  "moon-pits": [
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:2:6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.473242,
+      "share_above_half": 0.4,
+      "p25": 0.354983,
+      "p75": 0.564924
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.555015,
+      "share_above_half": 0.64,
+      "p25": 0.466407,
+      "p75": 0.620253
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.907749,
+      "share_above_half": 0.92,
+      "p25": 0.752768,
+      "p75": 0.95941
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.990296,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 632.5,
+      "rank_p5": 540.9,
+      "rank_p95": 715.05,
+      "share_top_decile": 0.124
+     },
+     "moon-psr": {
+      "rank_median": 734.0,
+      "rank_p5": 658.95,
+      "rank_p95": 795.0,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 57.0,
+      "rank_p5": 25.0,
+      "rank_p95": 128.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:1:-9",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.299425,
+      "share_above_half": 0.17391304347826086,
+      "p25": 0.161233,
+      "p75": 0.448244
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 23,
+      "median": 0.410906,
+      "share_above_half": 0.34782608695652173,
+      "p25": 0.264038,
+      "p75": 0.536839
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 22,
+      "median": 0.900369,
+      "share_above_half": 1.0,
+      "p25": 0.688192,
+      "p75": 0.972325
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 23,
+     "masked": 2,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 907.0,
+      "rank_p5": 808.95,
+      "rank_p95": 1022.05,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 974.5,
+      "rank_p5": 882.0,
+      "rank_p95": 1092.05,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 68.0,
+      "rank_p5": 27.950000000000003,
+      "rank_p95": 145.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-2:3",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.433102,
+      "share_above_half": 0.32,
+      "p25": 0.342519,
+      "p75": 0.519495
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.526452,
+      "share_above_half": 0.6,
+      "p25": 0.451801,
+      "p75": 0.585849
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.870849,
+      "share_above_half": 1.0,
+      "p25": 0.782288,
+      "p75": 0.95941
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 704.5,
+      "rank_p5": 623.8,
+      "rank_p95": 782.0,
+      "share_top_decile": 0.008
+     },
+     "moon-psr": {
+      "rank_median": 787.5,
+      "rank_p5": 725.85,
+      "rank_p95": 855.05,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 61.5,
+      "rank_p5": 28.0,
+      "rank_p95": 129.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_S25_00_E017_00_DEM:6:-7",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.25197,
+      "share_above_half": 0.0,
+      "p25": 0.057584,
+      "p75": 0.324457
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.356702,
+      "share_above_half": 0.08,
+      "p25": 0.121065,
+      "p75": 0.434599
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.863469,
+      "share_above_half": 0.84,
+      "p25": 0.693727,
+      "p75": 0.900369
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 1052.0,
+      "rank_p5": 947.95,
+      "rank_p95": 1169.05,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1119.0,
+      "rank_p5": 1013.0,
+      "rank_p95": 1225.05,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 91.0,
+      "rank_p5": 38.0,
+      "rank_p95": 170.14999999999986,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:-8:8",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.325796,
+      "share_above_half": 0.12,
+      "p25": 0.230887,
+      "p75": 0.382385
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.443687,
+      "share_above_half": 0.28,
+      "p25": 0.357676,
+      "p75": 0.533268
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.856089,
+      "share_above_half": 0.88,
+      "p25": 0.797048,
+      "p75": 0.915129
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 21,
+      "failed": 4,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 884.0,
+      "rank_p5": 806.95,
+      "rank_p95": 960.0,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 930.0,
+      "rank_p5": 850.7,
+      "rank_p95": 992.0,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 64.0,
+      "rank_p5": 24.950000000000003,
+      "rank_p95": 137.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-4:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.390626,
+      "share_above_half": 0.24,
+      "p25": 0.221959,
+      "p75": 0.477638
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.499838,
+      "share_above_half": 0.48,
+      "p25": 0.326842,
+      "p75": 0.559234
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.841328,
+      "share_above_half": 1.0,
+      "p25": 0.701107,
+      "p75": 0.907749
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 787.5,
+      "rank_p5": 705.95,
+      "rank_p95": 886.05,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 857.0,
+      "rank_p5": 788.95,
+      "rank_p95": 952.0999999999999,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 95.5,
+      "rank_p5": 42.0,
+      "rank_p95": 181.04999999999995,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:-5:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.273328,
+      "share_above_half": 0.12,
+      "p25": 0.15349,
+      "p75": 0.372461
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.381694,
+      "share_above_half": 0.24,
+      "p25": 0.259007,
+      "p75": 0.484258
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.841328,
+      "share_above_half": 1.0,
+      "p25": 0.752768,
+      "p75": 0.922509
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 939.0,
+      "rank_p5": 843.0,
+      "rank_p95": 1031.05,
+      "share_top_decile": 0.0
+     },
+     "moon-psr": {
+      "rank_median": 1003.0,
+      "rank_p5": 918.0,
+      "rank_p95": 1100.0,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 68.0,
+      "rank_p5": 29.0,
+      "rank_p95": 141.0999999999999,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:1:-8",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.604206,
+      "share_above_half": 0.64,
+      "p25": 0.466134,
+      "p75": 0.809889
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.654333,
+      "share_above_half": 0.92,
+      "p25": 0.550795,
+      "p75": 0.890295
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.841328,
+      "share_above_half": 0.76,
+      "p25": 0.501845,
+      "p75": 0.900369
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 24,
+      "failed": 1,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 0.839579,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 385.0,
+      "rank_p5": 294.95,
+      "rank_p95": 489.14999999999986,
+      "share_top_decile": 1.0
+     },
+     "moon-psr": {
+      "rank_median": 534.5,
+      "rank_p5": 461.95,
+      "rank_p95": 616.05,
+      "share_top_decile": 0.756
+     },
+     "moon-pits": {
+      "rank_median": 167.5,
+      "rank_p5": 73.95,
+      "rank_p95": 246.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N37_00_E105_00_DEM:1:4",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.444776,
+      "share_above_half": 0.4,
+      "p25": 0.401167,
+      "p75": 0.626148
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.533268,
+      "share_above_half": 0.8,
+      "p25": 0.506978,
+      "p75": 0.666342
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.841328,
+      "share_above_half": 1.0,
+      "p25": 0.767528,
+      "p75": 0.915129
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 25,
+      "failed": 0,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 614.0,
+      "rank_p5": 536.0,
+      "rank_p95": 699.0,
+      "share_top_decile": 0.222
+     },
+     "moon-psr": {
+      "rank_median": 717.0,
+      "rank_p5": 655.0,
+      "rank_p95": 784.05,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 78.0,
+      "rank_p5": 31.0,
+      "rank_p95": 135.0,
+      "share_top_decile": 1.0
+     }
+    }
+   },
+   {
+    "cell": "Copernicus_DSM_COG_10_N39_00_W110_00_DEM:4:-6",
+    "similarity": {
+     "moon-polar-lit-highlands": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.358554,
+      "share_above_half": 0.28,
+      "p25": 0.270753,
+      "p75": 0.521865
+     },
+     "moon-psr": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.469653,
+      "share_above_half": 0.48,
+      "p25": 0.378773,
+      "p75": 0.586822
+     },
+     "moon-pits": {
+      "windows": 25,
+      "valid": 25,
+      "median": 0.841328,
+      "share_above_half": 0.84,
+      "p25": 0.583026,
+      "p75": 0.915129
+     }
+    },
+    "requirements": {
+     "base_slope": {
+      "status": "met",
+      "met": 24,
+      "failed": 1,
+      "unknown": 0
+     }
+    },
+    "suitability": {
+     "id": "base_slope_suitability",
+     "median": 1.0,
+     "valid": 25
+    },
+    "eliminated": false,
+    "coverage": {
+     "windows": 25,
+     "valid_unmasked": 25,
+     "masked": 0,
+     "cover_unknown": 0
+    },
+    "confidence": "high",
+    "uncertainty": {
+     "moon-polar-lit-highlands": {
+      "rank_median": 787.0,
+      "rank_p5": 709.0,
+      "rank_p95": 876.0,
+      "share_top_decile": 0.002
+     },
+     "moon-psr": {
+      "rank_median": 858.0,
+      "rank_p5": 789.9,
+      "rank_p95": 942.0,
+      "share_top_decile": 0.0
+     },
+     "moon-pits": {
+      "rank_median": 121.0,
+      "rank_p5": 46.95,
+      "rank_p95": 208.0,
+      "share_top_decile": 1.0
+     }
+    }
+   }
+  ]
+ },
+ "commit": "validation-protocol-v1-46-ge5350bcbdad8d19a15abc52566a6c74fff494df4",
+ "cells_parquet_sha256": "8b1e8d013f0e15b117ee0d1fba241f51460ca57217336bc0772cee9d87330372",
+ "smoothing_sensitivity": {
+  "glo30-40m": {
+   "sigma_px": 1.0,
+   "sigma_m": 40.0,
+   "earth_slope_median_ratio_smoothed_over_raw": 0.827,
+   "targets": {
+    "moon-polar-lit-highlands": {
+     "cells": 4168,
+     "spearman_cell_medians": 0.9313,
+     "top_decile_overlap": 0.746,
+     "median_typicality_raw": 0.0049,
+     "median_typicality_smoothed": 0.0006
+    },
+    "moon-psr": {
+     "cells": 4168,
+     "spearman_cell_medians": 0.932,
+     "top_decile_overlap": 0.782,
+     "median_typicality_raw": 0.0149,
+     "median_typicality_smoothed": 0.0013
+    }
+   }
+  },
+  "glo30-59m": {
+   "sigma_px": 1.0,
+   "sigma_m": 59.225293836,
+   "earth_slope_median_ratio_smoothed_over_raw": 0.819,
+   "targets": {
+    "moon-pits": {
+     "cells": 3980,
+     "spearman_cell_medians": 0.9155,
+     "top_decile_overlap": 0.613,
+     "median_typicality_raw": 0.0443,
+     "median_typicality_smoothed": 0.0369
+    }
+   }
+  }
+ }
+}

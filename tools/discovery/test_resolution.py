@@ -28,3 +28,12 @@ def test_match_sigma_finds_the_smoothing_that_brings_a_spectral_ratio_down_to_a_
     target = float(np.median([ratio(gaussian_smooth(b, 1.5)) for b in blocks]))
     got = match_sigma(blocks, target, sigmas=(0.0, 0.5, 1.0, 1.5, 2.0, 3.0), pixel_m=40.0)
     assert got["sigma_px"] == 1.5
+
+
+def test_nan_aware_smoothing_keeps_missing_pixels_missing_and_does_not_pull_values_to_zero():
+    from discovery.resolution import gaussian_smooth_nan
+    z = np.full((40, 40), 100.0)
+    z[:, :10] = np.nan                                            # sea on the west side
+    s = gaussian_smooth_nan(z, 1.5)
+    assert np.isnan(s[:, :10]).all() and np.allclose(s[:, 10:], 100.0)
+    assert np.array_equal(gaussian_smooth_nan(z, 0.0), z, equal_nan=True)
