@@ -142,6 +142,55 @@ def run(a) -> dict:
     return {"scenario": a.scenario, "tiles": len(tiles), "targets": targets_out, "cells": cells, "monte_carlo": mc}
 
 
+def smoothing_sensitivity(a, sc: dict, sigma_px: float = 1.0) -> dict:
+    """David's decision (T41): no Earth smoothing by default; report the ranking with a 1-pixel Gaussian smoothing.
+    The DEM of each tile is read again, smoothed (missing pixels stay missing), measured with the same code, and
+    the cell medians of typicality are compared with the unsmoothed run (same masks)."""
+    from discovery.copernicus import tile_name
+    from discovery.cube import GDAL_ENV, compute_tile, read_dem
+    from discovery.grid import tile_grid
+    from discovery.resolution import gaussian_smooth_nan
+    os.environ.update(GDAL_ENV)
+    pixel = {"glo30-40m": 40.0, "glo30-59m": 59.225293836}
+    have = {tuple(map(int, k.split(","))) for k in json.loads((a.cube / "glo30-40m" / "listing.json").read_text())}
+    pairs = [tuple(int(v) for v in t.split(",")) for t in Path(a.tiles).read_text().split()]
+    out = {}
+    for scale in sorted({SCALE[t] for t in sc["targets"] if SCALE[t]}):
+        raw = load_windows(a.cube / scale, [tile_name(la, lo, "glo30") for la, lo in pairs])
+        masked, _ = masked_windows(raw)
+        smooth = []
+        for la, lo in pairs:
+            g = tile_grid(la, lo, pixel[scale], 1000.0)
+            z, _ = read_dem(g, "glo30", have, None)
+            w, _ = compute_tile(gaussian_smooth_nan(z.astype("float64"), sigma_px).astype("float32"), g)
+            smooth.append(w["slope_mean"])
+        s_slope = np.concatenate(smooth)
+        if s_slope.size != raw["slope_mean"].size:
+            raise ValueError(f"{scale}: smoothed windows do not match the cube windows")
+        s_slope = np.where(masked, np.nan, s_slope)
+        r_slope = np.where(masked, np.nan, raw["slope_mean"])
+        ok = np.isfinite(r_slope) & np.isfinite(s_slope) & (r_slope > 0)
+        out[scale] = {"sigma_px": sigma_px, "sigma_m": sigma_px * pixel[scale],
+                      "earth_slope_median_ratio_smoothed_over_raw": round(float(np.median(s_slope[ok] / r_slope[ok])), 3),
+                      "targets": {}}
+        for t in sc["targets"]:
+            if SCALE[t] != scale:
+                continue
+            ref = reference(a.profiles, t)
+            ids, m_raw = cell_medians(percentile_typicality(r_slope, ref), raw["cell"])
+            _, m_s = cell_medians(percentile_typicality(s_slope, ref), raw["cell"])
+            both = np.isfinite(m_raw) & np.isfinite(m_s)
+            x, y = m_raw[both], m_s[both]
+            rx, ry = np.argsort(np.argsort(-x)), np.argsort(np.argsort(-y))
+            k = max(int(np.ceil(x.size * 0.1)), 1)
+            top_r, top_s = set(np.flatnonzero(rx < k)), set(np.flatnonzero(ry < k))
+            out[scale]["targets"][t] = {"cells": int(x.size), "spearman_cell_medians": round(float(np.corrcoef(rx, ry)[0, 1]), 4),
+                                        "top_decile_overlap": round(len(top_r & top_s) / k, 3),
+                                        "median_typicality_raw": round(float(np.median(x)), 4),
+                                        "median_typicality_smoothed": round(float(np.median(y)), 4)}
+    return out
+
+
 def summary(res: dict, top: int = 10) -> dict:
     cells = res["cells"]
     out = {k: res[k] for k in ("scenario", "tiles", "targets", "monte_carlo")}
@@ -199,11 +248,17 @@ def main(argv=None) -> int:
     ap.add_argument("--out", type=Path, required=True)
     ap.add_argument("--summary", type=Path, required=True)
     ap.add_argument("--runs", type=int, default=RUNS)
+    ap.add_argument("--smoothing", action="store_true", help="add the 1-pixel smoothing sensitivity (streams the DEM)")
     a = ap.parse_args(argv)
     res = run(a)
     sha = write_cells(a.out / f"{a.scenario}.cells.parquet", res)
     s = summary(res)
     s.update({"commit": os.environ.get("EARTHMOON_COMMIT", "unknown"), "cells_parquet_sha256": sha})
+    if a.smoothing:
+        import yaml
+        sc = yaml.safe_load((ROOT / f"data/scenarios/{a.scenario}-{'lunar-base' if a.scenario == 'A' else 'lunar-robotics'}.yaml").read_text(encoding="utf-8"))
+        s["smoothing_sensitivity"] = smoothing_sensitivity(a, sc)
+        print(json.dumps(s["smoothing_sensitivity"], indent=1))
     a.summary.parent.mkdir(parents=True, exist_ok=True)
     a.summary.write_text(json.dumps(s, indent=1, ensure_ascii=False, default=float) + "\n", encoding="utf-8")
     print(json.dumps({k: s[k] for k in ("cells", "requirements", "eliminated_cells", "confidence", "monte_carlo")}, indent=1))

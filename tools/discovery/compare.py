@@ -42,7 +42,7 @@ def cell_similarity(typ: np.ndarray, cell: np.ndarray) -> dict:
     out = {}
     order = np.argsort(cell, kind="stable")
     c, t = cell[order], typ[order]
-    bounds = np.flatnonzero(np.diff(c)) + 1
+    bounds = np.flatnonzero(c[1:] != c[:-1]) + 1                      # works for text cell ids
     for ids, vals in zip(np.split(c, bounds), np.split(t, bounds)):
         v = vals[np.isfinite(vals)]
         row = {"windows": int(vals.size), "valid": int(v.size)}
@@ -92,11 +92,12 @@ def assess_cells(windows: dict, refs: dict, requirements: list[dict], suitabilit
     for r in requirements:
         bound = {k: r[k] for k in ("at_least", "at_most") if k in r}
         for c, row in cell_requirement(window_requirement(windows[r["param"]], **bound), cell).items():
-            out[c]["requirements"][r["id"]] = row
+            out.setdefault(c, {"similarity": {}, "requirements": {}})["requirements"][r["id"]] = row
     if suitability:
         s = linear_suitability(windows[suitability["param"]], suitability["good"], suitability["bad"])
         for c, row in cell_similarity(s, cell).items():
-            out[c]["suitability"] = {"id": suitability["id"], "median": row["median"], "valid": row["valid"]}
+            out.setdefault(c, {"similarity": {}, "requirements": {}})["suitability"] = {
+                "id": suitability["id"], "median": row["median"], "valid": row["valid"]}
     return out
 
 

@@ -121,3 +121,19 @@ def test_b_suitability_rule_is_the_traversable_share_itself():
     from discovery.compare_run import SUITABILITY
     r = SUITABILITY["B"]
     assert linear_suitability(np.array([0.0, 0.3, 1.0]), r["good"], r["bad"]).tolist() == [0.0, 0.3, 1.0]
+
+
+def test_cell_ids_may_be_text_as_in_the_cube():
+    typ = np.array([0.9, 0.1, 0.5])
+    cell = np.array(["tileA:1:2", "tileA:1:3", "tileA:1:2"])
+    out = cell_similarity(typ, cell)
+    assert out["tileA:1:2"]["median"] == 0.7 and out["tileA:1:3"]["valid"] == 1
+
+
+def test_requirements_and_suitability_can_be_assessed_without_any_similarity_target():
+    from discovery.compare import assess_cells
+    w = {"cell": np.array(["a", "a", "b"]), "slope_mean": np.array([3.0, 4.0, 12.0])}
+    out = assess_cells(w, {}, [{"id": "base", "param": "slope_mean", "at_most": 10.0}],
+                       {"id": "s", "param": "slope_mean", "good": 5.0, "bad": 10.0})
+    assert out["a"]["requirements"]["base"]["status"] == "met" and out["b"]["requirements"]["base"]["status"] == "failed"
+    assert out["a"]["suitability"]["median"] == 1.0 and out["b"]["suitability"]["median"] == 0.0

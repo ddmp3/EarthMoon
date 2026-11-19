@@ -40,6 +40,17 @@ def gaussian_smooth(z: np.ndarray, sigma_px: float) -> np.ndarray:
     return s[n0 // 2:n0 // 2 + n0, n1 // 2:n1 // 2 + n1]
 
 
+def gaussian_smooth_nan(z: np.ndarray, sigma_px: float) -> np.ndarray:
+    """Gaussian smoothing that ignores missing pixels (normalised convolution); missing pixels stay missing."""
+    if sigma_px <= 0:
+        return z
+    ok = np.isfinite(z)
+    num = gaussian_smooth(np.where(ok, z, 0.0), sigma_px)
+    den = gaussian_smooth(ok.astype("float64"), sigma_px)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        return np.where(ok & (den > 1e-6), num / den, np.nan)
+
+
 def compare_pairs(a: np.ndarray, b: np.ndarray) -> dict:
     """Same windows measured two ways: median ratio b/a, Spearman rank correlation, |b - a| quantiles."""
     ok = np.isfinite(a) & np.isfinite(b) & (a > 0)
