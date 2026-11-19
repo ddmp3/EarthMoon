@@ -120,14 +120,18 @@ def file_input(path: Path) -> dict:
 
 # --- environments ------------------------------------------------------------------------------------------
 
-def south_polar_cap(ldem: Path, max_lat: float = -85.0) -> dict:
-    """moon-south-polar-cap-v2: every 1 km window of LDEM_85S_40M entirely south of max_lat (v2 anchor)."""
+def _polar_cap_windows(ldem: Path, max_lat: float = -85.0):
     from lunar_reference import latitude_grid, read_ldem
     g = LDEM_85S
     z = read_ldem(str(ldem), g["size"])
     lat = latitude_grid(g["size"], g["pixel_m"])
     w = window_metrics_grid(z, g["pixel_m"], g["window_px"], margin=0, metrics=ALL_METRICS)
-    sel = select_windows(lat <= max_lat, g["window_px"])
+    return w, select_windows(lat <= max_lat, g["window_px"])
+
+
+def south_polar_cap(ldem: Path, max_lat: float = -85.0) -> dict:
+    """moon-south-polar-cap-v2: every 1 km window of LDEM_85S_40M entirely south of max_lat (v2 anchor)."""
+    w, sel = _polar_cap_windows(ldem, max_lat)
     return summarise(w, sel, ALL_METRICS)
 
 
@@ -205,9 +209,12 @@ def main(argv=None) -> int:
     ap.add_argument("--out", type=Path, default=Path("data/profiles/moon"))
     a = ap.parse_args(argv)
     if a.what == "south-polar-cap":
-        s = south_polar_cap(a.ldem)
-        rec = record("moon-south-polar-cap-v2", s, {"lro-lola-ldem-85s-40m": file_input(a.ldem)},
+        w, sel = _polar_cap_windows(a.ldem)
+        rec = record("moon-south-polar-cap-v2", summarise(w, sel, ALL_METRICS), {"lro-lola-ldem-85s-40m": file_input(a.ldem)},
                      {"max_lat": -85.0, "pixel_m": 40.0, "window_px": 25, "margin_px": 0, "min_valid": 0.9})
+        g = LDEM_85S
+        rec["outputs"] = {"windows_parquet": write_windows(a.windows_out / "moon-south-polar-cap-v2.windows.parquet", w, sel,
+                                                           ALL_METRICS, g["pixel_m"], g["window_px"], g["size"])}
         write(a.out / "moon-south-polar-cap-v2.json", rec)
         print(json.dumps(rec["windows"]), json.dumps(rec["metrics"]["slope_mean"]))
     elif a.what == "polar":

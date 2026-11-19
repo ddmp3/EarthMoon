@@ -84,3 +84,40 @@ def test_monte_carlo_is_reproducible_and_reports_rank_intervals():
     assert a == b and a != c
     row = a[0]
     assert row["rank_p5"] <= row["rank_median"] <= row["rank_p95"] and 0 <= row["share_top_decile"] <= 1
+
+
+def test_vectorised_cell_medians_equal_the_cell_summary_medians():
+    from discovery.compare import cell_medians
+    cell = rng.integers(0, 50, 2000)
+    v = rng.normal(0, 1, 2000)
+    v[rng.random(2000) < 0.2] = np.nan
+    cell[:5] = 99                                                    # one cell with only NaN
+    v[:5] = np.nan
+    ids, med = cell_medians(v, cell)
+    ref = cell_similarity(v, cell)
+    for c, m in zip(ids, med):
+        expect = ref[int(c)]["median"]
+        assert (np.isnan(m) and expect is None) or m == pytest.approx(expect, abs=1e-6)
+
+
+def test_window_masking_hides_covered_ground_and_keeps_unknown_masks_unknown():
+    from discovery.compare import masked_windows
+    w = {"wc_tree": np.array([0.6, 0.1, np.nan, 0.0]), "wc_built": np.array([0.0, 0.2, np.nan, 0.0]),
+         "wc_water": np.array([0.0, 0.25, np.nan, 0.0]), "wc_snow_ice": np.array([0.0, 0.0, np.nan, 0.0]),
+         "wc_covered": np.array([1.0, 1.0, 0.0, 1.0])}
+    masked, unknown = masked_windows(w)
+    assert masked.tolist() == [True, True, False, False] and unknown.tolist() == [False, False, True, False]
+
+
+def test_confidence_needs_enough_valid_windows_and_little_hidden_or_unknown_ground():
+    from discovery.compare_run import confidence
+    assert confidence(valid=25, windows=25, masked=0, unknown_mask=0) == "high"
+    assert confidence(valid=22, windows=25, masked=3, unknown_mask=0) == "medium"      # 12% masked
+    assert confidence(valid=25, windows=25, masked=0, unknown_mask=25) == "medium"     # cover unknown
+    assert confidence(valid=5, windows=25, masked=20, unknown_mask=0) == "low"
+
+
+def test_b_suitability_rule_is_the_traversable_share_itself():
+    from discovery.compare_run import SUITABILITY
+    r = SUITABILITY["B"]
+    assert linear_suitability(np.array([0.0, 0.3, 1.0]), r["good"], r["bad"]).tolist() == [0.0, 0.3, 1.0]

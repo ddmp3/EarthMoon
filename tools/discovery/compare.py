@@ -100,6 +100,33 @@ def assess_cells(windows: dict, refs: dict, requirements: list[dict], suitabilit
     return out
 
 
+def cell_medians(values: np.ndarray, cell: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Median of the finite values of each cell, vectorised (NaN when a cell has none). Same as cell_similarity."""
+    v = np.asarray(values, dtype="float64")
+    ids, inv = np.unique(cell, return_inverse=True)
+    ok = np.isfinite(v)
+    key = np.where(ok, v, np.inf)
+    order = np.lexsort((key, inv))
+    n = np.bincount(inv[ok], minlength=ids.size)
+    start = np.concatenate([[0], np.cumsum(np.bincount(inv, minlength=ids.size))[:-1]])
+    sv = key[order]
+    lo = start + np.maximum((n - 1) // 2, 0)
+    hi = start + np.maximum(n // 2, 0)
+    med = np.where(n > 0, (sv[np.minimum(lo, sv.size - 1)] + sv[np.minimum(hi, sv.size - 1)]) / 2, np.nan)
+    return ids, med
+
+
+MASK_CLASSES = ("wc_tree", "wc_built", "wc_water", "wc_snow_ice")
+
+
+def masked_windows(w: dict, share: float = 0.5) -> tuple[np.ndarray, np.ndarray]:
+    """Windows whose ground is hidden (forest, buildings, water, snow or ice cover at least `share`), and windows
+    whose cover is unknown (no WorldCover data): those stay unknown, never treated as bare ground or as masked."""
+    covered = np.nan_to_num(np.asarray(w["wc_covered"], dtype="float64")) > 0
+    total = sum(np.nan_to_num(np.asarray(w[k], dtype="float64")) for k in MASK_CLASSES)
+    return covered & (total >= share), ~covered
+
+
 # --- uncertainty -------------------------------------------------------------------------------------------
 
 def monte_carlo(windows: dict, refs: dict, target: str, runs: int, seed: int, slope_sigma: float,
@@ -114,8 +141,8 @@ def monte_carlo(windows: dict, refs: dict, target: str, runs: int, seed: int, sl
     base = np.asarray(windows[param], dtype="float64")
     for i in range(runs):
         noisy = base + rng.normal(0.0, slope_sigma, base.size)
-        sim = cell_similarity(percentile_typicality(noisy, refs[target]), cell)
-        med = np.array([sim[c.item()]["median"] if sim[c.item()]["median"] is not None else -1.0 for c in ids])
+        _, med = cell_medians(percentile_typicality(noisy, refs[target]), cell)
+        med = np.where(np.isfinite(med), med, -1.0)
         order = np.argsort(-med, kind="stable")
         ranks[i, order] = np.arange(1, ids.size + 1)
     top = max(int(np.ceil(ids.size * 0.1)), 1)
