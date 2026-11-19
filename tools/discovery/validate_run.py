@@ -172,65 +172,72 @@ def bias(cells: dict) -> dict:
     return out
 
 
-def monte_carlo(run: Path, cells: dict, cube: Path, refs_path: str, rock_path: str) -> dict:
-    """Zone cells and a fixed sample of evaluated cells, re-read window by window, under 500 noise draws."""
+def _mc_target(args) -> dict:
+    """One target, in its own process: window slopes of its zone cells and of its sample cells, 500 noise draws,
+    each zone's share of runs at or above the sample's 90th percentile. Cell ids become integers once."""
+    t, k, run, cube, refs_path, rock_path, sample_ids = args
     import pyarrow.parquet as pq
     from discovery.compare import MASK_CLASSES, cell_medians, percentile_typicality
-    from discovery.copernicus import tile_name
     from discovery.discover import _context, window_masks
-    from discovery.discover import top_decile_share
     ctx = _context(refs_path, rock_path)
-    rng = np.random.default_rng(SEED)
+    scale = TARGET_SCALE[t]
+    keys = [(sc, t) for sc, ts in SCENARIO_TARGETS.items() if t in ts]
+    zones = {key: json.loads((Path(run) / f"zones-{key[0]}-{t}.json").read_text()) for key in keys}
+    need = set(sample_ids) | {c for zs in zones.values() for z in zs for c in z["cell_ids"]}
+    ids, slopes = [], []
+    for name in sorted({c.split(":")[0] for c in need}):
+        f = Path(cube) / scale / f"{name}.windows.parquet"
+        if not f.exists():
+            continue
+        tab = pq.read_table(f, columns=["i", "j", "lat", "lon", "slope_mean", *MASK_CLASSES, "wc_covered"])
+        w = {c: tab.column(c).to_numpy() for c in tab.column_names}
+        cid = np.array([f"{name}:{i}:{j}" for i, j in zip(w["i"], w["j"])])
+        keep = np.isin(cid, list(need))
+        masked, _ = window_masks(w, ctx)
+        ids.append(cid[keep])
+        slopes.append(np.where(masked, np.nan, w["slope_mean"])[keep])
+    uniq, code = np.unique(np.concatenate(ids), return_inverse=True)
+    base = np.concatenate(slopes).astype("float64")
+    pos = {c: i for i, c in enumerate(uniq)}
+    s_idx = np.array([pos[c] for c in sample_ids if c in pos])
+    z_idx = {key: [np.array([pos[c] for c in z["cell_ids"] if c in pos], dtype=int) for z in zones[key]] for key in keys}
+    hits = {key: np.zeros(len(zones[key])) for key in keys}
+    rng = np.random.default_rng([SEED, k])                         # one stream per target, fixed order
+    ref = ctx["refs"][t]
+    for r in range(RUNS):
+        _, med = cell_medians(percentile_typicality(base + rng.normal(0.0, SIGMA, base.size), ref), code)
+        thr = np.nanpercentile(med[s_idx], 90)
+        for key in keys:
+            zm = np.array([np.nanmedian(med[ix]) if ix.size and np.isfinite(med[ix]).any() else -1.0 for ix in z_idx[key]])
+            hits[key] += zm >= thr
+        if (r + 1) % 50 == 0:
+            print(f"mc {t} {r + 1}/{RUNS}", flush=True)
     out = {}
-    for scale in sorted(set(TARGET_SCALE.values())):
-        targets = [t for t, s in TARGET_SCALE.items() if s == scale]
-        zones = {(sc, t): json.loads((run / f"zones-{sc}-{t}.json").read_text()) for sc, ts in SCENARIO_TARGETS.items()
-                 for t in ts if t in targets}
-        need = {c for zs in zones.values() for z in zs for c in z["cell_ids"]}
-        sample = {}
-        for t in targets:
-            med = _num(cells.get(f"{t}:median", [None] * len(cells["cell"])))
-            idx = np.flatnonzero(np.isfinite(med))
-            pick = rng.choice(idx, size=min(SAMPLE, idx.size), replace=False)
-            sample[t] = set(np.asarray(cells["cell"])[pick].tolist())
-            need |= sample[t]
-        tiles = sorted({c.split(":")[0] for c in need})
-        ids, slopes = [], []
-        for name in tiles:
-            f = cube / scale / f"{name}.windows.parquet"
-            if not f.exists():
-                continue
-            t = pq.read_table(f, columns=["i", "j", "lat", "lon", "slope_mean", *MASK_CLASSES, "wc_covered"])
-            w = {k: t.column(k).to_numpy() for k in t.column_names}
-            cid = np.array([f"{name}:{i}:{j}" for i, j in zip(w["i"], w["j"])])
-            keep = np.isin(cid, list(need))
-            masked, _ = window_masks(w, ctx)
-            ids.append(cid[keep])
-            slopes.append(np.where(masked, np.nan, w["slope_mean"])[keep])
-        cid, base = np.concatenate(ids), np.concatenate(slopes).astype("float64")
-        u = np.unique(cid)                                     # same cell order in every run (cell_medians)
-        pos = {c: k for k, c in enumerate(u)}
-        for t in targets:
-            ref = ctx["refs"][t]
-            keys = [k for k in zones if k[1] == t]
-            s_idx = np.array([pos[c] for c in sorted(sample[t]) if c in pos])
-            z_idx = {key: [np.array([pos[c] for c in z["cell_ids"] if c in pos], dtype=int) for z in zones[key]] for key in keys}
-            zone_meds, sample_meds = {key: [] for key in keys}, []
-            for _ in range(RUNS):
-                typ = percentile_typicality(base + rng.normal(0.0, SIGMA, base.size), ref)
-                _, med = cell_medians(typ, cid)
-                sample_meds.append(med[s_idx])
-                for key in keys:
-                    zone_meds[key].append([med[ix] for ix in z_idx[key]])
-            sample_ids = s_idx
-            for key in keys:
-                sc = key[0]
-                shares = [top_decile_share([run_z[k] for run_z in zone_meds[key]], sample_meds) for k in range(len(zones[key]))]
-                for z, s in zip(zones[key], shares):
-                    z["mc_top_decile_share"] = round(float(s), 3)
-                (run / f"zones-{sc}-{t}.json").write_text(json.dumps(zones[key], indent=1) + "\n")
-                out[f"{sc}:{t}"] = {"zones": len(shares), "stable_zones_90pct": int(sum(s >= 0.9 for s in shares)),
-                                    "runs": RUNS, "seed": SEED, "slope_sigma_deg": SIGMA, "sample_cells": len(sample_ids)}
+    for key in keys:
+        shares = hits[key] / RUNS
+        for z, sh in zip(zones[key], shares):
+            z["mc_top_decile_share"] = round(float(sh), 3)
+        (Path(run) / f"zones-{key[0]}-{t}.json").write_text(json.dumps(zones[key], indent=1) + "\n")
+        out[f"{key[0]}:{t}"] = {"zones": len(shares), "stable_zones_90pct": int((shares >= 0.9).sum()), "runs": RUNS,
+                                "seed": [SEED, k], "slope_sigma_deg": SIGMA, "sample_cells": int(s_idx.size)}
+    return out
+
+
+def monte_carlo(run: Path, cells: dict, cube: Path, refs_path: str, rock_path: str) -> dict:
+    """Zone cells and a fixed sample of 200,000 evaluated cells per target, under 500 noise draws; one process
+    per target. Seeds: sample drawn with [SEED, k, 0], noise with [SEED, k], k the target's index in sorted order."""
+    from concurrent.futures import ProcessPoolExecutor
+    targets = sorted(TARGET_SCALE)
+    jobs = []
+    for k, t in enumerate(targets):
+        med = _num(cells.get(f"{t}:median", [None] * len(cells["cell"])))
+        idx = np.flatnonzero(np.isfinite(med))
+        pick = np.random.default_rng([SEED, k, 0]).choice(idx, size=min(SAMPLE, idx.size), replace=False)
+        jobs.append((t, k, str(run), str(cube), refs_path, rock_path, sorted(np.asarray(cells["cell"])[pick].tolist())))
+    out = {}
+    with ProcessPoolExecutor(max_workers=len(jobs)) as pool:
+        for res in pool.map(_mc_target, jobs):
+            out.update(res)
     return out
 
 
