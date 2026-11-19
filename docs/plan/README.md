@@ -108,7 +108,8 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T41](tasks/T41-moon-profiles.md) | Lunar profiles computed | G3 | done (PR #20; 8 environments, v2 anchor exact; Earth smoothing decision open for David) |
 | [T42](tasks/T42-comparison-engine.md) | Comparison engine | T40, T41 | done (PR #21; scenarios A and B on the pilot tiles; smoothing sensitivity reported) |
 | [T43](tasks/T43-discovery-topography.md) | First global discovery run and validation | T42 | done (PR #23; run-001 with protocol v2: 38 of 40 top zones are artefacts, ranking not robust; G4 review) |
-| G4 | Gate: first discovery map | T43 | todo |
+| G4 | Gate: first discovery map | T43 | G4 signed 19/11 by David; run-002 with the two rules of run-001 (protocol v3) |
+| [T43b](tasks/T43b-run-002.md) | run-002: protocol v3 (global equal-area cells, high-confidence candidates) | G4 | doing |
 | [T44](tasks/T44-api-layers.md) | API: layers and zones | G4 | todo |
 | [T45](tasks/T45-ui-map.md) | Interface: layer map, hatching, comparison | T44 | todo |
 | [T46](tasks/T46-geology.md) | Geology and mineralogy dimension | G4 | todo |
