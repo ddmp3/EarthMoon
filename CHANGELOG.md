@@ -2,6 +2,19 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-18 · T41 Lunar profiles (PR #20)
+- All 8 lunar environments of T20 computed with the Earth window code; profiles in `data/profiles/moon/`, every selected window kept in Parquet with its hash.
+- v2 anchor reproduced exactly (71,731 windows, same percentiles).
+- New lunar window cube: SLDEM2015, 60°S to 60°N, 32.3 M windows of 1 km, each with Lunar Prospector FeO and its geologic unit.
+- Median `slope_mean`:
+  - mare plains 2.25° (5.7 M windows), fresh craters 7.52°, degraded highlands 8.24°;
+  - polar lit highlands 8.33°, shadowed regions 9.49°;
+  - persistently lit ridges 4.35° (100 m windows at 5 m);
+  - 278 atlas pits, 229 of them in Copernican crater units.
+- Fresh craters and degraded highlands now ready (geologic map verified in T14). The mare rule uses the map; the iron split (11.44 wt% FeO) is a sensitivity run.
+- Effective resolution: LOLA 40 m and the 5 m mosaic give the same slopes (ratio 1.006). Matching Earth to the LOLA spectrum would lower Earth slopes by 12 to 31%, so no smoothing by default; decision for David.
+- Report: `docs/wiki/runs/moon-profiles.md`.
+
 ## 2026-11-18 · T14 Catalogue coverage review (PR #19)
 - David's request: review Earth, Moon and Mars sources for the widest reliable coverage. Review: `docs/wiki/data/coverage-review.md`.
 - Added: Antarctic rock outcrops (mask south of 60°S, where WorldCover has no tile) and GeoMAP geology of Antarctica; FABDEM (forest and buildings removed) to check slopes; MOCAAS aqueous minerals of Mars; CaSSIS chloride candidates and the Osterloo chloride deposits; Kaguya MI mineral maps of the Moon.

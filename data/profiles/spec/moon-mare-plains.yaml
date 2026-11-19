@@ -5,12 +5,15 @@ kind: distribution
 status: ready
 catalogue_environments: [mare-plains]
 selection:
-  rule: 1 km windows of SLDEM2015 (60°S to 60°N) inside Lunar Prospector iron bins above a split drawn from the lunar data (two-class split of the iron histogram).
+  rule: 1 km windows of SLDEM2015 (60°S to 60°N) inside the mare units of the USGS Unified Geologic Map (upgrade applied in T41, the map being verified). The iron rule is kept as a sensitivity run.
   steps:
     - {product: sldem2015, condition: "1 km window inside 60°S to 60°N", uses: [latitude]}
-    - {product: lp-grs-ns-special-products, condition: "Fe bin value above fe_split", uses: [fe_abundance]}
+    - {product: usgs-unified-geologic-map, condition: "mare unit (Em, Im1, Im2, Imd)", uses: [map_unit]}
+    - {product: lp-grs-ns-special-products, condition: "sensitivity: Fe bin value above fe_split", uses: [fe_abundance]}
   parameters:
-    - {name: fe_split, value: "to fix in T22", sensitivity: ["two-class split (Otsu) of the Fe histogram", "split minus 10%", "split plus 10%"]}
+    - {name: units, value: [Em, Im1, Im2, Imd], sensitivity: [[Em, Im1, Im2]], reason: "the four mare units of the map; plateau EIp and dark mantle Id are not basalt plains (T41)"}
+    - {name: min_unit_share, value: 0.9, sensitivity: [0.5, 1.0], reason: "a window is inside a unit when at least 90% of 25 samples fall in it (T41, as the 90% valid-pixel rule)"}
+    - {name: fe_split, value: "area-weighted two-class split (Otsu) of the 0.5° FeO bins between 60°S and 60°N, computed in T41", sensitivity: ["split minus 10%", "split plus 10%"]}
 upgrade: Replace the iron mask with the mare units of the USGS Unified Geologic Map once it is verified (usgs-unified-geologic-map).
 parameters:
   - dimension: topography

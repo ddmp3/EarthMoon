@@ -19,10 +19,10 @@ Specs: `data/profiles/spec/*.yaml`. Check: `python tools/profiles/profiles.py`. 
 | `moon-polar-lit-highlands` | ready | Same windows, permanent shadow fraction ≤ f_lit | Shadow is a model built from the same terrain |
 | `moon-psr` | ready | Permanent shadow fraction ≥ f_psr; window size to fix (shadowed areas below 1 km are lost) | Volatile layers are indicators; no Earth surface is dark at cryogenic temperature |
 | `moon-persistently-lit` | ready | Connected areas of average illumination ≥ q; 5 m terrain (87°S to 90°S) | Illumination is modelled and not compared (it selects) |
-| `moon-mare-plains` | ready | SLDEM2015 windows in Lunar Prospector Fe bins above a split drawn from the lunar histogram | Bins of 15 km or more blur the contacts; upgrade to the USGS map when verified |
+| `moon-mare-plains` | ready | SLDEM2015 windows in the mare units of the USGS map (upgrade applied in T41); the Fe split stays as a sensitivity run | Map at 1:5,000,000 |
 | `moon-pits` | ready, site set | Every pit of the LROC atlas | Atlas list not read yet; a pit is not a tube |
-| `moon-fresh-craters` | conditional | Copernican units of the USGS geologic map | Blocked: map not verified |
-| `moon-degraded-highlands` | conditional | Pre-Nectarian and Nectarian highland units | Blocked: map not verified |
+| `moon-fresh-craters` | ready (T41) | Copernican units of the USGS geologic map (Cc, Ccc, Csc) | Small fresh craters are not mapped at 1:5,000,000 |
+| `moon-degraded-highlands` | ready (T41) | Pre-Nectarian and Nectarian units (13); mixed INp and INt left out | Unit boundaries at 1:5,000,000 |
 
 ## Mars
 
@@ -32,7 +32,7 @@ Specs: `data/profiles/spec/*.yaml`. Check: `python tools/profiles/profiles.py`. 
 | `mars-north-polar`, `mars-south-polar` | ready | MOLA polar grid poleward of phi (75, 80 or 85°) | Labelled "polar terrain": a latitude rule mixes deposits, ice and plains |
 | `mars-aqueous-mineral-sites` | ready, site set | OMEGA detection sites and CRISM footprints passing the T48 rule | Detections, not abundances; targeted |
 | `mars-hirise-terrain` | ready | Every window of the 1,377 public HiRISE DTMs | Targeted sites, not a random sample of Mars |
-| `mars-volcanic-plains`, `mars-sedimentary-basins` | conditional | Units of the Tanaka 2014 map | Blocked: map not verified |
+| `mars-volcanic-plains`, `mars-sedimentary-basins` | conditional | Units of the Tanaka 2014 map | Map verified in T14; switch to ready in T48 |
 | `mars-caves` | conditional, site set | Cave candidate catalogue | Blocked: catalogue not verified |
 
 ## Rejected
@@ -50,3 +50,5 @@ Question: is a 40 m LOLA polar pixel as sharp as a 30 m Copernicus pixel? LOLA p
 5. **Mars.** The same test applies to MOLA polar grids (binned from tracks) against HiRISE DTMs where both exist.
 
 Outputs: coverage map, spectra, the chosen scale and its effect on the anchor percentiles. No result is accepted if it changes the v2 anchor without saying so.
+
+**Result (T41, [lunar profiles run](../runs/moon-profiles.md)):** LOLA 40 m and the 5 m mosaic give the same `slope_mean` (ratio 1.006); matching Earth to the LOLA spectrum would need a 40 to 60 m smoothing that lowers Earth slopes by 12 to 31%. Proposed: no smoothing by default, a 1-pixel smoothing as a T42 sensitivity run (decision for David).

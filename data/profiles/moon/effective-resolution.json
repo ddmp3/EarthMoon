@@ -1,0 +1,234 @@
+{
+ "inputs": {
+  "lro-lola-ldem-85s-40m": {
+   "file": "ldem_85s_40m.img",
+   "size": 115034112,
+   "sha256": "1609e9b860748e0b9952a7239c51b37d3b2a799d35e9fc3c258526711cc1e51d"
+  },
+  "lola-south-pole-5m-mosaic/elevation": {
+   "file": "ldem_87s_5mpp.tif",
+   "size": 3465285714,
+   "sha256": "417a85715406c346e2ecb2fc3abc93d3717121466e3d4950e1a6b977f207b881"
+  },
+  "lola-south-pole-5m-mosaic/count": {
+   "file": "ldec_87s_5mpp.tif",
+   "size": 145895726,
+   "sha256": "dab531d817b9e7cfddf8ac23ffde9ccfe737efe526e98763ca7ded7a2afcae04"
+  }
+ },
+ "grid": {
+  "ldem_rows_cols": [
+   1300,
+   6275
+  ],
+  "mosaic_offset_px": 10336,
+  "window_px": 25,
+  "block_px": 125
+ },
+ "windows_compared": 31825,
+ "coverage": {
+  "p5": 0.042,
+  "p25": 0.053,
+  "p50": 0.065,
+  "p75": 0.083,
+  "p95": 0.111
+ },
+ "metrics_ldem_vs_mosaic": {
+  "slope_mean": {
+   "n": 31825,
+   "median_ratio": 1.006,
+   "spearman": 0.9999,
+   "abs_diff": {
+    "median": 0.051,
+    "p95": 0.157
+   }
+  },
+  "roughness_detrended": {
+   "n": 31825,
+   "median_ratio": 1.012,
+   "spearman": 0.9979,
+   "abs_diff": {
+    "median": 0.101,
+    "p95": 0.491
+   }
+  },
+  "traversable_15": {
+   "n": 30324,
+   "median_ratio": 1.0,
+   "spearman": 0.9558,
+   "abs_diff": {
+    "median": 0.005,
+    "p95": 0.059
+   }
+  },
+  "traversable_20": {
+   "n": 31259,
+   "median_ratio": 1.0,
+   "spearman": 0.8339,
+   "abs_diff": {
+    "median": 0.0,
+    "p95": 0.058
+   }
+  }
+ },
+ "slope_mean_percentiles": {
+  "ldem": {
+   "n": 31825,
+   "p5": 2.993,
+   "p10": 3.663,
+   "p25": 5.467,
+   "p50": 8.746,
+   "p75": 13.411,
+   "p90": 17.681,
+   "p95": 20.438
+  },
+  "mosaic_at_40m": {
+   "n": 31825,
+   "p5": 2.91,
+   "p10": 3.576,
+   "p25": 5.402,
+   "p50": 8.688,
+   "p75": 13.357,
+   "p90": 17.62,
+   "p95": 20.39
+  }
+ },
+ "slope_ratio_by_coverage": [
+  {
+   "coverage": [
+    0.023,
+    0.051
+   ],
+   "windows": 6373,
+   "median_slope_ratio_ldem_over_mosaic": 1.006
+  },
+  {
+   "coverage": [
+    0.051,
+    0.06
+   ],
+   "windows": 6378,
+   "median_slope_ratio_ldem_over_mosaic": 1.007
+  },
+  {
+   "coverage": [
+    0.06,
+    0.071
+   ],
+   "windows": 6380,
+   "median_slope_ratio_ldem_over_mosaic": 1.007
+  },
+  {
+   "coverage": [
+    0.071,
+    0.088
+   ],
+   "windows": 6382,
+   "median_slope_ratio_ldem_over_mosaic": 1.005
+  },
+  {
+   "coverage": [
+    0.088,
+    0.183
+   ],
+   "windows": 6366,
+   "median_slope_ratio_ldem_over_mosaic": 1.004
+  }
+ ],
+ "blocks": 1212,
+ "short_wave_ratio_160m_over_2km": [
+  {
+   "slope": [
+    0.0,
+    3.0
+   ],
+   "blocks": 8,
+   "median_ratio_ldem": 0.00047549068787017,
+   "median_ratio_mosaic": 0.0003723815462125079,
+   "median_coverage": 0.07
+  },
+  {
+   "slope": [
+    3.0,
+    8.0
+   ],
+   "blocks": 460,
+   "median_ratio_ldem": 1.0085780645932424e-05,
+   "median_ratio_mosaic": 6.771023176582911e-06,
+   "median_coverage": 0.066
+  },
+  {
+   "slope": [
+    8.0,
+    90.0
+   ],
+   "blocks": 744,
+   "median_ratio_ldem": 4.805952938715017e-06,
+   "median_ratio_mosaic": 2.088256644716903e-06,
+   "median_coverage": 0.065
+  }
+ ],
+ "earth_match": [
+  {
+   "slope": [
+    3.0,
+    8.0
+   ],
+   "earth_blocks": 876,
+   "earth_ratio_unsmoothed": 0.00017529045331308773,
+   "lola_ratio": 1.0085780645932424e-05,
+   "sigma_px": 1.5,
+   "sigma_m": 60.0,
+   "steps": [
+    {
+     "sigma_px": 0.0,
+     "median_ratio": 0.00017529045331308773,
+     "median_slope_ratio_smoothed_over_raw": 1.0
+    },
+    {
+     "sigma_px": 0.5,
+     "median_ratio": 0.00010268730469450646,
+     "median_slope_ratio_smoothed_over_raw": 0.921
+    },
+    {
+     "sigma_px": 1.0,
+     "median_ratio": 2.319641190332156e-05,
+     "median_slope_ratio_smoothed_over_raw": 0.794
+    },
+    {
+     "sigma_px": 1.5,
+     "median_ratio": 2.356599203689569e-06,
+     "median_slope_ratio_smoothed_over_raw": 0.691
+    }
+   ]
+  },
+  {
+   "slope": [
+    8.0,
+    90.0
+   ],
+   "earth_blocks": 1423,
+   "earth_ratio_unsmoothed": 3.374662550232491e-05,
+   "lola_ratio": 4.805952938715017e-06,
+   "sigma_px": 1.0,
+   "sigma_m": 40.0,
+   "steps": [
+    {
+     "sigma_px": 0.0,
+     "median_ratio": 3.374662550232491e-05,
+     "median_slope_ratio_smoothed_over_raw": 1.0
+    },
+    {
+     "sigma_px": 0.5,
+     "median_ratio": 2.0082136927693493e-05,
+     "median_slope_ratio_smoothed_over_raw": 0.959
+    },
+    {
+     "sigma_px": 1.0,
+     "median_ratio": 4.690280354095109e-06,
+     "median_slope_ratio_smoothed_over_raw": 0.881
+    }
+   ]
+  }
+ ]
+}

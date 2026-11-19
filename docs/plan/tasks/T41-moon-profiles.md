@@ -23,3 +23,8 @@ Compute every lunar environment profile specified in T20 from primary data, with
 
 ## Alignment with the ADRs (T30)
 Code goes in `tools/discovery/profiles` (ADR-001); outputs carry a run manifest. Run the effective resolution experiment designed in `docs/wiki/methods/profiles.md` (T22 gave a first look: about 5 times less 160 m relief on LOLA).
+
+## As built (18/11/2026)
+- Code: `tools/discovery/profiles.py` (selection and summaries), `moon_grid.py` and `moon_cube.py` (SLDEM2015 window cube on the lunar sphere), `resolution.py` (effective resolution), `spectrum.py` (moved from research). One package level, as T40.
+- All 8 lunar specs computed; `moon-fresh-craters` and `moon-degraded-highlands` switched to ready (map verified in T14). Nominal thresholds are the middle of each spec list, except persistently lit (fallback rule in the profile).
+- Report: `docs/wiki/runs/moon-profiles.md`. Open decision for David: Earth smoothing (none by default, sensitivity in T42).

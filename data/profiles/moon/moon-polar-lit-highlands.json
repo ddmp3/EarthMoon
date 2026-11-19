@@ -1,0 +1,194 @@
+{
+ "id": "moon-polar-lit-highlands",
+ "body": "moon",
+ "spec": "data/profiles/spec/moon-polar-lit-highlands.yaml",
+ "inputs": {
+  "lro-lola-ldem-85s-40m": {
+   "file": "ldem_85s_40m.img",
+   "size": 115034112,
+   "sha256": "1609e9b860748e0b9952a7239c51b37d3b2a799d35e9fc3c258526711cc1e51d"
+  },
+  "lola-polar-illumination/psr": {
+   "file": "LPSR_85S_060M_201608.TIF",
+   "size": 656183,
+   "sha256": "e9544c081dd4e36f079e92bc3a376d0913857a61a4a53c209175c081762de43c"
+  },
+  "lola-polar-illumination/average": {
+   "file": "AVGVISIB_85S_060M_201608.TIF",
+   "size": 33994464,
+   "sha256": "ccf67d4f39e0a970c111196da7d6551ffcf50d075470b93067fb3904c0b05806"
+  }
+ },
+ "code": "729590f0f76fab5417678e7b0e0112804a2f79aa187624c1a3831dec5dc92b38",
+ "commit": "validation-protocol-v1-25-gc43392dc28f7466dab64c1127d12cbae4b31d6e6-dirty",
+ "params": {
+  "f_lit": 0.05,
+  "nominal_rule": "middle of the spec sensitivity list (expert choice, T41)",
+  "max_lat": -85.0,
+  "pixel_m": 40.0,
+  "window_px": 25,
+  "window_m": 1000.0,
+  "min_valid": 0.9
+ },
+ "percentiles": [
+  5,
+  10,
+  25,
+  50,
+  75,
+  90,
+  95
+ ],
+ "windows": {
+  "selected": 58245,
+  "valid": 58245
+ },
+ "metrics": {
+  "slope_mean": {
+   "n": 58245,
+   "p5": 2.95,
+   "p10": 3.531,
+   "p25": 5.194,
+   "p50": 8.33,
+   "p75": 12.764,
+   "p90": 17.287,
+   "p95": 20.284
+  },
+  "slope_p95": {
+   "n": 58245,
+   "p5": 5.928,
+   "p10": 6.897,
+   "p25": 9.216,
+   "p50": 12.814,
+   "p75": 17.435,
+   "p90": 21.946,
+   "p95": 24.765
+  },
+  "slope_max": {
+   "n": 58245,
+   "p5": 9.237,
+   "p10": 10.643,
+   "p25": 13.572,
+   "p50": 17.819,
+   "p75": 22.758,
+   "p90": 27.867,
+   "p95": 31.378
+  },
+  "roughness": {
+   "n": 58245,
+   "p5": 7.924,
+   "p10": 11.753,
+   "p25": 22.124,
+   "p50": 39.98,
+   "p75": 64.544,
+   "p90": 89.662,
+   "p95": 106.714
+  },
+  "roughness_detrended": {
+   "n": 58245,
+   "p5": 3.275,
+   "p10": 3.799,
+   "p25": 4.97,
+   "p50": 6.891,
+   "p75": 9.818,
+   "p90": 13.579,
+   "p95": 16.508
+  },
+  "traversable_15": {
+   "n": 58245,
+   "p5": 0.018,
+   "p10": 0.182,
+   "p25": 0.787,
+   "p50": 0.987,
+   "p75": 1.0,
+   "p90": 1.0,
+   "p95": 1.0
+  },
+  "traversable_20": {
+   "n": 58245,
+   "p5": 0.445,
+   "p10": 0.834,
+   "p25": 0.99,
+   "p50": 1.0,
+   "p75": 1.0,
+   "p90": 1.0,
+   "p95": 1.0
+  },
+  "traversable_25": {
+   "n": 58245,
+   "p5": 0.957,
+   "p10": 0.994,
+   "p25": 1.0,
+   "p50": 1.0,
+   "p75": 1.0,
+   "p90": 1.0,
+   "p95": 1.0
+  },
+  "mean_illumination": {
+   "n": 58245,
+   "p5": 0.039,
+   "p10": 0.07,
+   "p25": 0.149,
+   "p50": 0.249,
+   "p75": 0.337,
+   "p90": 0.398,
+   "p95": 0.422
+  }
+ },
+ "sensitivity": [
+  {
+   "f_lit": 0.0,
+   "window_m": 1000.0,
+   "selected": 38735,
+   "valid": 38735,
+   "slope_mean": {
+    "n": 38735,
+    "p5": 3.225,
+    "p10": 4.094,
+    "p25": 6.303,
+    "p50": 9.9,
+    "p75": 14.356,
+    "p90": 18.755,
+    "p95": 21.592
+   }
+  },
+  {
+   "f_lit": 0.05,
+   "window_m": 1000.0,
+   "selected": 58245,
+   "valid": 58245,
+   "slope_mean": {
+    "n": 58245,
+    "p5": 2.95,
+    "p10": 3.531,
+    "p25": 5.194,
+    "p50": 8.33,
+    "p75": 12.764,
+    "p90": 17.287,
+    "p95": 20.284
+   }
+  },
+  {
+   "f_lit": 0.1,
+   "window_m": 1000.0,
+   "selected": 60930,
+   "valid": 60930,
+   "slope_mean": {
+    "n": 60930,
+    "p5": 2.973,
+    "p10": 3.559,
+    "p25": 5.168,
+    "p50": 8.195,
+    "p75": 12.616,
+    "p90": 17.162,
+    "p95": 20.164
+   }
+  }
+ ],
+ "outputs": {
+  "windows_parquet": "2840ecc95529010cdd8230a7aec01bd88a58fc6412cb8ad602c0dd147c3964ba"
+ },
+ "not_computed": {
+  "reason": "thermal, volatile and radar layers (Diviner, LAMP, Mini-RF) belong to T47"
+ }
+}

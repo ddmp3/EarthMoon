@@ -80,7 +80,7 @@ products:
     product: SLDEM2015 merged elevation model (Barker et al. 2016)
     producer: NASA GSFC
     url: https://imbrium.mit.edu/DATA/SLDEM2015/
-    access: {format: "global and tiled grids", size: "not stated on page", licence: "open directory", account: false}
+    access: {format: "global and tiled grids", size: "32 tiles of 1.42 GB at 512 ppd (45.3 GB, downloaded 18/11/2026)", licence: "open directory", account: false}
     coverage: 60°S to 60°N (more than 86% of the surface)
     resolution_spatial: 512 pixels per degree (about 60 m at the equator)
     resolution_effective: '"true resolution near 512 ppd"'
@@ -433,14 +433,14 @@ products:
     producer: LROC team
     url: https://lroc.im-ldi.com/atlases/pits
     access: {format: "web list, PDF", size: "not stated on page", licence: "not stated on page", account: false}
-    coverage: "not stated on page"
+    coverage: "278 pits listed on the list page (read 18/11/2026, T41), 72°N to 78°S"
     resolution_spatial: "not applicable (catalogue of features)"
     resolution_effective: "not applicable"
     resolution_temporal: "not stated on page"
     units: "not stated on page"
     nature: interpretation
     uncertainty: "not stated on page"
-    limitations: "Pit list and PDF not yet read; inventory of pits in maria and impact melt (R17)"
+    limitations: "List page read (278 pits: host feature, position, diameters, depth with lower bounds); the PDF (over 10 MB) and the terms of use not read. Hosts are named features, not settings: 229 pits lie in Copernican crater units of the geologic map (T41)"
     dimensions: [subsurface, morphology]
     environments: [pits-tubes]
     status: partly verified
