@@ -40,3 +40,21 @@ def test_south_of_sixty_ice_is_masked_and_rock_is_bare_ground():
     covered = np.array([0.0, 0.0, 1.0])
     masked, known = rock_masked(share, covered)
     assert masked.tolist() == [True, False, False] and known.tolist() == [True, True, False]
+
+
+def test_scenario_dossier_list_merges_targets_and_keeps_one_zone_per_place():
+    from discovery.discover import dossier_zones
+    z = lambda t, m, lat: {"target": t, "median": m, "area_km2": 100.0, "lat": lat, "lon": 10.0}
+    zones = [z("a", 0.9, 0.0), z("b", 0.95, 0.03), z("a", 0.8, 5.0), z("b", 0.7, 9.0)]
+    out = dossier_zones(zones, top=3, same_km=10.0)
+    assert [(x["target"], x["median"]) for x in out] == [("b", 0.95), ("a", 0.8), ("b", 0.7)]
+    assert out[0]["also_for"] == ["a"]
+
+
+def test_monte_carlo_share_counts_runs_where_a_zone_reaches_the_sample_top_decile():
+    from discovery.discover import top_decile_share
+    rng = np.random.default_rng(0)
+    sample = [rng.normal(0.3, 0.1, 1000) for _ in range(20)]        # sampled cell medians per run
+    strong = [np.array([0.9]) for _ in range(20)]
+    weak = [np.array([0.3]) for _ in range(20)]
+    assert top_decile_share(strong, sample) == 1.0 and top_decile_share(weak, sample) == 0.0

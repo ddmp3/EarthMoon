@@ -69,6 +69,33 @@ def rock_masked(rock_share: np.ndarray, wc_covered: np.ndarray) -> tuple[np.ndar
     return known & (np.nan_to_num(rock_share) < 0.5), known
 
 
+def dossier_zones(zones: list[dict], top: int = 20, same_km: float = 10.0) -> list[dict]:
+    """Top zones of a scenario across its targets; a zone found for several targets (centres within same_km) is
+    kept once, with the other targets listed in `also_for`."""
+    kept: list[dict] = []
+    for z in rank_zones(zones):
+        p = _xyz(np.array([z["lat"]]), np.array([z["lon"]]))[0]
+        dup = next((k for k in kept if np.linalg.norm(_xyz(np.array([k["lat"]]), np.array([k["lon"]]))[0] - p) <= same_km), None)
+        if dup is not None:
+            if z["target"] != dup["target"] and z["target"] not in dup["also_for"]:
+                dup["also_for"].append(z["target"])
+            continue
+        kept.append({**z, "also_for": []})
+        if len(kept) == top:
+            break
+    return kept
+
+
+def top_decile_share(zone_medians_per_run: list[np.ndarray], sample_medians_per_run: list[np.ndarray]) -> float:
+    """Share of runs in which the zone median (median of its cell medians) reaches the 90th percentile of the
+    sampled cells of the same run."""
+    hits = 0
+    for z, s in zip(zone_medians_per_run, sample_medians_per_run):
+        zm = np.nanmedian(z) if np.isfinite(z).any() else -1.0
+        hits += zm >= np.nanpercentile(s, 90)
+    return hits / len(zone_medians_per_run)
+
+
 __all__ = ["candidates", "rank_zones", "locate_points", "percentile_rank", "latitude_bands", "rock_masked",
            "EARTH_R_KM"]
 
