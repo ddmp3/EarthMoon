@@ -9,8 +9,8 @@
    "sha256": "1609e9b860748e0b9952a7239c51b37d3b2a799d35e9fc3c258526711cc1e51d"
   }
  },
- "code": "87a50ef1be7fe704bdfa60e14a2f5361376ae47c9cb8b2af00fd0981fe9e61d1",
- "commit": "validation-protocol-v1-24-gd5a43255d06b64de9835f216a4a361072d46df80",
+ "code": "0238f676ac8f87438fbe9b8d82621775eaf4434e998468d83bd2f9be45c0eaa9",
+ "commit": "validation-protocol-v1-40-g0ad9a6e7e0595ab88832d719fe7fbfc23bb925d0-dirty",
  "params": {
   "max_lat": -85.0,
   "pixel_m": 40.0,
@@ -112,5 +112,8 @@
    "p90": 1.0,
    "p95": 1.0
   }
+ },
+ "outputs": {
+  "windows_parquet": "3ff5605649db3380bf5b49c0b06e870e4294d02dd4dfed21ab0891add722d9f6"
  }
 }
