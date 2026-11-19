@@ -49,3 +49,13 @@ def test_vectorised_connection_gives_the_same_zones_as_the_reference_on_random_c
     lon = np.concatenate([lon, lon[:300] + rng.normal(0, 0.03, 300)])
     fast, ref = connect(lat, lon), connect_reference(lat, lon)
     assert _same_partition(fast, ref) and len(set(fast.tolist())) < lat.size
+
+
+def test_a_large_continuous_block_is_one_zone_and_converges_fast():
+    import time
+    n = 400                                                            # 160,000 cells, 2,000 km across
+    lat = np.repeat(np.arange(n) * 5 * KM, n)
+    lon = np.tile(np.arange(n) * 5 * KM, n)
+    t = time.time()
+    lab = connect(lat, lon)
+    assert len(set(lab.tolist())) == 1 and time.time() - t < 20

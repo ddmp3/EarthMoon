@@ -310,6 +310,9 @@ def load_cells(path: str, columns: list[str] | None = None) -> dict:
 
 
 def _num(a) -> np.ndarray:
+    """Float array of a column: numeric columns as they are (nulls are already NaN), others element by element."""
+    if isinstance(a, np.ndarray) and a.dtype.kind == "f":
+        return a
     return np.array([np.nan if v is None else v for v in a], dtype=float)
 
 
@@ -325,6 +328,7 @@ def zones_for(cells: dict, scenario: str, target: str, tau: float, min_cells: in
         return []
     zs = zone_table(_num(cells["lat"])[idx], _num(cells["lon"])[idx], np.nan_to_num(_num(cells["area_km2"])[idx]), min_cells)
     out = []
+    su_all = _num(cells.get(f"suitability_{scenario}", [None] * med.size))        # once, not once per zone
     for z in zs:
         m = idx[z["members"]]
         conf = np.asarray(cells["confidence"])[m]
@@ -337,7 +341,7 @@ def zones_for(cells: dict, scenario: str, target: str, tau: float, min_cells: in
         for r in ("base_slope", "climbing_limit_lrv", "climbing_limit_viper"):
             st = np.asarray(cells.get(f"req:{r}", [None] * med.size))[m]
             row[f"req:{r}"] = {k: int(np.sum(st == k)) for k in ("met", "failed", "unknown")}
-        su = _num(cells.get(f"suitability_{scenario}", [None] * med.size))[m]
+        su = su_all[m]
         row["suitability_median"] = round(float(np.nanmedian(su)), 3) if np.isfinite(su).any() else None
         out.append(row)
     return rank_zones(out)

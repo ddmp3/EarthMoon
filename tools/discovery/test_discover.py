@@ -80,3 +80,10 @@ def test_a_tile_is_read_only_at_the_scales_where_this_run_refined_it(tmp_path):
     b.write_text("3,4\n")
     by_tile = refined_scales([str(a), str(b)])
     assert by_tile == {"1,2": ["glo30-40m"], "3,4": ["glo30-40m", "glo30-59m"]}
+
+
+def test_numeric_columns_are_used_as_they_are_and_object_columns_get_nan_for_null():
+    from discovery.discover import _num
+    f = np.array([1.0, np.nan])
+    assert _num(f) is f
+    assert np.isnan(_num(np.array([None, 2.0], dtype=object))[0]) and _num([None, 3])[1] == 3.0
