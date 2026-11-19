@@ -137,3 +137,19 @@ def test_requirements_and_suitability_can_be_assessed_without_any_similarity_tar
                        {"id": "s", "param": "slope_mean", "good": 5.0, "bad": 10.0})
     assert out["a"]["requirements"]["base"]["status"] == "met" and out["b"]["requirements"]["base"]["status"] == "failed"
     assert out["a"]["suitability"]["median"] == 1.0 and out["b"]["suitability"]["median"] == 0.0
+
+
+CAP = __import__("pathlib").Path(__import__("os").environ.get("EARTHMOON_DATA", "/data")) / "profiles/moon/moon-south-polar-cap-v2.windows.parquet"
+
+
+@pytest.mark.skipif(not CAP.exists(), reason="lunar windows not present (data folder)")
+def test_planetary_self_consistency_on_held_out_lunar_blocks():
+    """Lunar windows split by 5 km blocks (checkerboard): held-out windows scored against the other half."""
+    import pyarrow.parquet as pq
+    t = pq.read_table(CAP, columns=["x_m", "y_m", "slope_mean"])
+    x, y, v = (t.column(k).to_numpy() for k in ("x_m", "y_m", "slope_mean"))
+    held = ((np.floor(x / 5000) + np.floor(y / 5000)) % 2).astype(bool)
+    typ = percentile_typicality(v[held], v[~held])
+    counts, _ = np.histogram(typ, bins=10, range=(0, 1))
+    assert typ.mean() == pytest.approx(0.5, abs=0.02)
+    assert counts.min() / counts.max() > 0.8                   # close to uniform across the held-out blocks
