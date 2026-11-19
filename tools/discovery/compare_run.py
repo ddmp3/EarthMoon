@@ -215,13 +215,15 @@ def summary(res: dict, top: int = 10) -> dict:
                                for s in ("met", "failed", "unknown")} for r in req_ids}
     out["eliminated_cells"] = sum(bool(c.get("eliminated")) for c in cells.values())
     out["confidence"] = {k: sum(c.get("confidence") == k for c in cells.values()) for k in ("high", "medium", "low")}
-    out["top"] = {}
+    out["top"], out["top_high_confidence"] = {}, {}
     for t, info in res["targets"].items():
         if not info["comparable"]:
             continue
         ranked = sorted((c for c in cells.items() if c[1]["similarity"].get(t, {}).get("median") is not None),
                         key=lambda kv: -kv[1]["similarity"][t]["median"])
         out["top"][t] = [{"cell": k, **v} for k, v in ranked[:top]]
+        # a median of a few windows can be high by chance: the ranking that a user should see first
+        out["top_high_confidence"][t] = [{"cell": k, **v} for k, v in ranked if v.get("confidence") == "high"][:top]
     return out
 
 

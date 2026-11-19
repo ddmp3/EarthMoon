@@ -153,3 +153,13 @@ def test_planetary_self_consistency_on_held_out_lunar_blocks():
     counts, _ = np.histogram(typ, bins=10, range=(0, 1))
     assert typ.mean() == pytest.approx(0.5, abs=0.02)
     assert counts.min() / counts.max() > 0.8                   # close to uniform across the held-out blocks
+
+
+def test_summary_ranks_high_confidence_cells_separately():
+    from discovery.compare_run import summary
+    cell = lambda m, conf: {"similarity": {"t": {"median": m}}, "requirements": {}, "confidence": conf}
+    res = {"scenario": "B", "tiles": 1, "targets": {"t": {"comparable": True}}, "monte_carlo": {},
+           "cells": {"a": cell(0.99, "low"), "b": cell(0.8, "high"), "c": cell(0.9, "medium"), "d": cell(0.7, "high")}}
+    s = summary(res, top=2)
+    assert [r["cell"] for r in s["top"]["t"]] == ["a", "c"]
+    assert [r["cell"] for r in s["top_high_confidence"]["t"]] == ["b", "d"]
