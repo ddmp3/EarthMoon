@@ -184,15 +184,18 @@ def _mc_target(args) -> dict:
     keys = [(sc, t) for sc, ts in SCENARIO_TARGETS.items() if t in ts]
     zones = {key: json.loads((Path(run) / f"zones-{key[0]}-{t}.json").read_text()) for key in keys}
     need = set(sample_ids) | {c for zs in zones.values() for z in zs for c in z["cell_ids"]}
+    by_tile: dict = {}
+    for c in need:                                                  # grouped once: per-tile lookups stay small
+        by_tile.setdefault(c.split(":")[0], []).append(c)
     ids, slopes = [], []
-    for name in sorted({c.split(":")[0] for c in need}):
+    for name in sorted(by_tile):
         f = Path(cube) / scale / f"{name}.windows.parquet"
         if not f.exists():
             continue
         tab = pq.read_table(f, columns=["i", "j", "lat", "lon", "slope_mean", *MASK_CLASSES, "wc_covered"])
         w = {c: tab.column(c).to_numpy() for c in tab.column_names}
         cid = np.array([f"{name}:{i}:{j}" for i, j in zip(w["i"], w["j"])])
-        keep = np.isin(cid, list(need))
+        keep = np.isin(cid, np.array(by_tile[name]))
         masked, _ = window_masks(w, ctx)
         ids.append(cid[keep])
         slopes.append(np.where(masked, np.nan, w["slope_mean"])[keep])
