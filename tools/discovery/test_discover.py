@@ -58,3 +58,16 @@ def test_monte_carlo_share_counts_runs_where_a_zone_reaches_the_sample_top_decil
     strong = [np.array([0.9]) for _ in range(20)]
     weak = [np.array([0.3]) for _ in range(20)]
     assert top_decile_share(strong, sample) == 1.0 and top_decile_share(weak, sample) == 0.0
+
+
+def test_tile_rows_are_written_with_the_fixed_schema_and_missing_columns_are_null(tmp_path):
+    import pyarrow.parquet as pq
+    from discovery.discover import CELL_SCHEMA, write_rows
+    rows = [{"cell": "t:0:0", "tile": "1,2", "lat": 1.5, "lon": 2.5, "moon-psr:median": 0.7, "req:base_slope": "met"},
+            {"cell": "t:0:1", "tile": "1,2", "lat": 1.5, "lon": 2.6, "moon-psr:screened_out": True}]
+    f = tmp_path / "a.parquet"
+    assert write_rows(f, rows) == 2
+    t = pq.read_table(f)
+    assert t.schema.equals(CELL_SCHEMA)
+    assert t.column("moon-psr:median").to_pylist() == [0.7, None]
+    assert t.column("moon-mare-plains:median").to_pylist() == [None, None]

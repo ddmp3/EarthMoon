@@ -201,6 +201,43 @@ def assess_tile(key: str, cube: str, refs_path: str, rock_path: str) -> list[dic
     return list(rows.values())
 
 
+def _schema():
+    import pyarrow as pa
+    f = [pa.field("cell", pa.string()), pa.field("tile", pa.string()), pa.field("lat", pa.float64()),
+         pa.field("lon", pa.float64()), pa.field("area_km2", pa.float64())]
+    for t in TARGET_SCALE:
+        f += [pa.field(f"{t}:{k}", pa.int64()) for k in ("windows", "valid")]
+        f += [pa.field(f"{t}:{k}", pa.float64()) for k in ("median", "share_above_half", "p25", "p75")]
+        f += [pa.field(f"{t}:screened_out", pa.bool_())]
+    f += [pa.field(f"req:{r}", pa.string()) for r in ("base_slope", "climbing_limit_lrv", "climbing_limit_viper")]
+    f += [pa.field("suitability_A", pa.float64()), pa.field("suitability_B", pa.float64()),
+          pa.field("assessed_at", pa.string()), pa.field("windows", pa.int64()), pa.field("valid_unmasked", pa.int64()),
+          pa.field("masked", pa.int64()), pa.field("cover_unknown", pa.int64()), pa.field("masked_share", pa.float64()),
+          pa.field("confidence", pa.string())]
+    return pa.schema(f)
+
+
+CELL_SCHEMA = _schema()
+
+
+def write_rows(path, rows: list[dict]) -> int:
+    """Cell rows of one tile, with the fixed schema (missing columns are null)."""
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    cols = {f.name: [r.get(f.name) for r in rows] for f in CELL_SCHEMA}
+    for f in CELL_SCHEMA:
+        if pa.types.is_floating(f.type):
+            cols[f.name] = [None if (v is None or v != v) else float(v) for v in cols[f.name]]
+    pq.write_table(pa.Table.from_pydict(cols, schema=CELL_SCHEMA), path, compression="zstd")
+    return len(rows)
+
+
+def assess_tile_to_file(key: str, cube: str, refs_path: str, rock_path: str, outdir: str) -> int:
+    from pathlib import Path
+    rows = assess_tile(key, cube, refs_path, rock_path)
+    return write_rows(Path(outdir) / f"{key.replace(',', '_')}.parquet", rows) if rows else 0
+
+
 # --- commands ----------------------------------------------------------------------------------------------
 
 def build_refs(profiles_windows: str, pits_json: str, out: str) -> dict:
@@ -221,23 +258,28 @@ def build_refs(profiles_windows: str, pits_json: str, out: str) -> dict:
 
 
 def assess_all(tiles: list[str], cube: str, refs_path: str, rock_path: str, out: str, workers: int) -> dict:
+    """Each worker writes the cells of its tile to its own file; the files are then joined by streaming, so
+    memory stays flat (keeping millions of rows as Python dicts ran out of memory)."""
     import time
     from concurrent.futures import ProcessPoolExecutor, as_completed
-    import pyarrow as pa
+    from pathlib import Path
     import pyarrow.parquet as pq
-    rows, failed, t0 = [], [], time.time()
+    parts = Path(out).parent / "cells-parts"
+    parts.mkdir(parents=True, exist_ok=True)
+    n_cells, failed, t0 = 0, [], time.time()
     with ProcessPoolExecutor(max_workers=workers) as pool:
-        futs = {pool.submit(assess_tile, k, cube, refs_path, rock_path): k for k in tiles}
+        futs = {pool.submit(assess_tile_to_file, k, cube, refs_path, rock_path, str(parts)): k for k in tiles}
         for n, f in enumerate(as_completed(futs), 1):
             try:
-                rows.extend(f.result())
+                n_cells += f.result()
             except (OSError, ValueError, KeyError) as e:
                 failed.append({"tile": futs[f], "error": f"{type(e).__name__}: {e}"})
             if n % 1000 == 0:
                 print(f"{n}/{len(tiles)} tiles, {(time.time() - t0) / 3600:.2f} h", flush=True)
-    keys = sorted({k for r in rows for k in r})
-    pq.write_table(pa.table({k: [r.get(k) for r in rows] for k in keys}), out, compression="zstd")
-    return {"tiles": len(tiles), "cells": len(rows), "failed": failed, "hours": round((time.time() - t0) / 3600, 2)}
+    with pq.ParquetWriter(out, CELL_SCHEMA, compression="zstd") as w:
+        for f in sorted(parts.glob("*.parquet")):
+            w.write_table(pq.read_table(f, schema=CELL_SCHEMA))
+    return {"tiles": len(tiles), "cells": n_cells, "failed": failed, "hours": round((time.time() - t0) / 3600, 2)}
 
 
 def load_cells(path: str) -> dict:
