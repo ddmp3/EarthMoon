@@ -1,0 +1,1784 @@
+{
+ "positives": {
+  "A": "none: no verified reference names a site (protocol table)",
+  "B": "none (same)",
+  "consequence": "no positive validation for scenarios A and B"
+ },
+ "negatives": {
+  "points": [
+   {
+    "lat": -24.74451,
+    "lon": -59.80577,
+    "class": 10,
+    "class_name": "Tree cover",
+    "ground_hidden": false,
+    "mask_evidence": "WorldCover hidden share 0.41",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_S25_00_W060_00_DEM:-7:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.84,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_S25_00_W060_00_DEM:-7:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.84,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_S25_00_W060_00_DEM:-7:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.84,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_S25_00_W060_00_DEM:-7:-6",
+      "median": 0.0,
+      "percentile": 4.86,
+      "masked_share": 0.84,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_S25_00_W060_00_DEM:-7:-6",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.84,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -14.27833,
+    "lon": 27.62983,
+    "class": 90,
+    "class_name": "Herbaceous wetland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_S15_00_E027_00_DEM:2:4",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_S15_00_E027_00_DEM:2:4",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_S15_00_E027_00_DEM:2:4",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_S15_00_E027_00_DEM:2:4",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_S15_00_E027_00_DEM:2:4",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 60.2508,
+    "lon": 126.42008,
+    "class": 10,
+    "class_name": "Tree cover",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N60_00_E126_00_DEM:-1:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N60_00_E126_00_DEM:-1:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N60_00_E126_00_DEM:-1:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N60_00_E126_00_DEM:-1:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N60_00_E126_00_DEM:-1:-6",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -2.03268,
+    "lon": 102.86246,
+    "class": 10,
+    "class_name": "Tree cover",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.99",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_S03_00_E102_00_DEM:8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_S03_00_E102_00_DEM:8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_S03_00_E102_00_DEM:8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_S03_00_E102_00_DEM:8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_S03_00_E102_00_DEM:8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 47.65239,
+    "lon": -4.49236,
+    "class": 80,
+    "class_name": "Permanent water bodies",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N47_00_W005_00_DEM:0:3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N47_00_W005_00_DEM:0:3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N47_00_W005_00_DEM:0:3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N47_00_W005_00_DEM:0:3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N47_00_W005_00_DEM:0:3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 40.41076,
+    "lon": 114.81135,
+    "class": 40,
+    "class_name": "Cropland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.66",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N40_00_E114_00_DEM:5:-2",
+      "median": 0.4301,
+      "percentile": 84.17,
+      "masked_share": 0.64,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N40_00_E114_00_DEM:5:-2",
+      "median": 0.4177,
+      "percentile": 83.65,
+      "masked_share": 0.64,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N40_00_E114_00_DEM:5:-2",
+      "median": 0.6595,
+      "percentile": 88.25,
+      "masked_share": 0.64,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N40_00_E114_00_DEM:5:-2",
+      "median": 0.0211,
+      "percentile": 52.28,
+      "masked_share": 0.64,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N40_00_E114_00_DEM:5:-2",
+      "median": 0.0886,
+      "percentile": 56.38,
+      "masked_share": 0.64,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 25.31917,
+    "lon": 36.47288,
+    "class": 80,
+    "class_name": "Permanent water bodies",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N25_00_E036_00_DEM:-1:-5",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.6,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N25_00_E036_00_DEM:-1:-5",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.6,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N25_00_E036_00_DEM:-1:-5",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.6,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N25_00_E036_00_DEM:-1:-5",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.6,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N25_00_E036_00_DEM:-1:-5",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.6,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -6.46227,
+    "lon": 131.60289,
+    "class": 80,
+    "class_name": "Permanent water bodies",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-polar-lit-highlands": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-psr": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-mare-plains": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-pits": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     }
+    }
+   },
+   {
+    "lat": 62.95809,
+    "lon": 69.60863,
+    "class": 90,
+    "class_name": "Herbaceous wetland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.98",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N62_00_E069_00_DEM:1:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N62_00_E069_00_DEM:1:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N62_00_E069_00_DEM:1:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N62_00_E069_00_DEM:1:10",
+      "median": 0.0002,
+      "percentile": 13.43,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N62_00_E069_00_DEM:1:10",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.96,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 55.18539,
+    "lon": 30.95912,
+    "class": 40,
+    "class_name": "Cropland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.97",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N55_00_E030_00_DEM:5:-7",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N55_00_E030_00_DEM:5:-7",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N55_00_E030_00_DEM:5:-7",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N55_00_E030_00_DEM:5:-7",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N55_00_E030_00_DEM:5:-7",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -35.86273,
+    "lon": -60.25775,
+    "class": 40,
+    "class_name": "Cropland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.71",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_S36_00_W061_00_DEM:4:-8",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.76,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_S36_00_W061_00_DEM:4:-8",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.76,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_S36_00_W061_00_DEM:4:-8",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.76,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_S36_00_W061_00_DEM:4:-8",
+      "median": 0.0,
+      "percentile": 2.09,
+      "masked_share": 0.76,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_S36_00_W061_00_DEM:4:-8",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.76,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 43.40703,
+    "lon": 13.20335,
+    "class": 50,
+    "class_name": "Built-up",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.90",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N43_00_E013_00_DEM:-5:-3",
+      "median": 0.9497,
+      "percentile": 99.84,
+      "masked_share": 0.92,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N43_00_E013_00_DEM:-5:-3",
+      "median": 0.9516,
+      "percentile": 99.85,
+      "masked_share": 0.92,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N43_00_E013_00_DEM:-5:-3",
+      "median": 0.9304,
+      "percentile": 99.52,
+      "masked_share": 0.92,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N43_00_E013_00_DEM:-5:-3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.92,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N43_00_E013_00_DEM:-5:-3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.92,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 68.81483,
+    "lon": -82.14648,
+    "class": 90,
+    "class_name": "Herbaceous wetland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.89",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N68_00_W083_00_DEM:2:7",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N68_00_W083_00_DEM:2:7",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N68_00_W083_00_DEM:2:7",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N68_00_W083_00_DEM:2:7",
+      "median": 0.0007,
+      "percentile": 21.75,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N68_00_W083_00_DEM:2:7",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.96,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 15.03911,
+    "lon": 75.40412,
+    "class": 50,
+    "class_name": "Built-up",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N15_00_E075_00_DEM:-3:-11",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N15_00_E075_00_DEM:-3:-11",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N15_00_E075_00_DEM:-3:-11",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N15_00_E075_00_DEM:-3:-11",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N15_00_E075_00_DEM:-3:-11",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 25.9822,
+    "lon": -81.64236,
+    "class": 95,
+    "class_name": "Mangroves",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-polar-lit-highlands": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-psr": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-mare-plains": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     },
+     "moon-pits": {
+      "cell": null,
+      "top10": false,
+      "note": "no refined cell (screened out or missing)"
+     }
+    }
+   },
+   {
+    "lat": 46.96149,
+    "lon": 32.01609,
+    "class": 50,
+    "class_name": "Built-up",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.99",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N46_00_E032_00_DEM:-8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N46_00_E032_00_DEM:-8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N46_00_E032_00_DEM:-8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N46_00_E032_00_DEM:-8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N46_00_E032_00_DEM:-8:10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 12.37286,
+    "lon": -15.57398,
+    "class": 95,
+    "class_name": "Mangroves",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.93",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N12_00_W016_00_DEM:-2:-3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N12_00_W016_00_DEM:-2:-3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N12_00_W016_00_DEM:-2:-3",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N12_00_W016_00_DEM:-2:-3",
+      "median": 0.0,
+      "percentile": 0.54,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N12_00_W016_00_DEM:-2:-3",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.96,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 16.0458,
+    "lon": 81.11548,
+    "class": 95,
+    "class_name": "Mangroves",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.87",
+    "flagged": false,
+    "targets": {
+     "moon-south-polar-cap-v2": {
+      "cell": "Copernicus_DSM_COG_10_N16_00_E081_00_DEM:-9:-10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-polar-lit-highlands": {
+      "cell": "Copernicus_DSM_COG_10_N16_00_E081_00_DEM:-9:-10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-psr": {
+      "cell": "Copernicus_DSM_COG_10_N16_00_E081_00_DEM:-9:-10",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-mare-plains": {
+      "cell": "Copernicus_DSM_COG_10_N16_00_E081_00_DEM:-9:-10",
+      "median": 0.0,
+      "percentile": 5.97,
+      "masked_share": 0.96,
+      "top10": false
+     },
+     "moon-pits": {
+      "cell": "Copernicus_DSM_COG_10_N16_00_E081_00_DEM:-9:-10",
+      "median": 0.0,
+      "percentile": 0.0,
+      "masked_share": 0.96,
+      "top10": false
+     }
+    }
+   }
+  ],
+  "top10": {
+   "A:moon-polar-lit-highlands": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "A:moon-psr": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "A:moon-pits": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "B:moon-polar-lit-highlands": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "B:moon-psr": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "B:moon-mare-plains": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "B:moon-south-polar-cap-v2": {
+    "in_top10": 0,
+    "pass": true
+   }
+  },
+  "masks": {
+   "masked_or_flagged": 17,
+   "of": 18,
+   "pass": false
+  }
+ },
+ "self_consistency": {
+  "moon-south-polar-cap-v2": {
+   "held_out": 35865,
+   "split": "5 km blocks (checkerboard)",
+   "mean": 0.4996,
+   "ks": 0.0049,
+   "pass": true
+  },
+  "moon-polar-lit-highlands": {
+   "held_out": 29241,
+   "split": "5 km blocks (checkerboard)",
+   "mean": 0.5004,
+   "ks": 0.0049,
+   "pass": true
+  },
+  "moon-psr": {
+   "held_out": 3009,
+   "split": "5 km blocks (checkerboard)",
+   "mean": 0.491,
+   "ks": 0.0236,
+   "pass": true
+  },
+  "moon-mare-plains": {
+   "held_out": 2849905,
+   "split": "5 km blocks (checkerboard)",
+   "mean": 0.5002,
+   "ks": 0.0008,
+   "pass": true
+  },
+  "moon-pits": {
+   "held_out": 135,
+   "split": "alternate sites (site set)",
+   "mean": 0.483,
+   "ks": 0.056,
+   "pass": false
+  }
+ },
+ "bias": {
+  "A:moon-polar-lit-highlands": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 1988,
+     "selected": 22
+    },
+    "-80..-70": {
+     "cells": 2259,
+     "selected": 86
+    },
+    "-70..-60": {
+     "cells": 665,
+     "selected": 32
+    },
+    "-60..-50": {
+     "cells": 10338,
+     "selected": 783
+    },
+    "-50..-40": {
+     "cells": 40686,
+     "selected": 6327
+    },
+    "-40..-30": {
+     "cells": 134918,
+     "selected": 10239
+    },
+    "-30..-20": {
+     "cells": 308274,
+     "selected": 17690
+    },
+    "-20..-10": {
+     "cells": 285323,
+     "selected": 25889
+    },
+    "-10..0": {
+     "cells": 181411,
+     "selected": 17332
+    },
+    "0..10": {
+     "cells": 197182,
+     "selected": 8124
+    },
+    "10..20": {
+     "cells": 338044,
+     "selected": 15631
+    },
+    "20..30": {
+     "cells": 452589,
+     "selected": 32345
+    },
+    "30..40": {
+     "cells": 509252,
+     "selected": 53318
+    },
+    "40..50": {
+     "cells": 463994,
+     "selected": 42124
+    },
+    "50..60": {
+     "cells": 343180,
+     "selected": 15600
+    },
+    "60..70": {
+     "cells": 346236,
+     "selected": 36136
+    },
+    "70..80": {
+     "cells": 104539,
+     "selected": 10646
+    },
+    "80..90": {
+     "cells": 12944,
+     "selected": 2996
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 988443,
+     "candidates": 61511
+    },
+    "Antarctica": {
+     "evaluated": 4399,
+     "candidates": 101
+    },
+    "Asia": {
+     "evaluated": 843323,
+     "candidates": 81320
+    },
+    "Europe": {
+     "evaluated": 515529,
+     "candidates": 39942
+    },
+    "North America": {
+     "evaluated": 658538,
+     "candidates": 58581
+    },
+    "Oceania": {
+     "evaluated": 272979,
+     "candidates": 10494
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 400,
+     "candidates": 78
+    },
+    "South America": {
+     "evaluated": 402218,
+     "candidates": 39290
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 47993,
+     "candidates": 4003
+    }
+   }
+  },
+  "A:moon-psr": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 1988,
+     "selected": 47
+    },
+    "-80..-70": {
+     "cells": 2259,
+     "selected": 165
+    },
+    "-70..-60": {
+     "cells": 665,
+     "selected": 38
+    },
+    "-60..-50": {
+     "cells": 10338,
+     "selected": 1206
+    },
+    "-50..-40": {
+     "cells": 40686,
+     "selected": 8896
+    },
+    "-40..-30": {
+     "cells": 134918,
+     "selected": 16358
+    },
+    "-30..-20": {
+     "cells": 308274,
+     "selected": 29891
+    },
+    "-20..-10": {
+     "cells": 285323,
+     "selected": 40342
+    },
+    "-10..0": {
+     "cells": 181411,
+     "selected": 25644
+    },
+    "0..10": {
+     "cells": 197182,
+     "selected": 13584
+    },
+    "10..20": {
+     "cells": 338044,
+     "selected": 27258
+    },
+    "20..30": {
+     "cells": 452589,
+     "selected": 55375
+    },
+    "30..40": {
+     "cells": 509252,
+     "selected": 93682
+    },
+    "40..50": {
+     "cells": 463994,
+     "selected": 64609
+    },
+    "50..60": {
+     "cells": 343180,
+     "selected": 23783
+    },
+    "60..70": {
+     "cells": 346236,
+     "selected": 58219
+    },
+    "70..80": {
+     "cells": 104539,
+     "selected": 16936
+    },
+    "80..90": {
+     "cells": 12944,
+     "selected": 4961
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 988443,
+     "candidates": 99713
+    },
+    "Antarctica": {
+     "evaluated": 4399,
+     "candidates": 205
+    },
+    "Asia": {
+     "evaluated": 843323,
+     "candidates": 138810
+    },
+    "Europe": {
+     "evaluated": 515529,
+     "candidates": 62989
+    },
+    "North America": {
+     "evaluated": 658538,
+     "candidates": 94583
+    },
+    "Oceania": {
+     "evaluated": 272979,
+     "candidates": 15349
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 400,
+     "candidates": 133
+    },
+    "South America": {
+     "evaluated": 402218,
+     "candidates": 62892
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 47993,
+     "candidates": 6320
+    }
+   }
+  },
+  "A:moon-pits": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 1886,
+     "selected": 5
+    },
+    "-80..-70": {
+     "cells": 2161,
+     "selected": 24
+    },
+    "-70..-60": {
+     "cells": 629,
+     "selected": 15
+    },
+    "-60..-50": {
+     "cells": 9394,
+     "selected": 1280
+    },
+    "-50..-40": {
+     "cells": 37890,
+     "selected": 5818
+    },
+    "-40..-30": {
+     "cells": 148131,
+     "selected": 13896
+    },
+    "-30..-20": {
+     "cells": 344205,
+     "selected": 24115
+    },
+    "-20..-10": {
+     "cells": 308810,
+     "selected": 41489
+    },
+    "-10..0": {
+     "cells": 184394,
+     "selected": 36678
+    },
+    "0..10": {
+     "cells": 211893,
+     "selected": 17562
+    },
+    "10..20": {
+     "cells": 365243,
+     "selected": 29152
+    },
+    "20..30": {
+     "cells": 467644,
+     "selected": 45884
+    },
+    "30..40": {
+     "cells": 499975,
+     "selected": 56029
+    },
+    "40..50": {
+     "cells": 456082,
+     "selected": 54995
+    },
+    "50..60": {
+     "cells": 358494,
+     "selected": 21919
+    },
+    "60..70": {
+     "cells": 342431,
+     "selected": 44450
+    },
+    "70..80": {
+     "cells": 98741,
+     "selected": 24329
+    },
+    "80..90": {
+     "cells": 12049,
+     "selected": 1932
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 1051417,
+     "candidates": 111447
+    },
+    "Antarctica": {
+     "evaluated": 4181,
+     "candidates": 25
+    },
+    "Asia": {
+     "evaluated": 844149,
+     "candidates": 87890
+    },
+    "Europe": {
+     "evaluated": 516032,
+     "candidates": 43961
+    },
+    "North America": {
+     "evaluated": 653484,
+     "candidates": 93784
+    },
+    "Oceania": {
+     "evaluated": 298681,
+     "candidates": 17338
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 376,
+     "candidates": 10
+    },
+    "South America": {
+     "evaluated": 432121,
+     "candidates": 60579
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 49611,
+     "candidates": 4538
+    }
+   }
+  },
+  "B:moon-polar-lit-highlands": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 1988,
+     "selected": 22
+    },
+    "-80..-70": {
+     "cells": 2259,
+     "selected": 86
+    },
+    "-70..-60": {
+     "cells": 665,
+     "selected": 32
+    },
+    "-60..-50": {
+     "cells": 10338,
+     "selected": 783
+    },
+    "-50..-40": {
+     "cells": 40686,
+     "selected": 6327
+    },
+    "-40..-30": {
+     "cells": 134918,
+     "selected": 10239
+    },
+    "-30..-20": {
+     "cells": 308274,
+     "selected": 17689
+    },
+    "-20..-10": {
+     "cells": 285323,
+     "selected": 25888
+    },
+    "-10..0": {
+     "cells": 181411,
+     "selected": 17332
+    },
+    "0..10": {
+     "cells": 197182,
+     "selected": 8124
+    },
+    "10..20": {
+     "cells": 338044,
+     "selected": 15630
+    },
+    "20..30": {
+     "cells": 452589,
+     "selected": 32343
+    },
+    "30..40": {
+     "cells": 509252,
+     "selected": 53317
+    },
+    "40..50": {
+     "cells": 463994,
+     "selected": 42119
+    },
+    "50..60": {
+     "cells": 343180,
+     "selected": 15596
+    },
+    "60..70": {
+     "cells": 346236,
+     "selected": 36135
+    },
+    "70..80": {
+     "cells": 104539,
+     "selected": 10645
+    },
+    "80..90": {
+     "cells": 12944,
+     "selected": 2996
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 988443,
+     "candidates": 61511
+    },
+    "Antarctica": {
+     "evaluated": 4399,
+     "candidates": 101
+    },
+    "Asia": {
+     "evaluated": 843323,
+     "candidates": 81318
+    },
+    "Europe": {
+     "evaluated": 515529,
+     "candidates": 39938
+    },
+    "North America": {
+     "evaluated": 658538,
+     "candidates": 58573
+    },
+    "Oceania": {
+     "evaluated": 272979,
+     "candidates": 10494
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 400,
+     "candidates": 78
+    },
+    "South America": {
+     "evaluated": 402218,
+     "candidates": 39288
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 47993,
+     "candidates": 4002
+    }
+   }
+  },
+  "B:moon-psr": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 1988,
+     "selected": 47
+    },
+    "-80..-70": {
+     "cells": 2259,
+     "selected": 165
+    },
+    "-70..-60": {
+     "cells": 665,
+     "selected": 38
+    },
+    "-60..-50": {
+     "cells": 10338,
+     "selected": 1206
+    },
+    "-50..-40": {
+     "cells": 40686,
+     "selected": 8890
+    },
+    "-40..-30": {
+     "cells": 134918,
+     "selected": 16355
+    },
+    "-30..-20": {
+     "cells": 308274,
+     "selected": 29887
+    },
+    "-20..-10": {
+     "cells": 285323,
+     "selected": 40336
+    },
+    "-10..0": {
+     "cells": 181411,
+     "selected": 25639
+    },
+    "0..10": {
+     "cells": 197182,
+     "selected": 13579
+    },
+    "10..20": {
+     "cells": 338044,
+     "selected": 27253
+    },
+    "20..30": {
+     "cells": 452589,
+     "selected": 55358
+    },
+    "30..40": {
+     "cells": 509252,
+     "selected": 93656
+    },
+    "40..50": {
+     "cells": 463994,
+     "selected": 64581
+    },
+    "50..60": {
+     "cells": 343180,
+     "selected": 23767
+    },
+    "60..70": {
+     "cells": 346236,
+     "selected": 58200
+    },
+    "70..80": {
+     "cells": 104539,
+     "selected": 16933
+    },
+    "80..90": {
+     "cells": 12944,
+     "selected": 4960
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 988443,
+     "candidates": 99706
+    },
+    "Antarctica": {
+     "evaluated": 4399,
+     "candidates": 205
+    },
+    "Asia": {
+     "evaluated": 843323,
+     "candidates": 138778
+    },
+    "Europe": {
+     "evaluated": 515529,
+     "candidates": 62957
+    },
+    "North America": {
+     "evaluated": 658538,
+     "candidates": 94535
+    },
+    "Oceania": {
+     "evaluated": 272979,
+     "candidates": 15344
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 400,
+     "candidates": 133
+    },
+    "South America": {
+     "evaluated": 402218,
+     "candidates": 62874
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 47993,
+     "candidates": 6318
+    }
+   }
+  },
+  "B:moon-mare-plains": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 1886,
+     "selected": 0
+    },
+    "-80..-70": {
+     "cells": 2161,
+     "selected": 0
+    },
+    "-70..-60": {
+     "cells": 629,
+     "selected": 0
+    },
+    "-60..-50": {
+     "cells": 9394,
+     "selected": 190
+    },
+    "-50..-40": {
+     "cells": 37890,
+     "selected": 770
+    },
+    "-40..-30": {
+     "cells": 148131,
+     "selected": 3883
+    },
+    "-30..-20": {
+     "cells": 344205,
+     "selected": 11905
+    },
+    "-20..-10": {
+     "cells": 308810,
+     "selected": 15689
+    },
+    "-10..0": {
+     "cells": 184394,
+     "selected": 13167
+    },
+    "0..10": {
+     "cells": 211893,
+     "selected": 11321
+    },
+    "10..20": {
+     "cells": 365243,
+     "selected": 10884
+    },
+    "20..30": {
+     "cells": 467644,
+     "selected": 11697
+    },
+    "30..40": {
+     "cells": 499975,
+     "selected": 15265
+    },
+    "40..50": {
+     "cells": 456082,
+     "selected": 17071
+    },
+    "50..60": {
+     "cells": 358494,
+     "selected": 6451
+    },
+    "60..70": {
+     "cells": 342431,
+     "selected": 14622
+    },
+    "70..80": {
+     "cells": 98741,
+     "selected": 10844
+    },
+    "80..90": {
+     "cells": 12049,
+     "selected": 162
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 1051417,
+     "candidates": 42232
+    },
+    "Antarctica": {
+     "evaluated": 4181,
+     "candidates": 0
+    },
+    "Asia": {
+     "evaluated": 844149,
+     "candidates": 25141
+    },
+    "Europe": {
+     "evaluated": 516032,
+     "candidates": 14747
+    },
+    "North America": {
+     "evaluated": 653484,
+     "candidates": 29616
+    },
+    "Oceania": {
+     "evaluated": 298681,
+     "candidates": 7560
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 376,
+     "candidates": 1
+    },
+    "South America": {
+     "evaluated": 432121,
+     "candidates": 23428
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 49611,
+     "candidates": 1196
+    }
+   }
+  },
+  "B:moon-south-polar-cap-v2": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 1988,
+     "selected": 22
+    },
+    "-80..-70": {
+     "cells": 2259,
+     "selected": 86
+    },
+    "-70..-60": {
+     "cells": 665,
+     "selected": 32
+    },
+    "-60..-50": {
+     "cells": 10338,
+     "selected": 784
+    },
+    "-50..-40": {
+     "cells": 40686,
+     "selected": 6326
+    },
+    "-40..-30": {
+     "cells": 134918,
+     "selected": 10254
+    },
+    "-30..-20": {
+     "cells": 308274,
+     "selected": 17868
+    },
+    "-20..-10": {
+     "cells": 285323,
+     "selected": 25978
+    },
+    "-10..0": {
+     "cells": 181411,
+     "selected": 17259
+    },
+    "0..10": {
+     "cells": 197182,
+     "selected": 8151
+    },
+    "10..20": {
+     "cells": 338044,
+     "selected": 15710
+    },
+    "20..30": {
+     "cells": 452589,
+     "selected": 32569
+    },
+    "30..40": {
+     "cells": 509252,
+     "selected": 53956
+    },
+    "40..50": {
+     "cells": 463994,
+     "selected": 42350
+    },
+    "50..60": {
+     "cells": 343180,
+     "selected": 15605
+    },
+    "60..70": {
+     "cells": 346236,
+     "selected": 36355
+    },
+    "70..80": {
+     "cells": 104539,
+     "selected": 10634
+    },
+    "80..90": {
+     "cells": 12944,
+     "selected": 3017
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 988443,
+     "candidates": 61696
+    },
+    "Antarctica": {
+     "evaluated": 4399,
+     "candidates": 101
+    },
+    "Asia": {
+     "evaluated": 843323,
+     "candidates": 82185
+    },
+    "Europe": {
+     "evaluated": 515529,
+     "candidates": 40204
+    },
+    "North America": {
+     "evaluated": 658538,
+     "candidates": 58725
+    },
+    "Oceania": {
+     "evaluated": 272979,
+     "candidates": 10446
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 400,
+     "candidates": 81
+    },
+    "South America": {
+     "evaluated": 402218,
+     "candidates": 39489
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 47993,
+     "candidates": 4029
+    }
+   }
+  }
+ },
+ "monte_carlo": {
+  "B:moon-mare-plains": {
+   "zones": 8970,
+   "stable_zones_90pct": 7062,
+   "from_files": true
+  },
+  "A:moon-pits": {
+   "zones": 16812,
+   "stable_zones_90pct": 2486,
+   "from_files": true
+  },
+  "A:moon-polar-lit-highlands": {
+   "zones": 14200,
+   "stable_zones_90pct": 9975,
+   "runs": 500,
+   "seed": [
+    20261119,
+    2
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  },
+  "B:moon-polar-lit-highlands": {
+   "zones": 14200,
+   "stable_zones_90pct": 9975,
+   "runs": 500,
+   "seed": [
+    20261119,
+    2
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  },
+  "A:moon-psr": {
+   "zones": 13242,
+   "stable_zones_90pct": 2915,
+   "runs": 500,
+   "seed": [
+    20261119,
+    3
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  },
+  "B:moon-psr": {
+   "zones": 13238,
+   "stable_zones_90pct": 2918,
+   "runs": 500,
+   "seed": [
+    20261119,
+    3
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  },
+  "B:moon-south-polar-cap-v2": {
+   "zones": 14188,
+   "stable_zones_90pct": 10007,
+   "runs": 500,
+   "seed": [
+    20261119,
+    4
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  }
+ },
+ "reproducibility": {
+  "tiles": [
+   {
+    "tile": "-26,119",
+    "identical_sha256": true
+   },
+   {
+    "tile": "-87,-159",
+    "identical_sha256": true
+   },
+   {
+    "tile": "17,-13",
+    "identical_sha256": true
+   },
+   {
+    "tile": "18,49",
+    "identical_sha256": true
+   },
+   {
+    "tile": "38,39",
+    "identical_sha256": true
+   }
+  ],
+  "identical_cell_rows": true,
+  "pass": true
+ }
+}

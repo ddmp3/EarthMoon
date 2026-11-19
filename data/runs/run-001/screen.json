@@ -1,0 +1,47 @@
+{
+ "rule": "A 1\u00b0 tile is refined at the scale of a lunar target when at least one of its unmasked 90 m windows falls inside\nthat target's slope interquartile range widened by 2\u00b0 (T22: 0.17% of fine matches missed on the pilot tiles).\nWindows whose ground is hidden (WorldCover, `compare.masked_windows`) never make a tile pass. South of 60\u00b0S, where\nWorldCover has no data, a tile is kept only if it contains SCAR rock outcrops (`add-rock-outcrop-v7-3`, T14):\nelsewhere the surface is ice. Rules fixed before the run (T43).",
+ "widen_deg": 2.0,
+ "intervals": {
+  "moon-mare-plains": [
+   0.0,
+   4.973
+  ],
+  "moon-pits": [
+   0.279,
+   8.186
+  ],
+  "moon-polar-lit-highlands": [
+   3.194,
+   14.764
+  ],
+  "moon-psr": [
+   2.567,
+   17.939
+  ],
+  "moon-south-polar-cap-v2": [
+   3.231,
+   14.886
+  ]
+ },
+ "stats": {
+  "tiles": 26475,
+  "south_of_60_without_outcrops": 6172,
+  "fully_masked_or_missing": 1781
+ },
+ "refine": {
+  "glo30-40m": {
+   "tiles": 16520,
+   "file": "cube/tiles-refine-glo30-40m.txt",
+   "sha256": "1823e1884614022043eb745709b4e7a9231b6133f786a7b2208dd3bb13c4226a"
+  },
+  "glo30-59m": {
+   "tiles": 18363,
+   "file": "cube/tiles-refine-glo30-59m.txt",
+   "sha256": "30eccd4b1665aa85a3deec233abc1f42bb9d47f2ac503aef76eea35ad4240b41"
+  }
+ },
+ "counts": {
+  "glo30-40m": 16520,
+  "glo30-59m": 18363
+ }
+}

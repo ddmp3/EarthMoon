@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from discovery.compare import (assess_cells, cell_medians, masked_windows, monte_carlo,  # noqa: E402
+from discovery.compare import (MASK_CLASSES, assess_cells, cell_medians, masked_windows, monte_carlo,  # noqa: E402
                                percentile_typicality)
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -44,8 +44,7 @@ SUITABILITY = {"A": {"id": "base_slope_suitability", "param": "slope_mean", "goo
 NOT_EVALUATED = {"base_site_beyond_slope": "value not set (E13); no layer for bearing capacity or boulders",
                  "target_environment": "descriptive: it chooses the targets, it is not a test",
                  "traversable_share": "part of the climbing limit rules (half of the window)"}
-WINDOW_COLS = ["i", "j", "slope_mean", "traversable_15", "traversable_20", "wc_tree", "wc_built", "wc_water",
-               "wc_snow_ice", "wc_covered"]
+WINDOW_COLS = ["i", "j", "slope_mean", "traversable_15", "traversable_20", *MASK_CLASSES, "wc_covered"]
 
 
 def load_windows(folder: Path, tiles: list[str]) -> dict:

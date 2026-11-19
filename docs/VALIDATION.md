@@ -1,8 +1,30 @@
-# Validation (v2, current)
+# Validation
+
+## v3, run-001 (19 November 2026)
+
+The first global discovery run of v3: topography only, scenarios A (lunar base) and B (lunar robotics), protocol `validation-protocol-v2`. Full report: [wiki/runs/run-001.md](wiki/runs/run-001.md).
+
+| Check | Result | Pass |
+|---|---|---|
+| Positive controls | none exist for A and B: no verified reference names an analog site | no validation |
+| Negatives in the top 10% | 0 of 18 for every target (at most 1 allowed) | yes |
+| Masks | 17 of 18 negatives masked (a forest-savanna mosaic in the Chaco is 41% hidden) | no |
+| Self-consistency (KS ≤ 0.05) | 4 of 5 targets; pits 0.056 on 135 sites | partly |
+| Reproducibility | 5 of 5 rebuilt tiles identical | yes |
+
+**What it means:**
+- 38 of the 40 best zones are explained artefacts: windows left between hidden ground, or cells cut by the edges of the processing tiles.
+- The zone ranking changes a lot with the DEM source (NASADEM: top-20 overlap 40 to 45%) and with the scale (30 m: 35 to 40%). The zone list of run-001 is not a ranking of places.
+- One place is plausible: ridges near the MacDonnell Ranges, Northern Territory, Australia. It is small and borderline.
+- run-002 will rank zones on high-confidence cells only, and merge the parts of cells cut by tile edges (protocol v3).
+
+**Coverage:** 53% of the assessed cells have most of their ground hidden. The coverage overlay of the interface shows where.
+
+## v2 results (current production)
 
 What has been checked, the result, and how to reproduce it. Full protocol and the before/after grid: [wiki/v2/SCIENTIFIC_VALIDATION.md](wiki/v2/SCIENTIFIC_VALIDATION.md). Latest rankings report: [wiki/rankings.md](wiki/rankings.md).
 
-## Results (17 November 2026)
+### Results (17 November 2026)
 
 | Check | v1 | v2 |
 |---|---|---|
@@ -29,7 +51,7 @@ Robotics is the weakest: 1 km terrain statistics change a lot from one kilometre
 
 **Not covered:** independent expectations (criterion 12) and ground material (criterion 13). Both are open in v3, tasks T25 and T46.
 
-## Rank stability labels (interface)
+### Rank stability labels (interface)
 
 The share of the ranked list a site moves across between the 10th and 90th percentile of its rank:
 - 6% or less: stable;

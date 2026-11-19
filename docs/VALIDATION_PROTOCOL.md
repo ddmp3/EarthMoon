@@ -1,6 +1,20 @@
-# Validation protocol v1 (frozen before any discovery run)
+# Validation protocol v2 (frozen before run-001)
 
-Frozen with the git tag `validation-protocol-v1` before T43. Any change after the tag creates a new version, with its reason, and is reported next to the results. Results are never retuned to pass.
+v1 was frozen with the git tag `validation-protocol-v1` before T43. v2 is frozen with the tag `validation-protocol-v2`, also before the first global run (run-001). Any change after a tag creates a new version, with its reason, and is reported next to the results. Results are never retuned to pass.
+
+## Changes from v1 to v2 (18/11/2026, decided by David)
+
+**Why.** Running the checks on the 13 pilot tiles before run-001 showed that only 10 of 18 negative controls were masked or flagged. Two causes:
+- **The engine masked 4 WorldCover classes** (tree, built-up, water, snow and ice). The protocol's own negatives are drawn in 6 classes where the ground is hidden: cropland, herbaceous wetland and mangroves were never masked. That is an implementation defect against the protocol's definition, not a threshold to tune.
+- **The check looked at the 5 km cell, not the masked unit.** A built-up point at a town edge sat in a cell with 6% built-up cover. The engine masks 1 km windows.
+
+**What changed:**
+- **The engine masks 7 classes:** tree, cropland, built-up, snow and ice, water, herbaceous wetland and mangroves. The Earth cubes are recomputed with the fractions of all 7.
+- **The masks check reads the 1 km window that holds each negative point** (90 m cube), the unit the engine masks.
+
+**Unchanged:** the controls (`data/validation/` is identical to v1), every metric and every pass threshold.
+
+**Consequence:** the pilot result of 10 of 18 is a v1 result. It is reported, not hidden.
 
 ## 1. Controls
 

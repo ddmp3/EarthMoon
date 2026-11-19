@@ -1,0 +1,242 @@
+{
+ "A-01": {
+  "windows": 35,
+  "valid_unmasked": 26,
+  "mean_masked_share": 0.28,
+  "cells": 3
+ },
+ "A-02": {
+  "windows": 65,
+  "valid_unmasked": 37,
+  "mean_masked_share": 0.427,
+  "cells": 3
+ },
+ "A-03": {
+  "windows": 75,
+  "valid_unmasked": 43,
+  "mean_masked_share": 0.427,
+  "cells": 3
+ },
+ "A-04": {
+  "windows": 35,
+  "valid_unmasked": 35,
+  "mean_masked_share": 0.0,
+  "cells": 3
+ },
+ "A-05": {
+  "windows": 75,
+  "valid_unmasked": 45,
+  "mean_masked_share": 0.4,
+  "cells": 3
+ },
+ "A-06": {
+  "windows": 20,
+  "valid_unmasked": 16,
+  "mean_masked_share": 0.2,
+  "cells": 4
+ },
+ "A-07": {
+  "windows": 60,
+  "valid_unmasked": 37,
+  "mean_masked_share": 0.31,
+  "cells": 4
+ },
+ "A-08": {
+  "windows": 26,
+  "valid_unmasked": 19,
+  "mean_masked_share": 0.233,
+  "cells": 6
+ },
+ "A-09": {
+  "windows": 75,
+  "valid_unmasked": 43,
+  "mean_masked_share": 0.427,
+  "cells": 3
+ },
+ "A-10": {
+  "windows": 225,
+  "valid_unmasked": 162,
+  "mean_masked_share": 0.28,
+  "cells": 9
+ },
+ "A-11": {
+  "windows": 37,
+  "valid_unmasked": 36,
+  "mean_masked_share": 0.008,
+  "cells": 5
+ },
+ "A-12": {
+  "windows": 85,
+  "valid_unmasked": 67,
+  "mean_masked_share": 0.229,
+  "cells": 5
+ },
+ "A-13": {
+  "windows": 100,
+  "valid_unmasked": 64,
+  "mean_masked_share": 0.36,
+  "cells": 4
+ },
+ "A-14": {
+  "windows": 30,
+  "valid_unmasked": 23,
+  "mean_masked_share": 0.233,
+  "cells": 6
+ },
+ "A-15": {
+  "windows": 125,
+  "valid_unmasked": 73,
+  "mean_masked_share": 0.416,
+  "cells": 5
+ },
+ "A-16": {
+  "windows": 70,
+  "valid_unmasked": 41,
+  "mean_masked_share": 0.41,
+  "cells": 3
+ },
+ "A-17": {
+  "windows": 15,
+  "valid_unmasked": 15,
+  "mean_masked_share": 0.0,
+  "cells": 3
+ },
+ "A-18": {
+  "windows": 15,
+  "valid_unmasked": 11,
+  "mean_masked_share": 0.267,
+  "cells": 3
+ },
+ "A-19": {
+  "windows": 200,
+  "valid_unmasked": 119,
+  "mean_masked_share": 0.405,
+  "cells": 8
+ },
+ "A-20": {
+  "windows": 19,
+  "valid_unmasked": 14,
+  "mean_masked_share": 0.1,
+  "cells": 4
+ },
+ "B-01": {
+  "windows": 65,
+  "valid_unmasked": 37,
+  "mean_masked_share": 0.427,
+  "cells": 3
+ },
+ "B-02": {
+  "windows": 35,
+  "valid_unmasked": 35,
+  "mean_masked_share": 0.0,
+  "cells": 3
+ },
+ "B-03": {
+  "windows": 75,
+  "valid_unmasked": 45,
+  "mean_masked_share": 0.4,
+  "cells": 3
+ },
+ "B-04": {
+  "windows": 20,
+  "valid_unmasked": 16,
+  "mean_masked_share": 0.2,
+  "cells": 4
+ },
+ "B-05": {
+  "windows": 60,
+  "valid_unmasked": 37,
+  "mean_masked_share": 0.31,
+  "cells": 4
+ },
+ "B-06": {
+  "windows": 26,
+  "valid_unmasked": 19,
+  "mean_masked_share": 0.233,
+  "cells": 6
+ },
+ "B-07": {
+  "windows": 75,
+  "valid_unmasked": 43,
+  "mean_masked_share": 0.427,
+  "cells": 3
+ },
+ "B-08": {
+  "windows": 225,
+  "valid_unmasked": 162,
+  "mean_masked_share": 0.28,
+  "cells": 9
+ },
+ "B-09": {
+  "windows": 37,
+  "valid_unmasked": 36,
+  "mean_masked_share": 0.008,
+  "cells": 5
+ },
+ "B-10": {
+  "windows": 85,
+  "valid_unmasked": 67,
+  "mean_masked_share": 0.229,
+  "cells": 5
+ },
+ "B-11": {
+  "windows": 100,
+  "valid_unmasked": 64,
+  "mean_masked_share": 0.36,
+  "cells": 4
+ },
+ "B-12": {
+  "windows": 30,
+  "valid_unmasked": 23,
+  "mean_masked_share": 0.233,
+  "cells": 6
+ },
+ "B-13": {
+  "windows": 125,
+  "valid_unmasked": 73,
+  "mean_masked_share": 0.416,
+  "cells": 5
+ },
+ "B-14": {
+  "windows": 70,
+  "valid_unmasked": 41,
+  "mean_masked_share": 0.41,
+  "cells": 3
+ },
+ "B-15": {
+  "windows": 15,
+  "valid_unmasked": 15,
+  "mean_masked_share": 0.0,
+  "cells": 3
+ },
+ "B-16": {
+  "windows": 15,
+  "valid_unmasked": 11,
+  "mean_masked_share": 0.267,
+  "cells": 3
+ },
+ "B-17": {
+  "windows": 19,
+  "valid_unmasked": 14,
+  "mean_masked_share": 0.1,
+  "cells": 4
+ },
+ "B-18": {
+  "windows": 100,
+  "valid_unmasked": 66,
+  "mean_masked_share": 0.34,
+  "cells": 4
+ },
+ "B-19": {
+  "windows": 65,
+  "valid_unmasked": 49,
+  "mean_masked_share": 0.224,
+  "cells": 5
+ },
+ "B-20": {
+  "windows": 30,
+  "valid_unmasked": 23,
+  "mean_masked_share": 0.2,
+  "cells": 4
+ }
+}

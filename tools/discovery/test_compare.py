@@ -105,6 +105,8 @@ def test_window_masking_hides_covered_ground_and_keeps_unknown_masks_unknown():
     w = {"wc_tree": np.array([0.6, 0.1, np.nan, 0.0]), "wc_built": np.array([0.0, 0.2, np.nan, 0.0]),
          "wc_water": np.array([0.0, 0.25, np.nan, 0.0]), "wc_snow_ice": np.array([0.0, 0.0, np.nan, 0.0]),
          "wc_covered": np.array([1.0, 1.0, 0.0, 1.0])}
+    for k in ("wc_cropland", "wc_wetland", "wc_mangroves"):                  # classes added in protocol v2
+        w[k] = np.array([0.0, 0.0, np.nan, 0.0])
     masked, unknown = masked_windows(w)
     assert masked.tolist() == [True, True, False, False] and unknown.tolist() == [False, False, True, False]
 
@@ -163,3 +165,14 @@ def test_summary_ranks_high_confidence_cells_separately():
     s = summary(res, top=2)
     assert [r["cell"] for r in s["top"]["t"]] == ["a", "c"]
     assert [r["cell"] for r in s["top_high_confidence"]["t"]] == ["b", "d"]
+
+
+def test_mask_hides_every_class_the_protocol_counts_as_hidden_ground():
+    """validation-protocol-v2: tree, cropland, built-up, water, herbaceous wetland, mangroves, snow and ice."""
+    from discovery.compare import MASK_CLASSES, masked_windows
+    assert set(MASK_CLASSES) == {"wc_tree", "wc_cropland", "wc_built", "wc_water", "wc_wetland", "wc_mangroves", "wc_snow_ice"}
+    for cls in MASK_CLASSES:
+        w = {k: np.array([0.0]) for k in MASK_CLASSES}
+        w[cls] = np.array([0.8])
+        w["wc_covered"] = np.array([1.0])
+        assert masked_windows(w)[0][0], cls
