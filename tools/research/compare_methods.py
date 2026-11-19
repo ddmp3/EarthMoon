@@ -18,23 +18,11 @@ import numpy as np
 
 SEED = 20261119
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from discovery.compare import interval_score, percentile_typicality  # noqa: E402,F401  (moved in T42)
+
 
 # --- candidates (tested) ----------------------------------------------------------------------------------
-
-def interval_score(x: np.ndarray, q: dict) -> np.ndarray:
-    """v2: 1 inside [p25, p75], linear to 0 at p5 and p95, 0 outside."""
-    x = np.asarray(x, dtype="float64")
-    lo = np.clip((x - q["p5"]) / (q["p25"] - q["p5"]), 0, 1)
-    hi = np.clip((q["p95"] - x) / (q["p95"] - q["p75"]), 0, 1)
-    return np.minimum(np.minimum(lo, hi), 1.0)
-
-
-def percentile_typicality(x: np.ndarray, ref: np.ndarray) -> np.ndarray:
-    """2 min(F, 1 - F) with F the empirical CDF of the reference (mid-rank for ties)."""
-    s = np.sort(ref)
-    f = (np.searchsorted(s, x, "left") + np.searchsorted(s, x, "right")) / (2 * len(s))
-    return 2 * np.minimum(f, 1 - f)
-
 
 def robust_location_scatter(ref: np.ndarray, keep: float = 0.75, steps: int = 10) -> tuple[np.ndarray, np.ndarray]:
     """Location and scatter of the `keep` most central reference points (concentration steps, as in MCD)."""

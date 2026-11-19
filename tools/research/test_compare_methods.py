@@ -2,23 +2,11 @@
 import numpy as np
 import pytest
 
-from compare_methods import (auc, energy_distance, interval_score, knn_typicality, ks_uniform, mahalanobis_typicality,
-                             percentile_typicality, robust_location_scatter, wasserstein_1d)
+from compare_methods import (auc, energy_distance, knn_typicality, ks_uniform, mahalanobis_typicality,  # noqa: F401
+                             robust_location_scatter, wasserstein_1d)
 
 rng = np.random.default_rng(0)
 REF = rng.normal(10, 3, 20000)
-
-
-def test_interval_score_matches_v2_shape():
-    q = {"p5": 0, "p25": 2, "p75": 4, "p95": 6}
-    assert list(interval_score(np.array([-1, 0, 1, 2, 3, 4, 5, 6, 7.0]), q)) == [0, 0, 0.5, 1, 1, 1, 0.5, 0, 0]
-
-
-def test_percentile_typicality_is_one_at_the_median_and_uniform_on_the_reference():
-    t = percentile_typicality(np.array([10.0]), REF)
-    assert t[0] == pytest.approx(1, abs=0.01)
-    held = rng.normal(10, 3, 5000)
-    assert ks_uniform(percentile_typicality(held, REF)) < 0.03
 
 
 def test_mahalanobis_typicality_is_calibrated_on_same_distribution():
