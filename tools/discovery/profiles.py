@@ -193,7 +193,8 @@ def write(path: Path, rec: dict) -> None:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["south-polar-cap", "polar", "cube", "pits"])
+    ap.add_argument("what", choices=["south-polar-cap", "polar", "cube", "pits", "lit"])
+    ap.add_argument("--dem5", type=Path)
     ap.add_argument("--pits-html", type=Path)
     ap.add_argument("--cube", type=Path, help="moon cube folder (moon_cube.py --out)")
     ap.add_argument("--psr", type=Path)
@@ -215,7 +216,109 @@ def main(argv=None) -> int:
         cube_profiles(a)
     elif a.what == "pits":
         pits_profile(a)
+    elif a.what == "lit":
+        lit_profile(a)
     return 0
+
+
+LIT_Q, LIT_WINDOWS_M = (0.5, 0.6, 0.7), (100.0, 200.0, 500.0)
+
+
+LIT_MIN_WINDOWS = 100
+
+
+def lit_nominal(runs: list[dict]) -> dict:
+    """The (0.6, 200 m) run if it has enough windows, else the strictest q, then the largest window, with enough."""
+    middle = next(r for r in runs if r["q"] == 0.6 and r["window_m"] == 200.0)
+    if middle["windows"]["selected"] >= LIT_MIN_WINDOWS:
+        return middle
+    ok = [r for r in runs if r["windows"]["selected"] >= LIT_MIN_WINDOWS]
+    if not ok:
+        return middle
+    return sorted(ok, key=lambda r: (-r["q"], -r["window_m"]))[0]
+
+
+def _frame(a: np.ndarray, fill) -> np.ndarray:
+    """One column of `fill` on each side (the margin of central differences)."""
+    side = np.full((a.shape[0], 1), fill, dtype=a.dtype)
+    return np.hstack([side, a, side])
+
+
+def _read_rows(dz, lo: int, hi: int, n: int) -> np.ndarray:
+    """Rows [lo, hi) of the 5 m mosaic as float64; rows outside the file are NaN, nodata is NaN."""
+    from rasterio.windows import Window
+    out = np.full((hi - lo, n), np.nan)
+    a, b = max(lo, 0), min(hi, dz.height)
+    z = dz.read(1, window=Window(0, a, n, b - a)).astype("float64")
+    if dz.nodata is not None:
+        z[z == dz.nodata] = np.nan
+    out[a - lo:b - lo] = z
+    return out
+
+
+def lit_profile(a) -> None:
+    """moon-persistently-lit: windows of the 5 m mosaic (87°S to 90°S) lying entirely inside connected areas whose
+    average illumination is >= q (60 m map, south of 85°S). Every q and window size of the spec is computed; the
+    nominal is the middle of each list (expert choice, T41). The 40 m LDEM outside the mosaic is not used: the
+    mosaic covers the area where 200 m windows can be measured at 5 m, and mixing pixel scales is avoided."""
+    import rasterio
+    from rasterio.transform import from_origin
+    from rasterio.warp import Resampling, reproject
+    ill = read_polar(a.illumination, 5058, 60.0)                       # native 60 m grid, no resampling
+    with rasterio.open(a.illumination) as src:
+        ill_crs, ill_tf = src.crs, src.transform
+    masks = {q: {} for q in LIT_Q}
+    for q in LIT_Q:
+        for wm in LIT_WINDOWS_M:
+            masks[q][wm] = lit_areas(ill, q, min_pixels=int(np.ceil((wm / 60.0) ** 2)))
+    runs = []
+    with rasterio.open(a.dem5) as dz:
+        n, px, half = dz.width, 5.0, dz.width * 5.0 / 2
+        for wm in LIT_WINDOWS_M:
+            wpx = int(wm / px)
+            strip = 1000
+            acc = {q: {k: [] for k in POLAR_METRICS} for q in LIT_Q}
+            for r0 in range(0, n, strip):
+                tf = from_origin(-half, half - (r0 - 1) * px, px, px)    # grid of the framed strip, row r0 - 1 first
+                shape = (strip + 2, n)
+                lit = {}
+                for q in LIT_Q:
+                    m = np.zeros(shape, "uint8")
+                    reproject(masks[q][wm].astype("uint8"), m, src_transform=ill_tf, src_crs=ill_crs, dst_transform=tf,
+                              dst_crs=ill_crs, resampling=Resampling.nearest)
+                    lit[q] = _frame(m.astype(bool), False)
+                if not any(v.any() for v in lit.values()):
+                    continue
+                zz = _frame(_read_rows(dz, r0 - 1, r0 + strip + 1, n), np.nan)
+                w = window_metrics_grid(zz, px, wpx, margin=1, metrics=ALL_METRICS)
+                il = np.full(shape, np.nan, "float32")
+                reproject(ill.astype("float32"), il, src_transform=ill_tf, src_crs=ill_crs, src_nodata=np.nan,
+                          dst_transform=tf, dst_crs=ill_crs, dst_nodata=np.nan, resampling=Resampling.nearest)
+                w["mean_illumination"] = window_fraction(_frame(il, np.nan), wpx, margin=1)
+                for q in LIT_Q:
+                    sel = select_windows(lit[q], wpx, margin=1)
+                    for k in POLAR_METRICS:
+                        acc[q][k].append(np.asarray(w[k])[sel])
+            for q in LIT_Q:
+                vals = {k: np.concatenate(acc[q][k]) if acc[q][k] else np.zeros(0) for k in POLAR_METRICS}
+                s = summarise(vals, np.ones(vals["slope_mean"].size, bool), POLAR_METRICS)
+                runs.append({"q": q, "window_m": wm, "pixel_m": px, **s})
+    nominal = lit_nominal(runs)
+    rec = record("moon-persistently-lit", {"windows": nominal["windows"], "metrics": nominal["metrics"]},
+                 {"lola-south-pole-5m-mosaic/elevation": file_input(a.dem5),
+                  "lola-polar-illumination/average": file_input(a.illumination)},
+                 {"q": nominal["q"], "window_m": nominal["window_m"], "pixel_m": 5.0,
+                  "window_px": int(nominal["window_m"] / 5.0), "min_valid": 0.9,
+                  "domain": "87°S to 90°S (5 m mosaic)", "min_area": "connected lit area of at least one window",
+                  "nominal_rule": f"middle of the spec lists (q 0.6, 200 m) unless it has fewer than {LIT_MIN_WINDOWS} windows; "
+                                  "then the strictest q, then the largest window, that has at least that many (T41)"})
+    rec["sensitivity"] = [{"q": r["q"], "window_m": r["window_m"], **r["windows"], "metrics": r["metrics"]} for r in runs]
+    rec["not_computed"] = {"ldem_40m_outside_87s": "85°S to 87°S is not covered at 5 m; 200 m windows at 40 m (5 pixels) are not comparable, so left out",
+                           "earth_scale": "windows below 1 km need an Earth cube at the same window size (T42)"}
+    write(a.out / "moon-persistently-lit.json", rec)
+    print("moon-persistently-lit", json.dumps(rec["windows"]), json.dumps(rec["metrics"]["slope_mean"]))
+    for r in rec["sensitivity"]:
+        print(r["q"], r["window_m"], r["selected"], r["metrics"]["slope_mean"]["p50"])
 
 
 def pits_profile(a) -> None:

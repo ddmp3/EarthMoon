@@ -129,3 +129,12 @@ def test_pits_atlas_rows_are_parsed_with_lower_bounds_marked_and_east_longitudes
                        "lon": 33.222, "funnel_max_m": 140.0, "funnel_min_m": 100.0, "inner_max_m": 88.0,
                        "inner_min_m": None, "azimuth": 170.0, "depth_m": 105.0, "depth_is_lower_bound": False}
     assert pits[1]["depth_m"] == 17.0 and pits[1]["depth_is_lower_bound"] and pits[1]["lon"] == 312.4196
+
+
+def test_lit_nominal_falls_back_to_the_strictest_run_with_enough_windows():
+    from discovery.profiles import lit_nominal
+    run = lambda q, w, n: {"q": q, "window_m": w, "windows": {"selected": n}}
+    runs = [run(0.5, 100.0, 859), run(0.6, 100.0, 7), run(0.5, 200.0, 2), run(0.6, 200.0, 0)]
+    assert lit_nominal(runs) == run(0.5, 100.0, 859)
+    assert lit_nominal(runs + [run(0.6, 500.0, 150)]) == run(0.6, 500.0, 150)
+    assert lit_nominal([run(0.6, 200.0, 120), run(0.7, 500.0, 500)])["window_m"] == 200.0   # the middle when enough
