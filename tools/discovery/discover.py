@@ -292,28 +292,38 @@ def _assess(key: str, cube: str, refs_path: str, rock_path: str, refined: dict) 
         for cid, out in res.items():
             for k, v in out["similarity"][t].items():
                 rows[int(cid)][f"{t}:{k}"] = v
-    cov_scale = "glo30-40m" if "glo30-40m" in win else "glo30-59m"
-    # requirements, suitability, coverage and confidence at the finest refined scale of the cell's tile
-    w = win[cov_scale]
+        for cid in set(rows) - {int(c) for c in res}:
+            rows[cid][f"{t}:screened_out"] = True
+    # requirements, suitability, coverage and confidence at the finest scale where the cell has windows
     reqs = [{"id": rid, **{k: v for k, v in rule.items() if k in ("param", "at_least", "at_most")}} for rid, rule in RULES.items()]
-    res = assess_cells({"cell": w["cell"], **{k: w[k] for k in ("slope_mean", "traversable_15", "traversable_20")}}, {}, reqs, None)
-    for sc, rule in SUITABILITY.items():
-        su = assess_cells({"cell": w["cell"], rule["param"]: w[rule["param"]]}, {}, [],
-                          {k: rule[k] for k in ("id", "param", "good", "bad")})
-        for cid, out in su.items():
-            rows[int(cid)][f"suitability_{sc}"] = out["suitability"]["median"]
-    cids, inv = np.unique(w["cell"], return_inverse=True)
-    n = np.bincount(inv)
-    valid = np.bincount(inv, weights=(np.isfinite(w["slope_mean"]) & ~w["masked"]).astype(float)).astype(int)
-    nm = np.bincount(inv, weights=w["masked"].astype(float)).astype(int)
-    nu = np.bincount(inv, weights=w["unknown"].astype(float)).astype(int)
-    for k, cid in enumerate(cids.tolist()):
-        r = rows[cid]
-        for rid, st in res[cid]["requirements"].items():
-            r[f"req:{rid}"] = st["status"]
-        r.update({"assessed_at": cov_scale, "windows": int(n[k]), "valid_unmasked": int(valid[k]), "masked": int(nm[k]),
-                  "cover_unknown": int(nu[k]), "masked_share": float(nm[k] / n[k]),
-                  "confidence": confidence(int(valid[k]), int(n[k]), int(nm[k]), int(nu[k]))})
+    done: set = set()
+    for cov_scale in ("glo30-40m", "glo30-59m"):
+        if cov_scale not in win:
+            continue
+        w0 = win[cov_scale]
+        sel = ~np.isin(w0["cell"], np.fromiter(done, np.int64, len(done)))
+        if not sel.any():
+            continue
+        w = {k: v[sel] for k, v in w0.items()}
+        res = assess_cells({"cell": w["cell"], **{k: w[k] for k in ("slope_mean", "traversable_15", "traversable_20")}}, {}, reqs, None)
+        for sc, rule in SUITABILITY.items():
+            su = assess_cells({"cell": w["cell"], rule["param"]: w[rule["param"]]}, {}, [],
+                              {k: rule[k] for k in ("id", "param", "good", "bad")})
+            for cid, out in su.items():
+                rows[int(cid)][f"suitability_{sc}"] = out["suitability"]["median"]
+        cids, inv = np.unique(w["cell"], return_inverse=True)
+        n = np.bincount(inv)
+        valid = np.bincount(inv, weights=(np.isfinite(w["slope_mean"]) & ~w["masked"]).astype(float)).astype(int)
+        nm = np.bincount(inv, weights=w["masked"].astype(float)).astype(int)
+        nu = np.bincount(inv, weights=w["unknown"].astype(float)).astype(int)
+        for k, cid in enumerate(cids.tolist()):
+            r = rows[cid]
+            for rid, st in res[cid]["requirements"].items():
+                r[f"req:{rid}"] = st["status"]
+            r.update({"assessed_at": cov_scale, "windows": int(n[k]), "valid_unmasked": int(valid[k]), "masked": int(nm[k]),
+                      "cover_unknown": int(nu[k]), "masked_share": float(nm[k] / n[k]),
+                      "confidence": confidence(int(valid[k]), int(n[k]), int(nm[k]), int(nu[k]))})
+            done.add(cid)
     return list(rows.values()), win
 
 
