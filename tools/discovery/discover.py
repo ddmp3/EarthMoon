@@ -297,9 +297,15 @@ def assess_all(tiles: dict, cube: str, refs_path: str, rock_path: str, out: str,
     return {"tiles": len(tiles), "cells": n_cells, "failed": failed, "hours": round((time.time() - t0) / 3600, 2)}
 
 
-def load_cells(path: str) -> dict:
+LOAD_COLUMNS = (["cell", "tile", "lat", "lon", "area_km2", "masked_share", "confidence", "suitability_A", "suitability_B",
+                 "req:base_slope", "req:climbing_limit_lrv", "req:climbing_limit_viper"]
+                + [f"{t}:median" for t in TARGET_SCALE])
+
+
+def load_cells(path: str, columns: list[str] | None = None) -> dict:
+    """The columns that zones, validation and dossiers use (all 50 columns of 6.7 M cells do not fit)."""
     import pyarrow.parquet as pq
-    t = pq.read_table(path)
+    t = pq.read_table(path, columns=columns or LOAD_COLUMNS)
     return {k: t.column(k).to_numpy(zero_copy_only=False) for k in t.column_names}
 
 

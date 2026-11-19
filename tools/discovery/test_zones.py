@@ -34,3 +34,18 @@ def test_zone_table_drops_zones_below_the_minimum_and_reports_area_and_centre():
     z = zone_table(lat, lon, area_km2=np.full(5, 25.0), min_cells=3)
     assert len(z) == 1 and z[0]["cells"] == 4 and z[0]["area_km2"] == 100.0
     assert abs(z[0]["lat"] - (-30.0 + 2.5 * KM)) < 1e-4          # spherical centre: within 11 m
+
+
+def _same_partition(a, b):
+    return len(set(zip(a.tolist(), b.tolist()))) == len(set(a.tolist())) == len(set(b.tolist()))
+
+
+def test_vectorised_connection_gives_the_same_zones_as_the_reference_on_random_cells():
+    from discovery.zones import connect_reference
+    rng = np.random.default_rng(3)
+    lat = np.concatenate([rng.uniform(-80, 80, 1500), 89.99 - rng.uniform(0, 0.08, 50)])
+    lon = np.concatenate([rng.uniform(-180, 180, 1500), rng.uniform(-180, 180, 50)])
+    lat = np.concatenate([lat, lat[:300] + rng.normal(0, 0.03, 300)])          # close pairs, so zones exist
+    lon = np.concatenate([lon, lon[:300] + rng.normal(0, 0.03, 300)])
+    fast, ref = connect(lat, lon), connect_reference(lat, lon)
+    assert _same_partition(fast, ref) and len(set(fast.tolist())) < lat.size
