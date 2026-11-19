@@ -347,6 +347,27 @@ def zones_for(cells: dict, scenario: str, target: str, tau: float, min_cells: in
     return rank_zones(out)
 
 
+def _candidate_index(cells: dict, scenario: str, target: str, tau: float) -> np.ndarray:
+    med = _num(cells.get(f"{target}:median", [None] * len(cells["cell"])))
+    elim = np.zeros(med.size, bool)
+    for r in ELIMINATING[scenario]:
+        elim |= np.asarray(cells.get(f"req:{r}", [None] * med.size)) == "failed"
+    return np.flatnonzero(candidates(med, elim, np.nan_to_num(_num(cells["masked_share"]), nan=1.0), tau))
+
+
+def zone_counts(cells: dict, scenario: str, target: str, tau: float, min_cells: tuple) -> dict:
+    """Number and area of zones for each minimum size, with one connection per tau (no per-zone statistics)."""
+    from discovery.zones import connect
+    idx = _candidate_index(cells, scenario, target, tau)
+    if idx.size == 0:
+        return {mc: {"zones": 0, "area_km2": 0.0} for mc in min_cells}
+    lab = connect(_num(cells["lat"])[idx], _num(cells["lon"])[idx])
+    _, inv, size = np.unique(lab, return_inverse=True, return_counts=True)
+    area = np.bincount(inv, weights=np.nan_to_num(_num(cells["area_km2"])[idx]))
+    return {mc: {"zones": int((size >= mc).sum()), "area_km2": round(float(area[size >= mc].sum()), 1)}
+            for mc in min_cells}
+
+
 def zones_command(run, top: int = 20) -> dict:
     import json
     cells = load_cells(str(run / "cells.parquet"))
@@ -354,8 +375,10 @@ def zones_command(run, top: int = 20) -> dict:
     for sc, targets in SCENARIO_TARGETS.items():
         allz, per = [], {}
         for t in targets:
-            grid = {f"tau={tau},min={mc}": (lambda z: {"zones": len(z), "area_km2": round(sum(x["area_km2"] for x in z), 1)})(
-                zones_for(cells, sc, t, tau, mc)) for tau in TAUS for mc in MIN_CELLS}
+            grid = {}
+            for tau in TAUS:
+                for mc, v in zone_counts(cells, sc, t, tau, MIN_CELLS).items():
+                    grid[f"tau={tau},min={mc}"] = v
             zs = zones_for(cells, sc, t, TAU, MIN)
             (run / f"zones-{sc}-{t}.json").write_text(json.dumps(zs, indent=1) + "\n")
             per[t] = {"grid": grid, "zones": len(zs), "top": [{k: v for k, v in z.items() if k != "cell_ids"} for z in zs[:top]]}

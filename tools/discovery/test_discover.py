@@ -87,3 +87,19 @@ def test_numeric_columns_are_used_as_they_are_and_object_columns_get_nan_for_nul
     f = np.array([1.0, np.nan])
     assert _num(f) is f
     assert np.isnan(_num(np.array([None, 2.0], dtype=object))[0]) and _num([None, 3])[1] == 3.0
+
+
+def test_light_zone_counts_equal_the_full_zone_computation():
+    from discovery.discover import zone_counts, zones_for
+    rng = np.random.default_rng(5)
+    n = 3000
+    lat = np.concatenate([rng.uniform(10, 11, n), [40.0]])
+    lon = np.concatenate([rng.uniform(20, 21, n), [40.0]])
+    cells = {"cell": np.array([f"c{i}" for i in range(n + 1)]), "tile": np.array(["10,20"] * (n + 1)),
+             "lat": lat, "lon": lon, "area_km2": np.full(n + 1, 25.0), "masked_share": rng.uniform(0, 0.7, n + 1),
+             "confidence": np.array(["high"] * (n + 1)), "moon-psr:median": rng.uniform(0, 1, n + 1)}
+    for tau in (0.5, 0.7, 0.9):
+        counts = zone_counts(cells, "A", "moon-psr", tau, (1, 3, 9))
+        for mc in (1, 3, 9):
+            full = zones_for(cells, "A", "moon-psr", tau, mc)
+            assert counts[mc] == {"zones": len(full), "area_km2": round(sum(z["area_km2"] for z in full), 1)}
