@@ -37,3 +37,12 @@ def test_rgb_png_and_world_map_rasterise_cells_in_their_pixel(tmp_path):
     write_png_rgb(p, img)
     b = p.read_bytes()
     assert b[:8] == b"\x89PNG\r\n\x1a\n" and b[25] == 2                   # colour type 2: RGB
+
+
+def test_dossier_outcome_rule_is_applied_in_a_fixed_order():
+    from discovery.dossier import outcome
+    assert outcome(windows=15, cells=3, masked_share=0.0, literature_match=True)[0] == "explained artefact"
+    assert "tile-edge" in outcome(15, 3, 0.0, True)[1]
+    assert outcome(100, 4, 0.36, True)[0] == "explained artefact" and "hidden ground" in outcome(100, 4, 0.36, True)[1]
+    assert outcome(35, 3, 0.0, True)[0] == "plausible"
+    assert outcome(35, 3, 0.0, None)[0] == "unknown"

@@ -49,6 +49,20 @@ def write_png(path: Path, img: np.ndarray) -> None:
     Path(path).write_bytes(png)
 
 
+def outcome(windows: int, cells: int, masked_share: float, literature_match) -> tuple[str, str]:
+    """Outcome of a dossier, by a rule fixed before writing any dossier (T43), in this order:
+    1. under 10 windows per cell on average: explained artefact (cells cut by 1° tile edges, a few windows each);
+    2. at least 20% of windows masked: explained artefact (the typical windows are remnants between hidden ground);
+    3. otherwise plausible when the literature describes matching relief, unknown when it says nothing."""
+    if windows / max(cells, 1) < 10:
+        return "explained artefact", "tile-edge fragments: cells cut by the 1° tile edges keep a few windows each"
+    if masked_share >= 0.2:
+        return "explained artefact", "remnants between hidden ground: the compared windows lie between masked fields, forest, water or buildings"
+    if literature_match:
+        return "plausible", "relief described in the literature matches the measured slope distribution"
+    return "unknown", "no literature found on the relief of this place"
+
+
 PALETTE = {0: (255, 255, 255), 1: (225, 225, 225), 2: (150, 150, 150), 3: (200, 30, 30)}   # sea, hidden, evaluated, zone
 
 
