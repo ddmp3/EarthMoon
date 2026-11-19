@@ -55,6 +55,7 @@ No new JavaScript dependency.
 ```
 apps/api/         API (Express, ES modules), scoring engine, source connectors, openapi.yaml
 apps/web/         React + TypeScript + Vite + Tailwind + Leaflet
+apps/discovery/   internal Python service (cells in view, custom queries), ADR-005
 data/             candidates.json, candidates-precomputed.json, reference/moon-south-pole.json, fixtures/
 docs/             short pages; plan/ (v3 plan and tasks); wiki/ (long material, mirrored to the GitHub wiki); history/
 infra/terraform/  Azure infrastructure + deploy.sh
@@ -73,6 +74,19 @@ tools/            precompute (offline data), validation (e2e, rankings, ui-audit
 
 Contract: [`apps/api/openapi.yaml`](../apps/api/openapi.yaml), live docs on `/api/docs`. Guide: [`apps/api/README.md`](../apps/api/README.md).
 
+v3 routes (T44, ADR-004). Every answer carries `release` and `methodology_version`; `?release=` reads a listed older release.
+
+| Route | Served from |
+|---|---|
+| `GET /api/v3/releases`, `/releases/{id}` | `index.json`, `release.json` (run, protocol, commit, processing, validation, grid) |
+| `GET /api/v3/profiles`, `/profiles/{id}`, `/scenarios`, `/scenarios/{id}`, `/method` | static JSON of the release |
+| `GET /api/v3/zones?scenario&env&tau&min_cells&limit&offset`, `/zones/{id}` | static JSON, one file per grid value |
+| `GET /api/v3/coverage?scenario&env` | land share per overlay class |
+| `GET /api/v3/layers/{scenario}/{env}/{typicality or coverage}/{z}/{x}/{y}.png` | PNG tiles, zoom 0 to 7 (own rate limit) |
+| `GET /api/v3/cells?scenario&env&bbox`, `POST /api/v3/query` | forwarded to `apps/discovery` (503 if it is down) |
+
+A release is written by `tools/discovery/release.py` (JSON and cells) and `tools/discovery/tiles.py` (tiles). Compose serves `data/releases-fixture` (synthetic test data) unless `EARTHMOON_RELEASES` points to a real releases folder.
+
 ## Data files
 
 - `data/candidates.json`: `{ id, name, lat, lon, terrain, role, note?, known_for? }`. `role` is `validation` (known analog), `negative` (control) or `candidate` (site to validate).
@@ -81,7 +95,7 @@ Contract: [`apps/api/openapi.yaml`](../apps/api/openapi.yaml), live docs on `/ap
 
 ## Quality gate
 
-`tools/check.sh [api|web|python|e2e|all]` runs, in pinned Docker images:
+`tools/check.sh [api|web|python|discovery|e2e|all]` runs, in pinned Docker images:
 - types (strict), lint and unit tests;
 - the API contract drift check, the Markdown link check and the dependency audit;
 - `docker compose up --build`, the end-to-end tests and the browser audit (desktop and phone).
