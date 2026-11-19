@@ -22,9 +22,44 @@ TAU, MIN = 0.5, 3
 REACH_KM = 3.6
 
 
-def candidates(median: np.ndarray, eliminated: np.ndarray, masked_share: np.ndarray, tau: float) -> np.ndarray:
+def candidates(median: np.ndarray, eliminated: np.ndarray, masked_share: np.ndarray, tau: float,
+               confidence: np.ndarray | None = None) -> np.ndarray:
+    """Protocol v2 rule; with `confidence` (protocol v3) a candidate must also have high confidence."""
     m = np.asarray(median, float)
-    return np.isfinite(m) & (np.nan_to_num(m) >= tau) & ~np.asarray(eliminated, bool) & (np.asarray(masked_share) < 0.5)
+    out = np.isfinite(m) & (np.nan_to_num(m) >= tau) & ~np.asarray(eliminated, bool) & (np.asarray(masked_share) < 0.5)
+    if confidence is not None:
+        out &= np.asarray(confidence, dtype=object) == "high"
+    return out
+
+
+# protocol v3: one global equal-area grid of 5 km cells (EASE-Grid 2.0), so that no cell is cut by a tile edge
+EASE = "EPSG:6933"
+CELL_M = 5000.0
+
+
+def global_cell(lat: np.ndarray, lon: np.ndarray, cell_m: float = CELL_M) -> np.ndarray:
+    """Integer id of the 5 km EASE-Grid 2.0 cell holding each point."""
+    from rasterio.warp import transform
+    x, y = transform("EPSG:4326", EASE, np.asarray(lon, float).tolist(), np.asarray(lat, float).tolist())
+    ix = np.floor(np.array(x) / cell_m).astype(np.int64) + 4_000_000
+    iy = np.floor(np.array(y) / cell_m).astype(np.int64) + 4_000_000
+    return ix * 10_000_000 + iy
+
+
+def cell_centre(cell: np.ndarray, cell_m: float = CELL_M) -> tuple[np.ndarray, np.ndarray]:
+    from rasterio.warp import transform
+    c = np.asarray(cell, np.int64)
+    x = ((c // 10_000_000) - 4_000_000 + 0.5) * cell_m
+    y = ((c % 10_000_000) - 4_000_000 + 0.5) * cell_m
+    lon, lat = transform(EASE, "EPSG:4326", x.tolist(), y.tolist())
+    return np.array(lat), np.array(lon)
+
+
+def owner_tile(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
+    """The 1° tile holding each cell centre: the only tile that assesses that cell."""
+    la = np.floor(np.asarray(lat, float)).astype(int)
+    lo = np.floor((np.asarray(lon, float) + 180) % 360 - 180).astype(int)
+    return np.array([f"{a},{b}" for a, b in zip(la, lo)], dtype=object)
 
 
 def rank_zones(zones: list[dict]) -> list[dict]:

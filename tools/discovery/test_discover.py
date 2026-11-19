@@ -103,3 +103,23 @@ def test_light_zone_counts_equal_the_full_zone_computation():
         for mc in (1, 3, 9):
             full = zones_for(cells, "A", "moon-psr", tau, mc)
             assert counts[mc] == {"zones": len(full), "area_km2": round(sum(z["area_km2"] for z in full), 1)}
+
+
+def test_global_cells_join_windows_across_a_tile_edge_and_have_one_owner_tile():
+    from discovery.discover import cell_centre, global_cell, owner_tile
+    lat, lon = np.array([10.5, 10.5]), np.array([19.995, 20.002])  # EASE x/5000: 385.85 and 385.98, one cell across 20°E
+    c = global_cell(lat, lon)
+    assert c[0] == c[1]                                                     # protocol v3: one cell, not two parts
+    clat, clon = cell_centre(c[:1])
+    assert abs(clat[0] - 10.5) < 0.05 and abs(clon[0] - 20.0) < 0.05
+    assert owner_tile(clat, clon)[0] in ("10,19", "10,20")
+    far = global_cell(np.array([10.5]), np.array([20.2]))
+    assert far[0] != c[0]
+
+
+def test_protocol_v3_candidates_must_have_high_confidence():
+    med = np.array([0.8, 0.8, 0.8])
+    conf = np.array(["high", "medium", "low"], dtype=object)
+    out = candidates(med, np.zeros(3, bool), np.zeros(3), 0.5, confidence=conf)
+    assert out.tolist() == [True, False, False]
+    assert candidates(med, np.zeros(3, bool), np.zeros(3), 0.5).tolist() == [True, True, True]   # v2 behaviour kept
