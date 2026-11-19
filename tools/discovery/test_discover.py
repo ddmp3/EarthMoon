@@ -71,3 +71,12 @@ def test_tile_rows_are_written_with_the_fixed_schema_and_missing_columns_are_nul
     assert t.schema.equals(CELL_SCHEMA)
     assert t.column("moon-psr:median").to_pylist() == [0.7, None]
     assert t.column("moon-mare-plains:median").to_pylist() == [None, None]
+
+
+def test_a_tile_is_read_only_at_the_scales_where_this_run_refined_it(tmp_path):
+    from discovery.discover import refined_scales
+    a, b = tmp_path / "tiles-refine-glo30-40m.txt", tmp_path / "tiles-refine-glo30-59m.txt"
+    a.write_text("1,2\n3,4\n")
+    b.write_text("3,4\n")
+    by_tile = refined_scales([str(a), str(b)])
+    assert by_tile == {"1,2": ["glo30-40m"], "3,4": ["glo30-40m", "glo30-59m"]}

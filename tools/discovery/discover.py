@@ -140,7 +140,19 @@ def window_masks(w: dict, ctx: dict) -> tuple[np.ndarray, np.ndarray]:
     return masked, unknown
 
 
-def assess_tile(key: str, cube: str, refs_path: str, rock_path: str) -> list[dict]:
+def refined_scales(lists: list[str]) -> dict:
+    """Tile -> the scales at which this run refined it, from the screening lists (tiles-refine-<scale>.txt).
+    Files of other scales may exist from an earlier run with other code: they are never read."""
+    from pathlib import Path
+    out: dict = {}
+    for f in lists:
+        scale = next(sc for sc in SCALES if sc in Path(f).name)
+        for k in Path(f).read_text().split():
+            out.setdefault(k.strip(), []).append(scale)
+    return {k: sorted(v) for k, v in out.items()}
+
+
+def assess_tile(key: str, cube: str, refs_path: str, rock_path: str, scales: list[str] | None = None) -> list[dict]:
     """Rows of every cell of one tile: similarity per target, requirements, suitability, coverage, confidence."""
     import pyarrow.parquet as pq
     from pathlib import Path
@@ -152,7 +164,7 @@ def assess_tile(key: str, cube: str, refs_path: str, rock_path: str) -> list[dic
     name = tile_name(la, lo, "glo30")
     rows: dict = {}
     win = {}
-    for scale in SCALES:
+    for scale in (scales if scales is not None else SCALES):
         f = Path(cube) / scale / f"{name}.windows.parquet"
         if f.exists():
             t = pq.read_table(f, columns=WCOLS)
@@ -232,9 +244,9 @@ def write_rows(path, rows: list[dict]) -> int:
     return len(rows)
 
 
-def assess_tile_to_file(key: str, cube: str, refs_path: str, rock_path: str, outdir: str) -> int:
+def assess_tile_to_file(key: str, cube: str, refs_path: str, rock_path: str, outdir: str, scales: list[str]) -> int:
     from pathlib import Path
-    rows = assess_tile(key, cube, refs_path, rock_path)
+    rows = assess_tile(key, cube, refs_path, rock_path, scales)
     return write_rows(Path(outdir) / f"{key.replace(',', '_')}.parquet", rows) if rows else 0
 
 
@@ -257,7 +269,7 @@ def build_refs(profiles_windows: str, pits_json: str, out: str) -> dict:
     return {t: int(v.size) for t, v in refs.items()}
 
 
-def assess_all(tiles: list[str], cube: str, refs_path: str, rock_path: str, out: str, workers: int) -> dict:
+def assess_all(tiles: dict, cube: str, refs_path: str, rock_path: str, out: str, workers: int) -> dict:
     """Each worker writes the cells of its tile to its own file; the files are then joined by streaming, so
     memory stays flat (keeping millions of rows as Python dicts ran out of memory)."""
     import time
@@ -265,10 +277,13 @@ def assess_all(tiles: list[str], cube: str, refs_path: str, rock_path: str, out:
     from pathlib import Path
     import pyarrow.parquet as pq
     parts = Path(out).parent / "cells-parts"
+    if parts.exists():
+        import shutil
+        shutil.rmtree(parts)                                       # never mix parts of two assessments
     parts.mkdir(parents=True, exist_ok=True)
     n_cells, failed, t0 = 0, [], time.time()
     with ProcessPoolExecutor(max_workers=workers) as pool:
-        futs = {pool.submit(assess_tile_to_file, k, cube, refs_path, rock_path, str(parts)): k for k in tiles}
+        futs = {pool.submit(assess_tile_to_file, k, cube, refs_path, rock_path, str(parts), sc): k for k, sc in tiles.items()}
         for n, f in enumerate(as_completed(futs), 1):
             try:
                 n_cells += f.result()
@@ -365,7 +380,7 @@ def main(argv=None) -> int:
         for sc, v in out["scenarios"].items():
             print(sc, {t: x["zones"] for t, x in v["targets"].items()}, "dossiers", len(v["dossier_zones"]))
     else:
-        tiles = sorted({x.strip() for f in a.tiles for x in Path(f).read_text().split()})
+        tiles = refined_scales(a.tiles)
         out = assess_all(tiles, a.cube, str(run / "refs.npz"), a.rock, str(run / "cells.parquet"), a.workers)
         (run / "assess.json").write_text(json.dumps(out, indent=1) + "\n")
         print(json.dumps({k: v for k, v in out.items() if k != "failed"}), "failed", len(out["failed"]))
