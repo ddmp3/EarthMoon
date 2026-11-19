@@ -18,6 +18,8 @@ export type ServerConfig = {
   /** If true: sample values (data/fixtures) instead of the real sources. Never for the demo. */
   useFixtures: boolean;
   rateLimitPerMinute: number;
+  /** Folder of the v3 releases (index.json and one folder per release). */
+  releasesDir: string;
 };
 
 export function readConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
@@ -33,5 +35,6 @@ export function readConfig(env: NodeJS.ProcessEnv = process.env): ServerConfig {
     allowedOrigins: [...new Set(origins)],
     useFixtures: env.USE_FIXTURES === "1" || env.USE_FIXTURES === "true",
     rateLimitPerMinute: Number(env.RATE_LIMIT_PER_MINUTE ?? 120),
+    releasesDir: env.RELEASES_DIR ?? path.join(env.DATA_DIR ?? path.join(REPO_ROOT, "data"), "releases"),
   };
 }

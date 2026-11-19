@@ -2,6 +2,7 @@ import { createApp } from "./app.js";
 import { readConfig } from "./config.js";
 import { loadMoonReference, loadOpenApi, loadSites } from "./load.js";
 import { buildSources } from "../sources/index.js";
+import { ReleaseStore } from "../v3/store.js";
 
 const log = (message: string, error?: unknown): void => {
   const detail = error instanceof Error ? ` (${error.name}: ${error.message})` : "";
@@ -14,6 +15,10 @@ async function main(): Promise<void> {
   const sources = await buildSources(config.dataDir, config.useFixtures);
   sources.notes.forEach((note) => log(note));
   if (sites.length === 0) log("No site loaded: /api/analyze will return an empty list");
+  const releases = await ReleaseStore.open(config.releasesDir).catch((error: unknown) => {
+    log(`No v3 release in ${config.releasesDir}: /api/v3 answers 503`, error);
+    return undefined;
+  });
 
   const app = createApp({
     sites,
@@ -28,6 +33,7 @@ async function main(): Promise<void> {
     rateLimitPerMinute: config.rateLimitPerMinute,
     onConnectorError: (error, site) => log(`connector failed for ${site.id}`, error),
     log,
+    ...(releases ? { releases } : {}),
   });
 
   const server = app.listen(config.port, "0.0.0.0", () => {

@@ -391,10 +391,539 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/releases": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Current release and the last 3 (ADR-009) */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Release index */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ReleaseIndex"];
+                    };
+                };
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/releases/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One release with its run, protocol, commit, processing chain, validation and grid */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Release manifest */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/profiles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Lunar environment profiles (specs and computed distributions) */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Profiles */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/profiles/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One lunar environment profile */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Profile */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/scenarios": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Scenarios with their targets, requirements, suitability and what they cannot assess */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Scenarios */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/scenarios/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** One scenario */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Scenario */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/zones": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Candidate zones of one scenario and target, ranked, for one value of the sensitivity grid
+         * @description `tau` and `min_cells` accept only the values of the release grid (`/api/v3/releases/{id}`, `grid`); without them the nominal values are used. A grid value that was not exported is 404, never an empty list. A target with no Earth assessment (for example a 5 m lunar window) is 400 with the reason.
+         */
+        get: {
+            parameters: {
+                query: {
+                    scenario: components["parameters"]["Scenario"];
+                    /** @description Lunar target environment of the scenario */
+                    env: components["parameters"]["Env"];
+                    tau?: number;
+                    /** @description Minimum zone size in 5 km cells */
+                    min_cells?: number;
+                    limit?: number;
+                    offset?: number;
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description One page of zones */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ZonePage"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/zones/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Zone card, with spread, requirements, coverage of its cells, Monte Carlo and what Earth cannot reproduce */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path: {
+                    /** @description For example B.moon-psr.t0.5.m3.12 */
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Zone */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ZoneDetail"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/coverage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Share of land in each coverage overlay class for one scenario and target */
+        get: {
+            parameters: {
+                query: {
+                    scenario: components["parameters"]["Scenario"];
+                    /** @description Lunar target environment of the scenario */
+                    env: components["parameters"]["Env"];
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Coverage shares */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Coverage"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/method": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Data and method panel - sources from the catalogues with their status, and the processing chain */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Sources and processing */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Method"];
+                    };
+                };
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** @description Every v3 response carries the release and the methodology version. */
+        V3Doc: {
+            /** @example r-0a1b2c3d */
+            release: string;
+            /** @example v3 */
+            methodology_version: string;
+        } & {
+            [key: string]: unknown;
+        };
+        ReleaseIndex: {
+            current: string;
+            releases: {
+                id: string;
+                run: string;
+                methodology_version: string;
+                protocol: string;
+                commit: string;
+                created: string;
+            }[];
+        };
+        Spread: {
+            median: number;
+            p25: number;
+            p75: number;
+        };
+        Zone: {
+            id: string;
+            rank: number;
+            scenario: string;
+            target: string;
+            lat: number;
+            lon: number;
+            cells: number;
+            area_km2: number;
+            typicality: components["schemas"]["Spread"];
+            high_confidence_share: number;
+            requirements: {
+                [key: string]: {
+                    met?: number;
+                    failed?: number;
+                    unknown?: number;
+                };
+            };
+            suitability_median?: number | null;
+            coverage: {
+                windows: number;
+                valid_unmasked: number;
+                cover_unknown: number;
+                cells_by_confidence: {
+                    high?: number;
+                    medium?: number;
+                    low?: number;
+                };
+            };
+            /** @description null when the Monte Carlo was not run for this grid value (only the nominal value is run) */
+            monte_carlo: {
+                top_decile_share?: number;
+            } | null;
+            tiles?: string[];
+        };
+        ZonePage: components["schemas"]["V3Doc"] & {
+            scenario: string;
+            env: string;
+            tau: number;
+            min_cells: number;
+            total: number;
+            offset: number;
+            limit: number;
+            zones: components["schemas"]["Zone"][];
+        };
+        ZoneDetail: components["schemas"]["V3Doc"] & {
+            zone: components["schemas"]["Zone"];
+            cannot_assess: string[];
+        };
+        CoverageClass: {
+            km2: number;
+            share: number | null;
+            meaning: string;
+        };
+        Coverage: components["schemas"]["V3Doc"] & {
+            scenario: string;
+            env: string;
+            coverage: {
+                land_km2: number;
+                /** @description screened_out, no_data, ground_hidden, partial, low_confidence, evaluated */
+                classes: {
+                    [key: string]: components["schemas"]["CoverageClass"];
+                };
+            };
+        };
+        Method: components["schemas"]["V3Doc"] & {
+            sources: ({
+                id: string;
+                /** @description catalogue status, or 'not in catalogue' */
+                status: string;
+                verified_on?: string | null;
+            } & {
+                [key: string]: unknown;
+            })[];
+            processing: {
+                [key: string]: unknown;
+            }[];
+        };
         /** @enum {string} */
         ParamId: "slope_mean" | "slope_max" | "roughness" | "elevation" | "ndvi" | "lst_day" | "lst_night" | "lst_amplitude" | "t2m_mean" | "t2m_min" | "t2m_max" | "wind" | "humidity" | "precipitation" | "solar" | "latitude_abs" | "quake_count" | "volcano_distance" | "slope_p95" | "roughness_detrended" | "traversable_15" | "traversable_20" | "traversable_25" | "specific_humidity" | "quake_m45_count" | "lava_tube_evidence";
         /** @enum {string} */
@@ -616,8 +1145,42 @@ export interface components {
             error: string;
         };
     };
-    responses: never;
-    parameters: never;
+    responses: {
+        /** @description Invalid query */
+        BadRequest: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+        /** @description Unknown id, or not exported in this release */
+        NotFound: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+        /** @description No v3 release installed on this server */
+        NoRelease: {
+            headers: {
+                [name: string]: unknown;
+            };
+            content: {
+                "application/json": components["schemas"]["Error"];
+            };
+        };
+    };
+    parameters: {
+        /** @description A release id listed by /api/v3/releases (default the current one) */
+        Release: string;
+        Scenario: string;
+        /** @description Lunar target environment of the scenario */
+        Env: string;
+    };
     requestBodies: never;
     headers: never;
     pathItems: never;
