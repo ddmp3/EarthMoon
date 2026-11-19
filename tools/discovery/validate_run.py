@@ -27,7 +27,7 @@ from discovery.discover import (MIN, SCENARIO_TARGETS, TARGET_SCALE, TAU, _num, 
 
 ROOT = Path(__file__).resolve().parents[2]
 SEED, RUNS, SIGMA, SAMPLE = 20261119, 500, 0.5, 200_000
-MC_PARALLEL = 2
+MC_PARALLEL = 1                                                     # two large targets exceeded the 15 GB Docker VM
 
 
 # --- pure part (tested) ------------------------------------------------------------------------------------
@@ -239,18 +239,36 @@ def _mc_target(args) -> dict:
     return out
 
 
+def mc_done(run: Path, t: str) -> dict | None:
+    """Summary of a target whose zone files all carry their Monte Carlo share (a resumed run skips it), else None."""
+    out = {}
+    for sc, ts in SCENARIO_TARGETS.items():
+        if t not in ts:
+            continue
+        zs = json.loads((Path(run) / f"zones-{sc}-{t}.json").read_text())
+        if any("mc_top_decile_share" not in z for z in zs):
+            return None
+        out[f"{sc}:{t}"] = {"zones": len(zs), "stable_zones_90pct": sum(z["mc_top_decile_share"] >= 0.9 for z in zs),
+                            "from_files": True}
+    return out
+
+
 def monte_carlo(run: Path, cells: dict, cube: Path, refs_path: str, rock_path: str) -> dict:
     """Zone cells and a fixed sample of 200,000 evaluated cells per target, under 500 noise draws; one process
     per target. Seeds: sample drawn with [SEED, k, 0], noise with [SEED, k], k the target's index in sorted order."""
     from concurrent.futures import ProcessPoolExecutor
     targets = sorted(TARGET_SCALE)
     jobs = []
+    out = {}
     for k, t in enumerate(targets):
+        done = mc_done(run, t)
+        if done:                                                      # resumed: same seeds, same result
+            out.update(done)
+            continue
         med = _num(cells.get(f"{t}:median", [None] * len(cells["cell"])))
         idx = np.flatnonzero(np.isfinite(med))
         pick = np.random.default_rng([SEED, k, 0]).choice(idx, size=min(SAMPLE, idx.size), replace=False)
         jobs.append((t, k, str(run), str(cube), refs_path, rock_path, sorted(np.asarray(cells["cell"])[pick].tolist())))
-    out = {}
     import multiprocessing
     # spawned workers start empty: forked ones copied the parent's 6.7 M-row cell table (OOM, 19/11/2026)
     with ProcessPoolExecutor(max_workers=MC_PARALLEL, mp_context=multiprocessing.get_context("spawn")) as pool:
