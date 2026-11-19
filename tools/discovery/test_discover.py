@@ -93,11 +93,14 @@ def test_light_zone_counts_equal_the_full_zone_computation():
     from discovery.discover import zone_counts, zones_for
     rng = np.random.default_rng(5)
     n = 3000
-    lat = np.concatenate([rng.uniform(10, 11, n), [40.0]])
-    lon = np.concatenate([rng.uniform(20, 21, n), [40.0]])
-    cells = {"cell": np.array([f"c{i}" for i in range(n + 1)]), "tile": np.array(["10,20"] * (n + 1)),
+    from discovery.discover import cell_centre, global_cell
+    ids = np.unique(global_cell(np.concatenate([rng.uniform(10, 10.5, n), [40.0]]),
+                                np.concatenate([rng.uniform(20, 20.5, n), [40.0]])))
+    lat, lon = cell_centre(ids)
+    n = ids.size - 1
+    cells = {"cell": ids.astype(str), "tile": np.array(["10,20"] * (n + 1)),
              "lat": lat, "lon": lon, "area_km2": np.full(n + 1, 25.0), "masked_share": rng.uniform(0, 0.7, n + 1),
-             "confidence": np.array(["high"] * (n + 1)), "moon-psr:median": rng.uniform(0, 1, n + 1)}
+             "confidence": rng.choice(["high", "medium"], n + 1), "moon-psr:median": rng.uniform(0, 1, n + 1)}
     for tau in (0.5, 0.7, 0.9):
         counts = zone_counts(cells, "A", "moon-psr", tau, (1, 3, 9))
         for mc in (1, 3, 9):
@@ -106,15 +109,33 @@ def test_light_zone_counts_equal_the_full_zone_computation():
 
 
 def test_global_cells_join_windows_across_a_tile_edge_and_have_one_owner_tile():
+    """Protocol v3: one HEALPix cell, not two parts cut by the 1° tile edge."""
     from discovery.discover import cell_centre, global_cell, owner_tile
-    lat, lon = np.array([10.5, 10.5]), np.array([19.995, 20.002])  # EASE x/5000: 385.85 and 385.98, one cell across 20°E
+    from discovery.healpix import NSIDE, ang2pix, pix2ang
+    c0 = ang2pix(NSIDE, 10.5, 20.0)                                          # the cell holding the point 10.5°N 20°E
+    clat, clon = pix2ang(NSIDE, c0)
+    lat = np.full(2, clat[0])
+    lon = clon[0] + np.array([-0.015, 0.015])                                # 3 km apart, inside that 5 km cell
     c = global_cell(lat, lon)
-    assert c[0] == c[1]                                                     # protocol v3: one cell, not two parts
-    clat, clon = cell_centre(c[:1])
-    assert abs(clat[0] - 10.5) < 0.05 and abs(clon[0] - 20.0) < 0.05
-    assert owner_tile(clat, clon)[0] in ("10,19", "10,20")
-    far = global_cell(np.array([10.5]), np.array([20.2]))
-    assert far[0] != c[0]
+    assert c[0] == c[1] == c0[0]
+    blat, blon = cell_centre(c[:1])
+    assert abs(blat[0] - 10.5) < 0.05 and abs(blon[0] - 20.0) < 0.05
+    assert owner_tile(blat, blon)[0] in ("10,19", "10,20")
+    assert global_cell(np.array([10.5]), np.array([20.2]))[0] != c[0]
+
+
+def test_global_cells_keep_their_shape_near_the_poles():
+    """Windows 1 km apart near 80°S stay in compact cells: no cell spans more than about 10 km."""
+    from discovery.discover import cell_centre, global_cell
+    lat, lon = np.meshgrid(np.linspace(-80.2, -79.8, 45), np.linspace(10, 12.3, 45), indexing="ij")
+    c = global_cell(lat.ravel(), lon.ravel())
+    span = []
+    for k in np.unique(c):
+        m = c == k
+        km_n = (lat.ravel()[m].max() - lat.ravel()[m].min()) * 111.2
+        km_e = (lon.ravel()[m].max() - lon.ravel()[m].min()) * 111.2 * np.cos(np.radians(80))
+        span.append(max(km_n, km_e))
+    assert max(span) < 10.0
 
 
 def test_protocol_v3_candidates_must_have_high_confidence():
@@ -123,3 +144,84 @@ def test_protocol_v3_candidates_must_have_high_confidence():
     out = candidates(med, np.zeros(3, bool), np.zeros(3), 0.5, confidence=conf)
     assert out.tolist() == [True, False, False]
     assert candidates(med, np.zeros(3, bool), np.zeros(3), 0.5).tolist() == [True, True, True]   # v2 behaviour kept
+
+
+def _cube(tmp_path, tiles):
+    """Synthetic 40 m cube: windows on a 1 km grid, each tile holding the windows inside its 1° square."""
+    import json
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from discovery.compare import MASK_CLASSES
+    from discovery.copernicus import tile_name
+    rng = np.random.default_rng(7)
+    (tmp_path / "glo30-40m").mkdir()
+    lat, lon = np.meshgrid(np.arange(10.40, 10.60, 0.009), np.arange(19.90, 20.10, 0.009), indexing="ij")
+    lat, lon = lat.ravel(), lon.ravel()
+    for key in tiles:
+        la, lo = (int(v) for v in key.split(","))
+        m = (np.floor(lat) == la) & (np.floor(lon) == lo)
+        n = int(m.sum())
+        cols = {"i": np.arange(n), "j": np.zeros(n, int), "lat": lat[m], "lon": lon[m],
+                "slope_mean": rng.uniform(0, 20, n), "traversable_15": rng.uniform(0, 1, n),
+                "traversable_20": rng.uniform(0, 1, n), "wc_covered": np.ones(n)}
+        cols.update({c: np.zeros(n) for c in MASK_CLASSES})
+        pq.write_table(pa.table(cols), tmp_path / "glo30-40m" / f"{tile_name(la, lo, 'glo30')}.windows.parquet")
+    from discovery.discover import TARGET_SCALE
+    np.savez(tmp_path / "refs.npz", **{t: np.sort(rng.uniform(0, 20, 500)) for t in TARGET_SCALE})
+    np.save(tmp_path / "rock.npy", np.zeros((2, 2), "uint8"))
+    (tmp_path / "rock.json").write_text(json.dumps({"transform": [1, 0, 0, 0, -1, 0]}))
+    return lat, lon
+
+
+def test_v3_assessment_gives_each_global_cell_once_with_its_windows_from_both_sides_of_a_tile_edge(tmp_path):
+    import discovery.discover as d
+    from discovery.healpix import NSIDE, ang2pix
+    lat, lon = _cube(tmp_path, ["10,19", "10,20"])
+    d._CTX.clear()
+    refined = {"10,19": ["glo30-40m"], "10,20": ["glo30-40m"]}
+    rows = []
+    for key in ("10,19", "10,20"):
+        rows += d.assess_tile(key, str(tmp_path), str(tmp_path / "refs.npz"), str(tmp_path / "rock"),
+                              {k: v for k, v in refined.items() if k in d.neighbour_keys(key)})
+    ids = [r["cell"] for r in rows]
+    assert len(ids) == len(set(ids))                                         # one owner per cell
+    cell = ang2pix(NSIDE, lat, lon)
+    edge = np.unique(cell[lon < 20])[np.isin(np.unique(cell[lon < 20]), cell[lon >= 20])]
+    assert edge.size > 0                                                      # cells that straddle 20°E
+    by = {r["cell"]: r for r in rows}
+    inner = (lat > 10.45) & (lat < 10.55)
+    checked = 0
+    for c in edge:
+        if not inner[cell == c].all():
+            continue                                                          # cells cut by the synthetic area itself
+        r = by[str(c)]
+        assert r["windows"] == int((cell == c).sum())                         # windows of both tiles
+        assert r["moon-psr:windows"] == r["windows"]
+        assert abs(r["area_km2"] - 25.035) < 0.01
+        checked += 1
+    assert checked >= 1
+
+
+def test_tiles_next_to_refined_tiles_own_cells_too():
+    import discovery.discover as d
+    keys = d.assessed_keys({"10,20": ["glo30-40m"]})
+    assert {"9,19", "10,19", "11,21", "10,20"} <= set(keys) and len(keys) == 9
+    assert "80,0" in d.neighbour_keys("80,1") and "80,4" not in d.neighbour_keys("80,1")
+    assert len(d.assessed_keys({"89,0": ["glo30-40m"]})) > 9                 # near the pole a cell spans many tiles
+
+
+def test_window_tiles_hold_every_point_of_the_cells():
+    """The tiles to recompute for a cell (checks.py): every point of the cell lies in one of them."""
+    from discovery.discover import global_cell, window_tiles
+    from discovery.healpix import NSIDE, ang2pix, pix2ang
+    rng = np.random.default_rng(9)
+    for lat0, lon0 in ((10.0, 20.0), (-79.99, 0.0), (45.5, 179.99), (88.7, 33.0)):
+        c = ang2pix(NSIDE, lat0, lon0)
+        la, lo = pix2ang(NSIDE, c)
+        plat = la[0] + rng.uniform(-0.1, 0.1, 20000)
+        plon = lo[0] + rng.uniform(-1, 1, 20000) * min(180, 0.1 / np.cos(np.radians(min(89.9, abs(la[0]) + 0.1))))
+        plat = np.clip(plat, -89.999, 89.999)
+        inside = global_cell(plat, plon) == c[0]
+        assert inside.sum() > 50
+        tiles = {f"{int(np.floor(a))},{int(np.floor((b + 180) % 360 - 180))}" for a, b in zip(plat[inside], plon[inside])}
+        assert tiles <= set(window_tiles([str(c[0])])), (lat0, lon0)

@@ -78,7 +78,31 @@ def connect(lat: np.ndarray, lon: np.ndarray, link_km: float = LINK_KM) -> np.nd
                 dst.append(j[keep])
     a = np.concatenate(src) if src else np.zeros(0, int)
     b = np.concatenate(dst) if dst else np.zeros(0, int)
+    return components(n, a, b)
+
+
+def connect_cells(cells: np.ndarray) -> np.ndarray:
+    """Zone label of each global cell (protocol v3): cells join when they are HEALPix neighbours (8, or 7 at the
+    24 corner cells of the grid). No distance threshold, so the result does not depend on latitude."""
+    from discovery.healpix import NSIDE, neighbours
+    cells = np.asarray(cells, np.int64)
+    n = cells.size
+    if n == 0:
+        return np.zeros(0, int)
+    order = np.argsort(cells)
+    sc = cells[order]
+    nb = neighbours(NSIDE, cells)
+    pos = np.clip(np.searchsorted(sc, nb), 0, n - 1)
+    hit = (nb >= 0) & (sc[pos] == nb)
+    i = np.repeat(np.arange(n), 8).reshape(n, 8)[hit]
+    return components(n, i, order[pos[hit]])
+
+
+def components(n: int, a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """Connected components of n nodes and the edges (a, b): minimum-label propagation with pointer jumping."""
     lab = np.arange(n)
+    if a.size == 0:
+        return lab
     while True:
         m = np.minimum(lab[a], lab[b])
         new = lab.copy()
@@ -92,11 +116,13 @@ def connect(lat: np.ndarray, lon: np.ndarray, link_km: float = LINK_KM) -> np.nd
         lab = new
 
 
-def zone_table(lat: np.ndarray, lon: np.ndarray, area_km2: np.ndarray, min_cells: int) -> list[dict]:
+def zone_table(lat: np.ndarray, lon: np.ndarray, area_km2: np.ndarray, min_cells: int,
+               cells: np.ndarray | None = None) -> list[dict]:
     """Zones of at least min_cells cells: cell indices, cell count, area, centre (mean of cell centres).
+    With global cell ids (protocol v3) cells join as HEALPix neighbours, otherwise by distance (v2).
     Grouped by sorting labels; zones below min_cells are dropped before any loop."""
     lat, lon, area_km2 = np.asarray(lat, float), np.asarray(lon, float), np.asarray(area_km2, float)
-    lab = connect(lat, lon)
+    lab = connect(lat, lon) if cells is None else connect_cells(cells)
     if lab.size == 0:
         return []
     order = np.argsort(lab, kind="stable")

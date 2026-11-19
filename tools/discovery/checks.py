@@ -55,23 +55,27 @@ def _nasadem(grid, la: int, lo: int) -> np.ndarray:
 
 def zone_values(zone: dict, target: str, ref: np.ndarray, source: str, pixel: float, have: set, cache: Path) -> float:
     from discovery.compare import cell_medians, percentile_typicality
-    from discovery.copernicus import tile_name
     from discovery.cube import compute_tile, read_dem
+    from discovery.discover import global_cell, window_tiles
     from discovery.grid import tile_grid
-    cells = set(zone["cell_ids"])
-    meds = []
-    for key in zone["tiles"]:
+    cells = np.asarray(zone["cell_ids"]).astype(np.int64)
+    cid_all, slope_all = [], []
+    for key in window_tiles(zone["cell_ids"]):                       # protocol v3: a cell may span tiles
         la, lo = (int(v) for v in key.split(","))
+        if (la, lo) not in have:
+            continue                                                  # no Copernicus tile: sea, no windows
         g = tile_grid(la, lo, pixel, 1000.0)
         z = _nasadem(g, la, lo) if source == "nasadem" else read_dem(g, "glo30", have, cache)[0]
         w, _ = compute_tile(z, g)
-        name = tile_name(la, lo, "glo30")
-        cid = np.array([f"{name}:{i}:{j}" for i, j in zip(w["i"], w["j"])])
-        keep = np.isin(cid, list(cells))
-        if keep.any():
-            _, m = cell_medians(percentile_typicality(np.asarray(w["slope_mean"])[keep], ref), cid[keep])
-            meds.extend(m[np.isfinite(m)].tolist())
-    return float(np.median(meds)) if meds else float("nan")
+        cid = global_cell(np.asarray(w["lat"]), np.asarray(w["lon"]))
+        keep = np.isin(cid, cells)
+        cid_all.append(cid[keep])
+        slope_all.append(np.asarray(w["slope_mean"])[keep])
+    if not cid_all or not np.concatenate(cid_all).size:
+        return float("nan")
+    _, m = cell_medians(percentile_typicality(np.concatenate(slope_all), ref), np.concatenate(cid_all))
+    m = m[np.isfinite(m)]
+    return float(np.median(m)) if m.size else float("nan")
 
 
 def main(argv=None) -> int:

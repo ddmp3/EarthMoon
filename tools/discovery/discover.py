@@ -32,27 +32,19 @@ def candidates(median: np.ndarray, eliminated: np.ndarray, masked_share: np.ndar
     return out
 
 
-# protocol v3: one global equal-area grid of 5 km cells (EASE-Grid 2.0), so that no cell is cut by a tile edge
-EASE = "EPSG:6933"
-CELL_M = 5000.0
+# protocol v3: one global equal-area grid of 5 km cells (HEALPix, discovery.healpix), so that no cell is cut by a
+# tile edge and cells keep a compact shape near the poles
 
 
-def global_cell(lat: np.ndarray, lon: np.ndarray, cell_m: float = CELL_M) -> np.ndarray:
-    """Integer id of the 5 km EASE-Grid 2.0 cell holding each point."""
-    from rasterio.warp import transform
-    x, y = transform("EPSG:4326", EASE, np.asarray(lon, float).tolist(), np.asarray(lat, float).tolist())
-    ix = np.floor(np.array(x) / cell_m).astype(np.int64) + 4_000_000
-    iy = np.floor(np.array(y) / cell_m).astype(np.int64) + 4_000_000
-    return ix * 10_000_000 + iy
+def global_cell(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
+    """Integer id of the global 5 km cell (HEALPix RING, NSIDE 1303) holding each point."""
+    from discovery.healpix import NSIDE, ang2pix
+    return ang2pix(NSIDE, lat, lon)
 
 
-def cell_centre(cell: np.ndarray, cell_m: float = CELL_M) -> tuple[np.ndarray, np.ndarray]:
-    from rasterio.warp import transform
-    c = np.asarray(cell, np.int64)
-    x = ((c // 10_000_000) - 4_000_000 + 0.5) * cell_m
-    y = ((c % 10_000_000) - 4_000_000 + 0.5) * cell_m
-    lon, lat = transform(EASE, "EPSG:4326", x.tolist(), y.tolist())
-    return np.array(lat), np.array(lon)
+def cell_centre(cell: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    from discovery.healpix import NSIDE, pix2ang
+    return pix2ang(NSIDE, cell)
 
 
 def owner_tile(lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
@@ -187,29 +179,108 @@ def refined_scales(lists: list[str]) -> dict:
     return {k: sorted(v) for k, v in out.items()}
 
 
-def assess_tile(key: str, cube: str, refs_path: str, rock_path: str, scales: list[str] | None = None) -> list[dict]:
-    """Rows of every cell of one tile: similarity per target, requirements, suitability, coverage, confidence."""
+MARGIN_KM = 10.0                     # farther than any window of a 5 km HEALPix cell from that cell's centre
+
+
+def _tile_rows(la: int) -> list[int]:
+    return [r for r in (la - 1, la, la + 1) if -90 <= r <= 89]
+
+
+def _lon_margin_deg(la: int) -> float:
+    """Longitude degrees covering MARGIN_KM at the most poleward latitude of the rows next to tile row `la`."""
+    phi = min(89.9, max(abs(la - 1), abs(la + 2)))
+    return min(180.0, MARGIN_KM / (111.2 * np.cos(np.radians(phi))))
+
+
+def neighbour_keys(key: str) -> list[str]:
+    """Tiles whose windows may fall in the cells that tile `key` owns (cells whose centre is in it)."""
+    la, lo = (int(v) for v in key.split(","))
+    d = int(np.ceil(_lon_margin_deg(la)))
+    lons = range(lo - d, lo + d + 1) if 2 * d + 1 < 360 else range(-180, 180)
+    return sorted({f"{r},{(c + 180) % 360 - 180}" for r in _tile_rows(la) for c in lons})
+
+
+def window_tiles(cells) -> list[str]:
+    """Tiles that may hold windows of these global cells: every point within MARGIN_KM of a cell centre."""
+    lat, lon = cell_centre(np.asarray(cells).astype(np.int64))
+    out = set()
+    d = MARGIN_KM / 111.2
+    for a, b in zip(lat.tolist(), lon.tolist()):
+        m = min(180.0, d / np.cos(np.radians(min(89.9, abs(a) + d))))
+        for x in np.clip(np.array([a - d, a, a + d]), -89.999, 89.999):
+            for y in np.linspace(b - m, b + m, int(np.ceil(2 * m)) + 3):
+                out.add(f"{int(np.floor(x))},{int(np.floor((y + 180) % 360 - 180))}")
+    return sorted(out)
+
+
+def assessed_keys(refined: dict) -> list[str]:
+    """Tiles that own at least one cell holding refined windows: the refined tiles and the tiles next to them."""
+    return sorted({k for t in refined for k in neighbour_keys(t)})
+
+
+def owned_windows(key: str, scale: str, cube: str, refined: dict, ctx: dict) -> dict | None:
+    """Windows at `scale` of the cells owned by `key`, read from every refined tile next to it (protocol v3), with
+    their global cell id and masks. Files of a tile not refined at that scale are never read."""
     import pyarrow.parquet as pq
     from pathlib import Path
+    from discovery.copernicus import tile_name
+    la, lo = (int(v) for v in key.split(","))
+    parts = []
+    for nk in neighbour_keys(key):
+        if scale not in refined.get(nk, []):
+            continue
+        nla, nlo = (int(v) for v in nk.split(","))
+        f = Path(cube) / scale / f"{tile_name(nla, nlo, 'glo30')}.windows.parquet"
+        if not f.exists():
+            continue
+        t = pq.read_table(f, columns=WCOLS)
+        w = {k: t.column(k).to_numpy() for k in WCOLS}
+        if nk != key:                                    # only windows near this tile can be in its cells
+            near = (w["lat"] >= la - 0.1) & (w["lat"] <= la + 1.1)
+            dlon = np.abs((w["lon"] - (lo + 0.5) + 180) % 360 - 180)
+            near &= dlon <= 0.5 + _lon_margin_deg(la)
+            w = {k: v[near] for k, v in w.items()}
+        if w["lat"].size == 0:
+            continue
+        cell = global_cell(w["lat"], w["lon"])
+        uniq, inv = np.unique(cell, return_inverse=True)
+        clat, clon = cell_centre(uniq)
+        mine = (owner_tile(clat, clon) == key)[inv]
+        if mine.any():
+            w = {k: v[mine] for k, v in w.items()}
+            w["cell"] = cell[mine]
+            parts.append(w)
+    if not parts:
+        return None
+    w = {k: np.concatenate([q[k] for q in parts]) for k in parts[0]}
+    w["masked"], w["unknown"] = window_masks(w, ctx)
+    return w
+
+
+def assess_tile(key: str, cube: str, refs_path: str, rock_path: str, refined: dict) -> list[dict]:
+    """Rows of every global cell that tile `key` owns (protocol v3): similarity per target, requirements,
+    suitability, coverage, confidence. `refined` maps the tiles next to `key` to the scales this run refined."""
+    return _assess(key, cube, refs_path, rock_path, refined)[0]
+
+
+def _assess(key: str, cube: str, refs_path: str, rock_path: str, refined: dict) -> tuple[list[dict], dict]:
     from discovery.compare import assess_cells
     from discovery.compare_run import RULES, SUITABILITY, confidence
-    from discovery.copernicus import tile_name
+    from discovery.healpix import cell_area_km2
     ctx = _context(refs_path, rock_path)
-    la, lo = (int(v) for v in key.split(","))
-    name = tile_name(la, lo, "glo30")
     rows: dict = {}
     win = {}
-    for scale in (scales if scales is not None else SCALES):
-        f = Path(cube) / scale / f"{name}.windows.parquet"
-        if f.exists():
-            t = pq.read_table(f, columns=WCOLS)
-            w = {k: t.column(k).to_numpy() for k in WCOLS}
-            w["cell"] = np.array([f"{name}:{i}:{j}" for i, j in zip(w["i"], w["j"])])
-            w["masked"], w["unknown"] = window_masks(w, ctx)
+    for scale in SCALES:
+        w = owned_windows(key, scale, cube, refined, ctx)
+        if w is not None:
             win[scale] = w
-            c = pq.read_table(Path(cube) / scale / f"{name}.cells.parquet", columns=["cell", "lat", "lon", "area_km2"])
-            for cid, cla, clo, ar in zip(*(c.column(k).to_pylist() for k in ("cell", "lat", "lon", "area_km2"))):
-                rows.setdefault(cid, {"cell": cid, "tile": key, "lat": cla, "lon": clo, "area_km2": ar})
+    if not win:
+        return [], {}
+    ids = np.unique(np.concatenate([w["cell"] for w in win.values()]))
+    clat, clon = cell_centre(ids)
+    area = round(cell_area_km2(), 3)
+    for c, a, b in zip(ids.tolist(), clat.tolist(), clon.tolist()):
+        rows[c] = {"cell": str(c), "tile": key, "lat": a, "lon": b, "area_km2": area}
     for t, scale in TARGET_SCALE.items():
         if scale not in win:
             for r in rows.values():
@@ -219,33 +290,31 @@ def assess_tile(key: str, cube: str, refs_path: str, rock_path: str, scales: lis
         s = np.where(w["masked"], np.nan, w["slope_mean"])
         res = assess_cells({"cell": w["cell"], "slope_mean": s}, {t: ctx["refs"][t]}, [], None)
         for cid, out in res.items():
-            r = rows.setdefault(cid, {"cell": cid, "tile": key, "lat": np.nan, "lon": np.nan, "area_km2": np.nan})
             for k, v in out["similarity"][t].items():
-                r[f"{t}:{k}"] = v
-    cov_scale = "glo30-40m" if "glo30-40m" in win else ("glo30-59m" if "glo30-59m" in win else None)
-    if cov_scale:
-        # requirements, suitability, coverage and confidence at the finest refined scale of the tile
-        w = win[cov_scale]
-        reqs = [{"id": rid, **{k: v for k, v in rule.items() if k in ("param", "at_least", "at_most")}} for rid, rule in RULES.items()]
-        res = assess_cells({"cell": w["cell"], **{k: w[k] for k in ("slope_mean", "traversable_15", "traversable_20")}}, {}, reqs, None)
-        for sc, rule in SUITABILITY.items():
-            s = assess_cells({"cell": w["cell"], rule["param"]: w[rule["param"]]}, {}, [],
-                             {k: rule[k] for k in ("id", "param", "good", "bad")})
-            for cid, out in s.items():
-                rows[cid][f"suitability_{sc}"] = out["suitability"]["median"]
-        ids, inv = np.unique(w["cell"], return_inverse=True)
-        n = np.bincount(inv)
-        valid = np.bincount(inv, weights=(np.isfinite(w["slope_mean"]) & ~w["masked"]).astype(float)).astype(int)
-        nm = np.bincount(inv, weights=w["masked"].astype(float)).astype(int)
-        nu = np.bincount(inv, weights=w["unknown"].astype(float)).astype(int)
-        for k, cid in enumerate(ids):
-            r = rows[cid]
-            for rid, st in res[cid]["requirements"].items():
-                r[f"req:{rid}"] = st["status"]
-            r.update({"assessed_at": cov_scale, "windows": int(n[k]), "valid_unmasked": int(valid[k]), "masked": int(nm[k]),
-                      "cover_unknown": int(nu[k]), "masked_share": float(nm[k] / n[k]),
-                      "confidence": confidence(int(valid[k]), int(n[k]), int(nm[k]), int(nu[k]))})
-    return list(rows.values())
+                rows[int(cid)][f"{t}:{k}"] = v
+    cov_scale = "glo30-40m" if "glo30-40m" in win else "glo30-59m"
+    # requirements, suitability, coverage and confidence at the finest refined scale of the cell's tile
+    w = win[cov_scale]
+    reqs = [{"id": rid, **{k: v for k, v in rule.items() if k in ("param", "at_least", "at_most")}} for rid, rule in RULES.items()]
+    res = assess_cells({"cell": w["cell"], **{k: w[k] for k in ("slope_mean", "traversable_15", "traversable_20")}}, {}, reqs, None)
+    for sc, rule in SUITABILITY.items():
+        su = assess_cells({"cell": w["cell"], rule["param"]: w[rule["param"]]}, {}, [],
+                          {k: rule[k] for k in ("id", "param", "good", "bad")})
+        for cid, out in su.items():
+            rows[int(cid)][f"suitability_{sc}"] = out["suitability"]["median"]
+    cids, inv = np.unique(w["cell"], return_inverse=True)
+    n = np.bincount(inv)
+    valid = np.bincount(inv, weights=(np.isfinite(w["slope_mean"]) & ~w["masked"]).astype(float)).astype(int)
+    nm = np.bincount(inv, weights=w["masked"].astype(float)).astype(int)
+    nu = np.bincount(inv, weights=w["unknown"].astype(float)).astype(int)
+    for k, cid in enumerate(cids.tolist()):
+        r = rows[cid]
+        for rid, st in res[cid]["requirements"].items():
+            r[f"req:{rid}"] = st["status"]
+        r.update({"assessed_at": cov_scale, "windows": int(n[k]), "valid_unmasked": int(valid[k]), "masked": int(nm[k]),
+                  "cover_unknown": int(nu[k]), "masked_share": float(nm[k] / n[k]),
+                  "confidence": confidence(int(valid[k]), int(n[k]), int(nm[k]), int(nu[k]))})
+    return list(rows.values()), win
 
 
 def _schema():
@@ -279,9 +348,17 @@ def write_rows(path, rows: list[dict]) -> int:
     return len(rows)
 
 
-def assess_tile_to_file(key: str, cube: str, refs_path: str, rock_path: str, outdir: str, scales: list[str]) -> int:
+def assess_tile_to_file(key: str, cube: str, refs_path: str, rock_path: str, outdir: str, refined: dict) -> int:
+    """Cell rows of the tile, and per scale the masked slope of every window of its cells (Monte Carlo input)."""
     from pathlib import Path
-    rows = assess_tile(key, cube, refs_path, rock_path, scales)
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    rows, win = _assess(key, cube, refs_path, rock_path, refined)
+    for scale, w in win.items():
+        d = Path(outdir).parent / "windows-parts" / scale
+        d.mkdir(parents=True, exist_ok=True)
+        pq.write_table(pa.table({"cell": w["cell"], "slope": np.where(w["masked"], np.nan, w["slope_mean"])}),
+                       d / f"{key.replace(',', '_')}.parquet", compression="zstd")
     return write_rows(Path(outdir) / f"{key.replace(',', '_')}.parquet", rows) if rows else 0
 
 
@@ -305,31 +382,36 @@ def build_refs(profiles_windows: str, pits_json: str, out: str) -> dict:
 
 
 def assess_all(tiles: dict, cube: str, refs_path: str, rock_path: str, out: str, workers: int) -> dict:
-    """Each worker writes the cells of its tile to its own file; the files are then joined by streaming, so
-    memory stays flat (keeping millions of rows as Python dicts ran out of memory)."""
+    """Each worker writes the cells its tile owns to its own file; the files are then joined by streaming, so
+    memory stays flat (keeping millions of rows as Python dicts ran out of memory). `tiles` maps each refined
+    tile to its scales; the tiles next to them are assessed too, as they own cells with refined windows."""
     import time
     from concurrent.futures import ProcessPoolExecutor, as_completed
     from pathlib import Path
     import pyarrow.parquet as pq
+    import shutil
     parts = Path(out).parent / "cells-parts"
-    if parts.exists():
-        import shutil
-        shutil.rmtree(parts)                                       # never mix parts of two assessments
+    for d in (parts, Path(out).parent / "windows-parts"):
+        if d.exists():
+            shutil.rmtree(d)                                       # never mix parts of two assessments
     parts.mkdir(parents=True, exist_ok=True)
     n_cells, failed, t0 = 0, [], time.time()
     with ProcessPoolExecutor(max_workers=workers) as pool:
-        futs = {pool.submit(assess_tile_to_file, k, cube, refs_path, rock_path, str(parts), sc): k for k, sc in tiles.items()}
+        keys = assessed_keys(tiles)
+        futs = {pool.submit(assess_tile_to_file, k, cube, refs_path, rock_path, str(parts),
+                            {nk: tiles[nk] for nk in neighbour_keys(k) if nk in tiles}): k for k in keys}
         for n, f in enumerate(as_completed(futs), 1):
             try:
                 n_cells += f.result()
             except (OSError, ValueError, KeyError) as e:
                 failed.append({"tile": futs[f], "error": f"{type(e).__name__}: {e}"})
             if n % 1000 == 0:
-                print(f"{n}/{len(tiles)} tiles, {(time.time() - t0) / 3600:.2f} h", flush=True)
+                print(f"{n}/{len(futs)} tiles, {(time.time() - t0) / 3600:.2f} h", flush=True)
     with pq.ParquetWriter(out, CELL_SCHEMA, compression="zstd") as w:
         for f in sorted(parts.glob("*.parquet")):
             w.write_table(pq.read_table(f, schema=CELL_SCHEMA))
-    return {"tiles": len(tiles), "cells": n_cells, "failed": failed, "hours": round((time.time() - t0) / 3600, 2)}
+    return {"refined_tiles": len(tiles), "assessed_tiles": len(futs), "cells": n_cells, "failed": failed,
+            "hours": round((time.time() - t0) / 3600, 2)}
 
 
 LOAD_COLUMNS = (["cell", "tile", "lat", "lon", "area_km2", "masked_share", "confidence", "suitability_A", "suitability_B",
@@ -357,11 +439,11 @@ def zones_for(cells: dict, scenario: str, target: str, tau: float, min_cells: in
     elim = np.zeros(med.size, bool)
     for r in ELIMINATING[scenario]:
         elim |= np.asarray(cells.get(f"req:{r}", [None] * med.size)) == "failed"
-    cand = candidates(med, elim, np.nan_to_num(_num(cells["masked_share"]), nan=1.0), tau)
-    idx = np.flatnonzero(cand)
+    idx = _candidate_index(cells, scenario, target, tau)
     if idx.size == 0:
         return []
-    zs = zone_table(_num(cells["lat"])[idx], _num(cells["lon"])[idx], np.nan_to_num(_num(cells["area_km2"])[idx]), min_cells)
+    zs = zone_table(_num(cells["lat"])[idx], _num(cells["lon"])[idx], np.nan_to_num(_num(cells["area_km2"])[idx]), min_cells,
+                    cells=_cell_ids(cells)[idx])
     out = []
     su_all = _num(cells.get(f"suitability_{scenario}", [None] * med.size))        # once, not once per zone
     for z in zs:
@@ -387,16 +469,22 @@ def _candidate_index(cells: dict, scenario: str, target: str, tau: float) -> np.
     elim = np.zeros(med.size, bool)
     for r in ELIMINATING[scenario]:
         elim |= np.asarray(cells.get(f"req:{r}", [None] * med.size)) == "failed"
-    return np.flatnonzero(candidates(med, elim, np.nan_to_num(_num(cells["masked_share"]), nan=1.0), tau))
+    return np.flatnonzero(candidates(med, elim, np.nan_to_num(_num(cells["masked_share"]), nan=1.0), tau,
+                                     confidence=cells["confidence"]))
+
+
+def _cell_ids(cells: dict) -> np.ndarray:
+    """Global cell ids (HEALPix, protocol v3) as integers."""
+    return np.asarray(cells["cell"]).astype(np.int64)
 
 
 def zone_counts(cells: dict, scenario: str, target: str, tau: float, min_cells: tuple) -> dict:
     """Number and area of zones for each minimum size, with one connection per tau (no per-zone statistics)."""
-    from discovery.zones import connect
+    from discovery.zones import connect_cells
     idx = _candidate_index(cells, scenario, target, tau)
     if idx.size == 0:
         return {mc: {"zones": 0, "area_km2": 0.0} for mc in min_cells}
-    lab = connect(_num(cells["lat"])[idx], _num(cells["lon"])[idx])
+    lab = connect_cells(_cell_ids(cells)[idx])
     _, inv, size = np.unique(lab, return_inverse=True, return_counts=True)
     area = np.bincount(inv, weights=np.nan_to_num(_num(cells["area_km2"])[idx]))
     return {mc: {"zones": int((size >= mc).sum()), "area_km2": round(float(area[size >= mc].sum()), 1)}

@@ -59,3 +59,16 @@ def test_a_large_continuous_block_is_one_zone_and_converges_fast():
     t = time.time()
     lab = connect(lat, lon)
     assert len(set(lab.tolist())) == 1 and time.time() - t < 20
+
+
+def test_global_cells_connect_through_their_healpix_neighbours():
+    """Protocol v3: zones connect cells that touch, at any latitude; a gap of one cell separates them."""
+    from discovery.healpix import NSIDE, ang2pix, neighbours
+    from discovery.zones import connect_cells
+    for lat in (0.0, 45.0, -80.0, 89.9):
+        a = ang2pix(NSIDE, lat, 20.0)[0]
+        nb = neighbours(NSIDE, a)[0]
+        b = nb[nb >= 0][0]
+        far = ang2pix(NSIDE, lat + (0.3 if lat < 89 else -0.3), 20.0)[0]
+        lab = connect_cells(np.array([a, b, far]))
+        assert lab[0] == lab[1] and lab[2] != lab[0], lat
