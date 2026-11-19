@@ -21,3 +21,9 @@ The report is complete and the checks pass. Gate G4: David reviews the map and t
 
 ## Added by T14 (18/11/2026)
 - South of 60°S WorldCover has no tile (T40). Use `add-rock-outcrop-v7-3` as the mask there: outside the rock polygons is ice or snow. Lithology there: `scar-geomap-v2022-08`.
+
+## As built (19/11/2026)
+- **Protocol:** v2, tagged before run-001. The engine masks the 7 hidden-ground classes, and the masks check reads 1 km windows (David, 18/11).
+- **Code:** `screen.py`, `antarctic.py`, `prefetch.py`, `discover.py`, `zones.py`, `validate_run.py`, `checks.py`, `dossier.py`. Copernicus is downloaded once with 96 connections and read locally for both scales.
+- **Report:** `docs/wiki/runs/run-001.md`; summary in `docs/VALIDATION.md`; dossiers in `docs/wiki/runs/run-001/zones/`.
+- **For run-002 (protocol v3):** rank zones on high-confidence cells, and merge cell parts cut by tile edges.

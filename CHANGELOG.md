@@ -2,6 +2,29 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-19 · T43 First global discovery run, topography (PR #23)
+- **Protocol v2** (tag `validation-protocol-v2`, David's decision of 18/11, before run-001). The pilot showed only 10 of 18 negatives masked. The engine now masks the 7 hidden-ground classes (cropland, herbaceous wetland and mangroves added), and the masks check reads 1 km windows. Controls and thresholds are unchanged.
+- **run-001:**
+  - global 90 m cube with the new masks;
+  - screening: 16,520 tiles refined at 40 m and 18,363 at 59.2 m;
+  - Antarctic rock outcrops used as the mask south of 60°S;
+  - 545 GB of Copernicus GLO-30 downloaded once with 96 connections (3 h);
+  - fine stages: 34,834 tiles, 0 failures;
+  - 6.7 M cells assessed.
+- **Validation:**
+  - no positive controls exist for A and B;
+  - negatives in the top 10%: 0 of 18 (pass);
+  - masks: 17 of 18 (fail);
+  - self-consistency: 4 of 5 targets (pits fail);
+  - rebuild: identical (pass).
+- **Unfavourable:**
+  - 38 of the 40 best zones are explained artefacts (remnants between hidden ground, cells cut by tile edges);
+  - the ranking is not robust to NASADEM (top-20 overlap 40 to 45%) or to 30 m (35 to 40%);
+  - one plausible place (MacDonnell Ranges area, Australia);
+  - two rules are proposed for run-002.
+- **Also merged:** the coverage overlay and Data and method panel spec (PR #22, David's clarification of 19/11). Natural Earth was added to the catalogue for the continent bias check.
+- Report: `docs/wiki/runs/run-001.md`; summary: `docs/VALIDATION.md`.
+
 ## 2026-11-18 · T42 Comparison engine (PR #21)
 - New engine `tools/discovery/compare.py`, `compare_run.py`. Per 5 km cell, separate outputs, none averaged with another:
   - similarity per lunar target (two-sided percentile, T23; median, quartiles, share above 0.5);
