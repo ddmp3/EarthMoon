@@ -49,6 +49,36 @@ def write_png(path: Path, img: np.ndarray) -> None:
     Path(path).write_bytes(png)
 
 
+PALETTE = {0: (255, 255, 255), 1: (225, 225, 225), 2: (150, 150, 150), 3: (200, 30, 30)}   # sea, hidden, evaluated, zone
+
+
+def write_png_rgb(path: Path, img: np.ndarray) -> None:
+    """8-bit RGB PNG, no dependency."""
+    h, w, _ = img.shape
+    raw = b"".join(b"\x00" + img[r].astype(np.uint8).tobytes() for r in range(h))
+
+    def chunk(kind: bytes, data: bytes) -> bytes:
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
+
+    png = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 2, 0, 0, 0))
+    png += chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b"")
+    Path(path).write_bytes(png)
+
+
+def world_map(lat: np.ndarray, lon: np.ndarray, cls: np.ndarray, deg: float = 0.1) -> np.ndarray:
+    """Equirectangular map; each cell paints its pixel with the highest class seen there
+    (1 hidden or screened out, 2 evaluated, 3 in a candidate zone)."""
+    h, w = int(round(180 / deg)), int(round(360 / deg))
+    grid = np.zeros((h, w), np.uint8)
+    r = np.clip(((90 - lat) / deg).astype(int), 0, h - 1)
+    c = np.clip((((lon + 180) % 360) / deg).astype(int), 0, w - 1)
+    np.maximum.at(grid, (r, c), cls.astype(np.uint8))
+    img = np.zeros((h, w, 3), np.uint8)
+    for k, col in PALETTE.items():
+        img[grid == k] = col
+    return img
+
+
 # --- IO ----------------------------------------------------------------------------------------------------
 
 def place_name(lat: float, lon: float) -> str:
@@ -114,6 +144,21 @@ def main(argv=None) -> int:
                           "mc_top_decile_share": match.get("mc_top_decile_share")}
             print(zid, facts[zid]["place"][:80], flush=True)
     (a.out / "zones" / "facts.json").write_text(json.dumps(facts, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    # one world map per scenario and target: hidden or mostly masked (1), evaluated (2), in a default zone (3);
+    # white is sea, or land screened out at 90 m (no refined cell)
+    lat = np.array([np.nan if v is None else v for v in cells["lat"]], float)
+    lon = np.array([np.nan if v is None else v for v in cells["lon"]], float)
+    ms = np.array([1.0 if v is None else v for v in cells["masked_share"]], float)
+    ok = np.isfinite(lat) & np.isfinite(lon)
+    for sc, v in zones.items():
+        for t in v["targets"]:
+            med = np.array([np.nan if x is None else x for x in cells.get(f"{t}:median", [None] * lat.size)], float)
+            cls = np.where(ms >= 0.5, 1, np.where(np.isfinite(med), 2, 1))
+            zfile = a.run / f"zones-{sc}-{t}.json"
+            in_zone = {c for z in json.loads(zfile.read_text()) for c in z["cell_ids"]}
+            cls = np.where(np.isin(np.asarray(cells["cell"]), list(in_zone)), 3, cls)
+            write_png_rgb(a.out / f"map-{sc}-{t}.png", world_map(lat[ok], lon[ok], cls[ok], deg=0.1))
+            print("map", sc, t, flush=True)
     return 0
 
 
