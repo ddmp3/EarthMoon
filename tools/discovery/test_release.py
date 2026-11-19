@@ -81,3 +81,20 @@ def test_scenarios_name_their_targets_requirements_and_limits():
     assert s["B"]["targets"] == ["moon-polar-lit-highlands", "moon-psr", "moon-mare-plains", "moon-south-polar-cap-v2"]
     assert any(r["id"] == "climbing_limit_lrv" and r["eliminating"] for r in s["B"]["requirements"])
     assert s["A"]["cannot_assess"] and "moon-persistently-lit" in s["A"]["not_comparable"]
+
+
+def test_land_cells_are_the_global_cells_holding_a_90m_window(tmp_path):
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from discovery.healpix import NSIDE, ang2pix
+    from discovery.release import land_cells, land_km2
+    d = tmp_path / "glo90-90m"
+    d.mkdir()
+    a = {"lat": np.array([10.1, 10.11, 10.5]), "lon": np.array([20.1, 20.1, 20.9])}
+    b = {"lat": np.array([-80.2]), "lon": np.array([5.0])}
+    pq.write_table(pa.table(a), d / "A.windows.parquet")
+    pq.write_table(pa.table(b), d / "B.windows.parquet")
+    cells = land_cells(tmp_path, workers=1)
+    expect = np.unique(ang2pix(NSIDE, np.r_[a["lat"], b["lat"]], np.r_[a["lon"], b["lon"]]))
+    assert cells.tolist() == expect.tolist()
+    assert land_km2(tmp_path) == 4.0

@@ -199,6 +199,26 @@ def land_km2(cube: Path) -> float:
     return float(sum(pq.ParquetFile(f).metadata.num_rows for f in sorted((cube / "glo90-90m").glob("*.windows.parquet"))))
 
 
+def _tile_land(f: str) -> np.ndarray:
+    import pyarrow.parquet as pq
+    from discovery.discover import global_cell
+    t = pq.read_table(f, columns=["lat", "lon"])
+    return np.unique(global_cell(t.column("lat").to_numpy(), t.column("lon").to_numpy()))
+
+
+def land_cells(cube: Path, workers: int = 12) -> np.ndarray:
+    """Sorted ids of the global cells holding at least one window of the global 90 m cube: the land the map
+    can speak about (sea and DEM voids hold no window)."""
+    from concurrent.futures import ProcessPoolExecutor
+    files = [str(f) for f in sorted((cube / "glo90-90m").glob("*.windows.parquet"))]
+    if workers <= 1:
+        parts = [_tile_land(f) for f in files]
+    else:
+        with ProcessPoolExecutor(max_workers=workers) as pool:
+            parts = list(pool.map(_tile_land, files, chunksize=64))
+    return np.unique(np.concatenate(parts)) if parts else np.zeros(0, np.int64)
+
+
 def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     from discovery.discover import MIN, MIN_CELLS, SCENARIO_TARGETS, TAU, TAUS, load_cells, zones_for
     cols = ["cell", "windows", "valid_unmasked", "masked_share", "cover_unknown", "confidence", "lat", "lon", "area_km2",
@@ -261,6 +281,9 @@ def main(argv=None) -> int:
     ap.add_argument("--cube", type=Path, default=Path("/data/cube"))
     ap.add_argument("--out", type=Path, required=True)
     a = ap.parse_args(argv)
+    land = a.run / "land-cells.npy"
+    if not land.exists():
+        np.save(land, land_cells(a.cube))
     print(export(a.run, a.cube, a.out, os.environ.get("EARTHMOON_COMMIT", "unknown")))
     return 0
 
