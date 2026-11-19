@@ -27,6 +27,7 @@ from discovery.discover import (MIN, SCENARIO_TARGETS, TARGET_SCALE, TAU, _num, 
 
 ROOT = Path(__file__).resolve().parents[2]
 SEED, RUNS, SIGMA, SAMPLE = 20261119, 500, 0.5, 200_000
+MC_PARALLEL = 2
 
 
 # --- pure part (tested) ------------------------------------------------------------------------------------
@@ -238,7 +239,7 @@ def monte_carlo(run: Path, cells: dict, cube: Path, refs_path: str, rock_path: s
         pick = np.random.default_rng([SEED, k, 0]).choice(idx, size=min(SAMPLE, idx.size), replace=False)
         jobs.append((t, k, str(run), str(cube), refs_path, rock_path, sorted(np.asarray(cells["cell"])[pick].tolist())))
     out = {}
-    with ProcessPoolExecutor(max_workers=len(jobs)) as pool:
+    with ProcessPoolExecutor(max_workers=MC_PARALLEL) as pool:      # memory, not CPU, is the limit (Docker VM 15 GB)
         for res in pool.map(_mc_target, jobs):
             out.update(res)
     return out
