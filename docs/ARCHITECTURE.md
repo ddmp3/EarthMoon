@@ -46,6 +46,7 @@ REFRESHER (docker compose, local, ADR-009; the only container with outbound netw
 | fastapi | 0.162.0 | MIT | Internal on-demand service |
 | pydantic | 2.14.2 | MIT | Strict request validation |
 | uvicorn | 0.54.0 | BSD-3-Clause | Server of the internal service |
+| pyshp | 3.1.6 | MIT | Reading the lunar geologic map shapefile (T41; 3.1.7 to 3.1.9 were under 14 days old) |
 
 No new JavaScript dependency.
 
