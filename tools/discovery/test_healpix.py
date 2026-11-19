@@ -66,3 +66,28 @@ def test_run_grid_neighbours_are_close_on_the_ground():
     d = np.linalg.norm(xyz(nla, nlo).reshape(nb.shape + (3,)) - xyz(la, lo)[:, None, :], axis=-1)[ok]
     # 5 km cells: edges about 5 km, corners about 7 km; the stretched diamonds of the polar caps reach 10.4 km
     assert d.min() > 3.0 and d.max() < 11.0
+
+
+@pytest.mark.parametrize("n", [4, 5, NSIDE])
+def test_cell_corners_enclose_the_cell(n):
+    """A point moved from each corner a little toward the centre falls in the cell; the polygon has the cell area."""
+    from discovery.healpix import corners
+    p = rng.integers(0, 12 * n * n, 300) if n == NSIDE else np.arange(12 * n * n)
+    lat, lon = corners(n, p)                                                # (cells, 4)
+    clat, clon = pix2ang(n, p)
+
+    def xyz(a, b):
+        a, b = np.radians(a), np.radians(b)
+        return np.stack([np.cos(a) * np.cos(b), np.cos(a) * np.sin(b), np.sin(a)], -1)
+    c, v = xyz(clat, clon)[:, None, :], xyz(lat, lon)
+    q = v + 0.02 * (c - v)
+    qn = q / np.linalg.norm(q, axis=-1, keepdims=True)
+    qlat, qlon = np.degrees(np.arcsin(qn[..., 2])), np.degrees(np.arctan2(qn[..., 1], qn[..., 0]))
+    assert (ang2pix(n, qlat.ravel(), qlon.ravel()).reshape(p.size, 4) == p[:, None]).all()
+    # spherical quadrilateral area (two triangles, L'Huilier through the solid angle formula) against 4 pi / npix
+    def tri(a, b, cc):
+        num = np.abs(np.einsum("ij,ij->i", a, np.cross(b, cc)))
+        den = 1 + np.einsum("ij,ij->i", a, b) + np.einsum("ij,ij->i", b, cc) + np.einsum("ij,ij->i", cc, a)
+        return 2 * np.arctan2(num, den)
+    area = tri(v[:, 0], v[:, 1], v[:, 2]) + tri(v[:, 0], v[:, 2], v[:, 3])
+    assert np.allclose(area, 4 * np.pi / (12 * n * n), rtol=0.25)           # edges are curves, corners join them

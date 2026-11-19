@@ -151,3 +151,22 @@ def neighbours(n: int, pix) -> np.ndarray:
         ok = f >= 0
         out[ok, m] = _xyf2ring(n, x[ok], y[ok], f[ok])
     return out
+
+
+def corners(n: int, pix) -> tuple[np.ndarray, np.ndarray]:
+    """Latitude and longitude (degrees) of the 4 corners of each cell, in order around it (HEALPix xyf2loc)."""
+    pix = np.atleast_1d(np.asarray(pix, np.int64))
+    ix, iy, face = _ring2xyf(n, pix)
+    lat, lon = np.zeros((pix.size, 4)), np.zeros((pix.size, 4))
+    for k, (dx, dy) in enumerate(((1, 1), (0, 1), (0, 0), (1, 0))):
+        x, y = (ix + dx) / n, (iy + dy) / n
+        jr = _JRLL[face] - x - y
+        nr = np.where(jr < 1, jr, np.where(jr > 3, 4 - jr, 1.0))
+        z = np.where(jr < 1, 1 - nr * nr / 3, np.where(jr > 3, nr * nr / 3 - 1, (2 - jr) * 2 / 3))
+        t = _JPLL[face] * nr + x - y
+        t = np.mod(np.where(np.abs(t) < 1e-12, 0.0, t), 8)        # -1e-16 is 0, not a full turn
+        phi = np.where(nr < 1e-15, 0.0, 0.5 * (np.pi / 2) * t / np.where(nr < 1e-15, 1, nr))
+        lat[:, k] = np.degrees(np.arcsin(np.clip(z, -1, 1)))
+        lo = np.degrees(phi)
+        lon[:, k] = (lo + 180) % 360 - 180
+    return lat, lon
