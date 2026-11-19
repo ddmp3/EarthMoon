@@ -164,13 +164,15 @@ def main(argv=None) -> int:
     lon = np.array([np.nan if v is None else v for v in cells["lon"]], float)
     ms = np.array([1.0 if v is None else v for v in cells["masked_share"]], float)
     ok = np.isfinite(lat) & np.isfinite(lon)
+    pos = {c: i for i, c in enumerate(cells["cell"])}              # built once: np.isin on text ids is very slow
     for sc, v in zones.items():
         for t in v["targets"]:
             med = np.array([np.nan if x is None else x for x in cells.get(f"{t}:median", [None] * lat.size)], float)
             cls = np.where(ms >= 0.5, 1, np.where(np.isfinite(med), 2, 1))
             zfile = a.run / f"zones-{sc}-{t}.json"
-            in_zone = {c for z in json.loads(zfile.read_text()) for c in z["cell_ids"]}
-            cls = np.where(np.isin(np.asarray(cells["cell"]), list(in_zone)), 3, cls)
+            in_zone = np.zeros(lat.size, bool)
+            in_zone[[pos[c] for z in json.loads(zfile.read_text()) for c in z["cell_ids"] if c in pos]] = True
+            cls = np.where(in_zone, 3, cls)
             write_png_rgb(a.out / f"map-{sc}-{t}.png", world_map(lat[ok], lon[ok], cls[ok], deg=0.1))
             print("map", sc, t, flush=True)
     return 0
