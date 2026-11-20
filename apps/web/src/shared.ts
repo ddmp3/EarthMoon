@@ -29,3 +29,17 @@ export function stabilityLevel(stability: { rankP10: number; rankP90: number }, 
   if (share <= 0.25) return "medium"
   return "low"
 }
+
+/** Longest label line: with the side margins below, a line of this length stays inside the frame. */
+export const LABEL_CHARS = 18
+
+/** Splits a label into lines of at most LABEL_CHARS characters, on spaces (a longer single word keeps its line). */
+export function wrapLabel(label: string, max = LABEL_CHARS): string[] {
+  const lines: string[] = []
+  for (const word of label.split(/\s+/).filter(Boolean)) {
+    const last = lines[lines.length - 1]
+    if (last !== undefined && `${last} ${word}`.length <= max) lines[lines.length - 1] = `${last} ${word}`
+    else lines.push(word)
+  }
+  return lines
+}

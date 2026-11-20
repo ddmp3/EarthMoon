@@ -78,7 +78,7 @@ export const FR_MOON_NOTES: Record<string, string> = {
   lst_day: 'Crêtes éclairées : pas encore sourcé',
   lst_amplitude: 'Environ 300 K à l’équateur (Diviner)',
   solar: 'Lumière quasi continue sur certaines crêtes polaires',
-  quake_count: '28 séismes lunaires peu profonds en 8 ans (Apollo)',
+  quake_count: 'Des séismes lunaires peu profonds existent (sismomètres Apollo)',
   volcano_distance: 'Pas de volcanisme récent : le basalte est un substitut terrestre',
   elevation: 'Non comparable',
 }

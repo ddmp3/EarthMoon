@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import { CircleMarker, MapContainer, TileLayer, Tooltip, useMap } from 'react-leaflet'
 import {
   calibrationInstruments,
+  deprecation,
   paramInfo,
   parameterCatalog,
   siteImage,
@@ -60,6 +61,7 @@ function CustomBuilder({ onRun, error }: { onRun: () => void; error: string | nu
                     value={parameter.id}
                   >
                     {paramInfo(parameter.id, lang).label}
+                    {deprecation(parameter.id, lang) ? (lang === 'fr' ? ' (déprécié)' : ' (deprecated)') : ''}
                   </option>
                 ))}
               </select>
@@ -82,6 +84,9 @@ function CustomBuilder({ onRun, error }: { onRun: () => void; error: string | nu
               {t.remove}
             </button>
             <small className="builder-help">{paramInfo(criterion.param, lang).help}</small>
+            {deprecation(criterion.param, lang) && (
+              <small className="builder-help note-warn" role="note">{deprecation(criterion.param, lang)}</small>
+            )}
           </div>
         ))}
       </div>

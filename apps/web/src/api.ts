@@ -86,9 +86,29 @@ export const MOON_NOTES: Partial<Record<ParamId, string>> = {
   lst_day: 'Sunlit ridges: not sourced yet',
   lst_amplitude: 'About 300 K at the equator (Diviner)',
   solar: 'Near-continuous sunlight on some polar ridges',
-  quake_count: '28 shallow moonquakes in 8 years (Apollo)',
+  quake_count: 'Shallow moonquakes exist (Apollo seismometers)',
   volcano_distance: 'No recent volcanism: basalt is an Earth stand-in',
   elevation: 'Not comparable',
+}
+
+/** Parameters kept for v2 compatibility but deprecated (apps/api/src/server/parameters.ts): reason and replacement. */
+const DEPRECATED: Partial<Record<ParamId, { en: string; fr: string }>> = {
+  humidity: {
+    en: 'Deprecated: relative humidity depends on temperature. Use water vapour in the air (specific humidity).',
+    fr: 'Déprécié : l’humidité relative dépend de la température. Utilisez la vapeur d’eau dans l’air (humidité spécifique).',
+  },
+  quake_count: {
+    en: 'Deprecated: the M 2.5+ catalogue is incomplete outside dense networks. Use earthquakes M 4.5+.',
+    fr: 'Déprécié : le catalogue M 2,5+ est incomplet hors des réseaux denses. Utilisez les séismes M 4,5+.',
+  },
+  volcano_distance: {
+    en: 'Deprecated: distance to a volcano says nothing about rock type or lava tubes. Use lava tube evidence.',
+    fr: 'Déprécié : la distance à un volcan ne dit rien du type de roche ni des tunnels de lave. Utilisez les indices de tunnel de lave.',
+  },
+}
+
+export function deprecation(id: ParamId, lang: Lang = 'en'): string | null {
+  return DEPRECATED[id]?.[lang] ?? null
 }
 
 /** Label, unit and help text of a parameter. */

@@ -1,5 +1,6 @@
 import { paramInfo, type SiteResult } from '../api'
 import { useT } from '../i18n'
+import { wrapLabel } from '../shared'
 
 /**
  * Match profile: one axis per criterion, outer ring = perfect match.
@@ -37,7 +38,11 @@ export function Radar({ site }: { site: SiteResult }) {
           <g key={criterion.param}>
             <line className={missing ? 'radar-axis radar-axis-missing' : 'radar-axis'} x1={cx} x2={x} y1={cy} y2={y} />
             <text className={missing ? 'radar-label radar-label-missing' : 'radar-label'} dominantBaseline="middle" textAnchor={anchor} x={lx} y={ly}>
-              {paramInfo(criterion.param, lang).label}
+              {wrapLabel(paramInfo(criterion.param, lang).label).map((line, k, all) => (
+                <tspan dy={k === 0 ? `${-(all.length - 1) * 0.55}em` : '1.1em'} key={k} x={lx}>
+                  {line}
+                </tspan>
+              ))}
             </text>
           </g>
         )

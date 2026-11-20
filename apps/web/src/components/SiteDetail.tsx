@@ -12,7 +12,7 @@ import {
   type VisualManifest,
 } from '../api'
 import { Radar } from './Radar'
-import { ConfidenceNotes } from './Stability'
+import { Assessment, ConfidenceNotes } from './Stability'
 import { FR_LIMITS, FR_SOURCES } from '../content-fr'
 import { formatNumber, useT, type Lang } from '../i18n'
 import { scoreTone, siteName } from '../shared'
@@ -190,6 +190,7 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
           </span>
         </div>
         <ConfidenceNotes rank={rank} site={site} total={rankedTotal} />
+        <Assessment explanation={detail?.explanation ?? null} site={site} />
         <ul className="verdict-summary">
           {(['match', 'partial', 'mismatch', 'missing'] as const).map((verdict) =>
             count(verdict) > 0 ? (
