@@ -425,6 +425,19 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Method" }
         "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/status:
+    get:
+      tags: [V3]
+      summary: Validity of the release and freshness of its sources (ADR-009)
+      description: Validated only when every check of the validation protocol passes. Until the refresher exists (T52), each source is `not_checkable`, with the date it was verified by hand.
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Validity and freshness
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+        "503": { $ref: "#/components/responses/NoRelease" }
 components:
   parameters:
     Release:
@@ -581,6 +594,44 @@ components:
                   type: object
                   description: screened_out, no_data, ground_hidden, partial, low_confidence, evaluated
                   additionalProperties: { $ref: "#/components/schemas/CoverageClass" }
+    Status:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [validity, freshness]
+          properties:
+            validity:
+              type: object
+              required: [state, protocol, release, published, checks]
+              properties:
+                state: { type: string, enum: [validated, not_validated] }
+                protocol: { type: string }
+                release: { type: string }
+                published: { type: string }
+                checks:
+                  type: array
+                  items:
+                    type: object
+                    required: [check, pass, detail]
+                    properties:
+                      check: { type: string }
+                      pass: { type: boolean, nullable: true, description: "null when the check cannot run" }
+                      detail: { type: string }
+            freshness:
+              type: object
+              required: [refresher, sources]
+              properties:
+                refresher: { type: boolean, description: "false until the automatic refresher exists (T52)" }
+                note: { type: string }
+                sources:
+                  type: array
+                  items:
+                    type: object
+                    required: [id, state, checked_on]
+                    properties:
+                      id: { type: string }
+                      state: { type: string, enum: [up_to_date, update_in_progress, update_held, check_failed, check_overdue, not_checkable] }
+                      checked_on: { type: string, nullable: true }
     Method:
       allOf:
         - $ref: "#/components/schemas/V3Doc"

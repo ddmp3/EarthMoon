@@ -69,6 +69,7 @@ export function v3Router(
   );
 
   r.get("/method", handle(async (_req, release) => store!.doc(release, "method")));
+  r.get("/status", handle(async (_req, release) => store!.doc(release, "status")));
 
   r.get(
     "/coverage",

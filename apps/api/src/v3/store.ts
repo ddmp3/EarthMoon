@@ -71,7 +71,7 @@ export class ReleaseStore {
     return this.read(id, "release.json");
   }
 
-  doc(release: string, name: "profiles" | "scenarios" | "method" | "coverage"): Promise<Doc> {
+  doc(release: string, name: "profiles" | "scenarios" | "method" | "coverage" | "status"): Promise<Doc> {
     return this.read(release, `${name}.json`);
   }
 

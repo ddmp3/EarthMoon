@@ -992,6 +992,49 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Validity of the release and freshness of its sources (ADR-009)
+         * @description Validated only when every check of the validation protocol passes. Until the refresher exists (T52), each source is `not_checkable`, with the date it was verified by hand.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Validity and freshness */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Status"];
+                    };
+                };
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1084,6 +1127,32 @@ export interface components {
                 classes: {
                     [key: string]: components["schemas"]["CoverageClass"];
                 };
+            };
+        };
+        Status: components["schemas"]["V3Doc"] & {
+            validity: {
+                /** @enum {string} */
+                state: "validated" | "not_validated";
+                protocol: string;
+                release: string;
+                published: string;
+                checks: {
+                    check: string;
+                    /** @description null when the check cannot run */
+                    pass: boolean | null;
+                    detail: string;
+                }[];
+            };
+            freshness: {
+                /** @description false until the automatic refresher exists (T52) */
+                refresher: boolean;
+                note?: string;
+                sources: {
+                    id: string;
+                    /** @enum {string} */
+                    state: "up_to_date" | "update_in_progress" | "update_held" | "check_failed" | "check_overdue" | "not_checkable";
+                    checked_on: string | null;
+                }[];
             };
         };
         Method: components["schemas"]["V3Doc"] & {

@@ -225,7 +225,7 @@ describe("HTTP server", () => {
 describe("openapi.yaml contract ↔ real responses", () => {
   it("the documented paths are exactly the ones the server exposes", async () => {
     const spec = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { paths: Record<string, Record<string, unknown>> };
-    const v3 = ["/api/v3/coverage", "/api/v3/method", "/api/v3/profiles", "/api/v3/profiles/{id}", "/api/v3/releases",
+    const v3 = ["/api/v3/coverage", "/api/v3/method", "/api/v3/status", "/api/v3/profiles", "/api/v3/profiles/{id}", "/api/v3/releases",
       "/api/v3/releases/{id}", "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}",
       "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png", "/api/v3/cells", "/api/v3/query"];
     expect(Object.keys(spec.paths).sort()).toEqual(

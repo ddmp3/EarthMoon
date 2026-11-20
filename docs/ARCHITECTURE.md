@@ -82,6 +82,7 @@ v3 routes (T44, ADR-004). Every answer carries `release` and `methodology_versio
 | `GET /api/v3/profiles`, `/profiles/{id}`, `/scenarios`, `/scenarios/{id}`, `/method` | static JSON of the release |
 | `GET /api/v3/zones?scenario&env&tau&min_cells&limit&offset`, `/zones/{id}` | static JSON, one file per grid value |
 | `GET /api/v3/coverage?scenario&env` | land share per overlay class |
+| `GET /api/v3/status` | validity of the release (every protocol check) and freshness of each source; `not_checkable` until the refresher (T52) |
 | `GET /api/v3/layers/{scenario}/{env}/{typicality or coverage}/{z}/{x}/{y}.png` | PNG tiles, zoom 0 to 7 (own rate limit) |
 | `GET /api/v3/cells?scenario&env&bbox`, `POST /api/v3/query` | forwarded to `apps/discovery` (503 if it is down) |
 

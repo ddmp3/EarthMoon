@@ -5,7 +5,7 @@ computes a number itself:
 
     <out>/index.json                                   current release and the last 3 (ADR-009)
     <out>/<release>/release.json                       id, run, protocol, commit, data versions, processing chain
-    <out>/<release>/profiles.json, scenarios.json, method.json, coverage.json
+    <out>/<release>/profiles.json, scenarios.json, method.json, coverage.json, status.json
     <out>/<release>/zones/<scenario>/<target>/t<tau>-m<min>.json    zones of one grid value, ranked
 
     PYTHONPATH=tools python tools/discovery/release.py --run /data/run002 --out /data/releases
@@ -142,6 +142,37 @@ def method(source_ids: list[str], steps: list[dict]) -> dict:
     return {"sources": sources, "processing": steps}
 
 
+def status(validation: dict, sources: list[dict], release: str, created: str) -> dict:
+    """GET /api/v3/status (ADR-009): validity of the release and freshness of its sources.
+
+    Validated only when every check of the protocol passes; a check that cannot run (no positive control) counts as
+    not passed. Until the refresher exists (T52), no source is checked automatically: each one is `not_checkable`,
+    with the date it was verified by hand in the catalogue."""
+    neg = validation.get("negatives") or {}
+    top10 = neg.get("top10") or {}
+    selfc = validation.get("self_consistency") or {}
+    pos = validation.get("positives") or {}
+    failing = sorted(t for t, x in selfc.items() if not x.get("pass"))
+    checks = [
+        {"check": "positives", "pass": pos.get("pass"), "detail": pos.get("consequence") or ""},
+        {"check": "negatives_top10", "pass": bool(top10) and all(x.get("pass") for x in top10.values()) if top10 else None,
+         "detail": "at most 1 of 18 negatives in the top 10% of each target"},
+        {"check": "masks", "pass": (neg.get("masks") or {}).get("pass"),
+         "detail": f"{(neg.get('masks') or {}).get('masked_or_flagged', '?')} of {(neg.get('masks') or {}).get('of', '?')} negatives masked or flagged"},
+        {"check": "self_consistency", "pass": (not failing) if selfc else None,
+         "detail": ("fails for " + ", ".join(failing)) if failing else "KS <= 0.05 for every target"},
+        {"check": "reproducibility", "pass": (validation.get("reproducibility") or {}).get("pass"),
+         "detail": "identical SHA-256 on rebuild"},
+    ]
+    ok = all(c["pass"] is True for c in checks)
+    return {"validity": {"state": "validated" if ok else "not_validated", "protocol": PROTOCOL, "release": release,
+                         "published": created, "checks": checks},
+            "freshness": {"refresher": False,
+                          "note": "no automatic check yet (refresher planned in T52): sources were verified by hand",
+                          "sources": [{"id": s["id"], "state": "not_checkable", "checked_on": s.get("verified_on")}
+                                      for s in sources]}}
+
+
 def scenarios() -> list[dict]:
     import yaml
     from discovery.compare_run import RULES, SUITABILITY
@@ -253,7 +284,9 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
                                "grid": {"tau": list(TAUS), "min_cells": list(MIN_CELLS), "nominal": {"tau": TAU, "min_cells": MIN}}})
     write(d / "profiles.json", {**head, "profiles": profs})
     write(d / "scenarios.json", {**head, "scenarios": scenarios()})
-    write(d / "method.json", {**head, **method(used, processing_steps(run))})
+    meth = method(used, processing_steps(run))
+    write(d / "method.json", {**head, **meth})
+    write(d / "status.json", {**head, **status(validation, meth["sources"], rid, date.today().isoformat())})
     write(d / "coverage.json", {**head, "scenarios": {sc: {t: coverage_shares(cells, t, land) for t in ts}
                                                        for sc, ts in SCENARIO_TARGETS.items()}})
     for sc, ts in SCENARIO_TARGETS.items():

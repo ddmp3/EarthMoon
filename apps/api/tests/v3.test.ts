@@ -41,6 +41,10 @@ async function writeRelease(dir: string): Promise<void> {
       not_comparable: {}, cannot_assess: ["Traction in regolith."] },
   ] });
   await w(`${RID}/method.json`, { ...head, sources: [{ id: "copernicus-dem-glo30", status: "verified", verified_on: "2026-11-18" }], processing: [{ step: "windows" }] });
+  await w(`${RID}/status.json`, { ...head,
+    validity: { state: "not_validated", protocol: "validation-protocol-v3", release: RID, published: "2026-11-19",
+      checks: [{ check: "masks", pass: false, detail: "17 of 18 negatives masked or flagged" }] },
+    freshness: { refresher: false, note: "no automatic check yet", sources: [{ id: "copernicus-dem-glo30", state: "not_checkable", checked_on: "2026-11-18" }] } });
   await w(`${RID}/coverage.json`, { ...head, scenarios: { B: { "moon-psr": { land_km2: 1000, classes: { evaluated: { km2: 400, share: 0.4, meaning: "x" } } } } } });
   await w(`${RID}/zones/B/moon-psr/t0.5-m3.json`, { ...head, scenario: "B", target: "moon-psr", tau: 0.5, min_cells: 3,
     zones: Array.from({ length: 250 }, (_, k) => zone(k + 1)) });
@@ -87,13 +91,22 @@ describe("API v3 (static release)", () => {
   });
 
   it("every response carries the release and the methodology version", async () => {
-    for (const p of ["profiles", "scenarios", "method", "profiles/moon-psr", "scenarios/B", "coverage?scenario=B&env=moon-psr",
+    for (const p of ["profiles", "scenarios", "method", "status", "profiles/moon-psr", "scenarios/B", "coverage?scenario=B&env=moon-psr",
       "zones?scenario=B&env=moon-psr", "zones/B.moon-psr.t0.5.m3.1"]) {
       const { status, body } = await json(`${api.url}/api/v3/${p}`);
       expect(status, p).toBe(200);
       expect(body.release, p).toBe(RID);
       expect(body.methodology_version, p).toBe("v3");
     }
+  });
+
+  it("status gives the validity of the release and the freshness state of each source (ADR-009)", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/status`);
+    expect(status).toBe(200);
+    expect(body.validity.state).toBe("not_validated");
+    expect(body.validity.checks[0]).toEqual({ check: "masks", pass: false, detail: "17 of 18 negatives masked or flagged" });
+    expect(body.freshness.refresher).toBe(false);
+    expect(body.freshness.sources[0].state).toBe("not_checkable");
   });
 
   it("unknown ids return 404 with a message", async () => {
@@ -179,7 +192,7 @@ describe("API v3 (static release)", () => {
   it("the contract documents every v3 route", async () => {
     const doc = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { paths: Record<string, unknown> };
     for (const p of ["/api/v3/releases", "/api/v3/releases/{id}", "/api/v3/profiles", "/api/v3/profiles/{id}",
-      "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}", "/api/v3/coverage", "/api/v3/method",
+      "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}", "/api/v3/coverage", "/api/v3/method", "/api/v3/status",
       "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png", "/api/v3/cells", "/api/v3/query"]) {
       expect(doc.paths[p], p).toBeDefined();
     }

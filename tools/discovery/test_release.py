@@ -98,3 +98,30 @@ def test_land_cells_are_the_global_cells_holding_a_90m_window(tmp_path):
     expect = np.unique(ang2pix(NSIDE, np.r_[a["lat"], b["lat"]], np.r_[a["lon"], b["lon"]]))
     assert cells.tolist() == expect.tolist()
     assert land_km2(tmp_path) == 4.0
+
+
+def test_status_says_not_validated_and_lists_the_checks_that_fail_or_cannot_run():
+    from discovery.release import status
+    val = {"positives": {"A": "none", "consequence": "no positive validation for scenarios A and B"},
+           "negatives": {"top10": {"A:moon-psr": {"in_top10": 0, "pass": True}}, "masks": {"masked_or_flagged": 17, "of": 18, "pass": False}},
+           "self_consistency": {"moon-psr": {"ks": 0.02, "pass": True}, "moon-pits": {"ks": 0.056, "pass": False}},
+           "reproducibility": {"pass": True}}
+    sources = [{"id": "copernicus-dem-glo30", "verified_on": "2026-11-18"}, {"id": "not-a-source", "status": "not in catalogue"}]
+    s = status(val, sources, "r-12345678", "2026-11-19")
+    assert s["validity"]["state"] == "not_validated" and s["validity"]["protocol"] == "validation-protocol-v3"
+    checks = {c["check"]: c for c in s["validity"]["checks"]}
+    assert checks["positives"]["pass"] is None and checks["masks"]["pass"] is False
+    assert checks["negatives_top10"]["pass"] is True and checks["reproducibility"]["pass"] is True
+    assert checks["self_consistency"]["pass"] is False and "moon-pits" in checks["self_consistency"]["detail"]
+    fresh = {x["id"]: x for x in s["freshness"]["sources"]}
+    assert s["freshness"]["refresher"] is False
+    assert fresh["copernicus-dem-glo30"] == {"id": "copernicus-dem-glo30", "state": "not_checkable", "checked_on": "2026-11-18"}
+    assert fresh["not-a-source"]["checked_on"] is None
+
+
+def test_status_is_validated_only_when_every_check_passes():
+    from discovery.release import status
+    val = {"positives": {"pass": True}, "negatives": {"top10": {"x": {"pass": True}}, "masks": {"pass": True}},
+           "self_consistency": {"t": {"pass": True}}, "reproducibility": {"pass": True}}
+    assert status(val, [], "r-1", "2026-11-19")["validity"]["state"] == "validated"
+    assert status({}, [], "r-1", "2026-11-19")["validity"]["state"] == "not_validated"

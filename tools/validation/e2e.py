@@ -211,6 +211,9 @@ def run(web: str, api: str) -> None:
         assert code == 200 and "screened_out" in json.loads(b)["coverage"]["classes"], "coverage classes missing"
         code, _, b = http(f"{api}/api/v3/method")
         assert code == 200 and json.loads(b)["sources"], "no source in the method panel"
+        code, _, b = http(f"{api}/api/v3/status")
+        st = json.loads(b)
+        assert code == 200 and st["validity"]["state"] in ("validated", "not_validated") and st["freshness"]["sources"], "status incomplete"
         assert http(f"{api}/api/v3/zones?scenario={s['id']}&env={env}&tau=0.66")[0] == 400, "tau outside the grid accepted"
         return f"release {idx['current']} ({idx['releases'][0]['run']}), {z['total']} zones for {s['id']} {env}"
 
