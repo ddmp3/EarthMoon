@@ -1,0 +1,885 @@
+{
+ "dossiers_A": {
+  "no_match": 10,
+  "unresolved": 8,
+  "no_map": 2
+ },
+ "dossiers_B": {
+  "no_match": 9,
+  "unresolved": 9,
+  "no_map": 2
+ },
+ "sites": {
+  "haughton": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "atacama": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 1087
+  },
+  "dry-valleys": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.556,
+    "unresolved": 0.0,
+    "no_map": 0.444
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.333,
+    "no_match": 0.222,
+    "unresolved": 0.0,
+    "no_map": 0.444
+   },
+   "source_id": 1084
+  },
+  "mauna-kea": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.222,
+    "unresolved": 0.778,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.222,
+    "unresolved": 0.778,
+    "no_map": 0.0
+   },
+   "source_id": 48
+  },
+  "svalbard-bockfjorden": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "iceland-holuhraun": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 1.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 1080
+  },
+  "death-valley": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 548
+  },
+  "meteor-crater": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 490
+  },
+  "black-point": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 490
+  },
+  "amazon": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 43
+  },
+  "mistastin": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 7
+  },
+  "tunnunik": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "axel-heiberg": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "pingualuit": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "manicouagan": {
+   "highland": {
+    "match": 0.333,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.667,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.333,
+    "unresolved": 0.667,
+    "no_map": 0.0
+   },
+   "source_id": 7
+  },
+  "peary-land": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "popigai": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "elgygytgyn": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 2
+  },
+  "tolbachik": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "source_id": -1
+  },
+  "erebus": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.889,
+    "unresolved": 0.0,
+    "no_map": 0.111
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.778,
+    "unresolved": 0.111,
+    "no_map": 0.111
+   },
+   "source_id": 1084
+  },
+  "qaidam-lenghu": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "source_id": -1
+  },
+  "changtang": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "source_id": -1
+  },
+  "gobi": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 1.0
+   },
+   "source_id": -1
+  },
+  "uyuni": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 1087
+  },
+  "licancabur": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 1087
+  },
+  "payunia": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.889,
+    "partial": 0.0,
+    "no_match": 0.111,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 1087
+  },
+  "namib-gobabeb": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 190
+  },
+  "lut": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 191
+  },
+  "dallol": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 190
+  },
+  "erta-ale": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 190
+  },
+  "hoggar-atakor": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 190
+  },
+  "harrat-khaybar": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 190
+  },
+  "aorounga": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 190
+  },
+  "tenoumer": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 190
+  },
+  "wolfe-creek": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 5
+  },
+  "gosses-bluff": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 1.0,
+    "no_map": 0.0
+   },
+   "source_id": 5
+  },
+  "craters-of-the-moon": {
+   "highland": {
+    "match": 0.0,
+    "partial": 0.0,
+    "no_match": 1.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "mare": {
+    "match": 1.0,
+    "partial": 0.0,
+    "no_match": 0.0,
+    "unresolved": 0.0,
+    "no_map": 0.0
+   },
+   "source_id": 546
+  }
+ },
+ "highland_match_cells": 3180,
+ "highland_sources": [
+  [
+   7,
+   2666
+  ],
+  [
+   1,
+   186
+  ],
+  [
+   2,
+   140
+  ],
+  [
+   548,
+   31
+  ],
+  [
+   459,
+   26
+  ],
+  [
+   -1,
+   25
+  ],
+  [
+   471,
+   25
+  ],
+  [
+   43,
+   22
+  ]
+ ],
+ "highland_tiles": [
+  [
+   [
+    49,
+    -72
+   ],
+   192
+  ],
+  [
+   [
+    50,
+    -65
+   ],
+   171
+  ],
+  [
+   [
+    48,
+    -72
+   ],
+   165
+  ],
+  [
+   [
+    55,
+    -63
+   ],
+   120
+  ],
+  [
+   [
+    51,
+    -64
+   ],
+   110
+  ],
+  [
+   [
+    49,
+    -71
+   ],
+   105
+  ],
+  [
+   [
+    52,
+    -65
+   ],
+   101
+  ],
+  [
+   [
+    51,
+    -65
+   ],
+   98
+  ],
+  [
+   [
+    51,
+    -71
+   ],
+   93
+  ],
+  [
+   [
+    50,
+    -64
+   ],
+   90
+  ],
+  [
+   [
+    56,
+    -63
+   ],
+   84
+  ],
+  [
+   [
+    54,
+    -62
+   ],
+   78
+  ]
+ ],
+ "mare_match_cells": 67639,
+ "mare_sources": [
+  [
+   2,
+   22294
+  ],
+  [
+   1087,
+   15315
+  ],
+  [
+   147,
+   14150
+  ],
+  [
+   1080,
+   3022
+  ],
+  [
+   540,
+   2942
+  ],
+  [
+   43,
+   2074
+  ],
+  [
+   546,
+   2015
+  ],
+  [
+   544,
+   1164
+  ]
+ ],
+ "mare_tiles": [
+  [
+   [
+    -25,
+    -55
+   ],
+   452
+  ],
+  [
+   [
+    -26,
+    -53
+   ],
+   435
+  ],
+  [
+   [
+    27,
+    -19
+   ],
+   430
+  ],
+  [
+   [
+    -27,
+    -54
+   ],
+   430
+  ],
+  [
+   [
+    27,
+    -18
+   ],
+   428
+  ],
+  [
+   [
+    -26,
+    -54
+   ],
+   428
+  ],
+  [
+   [
+    32,
+    -17
+   ],
+   421
+  ],
+  [
+   [
+    32,
+    -18
+   ],
+   420
+  ],
+  [
+   [
+    30,
+    -16
+   ],
+   420
+  ],
+  [
+   [
+    -27,
+    -52
+   ],
+   418
+  ],
+  [
+   [
+    28,
+    -16
+   ],
+   413
+  ],
+  [
+   [
+    29,
+    -14
+   ],
+   411
+  ]
+ ]
+}

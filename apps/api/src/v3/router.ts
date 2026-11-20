@@ -198,7 +198,7 @@ const QUERY_FIELDS = ["scenario", "env", "min_typicality", "min_confidence", "re
 class Unavailable extends Error {}
 class TooLarge extends Error {}
 
-export const LAYER_PARAMETERS = ["typicality", "coverage"] as const;
+export const LAYER_PARAMETERS = ["typicality", "coverage", "geology"] as const;
 export const MAX_ZOOM = 7;
 
 /** Raster tiles of a release (zoom 0 to 7). Mounted before the general rate limit: a map view asks for many tiles. */

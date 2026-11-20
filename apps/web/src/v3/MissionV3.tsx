@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useAppStore } from '../store'
 import { v3 as v3api, type CellProps, type QueryResult, type Scenario } from './api'
-import { cellState, cividis, layerList, legendRows } from './model'
+import { cellState, cividis, geologyText, layerList, legendRows } from './model'
 import { coverageMeaning, requirementText, scenarioText } from './content'
 import { Patterns } from './panels'
 import { targetName, V3_TEXTS } from './text'
@@ -16,7 +16,9 @@ function useV3Texts() {
 }
 
 /** v3 settings in the mission's control bar: lunar environment, coverage overlay, Data and method. */
-export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = false, onScenario }: {
+export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = false, onScenario, layer, onLayer }: {
+  layer: 'typicality' | 'geology'
+  onLayer: (l: 'typicality' | 'geology') => void
   v: V3State
   overlay: boolean
   onOverlay: (on: boolean) => void
@@ -46,6 +48,16 @@ export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = f
               <option disabled={!s.assessed_targets.includes(id)} key={id} value={id}>
                 {targetName(t, id)}{s.assessed_targets.includes(id) ? '' : ` (${t.notComparable})`}
               </option>
+            ))}
+          </select>
+        </label>
+      )}
+      {s && (
+        <label className="field">
+          <span>{t.layerPick}</span>
+          <select id="v3-layer" onChange={(e) => onLayer(e.target.value === 'geology' ? 'geology' : 'typicality')} value={layer === 'geology' ? 'geology' : 'topography'}>
+            {layerList(t, v.available).map((l) => (
+              <option disabled={!l.enabled} key={l.id} value={l.id}>{l.label}{l.reason ? ` (${l.reason})` : ''}</option>
             ))}
           </select>
         </label>
@@ -144,6 +156,7 @@ export function SiteV3Section({ site, scenario, release, onMethod }: {
                 <th scope="col">n ({t.windows})</th>
                 <th scope="col">{t.coverageLabel}</th>
                 <th scope="col">{t.confidenceLabel}</th>
+                <th scope="col">{t.layer.geology}</th>
               </tr>
             </thead>
             <tbody>
@@ -164,6 +177,7 @@ export function SiteV3Section({ site, scenario, release, onMethod }: {
                     <td>{c?.windows.valid ?? '—'}/{c?.windows.total ?? '—'}</td>
                     <td title={c ? coverageMeaning(c.coverage, lang, '') : ''}>{cov}</td>
                     <td>{c?.confidence ? (t.confidenceLevel[c.confidence] ?? c.confidence) : '—'}</td>
+                    <td>{geologyText(c?.geology, t) ?? <span className="v3-missing-chip">{t.geologyMissing}</span>}</td>
                   </tr>
                 )
               })}
@@ -217,7 +231,14 @@ export function ZoneRows({ items, selectedId, onSelect, picked, onPick }: {
 
 
 /** Legend drawn over the mission map: typicality ramp, and the coverage classes with their land share. */
-export function MapLegend({ coverage, overlay }: { coverage: V3State['coverage']; overlay: boolean }) {
+const GEO_SWATCH: Record<number, string> = { 1: 'rgb(0, 158, 115)', 2: 'rgb(86, 180, 233)', 3: 'rgb(120, 126, 140)' }
+
+export function MapLegend({ coverage, overlay, layer = 'typicality', available = ['topography'] }: {
+  coverage: V3State['coverage']
+  overlay: boolean
+  layer?: 'typicality' | 'geology'
+  available?: string[]
+}) {
   const { t, lang } = useV3Texts()
   const [open, setOpen] = useState(true)
   const stops = Array.from({ length: 11 }, (_, i) => cividis(i / 10))
@@ -226,12 +247,32 @@ export function MapLegend({ coverage, overlay }: { coverage: V3State['coverage']
       <button aria-expanded={open} className="map-legend-toggle" onClick={() => setOpen(!open)} type="button">{t.mapLegend}</button>
       {open && (
         <div className="map-legend-body">
-          <strong>{t.legendTitle}</strong>
-          <div aria-hidden="true" className="v3-ramp" style={{ background: `linear-gradient(to right, ${stops.join(', ')})` }} />
-          <div className="v3-ramp-ends"><span>0</span><span>1</span></div>
-          <small>{t.legendScale}</small>
+          {layer === 'geology' ? (
+            <>
+              <strong>{t.geoLegend}</strong>
+              <ul aria-label={t.geoLegend} className="v3-legend">
+                {[1, 2, 3, 4].map((k) => (
+                  <li key={k}>
+                    <svg aria-hidden="true" className="legend-swatch" height="14" width="20">
+                      <rect fill={GEO_SWATCH[k] ?? '#1d2335'} height="14" width="20" />
+                      {k === 4 && <rect fill="url(#pat-dense)" height="14" width="20" />}
+                    </svg>
+                    <span className="legend-label">{t.geoClass[k]}</span>
+                  </li>
+                ))}
+              </ul>
+              <small>{t.geoSource}</small>
+            </>
+          ) : (
+            <>
+              <strong>{t.legendTitle}</strong>
+              <div aria-hidden="true" className="v3-ramp" style={{ background: `linear-gradient(to right, ${stops.join(', ')})` }} />
+              <div className="v3-ramp-ends"><span>0</span><span>1</span></div>
+              <small>{t.legendScale}</small>
+            </>
+          )}
           <ul aria-label={t.layers} className="map-layers">
-            {layerList(t).map((l) => (
+            {layerList(t, available).map((l) => (
               <li className={l.enabled ? 'on' : 'off'} key={l.id}>{l.label}{l.reason ? ` · ${l.reason}` : ''}</li>
             ))}
           </ul>

@@ -155,3 +155,30 @@ def test_values_at_named_points_give_the_cell_of_each_point_or_say_it_was_not_as
 def test_points_are_checked(release, bad, why):
     with pytest.raises(QueryError, match=why):
         cells_at(release, bad, ["moon-psr"])
+
+
+def test_a_cell_carries_its_geology_for_the_group_of_the_target_when_the_release_has_it(tmp_path):
+    ids = np.unique(ang2pix(NSIDE, np.array([10.1, 10.2]), np.array([20.1, 20.1])))
+    n = ids.size
+    cols = {"cell": ids.astype(str), "windows": np.full(n, 25.0), "valid_unmasked": np.full(n, 24.0),
+            "masked_share": np.zeros(n), "cover_unknown": np.zeros(n), "confidence": np.full(n, "high"),
+            "moon-psr:windows": np.full(n, 25.0), "moon-psr:valid": np.full(n, 24.0), "moon-psr:median": np.full(n, 0.5),
+            "moon-psr:p25": np.full(n, 0.4), "moon-psr:p75": np.full(n, 0.6),
+            "moon-psr:screened_out": pa.array([None] * n, pa.bool_()),
+            "req:base_slope": np.full(n, "met"), "req:climbing_limit_lrv": np.full(n, "met"), "req:climbing_limit_viper": np.full(n, "met"),
+            "geo:highland:match": np.full(n, 2 / 9, np.float32), "geo:highland:partial": np.zeros(n, np.float32),
+            "geo:highland:no_match": np.full(n, 6 / 9, np.float32), "geo:highland:unresolved": np.zeros(n, np.float32),
+            "geo:highland:no_map": np.full(n, 1 / 9, np.float32)}
+    d = tmp_path / "r-22222222"
+    d.mkdir()
+    pq.write_table(pa.table(cols), d / "cells.parquet")
+    (d / "release.json").write_text('{"release": "r-22222222", "methodology_version": "v3"}')
+    rel = Release(d, targets=["moon-psr"])
+    p = cells_in_bbox(rel, (20.0, 10.0, 20.2, 10.4), "moon-psr")["features"][0]["properties"]
+    assert p["geology"]["group"] == "highland"
+    assert p["geology"]["match"] == pytest.approx(0.2222, abs=1e-4) and p["geology"]["no_map"] == pytest.approx(0.1111, abs=1e-4)
+
+
+def test_without_geology_columns_a_cell_says_geology_is_not_evaluated(release):
+    p = cells_in_bbox(release, (20.2, 10.2, 20.4, 10.4), "moon-psr")["features"][0]["properties"]
+    assert p["geology"] is None

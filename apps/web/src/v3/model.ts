@@ -1,4 +1,4 @@
-import type { CellProps, Coverage, Status, Zone } from './api'
+import type { CellProps, Coverage, GeologyShares, Status, Zone } from './api'
 import type { V3Texts } from './text'
 
 /** Overlay classes in the order release.py assigns them (the first that applies wins). */
@@ -50,14 +50,13 @@ export interface Layer {
   reason: string | null
 }
 
-/** Every dimension is listed; one that waits for a later task is disabled with its reason, never hidden. */
-export function layerList(t: V3Texts): Layer[] {
-  return (['topography', 'geology', 'thermal', 'operational', 'multi'] as const).map((id) => ({
-    id,
-    label: t.layer[id],
-    enabled: id === 'topography',
-    reason: id === 'topography' ? null : t.layerWait[id],
-  }))
+/** Every dimension is listed; one that waits for a later task is disabled with its reason, never hidden.
+ *  `available`: the dimensions the release carries (topography always; geology once T46 is in the release). */
+export function layerList(t: V3Texts, available: string[] = ['topography']): Layer[] {
+  return (['topography', 'geology', 'thermal', 'operational', 'multi'] as const).map((id) => {
+    const on = id === 'topography' || available.includes(id)
+    return { id, label: t.layer[id], enabled: on, reason: on ? null : t.layerWait[id] }
+  })
 }
 
 export interface DimensionRow {
@@ -68,13 +67,24 @@ export interface DimensionRow {
   n: number | null
   source: string | null
   missing: string | null
+  /** a dimension reported as shares of states rather than a value with its spread (geology) */
+  text?: string
 }
 
 /** Rows of the zone card: topography with its spread, then the dimensions not evaluated yet, by name. */
-export function zoneDimensions(spread: { median: number; p25: number; p75: number }, windows: number, t: V3Texts): DimensionRow[] {
+export function geologyText(g: GeologyShares | null | undefined, t: V3Texts): string | null {
+  if (!g || g.match === null) return null
+  return t.geoSummary(g.match ?? 0, g.partial ?? 0, g.no_match ?? 0, (g.unresolved ?? 0) + (g.no_map ?? 0))
+}
+
+export function zoneDimensions(spread: { median: number; p25: number; p75: number }, windows: number, t: V3Texts,
+  geology: GeologyShares | null = null): DimensionRow[] {
+  const geo = geologyText(geology, t)
   return [
     { name: t.layer.topography, ...spread, n: windows, source: 'Copernicus DEM GLO-30', missing: null },
-    { name: t.layer.geology, median: null, p25: null, p75: null, n: null, source: null, missing: t.geologyMissing },
+    geo
+      ? { name: t.layer.geology, median: null, p25: null, p75: null, n: null, source: t.geoSource, missing: null, text: geo }
+      : { name: t.layer.geology, median: null, p25: null, p75: null, n: null, source: null, missing: t.geologyMissing },
     { name: t.layer.thermal, median: null, p25: null, p75: null, n: null, source: null, missing: t.thermalMissing },
   ]
 }
@@ -137,7 +147,7 @@ export function cellLines(c: CellProps, t: V3Texts): string[] {
   return [
     `${t.cell} ${ns}  (${t.cellSize})`,
     topo,
-    `${t.layer.geology}: ${t.geologyMissing}`,
+    `${t.layer.geology}: ${geologyText(c.geology, t) ?? t.geologyMissing}`,
     `${t.state}: ${s.text}`,
     `${t.maskedLabel}: ${c.masked_share === null ? '—' : `${Math.round(c.masked_share * 100)}%`}   ${t.confidenceLabel}: ${c.confidence ?? '—'}`,
     `${t.coverageLabel}: ${cov}`,
@@ -148,3 +158,14 @@ export function cellLines(c: CellProps, t: V3Texts): string[] {
 export function zoneItems(zones: Zone[], t: V3Texts) {
   return zones.map((z) => ({ id: z.id, lat: z.lat, lon: z.lon, value: z.typicality.median, sub: t.cellsArea(z.cells, z.area_km2) }))
 }
+
+/** Geology class of a cell for the map, as the tiles draw it (tools/discovery/tiles.geology_class). */
+export function geologyClass(c: CellProps): number {
+  const g = c.geology
+  if (!g || g.match === null) return 0
+  if ((g.match ?? 0) >= 0.5) return 1
+  if ((g.match ?? 0) + (g.partial ?? 0) >= 0.5) return 2
+  if ((g.no_match ?? 0) >= 0.5) return 3
+  return 4
+}
+
