@@ -2,7 +2,7 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
-## 2026-11-20 · T45b v3 inside the missions (PR #PRNUM)
+## 2026-11-20 · T45b v3 inside the missions (PR #27)
 - **David's review of T45:** the separate discovery page looked added at the last minute, and the missions did not use the new data. The v3 results now live in the missions:
   - **robotics (B) and colony (A):**
     - the 37 known sites keep their v2 ranking, with a v3 mark: typicality of the 5 km cell holding each site;
