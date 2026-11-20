@@ -139,3 +139,12 @@ def test_profile_sources_are_catalogue_ids_listed_once_with_the_lunar_cube_expan
     got = profile_sources(profs, ["moon-mare-plains", "moon-psr", "moon-pits"])
     assert got == ["sldem2015", "usgs-unified-geologic-map", "lp-grs-ns-special-products", "lro-lola-ldem-85s-40m",
                    "lola-polar-illumination", "lroc-pits-atlas"]
+
+
+def test_zone_records_with_a_prepared_index_equal_the_plain_ones():
+    from discovery.release import cell_index
+    cells = _cells()
+    idx = cell_index(cells)
+    z = {"target": "moon-psr", "scenario": "B", "cells": 3, "area_km2": 75.1, "lat": 1.0, "lon": 2.0, "median": 0.8,
+         "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 0.3, "cell_ids": ["6", "2", "4"]}
+    assert zone_record(z, 2, 0.7, 9, cells, idx) == zone_record(z, 2, 0.7, 9, cells)
