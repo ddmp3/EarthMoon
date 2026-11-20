@@ -1,6 +1,6 @@
-# Mars, first phase (T48, proposal E19)
+# Mars, first phase (T48, decisions E19 and E20)
 
-**Status: proposal, waiting for David's decisions. Nothing is computed before.**
+**Status: accepted by David on 20/11/2026 ("go!"): E19 windows of 25 x 25 planetary pixels, E20 volcanic units against Earth basalt, interface option A (a fifth mission).**
 
 Mars is analysed on its own terms (mission rule): no lunar criterion is reused with new weights.
 
