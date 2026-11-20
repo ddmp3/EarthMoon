@@ -123,9 +123,10 @@ async function discovery(page, name, shot) {
   if (!(await page.getByRole("dialog").getByText("release", { exact: false }).count())) defect(name, "provenance: no release");
   await page.keyboard.press("Escape");
   // cells above zoom 7 (the card flew the map to the zone)
-  await page.waitForFunction(() => document.querySelectorAll(".v3-map .leaflet-overlay-pane path").length > 20, null, { timeout: 20000 })
+  await page.waitForFunction(() => !document.querySelector(".v3-map-note") && document.querySelectorAll(".v3-map path.v3-cell").length > 20, null, { timeout: 20000 })
     .catch(() => defect(name, "discovery: no cell drawn at zoom 9 around the zone"));
-  const hatched = await page.evaluate(() => [...document.querySelectorAll(".v3-map .leaflet-overlay-pane path")].filter((p) => (p.getAttribute("fill") ?? "").startsWith("url(#pat-")).length);
+  const hatched = await page.evaluate(() => [...document.querySelectorAll(".v3-map path.v3-hatch")].filter((p) => (p.getAttribute("fill") ?? "").startsWith("url(#pat-")).length);
+  await page.locator(".v3-map").scrollIntoViewIfNeeded();
   notes.push(`${name} discovery: ${hatched} hatched cells at the first zone`);
   await overflow(page, `${name} zone card`);
   await shot("09-zone-card");

@@ -2,6 +2,28 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-20 · T45 Interface: discovery map, coverage overlay, comparison (PR #PRNUM)
+- **Discovery map** (`apps/web/src/v3/`, `#discover`, linked from Home), on API v3:
+  - pickers: scenario and lunar environment (targets that are not comparable stay listed, disabled, with the reason);
+  - layers: topography; geology, thermal, operational and multidimensional shown disabled with their reason;
+  - map: typicality tiles (cividis) to zoom 7, then 5 km cells with a confidence outline and the hover text of the map spec.
+- **Coverage overlay** (David's clarification of 19/11): on by default and switchable, six classes drawn as SVG patterns (pastel `#b9c6e8`). Each class has a text label and its land share. On run-002 for B mare plains: ground hidden 43%, screened out 18%, evaluated 26%.
+- **Panels:**
+  - Data and method: what we cover, catalogue sources with status, processing chain, limits;
+  - zone card: spread, missing dimensions by name, requirements, confidence, Monte Carlo, what Earth cannot reproduce;
+  - comparison of 2 to 4 zones (strip plots);
+  - provenance;
+  - validity and freshness from `/api/v3/status` on the map, zone card and provenance.
+- **v2 gaps fixed:**
+  - deprecated parameters flagged in the criteria builder, with the replacement;
+  - the unsourced "28 shallow moonquakes in 8 years" note removed;
+  - radar labels wrapped;
+  - a site-card assessment block: confidence, coverage with the total range, hard requirements, explanation;
+  - "See the match" recomputed from terrain_v2 (Atacama 7.85° in both places; was 7.97 in the panel), 37 lunar twins searched again.
+- **UI audit:** the map is walked on desktop and phone, with contrast checks and the ADR-006 budget. Measured on the run-002 release: first view 0.83 s, 8 KB gzip of v3 JavaScript (own chunk), 24 tile requests, 0 defects. Defects the audit found were fixed: phone overflow, covered checkboxes, invisible "not evaluated" text.
+- **Before and after:** screenshots of the v2 pages change only where intended (Home card, assessment block, regenerated match images).
+- **Open:** the zone-against-reference Q–Q plot of ADR-006 needs window quantiles per zone in the release, so it is not built.
+
 ## 2026-11-20 · T44 API v3: layers, zones, custom queries (PR #25)
 - **Static releases** (`tools/discovery/release.py`, ADR-004, ADR-009). A validated run is exported once into JSON files: release, profiles, scenarios, method, coverage, status, and the zones of every τ and size of the grid. The id is a hash of the content; the index keeps the current release and the last 3.
 - **Tiles** (`tools/discovery/tiles.py`): PNG, zoom 0 to 7, typicality (cividis) and the coverage overlay per scenario and target. Measured on run-002: 127,062 tiles, 612 MB. Typicality 95.7 MB per layer, coverage 26.6 MB per layer; ADR-002 estimated 50 MB.

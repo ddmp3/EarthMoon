@@ -63,12 +63,12 @@ function Cells({ scenario, env, overlay, confidence, onError }: {
     const st = cellState(p, t).state
     const fill = p.typicality.median === null || st === 'not_evaluated' || st === 'masked' ? '#2a3044' : cividis(p.typicality.median)
     const outline = !confidence || p.confidence === 'high' ? { stroke: false } : { stroke: true, color: '#eef0f6', weight: p.confidence === 'low' ? 1.2 : 0.6, dashArray: p.confidence === 'low' ? '3 3' : undefined }
-    return { fillColor: fill, fillOpacity: 0.8, ...outline }
+    return { className: 'v3-cell', fillColor: fill, fillOpacity: 0.8, ...outline }
   }
   const hatch = (f?: Feature): PathOptions => {
     const cls = props(f).coverage as CoverageClass
     const pattern = PATTERN[cls] ?? 'pat-none'
-    return pattern === 'pat-none' ? { stroke: false, fillOpacity: 0 } : { stroke: false, fillColor: `url(#${pattern})`, fillOpacity: 1 }
+    return pattern === 'pat-none' ? { className: 'v3-hatch', stroke: false, fillOpacity: 0 } : { className: 'v3-hatch', stroke: false, fillColor: `url(#${pattern})`, fillOpacity: 1 }
   }
   const tip = (f: Feature, layer: Layer) => {
     const el = document.createElement('div')
