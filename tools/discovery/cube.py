@@ -135,14 +135,14 @@ def _write(path: Path, table: dict) -> str:
 
 
 def process(lat: int, lon: int, product: str, pixel: float, out: Path, listing: dict, code: str,
-            wc: dict | None, cache: Path | None, source: str = "unknown") -> dict:
+            wc: dict | None, cache: Path | None, source: str = "unknown", window_m: float = WINDOW_M) -> dict:
     os.environ.update(GDAL_ENV)
     t0 = time.time()
-    grid = tile_grid(lat, lon, pixel, WINDOW_M)
+    grid = tile_grid(lat, lon, pixel, window_m)
     have = set(listing)
     inputs = {listing[n]["key"]: {k: listing[n][k] for k in ("etag", "size", "last_modified")}
               for n in neighbours(lat, lon, have)}
-    params = {"product": product, "pixel_m": pixel, "window_m": WINDOW_M, "cell_m": CELL_M, "mask": wc is not None,
+    params = {"product": product, "pixel_m": pixel, "window_m": window_m, "cell_m": CELL_M, "mask": wc is not None,
               "metrics": list(STORED_METRICS)}
     z, shas = read_dem(grid, product, have, cache)
     for t, sha in shas.items():
@@ -184,10 +184,13 @@ def main(argv=None) -> int:
     ap.add_argument("--out", required=True)
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--no-mask", action="store_true")
+    ap.add_argument("--window-px", type=int, default=0, help="windows of this many pixels (Mars, E19) instead of 1 km")
     ap.add_argument("--cache", help="download tiles once into this folder, with SHA-256 (GLO-90); else stream")
     a = ap.parse_args(argv)
     os.environ.update(GDAL_ENV)
-    out = Path(a.out) / f"{a.product}-{int(a.pixel)}m"
+    # Mars (E19): windows of a number of pixels (25) rather than 1 km; their cube gets its own folder
+    window_m = a.pixel * a.window_px if a.window_px else WINDOW_M
+    out = Path(a.out) / (f"{a.product}-{int(a.pixel)}m" + (f"-w{a.window_px}" if a.window_px else ""))
     out.mkdir(parents=True, exist_ok=True)
     listing = {tuple(map(int, k.split(","))): v for k, v in _cached(out / "listing.json", lambda: {
         f"{k[0]},{k[1]}": v for k, v in sorted(list_tiles(a.product).items())}).items()}
@@ -211,7 +214,7 @@ def main(argv=None) -> int:
                     print(f"download {i}/{len(need)}, {(time.time() - t0) / 3600:.2f} h", flush=True)
     t0, n, failed = time.time(), 0, []
     with ProcessPoolExecutor(max_workers=a.workers) as pool, manifest.open("a", encoding="utf-8") as fh:
-        futs = {pool.submit(process, la, lo, a.product, a.pixel, out, listing, commit, wc, cache, source): (la, lo)
+        futs = {pool.submit(process, la, lo, a.product, a.pixel, out, listing, commit, wc, cache, source, window_m): (la, lo)
                 for la, lo in todo}
         for f in as_completed(futs):
             try:
