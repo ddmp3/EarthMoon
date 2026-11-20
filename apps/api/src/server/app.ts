@@ -11,6 +11,8 @@ import { MODES, PARAM_IDS, assess, isModeId, vegetationFactor } from "../scoring
 import { explain } from "../analyze/explain.js";
 import { SOURCES, valueSources } from "../sources/catalog.js";
 import { PARAMETERS } from "./parameters.js";
+import { v3LayersRouter, v3Router } from "../v3/router.js";
+import type { ReleaseStore } from "../v3/store.js";
 
 export type AppDeps = AnalyzeDeps & {
   /** Names of the connected sources, returned by GET /api/sites/{id}. */
@@ -24,6 +26,10 @@ export type AppDeps = AnalyzeDeps & {
   allowedOrigins?: string[];
   rateLimitPerMinute?: number;
   log?: (message: string, error?: unknown) => void;
+  /** Static v3 releases (tools/discovery/release.py); without them /api/v3 answers 503. */
+  releases?: ReleaseStore;
+  /** Internal discovery service for /api/v3/cells and /api/v3/query (ADR-005); without it they answer 503. */
+  discoveryUrl?: string;
 };
 
 export function createApp(deps: AppDeps): express.Express {
@@ -53,6 +59,14 @@ export function createApp(deps: AppDeps): express.Express {
     res.json(deps.openapi);
   });
   app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(deps.openapi));
+
+  // Map tiles: static files, many per view, so their own, higher limit.
+  app.use(
+    "/api/v3/layers",
+    rateLimit({ windowMs: 60_000, limit: (deps.rateLimitPerMinute ?? 120) * 10, standardHeaders: "draft-7", legacyHeaders: false,
+      message: { error: "Too many requests, try again in a minute" } }),
+    v3LayersRouter(deps.releases, log),
+  );
 
   app.use(
     "/api",
@@ -148,6 +162,8 @@ export function createApp(deps: AppDeps): express.Express {
       res.status(500).json({ error: "Internal error" });
     }
   });
+
+  app.use("/api/v3", v3Router(deps.releases, log, deps.discoveryUrl));
 
   app.use("/api", (_req, res) => {
     res.status(404).json({ error: "Unknown route" });

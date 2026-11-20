@@ -10,6 +10,8 @@ info:
 servers:
   - url: /
 tags:
+  - name: V3
+    description: Discovery results of v3, served from static releases (ADR-004)
   - name: Analyse
   - name: Catalogue
   - name: Health
@@ -190,8 +192,463 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Error" }
+  /api/v3/releases:
+    get:
+      tags: [V3]
+      summary: Current release and the last 3 (ADR-009)
+      responses:
+        "200":
+          description: Release index
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ReleaseIndex" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/releases/{id}:
+    get:
+      tags: [V3]
+      summary: One release with its run, protocol, commit, processing chain, validation and grid
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string, pattern: "^r-[0-9a-f]{8}$" } }
+      responses:
+        "200":
+          description: Release manifest
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/profiles:
+    get:
+      tags: [V3]
+      summary: Lunar environment profiles (specs and computed distributions)
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Profiles
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/profiles/{id}:
+    get:
+      tags: [V3]
+      summary: One lunar environment profile
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: Profile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/scenarios:
+    get:
+      tags: [V3]
+      summary: Scenarios with their targets, requirements, suitability and what they cannot assess
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Scenarios
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/scenarios/{id}:
+    get:
+      tags: [V3]
+      summary: One scenario
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: Scenario
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/zones:
+    get:
+      tags: [V3]
+      summary: Candidate zones of one scenario and target, ranked, for one value of the sensitivity grid
+      description: >-
+        `tau` and `min_cells` accept only the values of the release grid (`/api/v3/releases/{id}`, `grid`);
+        without them the nominal values are used. A grid value that was not exported is 404, never an empty list.
+        A target with no Earth assessment (for example a 5 m lunar window) is 400 with the reason.
+      parameters:
+        - { $ref: "#/components/parameters/Scenario" }
+        - { $ref: "#/components/parameters/Env" }
+        - { name: tau, in: query, schema: { type: number } }
+        - { name: min_cells, in: query, description: "Minimum zone size in 5 km cells", schema: { type: integer } }
+        - { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 200, default: 50 } }
+        - { name: offset, in: query, schema: { type: integer, minimum: 0, default: 0 } }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: One page of zones
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ZonePage" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/zones/{id}:
+    get:
+      tags: [V3]
+      summary: Zone card, with spread, requirements, coverage of its cells, Monte Carlo and what Earth cannot reproduce
+      parameters:
+        - { name: id, in: path, required: true, description: "For example B.moon-psr.t0.5.m3.12", schema: { type: string } }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: Zone
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ZoneDetail" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/coverage:
+    get:
+      tags: [V3]
+      summary: Share of land in each coverage overlay class for one scenario and target
+      parameters:
+        - { $ref: "#/components/parameters/Scenario" }
+        - { $ref: "#/components/parameters/Env" }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: Coverage shares
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Coverage" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png:
+    get:
+      tags: [V3]
+      summary: Raster map tile (zoom 0 to 7) of one target - typicality, or the coverage overlay
+      description: >-
+        Pixels show the 5 km cell that holds their centre. Typicality tiles draw the states (value colour, pastel
+        hatching on partial cells, grey dots where nothing was evaluated, an outline where the ground is hidden);
+        coverage tiles are transparent on evaluated cells and patterned elsewhere. A tile with no cell is 204.
+        Rate limit ten times the general one.
+      parameters:
+        - { name: scenario, in: path, required: true, schema: { type: string } }
+        - { name: env, in: path, required: true, schema: { type: string } }
+        - { name: parameter, in: path, required: true, schema: { type: string, enum: [typicality, coverage] } }
+        - { name: z, in: path, required: true, schema: { type: integer, minimum: 0, maximum: 7 } }
+        - { name: x, in: path, required: true, schema: { type: integer, minimum: 0 } }
+        - { name: y, in: path, required: true, schema: { type: integer, minimum: 0 } }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: PNG tile (256 x 256, RGBA)
+          content:
+            image/png:
+              schema: { type: string, format: binary }
+        "204": { description: No cell in this tile }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/cells:
+    get:
+      tags: [V3]
+      summary: Cells in view (zoom 8 and above) as GeoJSON polygons, at most 5,000
+      description: >-
+        Computed by the internal discovery service over the release's cells (ADR-005). Each cell carries its
+        typicality with spread, its windows, coverage class, confidence, masked share and requirement states.
+        503 when the service is unavailable (the preset layers and zones keep working).
+      parameters:
+        - { $ref: "#/components/parameters/Scenario" }
+        - { $ref: "#/components/parameters/Env" }
+        - { name: bbox, in: query, required: true, description: "west,south,east,north in degrees", schema: { type: string, example: "20,10,20.5,10.5" } }
+        - { $ref: "#/components/parameters/Release" }
+      responses:
+        "200":
+          description: GeoJSON FeatureCollection, with release and methodology_version
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/query:
+    post:
+      tags: [V3]
+      summary: Custom criteria over the precomputed cells (ADR-003 limits)
+      description: >-
+        Never calls an external source. Unknown fields are refused; the body is limited to 16 KB, the area to
+        1,000,000 cells and the time to 30 s. At most `limit` cells are returned, all are counted.
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [scenario, env]
+              properties:
+                scenario: { type: string, example: B }
+                env: { type: string, example: moon-psr }
+                min_typicality: { type: number, minimum: 0, maximum: 1, default: 0 }
+                min_confidence: { type: string, enum: [low, medium, high], default: low }
+                requirements_met:
+                  type: array
+                  items: { type: string, enum: [base_slope, climbing_limit_lrv, climbing_limit_viper] }
+                bbox: { type: array, items: { type: number }, minItems: 4, maxItems: 4, description: "west, south, east, north" }
+                limit: { type: integer, minimum: 1, maximum: 500, default: 100 }
+      responses:
+        "200":
+          description: Matching cells, ranked by typicality, with the criteria, count and area
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "413": { $ref: "#/components/responses/BadRequest" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/method:
+    get:
+      tags: [V3]
+      summary: Data and method panel - sources from the catalogues with their status, and the processing chain
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Sources and processing
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Method" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/status:
+    get:
+      tags: [V3]
+      summary: Validity of the release and freshness of its sources (ADR-009)
+      description: Validated only when every check of the validation protocol passes. Until the refresher exists (T52), each source is `not_checkable`, with the date it was verified by hand.
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Validity and freshness
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Status" }
+        "503": { $ref: "#/components/responses/NoRelease" }
 components:
+  parameters:
+    Release:
+      name: release
+      in: query
+      description: A release id listed by /api/v3/releases (default the current one)
+      schema: { type: string }
+    Scenario:
+      name: scenario
+      in: query
+      required: true
+      schema: { type: string, example: B }
+    Env:
+      name: env
+      in: query
+      required: true
+      description: Lunar target environment of the scenario
+      schema: { type: string, example: moon-psr }
+  responses:
+    BadRequest:
+      description: Invalid query
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: Unknown id, or not exported in this release
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NoRelease:
+      description: No v3 release installed on this server
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
   schemas:
+    V3Doc:
+      type: object
+      description: Every v3 response carries the release and the methodology version.
+      required: [release, methodology_version]
+      additionalProperties: true
+      properties:
+        release: { type: string, example: r-0a1b2c3d }
+        methodology_version: { type: string, example: v3 }
+    ReleaseIndex:
+      type: object
+      required: [current, releases]
+      properties:
+        current: { type: string }
+        releases:
+          type: array
+          items:
+            type: object
+            required: [id, run, methodology_version, protocol, commit, created]
+            properties:
+              id: { type: string }
+              run: { type: string }
+              methodology_version: { type: string }
+              protocol: { type: string }
+              commit: { type: string }
+              created: { type: string }
+    Spread:
+      type: object
+      required: [median, p25, p75]
+      properties:
+        median: { type: number }
+        p25: { type: number }
+        p75: { type: number }
+    Zone:
+      type: object
+      required: [id, rank, scenario, target, lat, lon, cells, area_km2, typicality, high_confidence_share, requirements, coverage, monte_carlo]
+      properties:
+        id: { type: string }
+        rank: { type: integer }
+        scenario: { type: string }
+        target: { type: string }
+        lat: { type: number }
+        lon: { type: number }
+        cells: { type: integer }
+        area_km2: { type: number }
+        typicality: { $ref: "#/components/schemas/Spread" }
+        high_confidence_share: { type: number }
+        requirements:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              met: { type: integer }
+              failed: { type: integer }
+              unknown: { type: integer }
+        suitability_median: { type: number, nullable: true }
+        coverage:
+          type: object
+          required: [windows, valid_unmasked, cover_unknown, cells_by_confidence]
+          properties:
+            windows: { type: integer }
+            valid_unmasked: { type: integer }
+            cover_unknown: { type: integer }
+            cells_by_confidence:
+              type: object
+              properties:
+                high: { type: integer }
+                medium: { type: integer }
+                low: { type: integer }
+        monte_carlo:
+          type: object
+          nullable: true
+          description: null when the Monte Carlo was not run for this grid value (only the nominal value is run)
+          properties:
+            top_decile_share: { type: number }
+        tiles: { type: array, items: { type: string } }
+    ZonePage:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [scenario, env, tau, min_cells, total, offset, limit, zones]
+          properties:
+            scenario: { type: string }
+            env: { type: string }
+            tau: { type: number }
+            min_cells: { type: integer }
+            total: { type: integer }
+            offset: { type: integer }
+            limit: { type: integer }
+            zones: { type: array, items: { $ref: "#/components/schemas/Zone" } }
+    ZoneDetail:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [zone, cannot_assess]
+          properties:
+            zone: { $ref: "#/components/schemas/Zone" }
+            cannot_assess: { type: array, items: { type: string } }
+    CoverageClass:
+      type: object
+      required: [km2, share, meaning]
+      properties:
+        km2: { type: number }
+        share: { type: number, nullable: true }
+        meaning: { type: string }
+    Coverage:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [scenario, env, coverage]
+          properties:
+            scenario: { type: string }
+            env: { type: string }
+            coverage:
+              type: object
+              required: [land_km2, classes]
+              properties:
+                land_km2: { type: number }
+                classes:
+                  type: object
+                  description: screened_out, no_data, ground_hidden, partial, low_confidence, evaluated
+                  additionalProperties: { $ref: "#/components/schemas/CoverageClass" }
+    Status:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [validity, freshness]
+          properties:
+            validity:
+              type: object
+              required: [state, protocol, release, published, checks]
+              properties:
+                state: { type: string, enum: [validated, not_validated] }
+                protocol: { type: string }
+                release: { type: string }
+                published: { type: string }
+                checks:
+                  type: array
+                  items:
+                    type: object
+                    required: [check, pass, detail]
+                    properties:
+                      check: { type: string }
+                      pass: { type: boolean, nullable: true, description: "null when the check cannot run" }
+                      detail: { type: string }
+            freshness:
+              type: object
+              required: [refresher, sources]
+              properties:
+                refresher: { type: boolean, description: "false until the automatic refresher exists (T52)" }
+                note: { type: string }
+                sources:
+                  type: array
+                  items:
+                    type: object
+                    required: [id, state, checked_on]
+                    properties:
+                      id: { type: string }
+                      state: { type: string, enum: [up_to_date, update_in_progress, update_held, check_failed, check_overdue, not_checkable] }
+                      checked_on: { type: string, nullable: true }
+    Method:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [sources, processing]
+          properties:
+            sources:
+              type: array
+              items:
+                type: object
+                required: [id, status]
+                additionalProperties: true
+                properties:
+                  id: { type: string }
+                  status: { type: string, description: "catalogue status, or 'not in catalogue'" }
+                  verified_on: { type: string, nullable: true }
+            processing: { type: array, items: { type: object, additionalProperties: true } }
     ParamId:
       type: string
       enum:

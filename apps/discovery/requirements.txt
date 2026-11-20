@@ -1,0 +1,4 @@
+# apps/discovery (ADR-005). Exact pins; the tools/discovery pins are installed with them.
+fastapi==0.162.0
+pydantic==2.14.2
+uvicorn==0.54.0

@@ -1,6 +1,9 @@
-# Full local test (API + front end) before an Azure deployment.
+# Full local test (API + front end + internal discovery service). Never deployed from here.
 #   docker compose up --build      then open http://localhost:8080
-# The API scores the frozen data set data/dataset-v2.json (no live source call); rebuild it with tools/precompute/build_dataset.py.
+# The v2 API scores the frozen data set data/dataset-v2.json (no live source call).
+# v3 serves a release folder (tools/discovery/release.py). By default it is data/releases-fixture: SYNTHETIC TEST
+# DATA for the end-to-end test, its run is named "synthetic-fixture". To see real results:
+#   EARTHMOON_RELEASES=C:\Users\<you>\earthmoon-data\releases docker compose up --build
 services:
   api:
     build:
@@ -10,8 +13,24 @@ services:
       NODE_ENV: production
       PORT: "3001"
       FRONTEND_URL: http://localhost:8080
+      RELEASES_DIR: /data/releases
+      DISCOVERY_URL: http://discovery:8000
+    volumes:
+      - ${EARTHMOON_RELEASES:-./data/releases-fixture}:/data/releases:ro
     ports:
       - "3001:3001"
+    networks: [default, backend]
+    depends_on:
+      - discovery
+  # Internal (ADR-005): no published port, no outbound network (internal network only), read-only data.
+  discovery:
+    build:
+      context: .
+      dockerfile: apps/discovery/Dockerfile
+    volumes:
+      - ${EARTHMOON_RELEASES:-./data/releases-fixture}:/data/releases:ro
+    read_only: true
+    networks: [backend]
   web:
     build:
       context: .
@@ -24,3 +43,6 @@ services:
       - "8080:80"
     depends_on:
       - api
+networks:
+  backend:
+    internal: true

@@ -30,6 +30,8 @@ Production: `npm run build` then `npm start`.
 | `USE_FIXTURES` | off | `1`: sample values instead of the real sources |
 | `RATE_LIMIT_PER_MINUTE` | `120` | Requests per minute and per IP |
 | `GVP_WFS_URL` | Smithsonian WFS | Alternative URL for the volcano list |
+| `RELEASES_DIR` | `<DATA_DIR>/releases` | v3 releases (`index.json` and one folder per release); without it `/api/v3` answers 503 |
+| `DISCOVERY_URL` | — | Internal discovery service for `/api/v3/cells` and `/api/v3/query` (Compose: `http://discovery:8000`) |
 
 ## Routes
 
@@ -52,6 +54,8 @@ curl -X POST http://localhost:3001/api/analyze -H "content-type: application/jso
 - The vegetation filter (`bareSoilOnly`, on by default) multiplies the total by a factor: 1 up to NDVI 0.2, linear down to 0 at NDVI 0.6. A reduced total comes with `vegetationFactor`; at NDVI 0.6 and above the site stays in the list with `total: 0` and `"excluded": "vegetation"`, last.
 - Each ranked site has `stability`: its rank (10th percentile, median, 90th percentile) over 500 scenarios where weights (±50%), tolerances (±25%) and interval bounds (±10% of the tolerance) are perturbed, and `topHalfShare`, the share of scenarios where it stays in the top half. The seed is fixed: same data, same answer. `sensitivity` in the response describes the method.
 - Errors are always `{ "error": "message" }` with 400, 404, 413, 429 or 500.
+
+v3 routes are listed in [docs/ARCHITECTURE.md](../../docs/ARCHITECTURE.md#api) and in the contract.
 
 ## Data
 

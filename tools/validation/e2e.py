@@ -191,6 +191,57 @@ def run(web: str, api: str) -> None:
         assert all(t["lat"] <= -85 for t in twins), "lunar twin outside the south pole"
         return f"{len(m['sites'])} illustrated sites, {sum(1 for v in m['sites'].values() if v.get('photo'))} satellite views"
 
+    def v3_static():
+        code, _, b = http(f"{api}/api/v3/releases")
+        assert code == 200, f"releases HTTP {code}"
+        idx = json.loads(b)
+        code, _, b = http(f"{api}/api/v3/scenarios")
+        sc = json.loads(b)["scenarios"]
+        s = next(x for x in sc if x["assessed_targets"])
+        env = s["assessed_targets"][0]
+        code, _, b = http(f"{api}/api/v3/zones?scenario={s['id']}&env={env}&limit=5")
+        assert code == 200, f"zones HTTP {code}"
+        z = json.loads(b)
+        assert z["release"] == idx["current"] and z["methodology_version"], "release missing"
+        if z["zones"]:
+            code, _, b = http(f"{api}/api/v3/zones/{z['zones'][0]['id']}")
+            card = json.loads(b)["zone"]
+            assert code == 200 and set(card["typicality"]) == {"median", "p25", "p75"}, "zone card without spread"
+        code, _, b = http(f"{api}/api/v3/coverage?scenario={s['id']}&env={env}")
+        assert code == 200 and "screened_out" in json.loads(b)["coverage"]["classes"], "coverage classes missing"
+        code, _, b = http(f"{api}/api/v3/method")
+        assert code == 200 and json.loads(b)["sources"], "no source in the method panel"
+        code, _, b = http(f"{api}/api/v3/status")
+        st = json.loads(b)
+        assert code == 200 and st["validity"]["state"] in ("validated", "not_validated") and st["freshness"]["sources"], "status incomplete"
+        assert http(f"{api}/api/v3/zones?scenario={s['id']}&env={env}&tau=0.66")[0] == 400, "tau outside the grid accepted"
+        return f"release {idx['current']} ({idx['releases'][0]['run']}), {z['total']} zones for {s['id']} {env}"
+
+    def v3_layers_and_service():
+        sc = json.loads(http(f"{api}/api/v3/scenarios")[2])["scenarios"]
+        s = next(x for x in sc if x["assessed_targets"])
+        env = s["assessed_targets"][0]
+        z = json.loads(http(f"{api}/api/v3/zones?scenario={s['id']}&env={env}&limit=1")[2])["zones"]
+        assert z, "no zone to look at"
+        lat, lon = z[0]["lat"], z[0]["lon"]
+        import math
+        n = 2 ** 7                                                    # the zoom-7 tile that holds the first zone
+        tx = int((lon + 180) / 360 * n)
+        ty = int((1 - math.log(math.tan(math.radians(lat)) + 1 / math.cos(math.radians(lat))) / math.pi) / 2 * n)
+        code, h, b = http(f"{api}/api/v3/layers/{s['id']}/{env}/typicality/7/{tx}/{ty}.png")
+        kind = {k.lower(): v for k, v in h.items()}.get("content-type", "")
+        assert code == 200 and kind == "image/png" and b[:8] == bytes.fromhex("89504e470d0a1a0a"), f"tile HTTP {code} {kind}"
+        assert http(f"{api}/api/v3/layers/{s['id']}/{env}/coverage/9/0/0.png")[0] == 400, "zoom 9 accepted"
+        bbox = f"{lon - 0.2},{lat - 0.2},{lon + 0.2},{lat + 0.2}"
+        code, _, b = http(f"{api}/api/v3/cells?scenario={s['id']}&env={env}&bbox={bbox}")
+        assert code == 200, f"cells HTTP {code}: {b[:200]!r}"
+        fc = json.loads(b)
+        code, _, b = http(f"{api}/api/v3/query", "POST", {"scenario": s["id"], "env": env, "min_typicality": 0.5, "limit": 5})
+        assert code == 200, f"query HTTP {code}: {b[:200]!r}"
+        q = json.loads(b)
+        assert http(f"{api}/api/v3/query", "POST", {"scenario": s["id"], "env": env, "colour": "red"})[0] == 400, "unknown field accepted"
+        return f"{len(fc['features'])} cells in view, query matched {q['matched']}"
+
     check("TF-01", "Front end loads and targets the right API", front_loads)
     check("TF-02", "API health probe", health)
     check("TF-03", "CORS: front-end origin accepted, unknown origin rejected", cors)
@@ -206,6 +257,8 @@ def run(web: str, api: str) -> None:
     check("TF-13", "Real images: NASA photos, site views, lunar twins", visuals)
     check("TF-14", "Rank stability: ranges consistent, deterministic, none for excluded sites", stability)
     check("TF-15", "Graded vegetation filter: penalized sites kept, never boosted", vegetation)
+    check("TF-16", "v3: releases, zones, zone card with spread, coverage, method; grid enforced", v3_static)
+    check("TF-17", "v3: layer tiles, cells in view and custom query through the internal service", v3_layers_and_service)
 
 
 def main(argv=None) -> int:
