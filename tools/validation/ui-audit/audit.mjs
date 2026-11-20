@@ -310,6 +310,8 @@ async function run(name, viewport, mobile) {
 }
 
 await run("desktop", { width: 1440, height: 900 }, false);
+// The API allows 120 requests per minute and per IP: the two passes act as two visitors, one window apart.
+await new Promise((resolve) => setTimeout(resolve, 61_000));
 await run("phone", { width: 390, height: 844 }, true);
 
 for (const n of notes) console.log("note  ", n);

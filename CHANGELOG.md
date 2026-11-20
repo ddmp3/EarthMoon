@@ -21,6 +21,7 @@ One entry per merged task. Newest first. Each entry gives the PR, what changed, 
   - a site-card assessment block: confidence, coverage with the total range, hard requirements, explanation;
   - "See the match" recomputed from terrain_v2 (Atacama 7.85° in both places; was 7.97 in the panel), 37 lunar twins searched again.
 - **UI audit:** the map is walked on desktop and phone, with contrast checks and the ADR-006 budget. Measured on the run-002 release: first view 0.83 s, 8 KB gzip of v3 JavaScript (own chunk), 24 tile requests, 0 defects. Defects the audit found were fixed: phone overflow, covered checkboxes, invisible "not evaluated" text.
+- **Rate limit:** the cells of a map view (one request per pan or zoom) have their own limit, 5 times the general one, like tiles. The UI audit runs its desktop and phone passes one minute apart: the 120 requests per minute and per IP stay.
 - **Before and after:** screenshots of the v2 pages change only where intended (Home card, assessment block, regenerated match images).
 - **Open:** the zone-against-reference Q–Q plot of ADR-006 needs window quantiles per zone in the release, so it is not built.
 
