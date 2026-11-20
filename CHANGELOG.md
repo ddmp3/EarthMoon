@@ -2,7 +2,7 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
-## 2026-11-20 · T45 Interface: discovery map, coverage overlay, comparison (PR #PRNUM)
+## 2026-11-20 · T45 Interface: discovery map, coverage overlay, comparison (PR #26)
 - **Discovery map** (`apps/web/src/v3/`, `#discover`, linked from Home), on API v3:
   - pickers: scenario and lunar environment (targets that are not comparable stay listed, disabled, with the reason);
   - layers: topography; geology, thermal, operational and multidimensional shown disabled with their reason;
