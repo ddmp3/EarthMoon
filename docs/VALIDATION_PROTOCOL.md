@@ -1,6 +1,21 @@
-# Validation protocol v2 (frozen before run-001)
+# Validation protocol v3 (frozen before run-002)
 
-v1 was frozen with the git tag `validation-protocol-v1` before T43. v2 is frozen with the tag `validation-protocol-v2`, also before the first global run (run-001). Any change after a tag creates a new version, with its reason, and is reported next to the results. Results are never retuned to pass.
+v1 was frozen with the git tag `validation-protocol-v1` before T43, v2 with `validation-protocol-v2` before run-001, v3 with `validation-protocol-v3` before run-002. Any change after a tag creates a new version, with its reason, and is reported next to the results. Results are never retuned to pass.
+
+## Changes from v2 to v3 (19/11/2026, decided by David when signing G4)
+
+**Why.** The dossiers of run-001 found 38 of its 40 top zones to be artefacts:
+- **15 were tile-edge fragments.** Each 1° tile cut its own 5 km cells, so a cell on a tile edge was split into two thin parts with few windows.
+- **23 were remnants between hidden ground.** Cells with few unmasked windows ranked as high as cells with many.
+
+**What changed:**
+- **One global grid of 5 km cells.** Cells are cells of HEALPix (RING, NSIDE 1303: 25.04 km², the same size at every latitude and a compact shape near the poles), not squares of each tile's projection. A cell that straddles tiles is one cell with the windows of all of them; it is assessed once, by the tile that holds its centre. Zones join cells that are HEALPix neighbours.
+  - The task first named EASE-Grid 2.0 (EPSG:6933). It was replaced before the tag: its cells are equal-area too, but near the poles they become strips (about 1 km × 25 km at 80°S), and several targets are polar.
+- **Candidates must have high confidence:** at least 20 valid windows, and less than 10% of masked windows or of windows of unknown cover. Zones are made of, and ranked on, these cells only.
+
+**Unchanged:** the windows (the run-001 cubes), the masks, every metric, τ and the minimum zone size, the controls and every pass threshold.
+
+**Consequence:** run-001 results are v2 results. They are reported next to run-002, not replaced.
 
 ## Changes from v1 to v2 (18/11/2026, decided by David)
 

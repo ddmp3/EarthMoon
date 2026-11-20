@@ -1,0 +1,38 @@
+{
+ "run002/zones-A-moon-pits.json": {
+  "bytes": 10668005,
+  "sha256": "2975608ce581ec4af312a27b8628d75e96b5b4562d957012c18388c362c8a0f4"
+ },
+ "run002/zones-A-moon-polar-lit-highlands.json": {
+  "bytes": 8228356,
+  "sha256": "dfb97cf870854c7904b0941f8111e732b1afcb0c91873b1aece5c3ed0bb6f1a6"
+ },
+ "run002/zones-A-moon-psr.json": {
+  "bytes": 9840557,
+  "sha256": "c2b4fac30632d77b369d0e90267bba31f5f396b8b48f2ea68c123532eece5a38"
+ },
+ "run002/zones-B-moon-mare-plains.json": {
+  "bytes": 4279848,
+  "sha256": "f29244565d87623ab2eeed2f843f6d7e831736f127e0aba6337798e1b4886b0a"
+ },
+ "run002/zones-B-moon-polar-lit-highlands.json": {
+  "bytes": 8227524,
+  "sha256": "9ec10d5dc13bbda7f075c7c9431eb068fbf5c00aae9aa7f7adb91addef8689fb"
+ },
+ "run002/zones-B-moon-psr.json": {
+  "bytes": 9842403,
+  "sha256": "907239da053b11487afc4ac8791b53a50e91dbeb86afcc5c31f553f91c46879f"
+ },
+ "run002/zones-B-moon-south-polar-cap-v2.json": {
+  "bytes": 8229099,
+  "sha256": "f94837c6695823a6c61f76b57e87d61ac95fd54c0bc764ff4cd66fadda63e107"
+ },
+ "run002/cells.parquet": {
+  "bytes": 704719352,
+  "sha256": "531cd32a6b6b9e74e29041bbf0f470b2ee067a6ee83ed146973932b2a19da1ac"
+ },
+ "run002/refs.npz": {
+  "bytes": 46687630,
+  "sha256": "25755e878dce843eaec35355a0bbcebcd120fa979c14b309b8546529e5494543"
+ }
+}

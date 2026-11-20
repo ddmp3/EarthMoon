@@ -31,3 +31,35 @@ def test_a_target_is_done_when_every_zone_file_has_its_monte_carlo_share(tmp_pat
     (tmp_path / "zones-B-moon-psr.json").write_text(json.dumps([{"cells": 3}]))
     (tmp_path / "zones-A-moon-psr.json").write_text(json.dumps([{"mc_top_decile_share": 0.5}]))
     assert mc_done(tmp_path, "moon-psr") is None                         # B not done yet: rerun the target
+
+
+def test_cell_rows_find_global_cells_and_report_missing_ones():
+    from discovery.validate_run import cell_rows
+    cells = {"cell": np.array(["30", "10", "20"])}
+    assert cell_rows(np.array([10, 20, 25, 30]), cells).tolist() == [1, 2, -1, 0]
+
+
+def test_monte_carlo_reads_the_window_slopes_written_by_the_assessment(tmp_path, monkeypatch):
+    import json
+    import discovery.discover as d
+    import discovery.validate_run as v
+    from discovery.test_discover import _cube
+    _cube(tmp_path, ["10,19", "10,20"])
+    d._CTX.clear()
+    run = tmp_path / "run"
+    (run / "cells-parts").mkdir(parents=True)
+    refined = {"10,19": ["glo30-40m"], "10,20": ["glo30-40m"]}
+    rows = []
+    for key in d.assessed_keys(refined):
+        d.assess_tile_to_file(key, str(tmp_path), str(tmp_path / "refs.npz"), str(tmp_path / "rock"),
+                              str(run / "cells-parts"), {k: s for k, s in refined.items() if k in d.neighbour_keys(key)})
+        rows += d.assess_tile(key, str(tmp_path), str(tmp_path / "refs.npz"), str(tmp_path / "rock"),
+                              {k: s for k, s in refined.items() if k in d.neighbour_keys(key)})
+    ids = [r["cell"] for r in rows]
+    for sc in ("A", "B"):
+        (run / f"zones-{sc}-moon-psr.json").write_text(json.dumps([{"cell_ids": ids[:3]}, {"cell_ids": ids[3:6]}]))
+    monkeypatch.setattr(v, "RUNS", 10)
+    out = v._mc_target(("moon-psr", 0, str(run), str(tmp_path / "refs.npz"), ids))
+    assert out["A:moon-psr"]["zones"] == 2 and out["A:moon-psr"]["sample_cells"] == len(ids)
+    shares = [z["mc_top_decile_share"] for z in json.loads((run / "zones-A-moon-psr.json").read_text())]
+    assert all(0 <= s <= 1 for s in shares)

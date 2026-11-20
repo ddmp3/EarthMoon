@@ -1,4 +1,4 @@
-"""Validation of a global run against validation-protocol-v1 (T43). Each check reports its pass rule and outcome.
+"""Validation of a global run against validation-protocol-v3 (T43, T43b). Each check reports its pass rule and outcome.
 
     PYTHONPATH=tools python tools/discovery/validate_run.py all --run /data/run001
 
@@ -23,7 +23,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from discovery.discover import (MIN, SCENARIO_TARGETS, TARGET_SCALE, TAU, _num, candidates,  # noqa: E402
-                                latitude_bands, load_cells, locate_points, percentile_rank, rock_masked)
+                                cell_centre, global_cell, latitude_bands, load_cells, locate_points, owner_tile,
+                                percentile_rank, refined_scales, rock_masked)
 
 ROOT = Path(__file__).resolve().parents[2]
 SEED, RUNS, SIGMA, SAMPLE = 20261119, 500, 0.5, 200_000
@@ -41,6 +42,14 @@ def ks_uniform(t: np.ndarray) -> float:
 def block_split(a: np.ndarray, b: np.ndarray, size: float) -> np.ndarray:
     """Checkerboard of blocks of `size` (same units as a and b): True for the held-out half."""
     return ((np.floor(a / size) + np.floor(b / size)) % 2).astype(bool)
+
+
+def cell_rows(ids: np.ndarray, cells: dict) -> np.ndarray:
+    """Row of each global cell id in the run table, -1 when the run has no such cell."""
+    table = np.asarray(cells["cell"]).astype(np.int64)
+    order = np.argsort(table)
+    k = np.clip(np.searchsorted(table[order], ids), 0, table.size - 1)
+    return np.where(table[order][k] == ids, order[k], -1)
 
 
 def in_top_decile(median: float, masked_share: float, evaluated: np.ndarray) -> bool:
@@ -65,7 +74,7 @@ def negatives(run: Path, cells: dict, cube: Path, rock_path: str) -> dict:
     rock_tf = Affine(*json.loads(Path(rock_path + ".json").read_text())["transform"])
     lat, lon = _num(cells["lat"]), _num(cells["lon"])
     plat, plon = np.array([p["lat"] for p in pts]), np.array([p["lon"] for p in pts])
-    where = locate_points(plat, plon, lat, lon)
+    where = cell_rows(global_cell(plat, plon), cells)               # the global cell that holds each point
     rows = []
     for k, p in enumerate(pts):
         # mask test on the 1 km window that holds the point (the unit the engine masks), global 90 m cube,
@@ -163,7 +172,8 @@ def bias(cells: dict) -> dict:
             from discovery.discover import ELIMINATING
             for r in ELIMINATING[sc]:
                 elim |= np.asarray(cells.get(f"req:{r}", [None] * lat.size)) == "failed"
-            cand = candidates(med, elim, np.nan_to_num(_num(cells["masked_share"]), nan=1.0), TAU)
+            cand = candidates(med, elim, np.nan_to_num(_num(cells["masked_share"]), nan=1.0), TAU,
+                              confidence=cells["confidence"])
             evaluated = np.isfinite(med)
             by_cont = {}
             for name in sorted(set(cont.tolist())):
@@ -174,52 +184,42 @@ def bias(cells: dict) -> dict:
 
 
 def _mc_target(args) -> dict:
-    """One target, in its own process: window slopes of its zone cells and of its sample cells, 500 noise draws,
-    each zone's share of runs at or above the sample's 90th percentile. Cell ids become integers once."""
-    t, k, run, cube, refs_path, rock_path, sample_ids = args
+    """One target, in its own process: masked window slopes of its zone cells and of its sample cells (written by
+    the assessment, per owner tile), 500 noise draws, each zone's share of runs at or above the sample's 90th
+    percentile."""
+    t, k, run, refs_path, sample_ids = args
     import pyarrow.parquet as pq
-    from discovery.compare import MASK_CLASSES, cell_medians, percentile_typicality
-    from discovery.discover import _context, window_masks
-    ctx = _context(refs_path, rock_path)
+    from discovery.compare import cell_medians, percentile_typicality
+    ref = np.load(refs_path)[t]
     scale = TARGET_SCALE[t]
     keys = [(sc, t) for sc, ts in SCENARIO_TARGETS.items() if t in ts]
     zones = {key: json.loads((Path(run) / f"zones-{key[0]}-{t}.json").read_text()) for key in keys}
-    need = set(sample_ids) | {c for zs in zones.values() for z in zs for c in z["cell_ids"]}
-    tiles = sorted({c.split(":")[0] for c in need})
-    tix = {name: k for k, name in enumerate(tiles)}
-
-    def code_of(c: str) -> int:                                     # integer id: no text ids in memory
-        name, i, j = c.split(":")
-        return (tix[name] * 4000 + int(i) + 2000) * 4000 + int(j) + 2000
-
-    by_tile: dict = {}
-    for c in need:                                                  # grouped once: per-tile lookups stay small
-        by_tile.setdefault(c.split(":")[0], []).append(code_of(c))
+    need = np.unique(np.array(list(sample_ids) + [c for zs in zones.values() for z in zs for c in z["cell_ids"]]).astype(np.int64))
+    clat, clon = cell_centre(need)
+    owner = owner_tile(clat, clon)
     ids, slopes = [], []
-    for name in tiles:
-        f = Path(cube) / scale / f"{name}.windows.parquet"
+    for key in sorted(set(owner.tolist())):
+        f = Path(run) / "windows-parts" / scale / f"{key.replace(',', '_')}.parquet"
         if not f.exists():
             continue
-        tab = pq.read_table(f, columns=["i", "j", "lat", "lon", "slope_mean", *MASK_CLASSES, "wc_covered"])
-        w = {c: tab.column(c).to_numpy() for c in tab.column_names}
-        cid = (tix[name] * 4000 + w["i"].astype(np.int64) + 2000) * 4000 + w["j"].astype(np.int64) + 2000
-        keep = np.isin(cid, np.array(by_tile[name], dtype=np.int64))
-        masked, _ = window_masks(w, ctx)
+        tab = pq.read_table(f)
+        cid, sl = tab.column("cell").to_numpy(), tab.column("slope").to_numpy()
+        keep = np.isin(cid, need[owner == key])
         ids.append(cid[keep])
-        slopes.append(np.where(masked, np.nan, w["slope_mean"])[keep])
+        slopes.append(sl[keep])
     uniq, code = np.unique(np.concatenate(ids), return_inverse=True)
     base = np.concatenate(slopes).astype("float64")
-    def index(codes: list[int]) -> np.ndarray:
-        a = np.asarray(codes, dtype=np.int64)
-        k = np.searchsorted(uniq, a)
-        ok = (k < uniq.size) & (uniq[np.minimum(k, uniq.size - 1)] == a)
-        return k[ok]
 
-    s_idx = index([code_of(c) for c in sample_ids])
-    z_idx = {key: [index([code_of(c) for c in z["cell_ids"]]) for z in zones[key]] for key in keys}
+    def index(cells: list) -> np.ndarray:
+        a = np.asarray(cells).astype(np.int64)
+        j = np.searchsorted(uniq, a)
+        ok = (j < uniq.size) & (uniq[np.minimum(j, uniq.size - 1)] == a)
+        return j[ok]
+
+    s_idx = index(sample_ids)
+    z_idx = {key: [index(z["cell_ids"]) for z in zones[key]] for key in keys}
     hits = {key: np.zeros(len(zones[key])) for key in keys}
     rng = np.random.default_rng([SEED, k])                         # one stream per target, fixed order
-    ref = ctx["refs"][t]
     for r in range(RUNS):
         _, med = cell_medians(percentile_typicality(base + rng.normal(0.0, SIGMA, base.size), ref), code)
         thr = np.nanpercentile(med[s_idx], 90)
@@ -268,7 +268,7 @@ def monte_carlo(run: Path, cells: dict, cube: Path, refs_path: str, rock_path: s
         med = _num(cells.get(f"{t}:median", [None] * len(cells["cell"])))
         idx = np.flatnonzero(np.isfinite(med))
         pick = np.random.default_rng([SEED, k, 0]).choice(idx, size=min(SAMPLE, idx.size), replace=False)
-        jobs.append((t, k, str(run), str(cube), refs_path, rock_path, sorted(np.asarray(cells["cell"])[pick].tolist())))
+        jobs.append((t, k, str(run), refs_path, sorted(np.asarray(cells["cell"])[pick].tolist())))
     import multiprocessing
     # spawned workers start empty: forked ones copied the parent's 6.7 M-row cell table (OOM, 19/11/2026)
     with ProcessPoolExecutor(max_workers=MC_PARALLEL, mp_context=multiprocessing.get_context("spawn")) as pool:
@@ -277,12 +277,12 @@ def monte_carlo(run: Path, cells: dict, cube: Path, refs_path: str, rock_path: s
     return out
 
 
-def reproducibility(run: Path, cube: Path, refs_path: str, rock_path: str, tiles_file: Path) -> dict:
+def reproducibility(run: Path, cube: Path, refs_path: str, rock_path: str, tiles_file: Path, refined: dict) -> dict:
     """Five refined tiles (seeded) rebuilt from their inputs into a scratch folder: same SHA-256 as the manifest,
     and the same cell rows as the run table."""
     import subprocess
     from discovery.copernicus import tile_name
-    from discovery.discover import assess_tile
+    from discovery.discover import assess_tile, neighbour_keys
     keys = sorted(x for x in tiles_file.read_text().split())
     pick = sorted(np.random.default_rng(SEED).choice(keys, size=5, replace=False).tolist())
     import shutil
@@ -309,7 +309,7 @@ def reproducibility(run: Path, cube: Path, refs_path: str, rock_path: str, tiles
     by_cell = {c: i for i, c in enumerate(cells["cell"])}
     same_rows = True
     for k in pick:
-        for r in assess_tile(k, str(cube), refs_path, rock_path):
+        for r in assess_tile(k, str(cube), refs_path, rock_path, {nk: refined[nk] for nk in neighbour_keys(k) if nk in refined}):
             i = by_cell.get(r["cell"])
             if i is None:
                 same_rows = False
@@ -326,11 +326,13 @@ def reproducibility(run: Path, cube: Path, refs_path: str, rock_path: str, tiles
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("what", choices=["negatives", "self", "bias", "mc", "repro", "all"])
-    ap.add_argument("--run", type=Path, default=Path("/data/run001"))
+    ap.add_argument("--run", type=Path, default=Path("/data/run002"))
     ap.add_argument("--cube", type=Path, default=Path("/data/cube"))
     ap.add_argument("--profiles-windows", type=Path, default=Path("/data/profiles/moon"))
     ap.add_argument("--rock", default="/data/add-rock-outcrop/outcrops_200m_3031")
     ap.add_argument("--tiles", type=Path, default=Path("/data/cube/tiles-refine-glo30-40m.txt"))
+    ap.add_argument("--refined", nargs="+", default=["/data/cube/tiles-refine-glo30-40m.txt",
+                                                      "/data/cube/tiles-refine-glo30-59m.txt"])
     a = ap.parse_args(argv)
     refs = str(a.run / "refs.npz")
     cells = load_cells(str(a.run / "cells.parquet"))
@@ -349,7 +351,7 @@ def main(argv=None) -> int:
         elif s == "mc":
             out["monte_carlo"] = monte_carlo(a.run, cells, a.cube, refs, a.rock)
         elif s == "repro":
-            out["reproducibility"] = reproducibility(a.run, a.cube, refs, a.rock, a.tiles)
+            out["reproducibility"] = reproducibility(a.run, a.cube, refs, a.rock, a.tiles, refined_scales(a.refined))
         out_path.write_text(json.dumps(out, indent=1, default=str) + "\n")
         print(s, "done", flush=True)
     return 0
