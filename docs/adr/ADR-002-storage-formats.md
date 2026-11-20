@@ -26,4 +26,5 @@ T22 measured the volumes:
 
 ## Consequences
 - **Size estimate, to measure in T40:** about 50 MB of tiles per layer at zoom 7 (about 5,000 land tiles of about 10 KB each).
+  - **Measured in T44** (release `r-98f6eee4`, run-002, zoom 0 to 7): 127,062 tiles for 10 layers, 612 MB in all. Typicality 95.7 MB per layer, coverage overlay 26.6 MB per layer, 61.2 MB on average: above the estimate for typicality.
 - Releases live under `earthmoon-data/releases/<release-id>/`, never in git. A small fixture release (one pilot region) is committed for the tests.

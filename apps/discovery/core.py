@@ -34,18 +34,41 @@ class Release:
         head = json.loads((self.folder / "release.json").read_text(encoding="utf-8"))
         self.head = {"release": head["release"], "methodology_version": head["methodology_version"]}
         self.targets = list(targets)
-        t = pq.read_table(self.folder / "cells.parquet")
-        self._cols = {k: t.column(k).to_numpy(zero_copy_only=False) for k in t.column_names}
-        ids = np.asarray(self._cols["cell"]).astype(np.int64)
+        import pyarrow as pa
+        import pyarrow.compute as pc
+        need = {"cell", "windows", "valid_unmasked", "masked_share", "cover_unknown", "confidence"}
+        need |= {f"req:{r}" for r in REQUIREMENTS}
+        need |= {f"{t}:{k}" for t in self.targets for k in ("windows", "valid", "screened_out", "median", "p25", "p75")}
+        names = pq.read_schema(self.folder / "cells.parquet").names
+        t = pq.read_table(self.folder / "cells.parquet", columns=[n for n in names if n in need])
+        ids = np.asarray(t.column("cell").to_numpy(zero_copy_only=False)).astype(np.int64)
         order = np.argsort(ids)
-        self._cols = {k: np.asarray(v)[order] for k, v in self._cols.items()}
+        self._cols = {}
+        for k in t.column_names:                     # compact arrays: 6 M Python objects per column took 8 GB
+            if k == "cell":
+                continue
+            col = t.column(k)
+            if pa.types.is_string(col.type) or pa.types.is_large_string(col.type):
+                enc = pc.dictionary_encode(pc.fill_null(col, "")).combine_chunks()   # no Python object per cell
+                a = np.asarray(enc.dictionary.to_pylist(), dtype=str)[enc.indices.to_numpy(zero_copy_only=False)]
+            else:
+                a = col.cast(pa.float32()).to_numpy(zero_copy_only=False).astype(np.float32)   # null -> NaN
+            self._cols[k] = a[order]
         self.ids = ids[order]
+        self._cols["cell"] = self.ids.astype(str)
+        del t
+        pa.default_memory_pool().release_unused()
         self.lat, self.lon = pix2ang(NSIDE, self.ids)
 
     def col(self, name: str) -> np.ndarray:
         if name not in self._cols:
             return np.full(self.ids.size, None, dtype=object)
         return self._cols[name]
+
+
+def _txt(v) -> str | None:
+    """A text value of a cell, or None when it is missing ('' in the compact column)."""
+    return str(v) if v not in ("", None) else None
 
 
 def _f(a) -> np.ndarray:
@@ -95,9 +118,9 @@ def cells_in_bbox(rel: Release, bbox, env: str) -> dict:
                                      "typicality": {"median": num(med[k]), "p25": num(p25[k]), "p75": num(p75[k])},
                                      "windows": {"valid": None if not np.isfinite(tv[k]) else int(tv[k]),
                                                  "total": None if not np.isfinite(tw[k]) else int(tw[k])},
-                                     "coverage": str(cls[k]), "confidence": rel.col("confidence")[i],
+                                     "coverage": str(cls[k]), "confidence": _txt(rel.col("confidence")[i]),
                                      "masked_share": num(_f(rel.col("masked_share"))[i]),
-                                     "requirements": {r: rel.col(f"req:{r}")[i] for r in REQUIREMENTS}}})
+                                     "requirements": {r: _txt(rel.col(f"req:{r}")[i]) for r in REQUIREMENTS}}})
     return {**rel.head, "type": "FeatureCollection", "env": t, "features": feats}
 
 
@@ -126,7 +149,8 @@ def run_query(rel: Release, q: dict) -> dict:
     if int(area.sum()) > QUERY_CELL_CAP:
         raise QueryError(f"{int(area.sum())} cells in the query area, {QUERY_CELL_CAP:,} cells at most: narrow the box")
     med = _f(rel.col(f"{t}:median"))
-    rank = np.array([CONFIDENCE_RANK.get(c, -1) for c in rel.col("confidence")])
+    conf = rel.col("confidence")
+    rank = np.select([conf == k for k in CONFIDENCE_RANK], list(CONFIDENCE_RANK.values()), default=-1)
     keep = area & np.isfinite(med) & (np.nan_to_num(med, nan=-1) >= mt) & (rank >= CONFIDENCE_RANK[mc])
     for r in reqs:
         keep &= rel.col(f"req:{r}") == "met"
@@ -136,4 +160,4 @@ def run_query(rel: Release, q: dict) -> dict:
                                                **({"bbox": q["bbox"]} if "bbox" in q else {})},
             "matched": int(idx.size), "area_km2": round(idx.size * cell_area_km2(), 1),
             "cells": [{"id": str(rel.ids[i]), "lat": round(float(rel.lat[i]), 5), "lon": round(float(rel.lon[i]), 5),
-                       "typicality": round(float(med[i]), 4), "confidence": rel.col("confidence")[i]} for i in top]}
+                       "typicality": round(float(med[i]), 4), "confidence": _txt(conf[i])} for i in top]}

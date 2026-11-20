@@ -9,13 +9,23 @@ import json
 import os
 from pathlib import Path
 
+from contextlib import asynccontextmanager
+
 from fastapi import Body, FastAPI, HTTPException, Query
 
 from core import QueryError, Release, cells_in_bbox, run_query
 
 ROOT = Path(os.environ.get("RELEASES_DIR", "/data/releases"))
-app = FastAPI(title="EarthMoon discovery (internal)", docs_url=None, redoc_url=None, openapi_url=None)
 _RELEASES: dict[str, Release] = {}
+
+
+@asynccontextmanager
+async def _lifespan(_app: FastAPI):
+    preload()
+    yield
+
+
+app = FastAPI(title="EarthMoon discovery (internal)", docs_url=None, redoc_url=None, openapi_url=None, lifespan=_lifespan)
 
 
 def _release(rid: str | None) -> Release:
@@ -29,6 +39,12 @@ def _release(rid: str | None) -> Release:
         targets = sorted({t for s in scen for t in s["assessed_targets"]})
         _RELEASES[rid] = Release(ROOT / rid, targets)
     return _RELEASES[rid]
+
+
+def preload() -> None:
+    """Load the current release before the first request: reading 6 M cells takes several seconds."""
+    if (ROOT / "index.json").exists():
+        _release(None)
 
 
 @app.get("/health")
