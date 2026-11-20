@@ -13,9 +13,10 @@ npm run generate:api   # regenerate src/api-schema.ts after any change to ../api
 
 - **Home** (`src/components/Home.tsx`): full-bleed Artemis II photograph, then the four missions as cards, each with a real NASA photograph.
 - **Mission** (`src/components/Mission.tsx`): illustrated ranking, NASA Blue Marble map (GIBS), filters, and the free-criteria builder.
-- **Site card** (`src/components/SiteDetail.tsx`): Earth ↔ Moon crossfade at the same scale with lunar-like slopes highlighted, a single scorecard table (Earth value, lunar reference, match, verdict, source, then what Earth cannot reproduce), and a radar profile.
+- **Site card** (`src/components/SiteDetail.tsx`): Earth ↔ Moon crossfade at the same scale with lunar-like slopes highlighted, a single scorecard table (Earth value, lunar reference, match, verdict, source, then what Earth cannot reproduce), and a radar profile, and an assessment block (confidence, data coverage with the total range, hard requirements, explanation).
+- **Discovery map** (`src/v3/`, address `#discover`, v3): scenario and lunar environment, layers (topography; geology and thermal shown as waiting for T46 and T47), typicality tiles (cividis) to zoom 7 then 5 km cells from the discovery service, the **coverage overlay** (on by default, six classes drawn as SVG patterns with their land share), zone list and zone card, comparison of 2 to 4 zones, **Data and method** and provenance panels, validity and freshness from `/api/v3/status`, and the permanent line on what Earth cannot reproduce. It loads as its own chunk (ADR-006 budget, checked by the UI audit).
 
-Shareable addresses: `#colony`, `#colony/tunnunik`; `?fade=60` sets the initial Earth ↔ Moon crossfade.
+Shareable addresses: `#discover`, `#colony`, `#colony/tunnunik`; `?fade=60` sets the initial Earth ↔ Moon crossfade.
 
 ## Images
 
