@@ -2,13 +2,10 @@ import { parameterCatalog } from '../api'
 import { useT } from '../i18n'
 import { MISSION_ORDER, missionImage } from '../shared'
 import type { SelectedMode } from '../store'
-import { useAppStore } from '../store'
-import { V3_TEXTS } from '../v3/text'
 
 /** Home: full-bleed Artemis II photo, then the four missions as cards. */
-export function Home({ onPick, onDiscover, siteCount }: { onPick: (mode: SelectedMode) => void; onDiscover?: () => void; siteCount: number }) {
+export function Home({ onPick, siteCount }: { onPick: (mode: SelectedMode) => void; siteCount: number }) {
   const { t } = useT()
-  const v = V3_TEXTS[useAppStore((st) => st.lang)]
   const figures = [String(siteCount), String(parameterCatalog.length), '8', '71,731']
 
   return (
@@ -60,15 +57,6 @@ export function Home({ onPick, onDiscover, siteCount }: { onPick: (mode: Selecte
             )
           })}
         </div>
-
-        {onDiscover && (
-          <button className="discover-card" onClick={onDiscover} type="button">
-            <span className="eyebrow">v3</span>
-            <strong>{v.navTitle}</strong>
-            <span>{v.navLead}</span>
-            <span className="mission-cta">{v.navOpen} →</span>
-          </button>
-        )}
 
         <dl className="figures">
           {t.stats.map((label, index) => (

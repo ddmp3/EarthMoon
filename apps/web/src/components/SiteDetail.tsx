@@ -160,9 +160,11 @@ interface Props {
   manifest: VisualManifest | null
   sources: DataSource[]
   limits: EarthLimit[]
+  /** v3 data of the cell holding the site (missions with a v3 scenario). */
+  v3Section?: React.ReactNode
 }
 
-export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visual, manifest, sources, limits }: Props) {
+export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visual, manifest, sources, limits, v3Section }: Props) {
   const { t, lang } = useT()
   const evaluated = site.criteria.filter((criterion) => criterion.verdict !== 'missing').length
   const count = (verdict: string) => site.criteria.filter((criterion) => criterion.verdict === verdict).length
@@ -201,6 +203,8 @@ export function SiteDetail({ site, rank, rankedTotal, detail, detailError, visua
           )}
         </ul>
       </header>
+
+      {v3Section}
 
       {visual && manifest && (
         <section className="detail-section">

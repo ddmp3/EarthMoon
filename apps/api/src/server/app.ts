@@ -171,7 +171,7 @@ export function createApp(deps: AppDeps): express.Express {
     }
   });
 
-  app.use("/api/v3", v3Router(deps.releases, log, deps.discoveryUrl));
+  app.use("/api/v3", v3Router(deps.releases, log, deps.discoveryUrl, deps.sites.map((s) => ({ id: s.id, lat: s.lat, lon: s.lon }))));
 
   app.use("/api", (_req, res) => {
     res.status(404).json({ error: "Unknown route" });

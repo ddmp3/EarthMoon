@@ -140,3 +140,26 @@ describe('cell hover', () => {
     expect(cellLines(cell({ typicality: { median: null, p25: null, p75: null }, coverage: 'no_data' }), en)[1]).toBe('Topography (slope): Not evaluated')
   })
 })
+
+describe('release documents are read once per page', () => {
+  it('a second call for the same document does not fetch again; cells are never cached', async () => {
+    const { v3 } = await import('./api')
+    const calls: string[] = []
+    const real = globalThis.fetch
+    globalThis.fetch = (async (url: string) => {
+      calls.push(String(url))
+      return new Response(JSON.stringify({ release: 'r-1', scenarios: [] }), { status: 200 })
+    }) as typeof fetch
+    try {
+      await v3.scenarios()
+      await v3.scenarios()
+      expect(calls.filter((u) => u.endsWith('/api/v3/scenarios'))).toHaveLength(1)
+      const c = new AbortController()
+      await v3.cells('B', 'moon-psr', [0, 0, 1, 1], c.signal)
+      await v3.cells('B', 'moon-psr', [0, 0, 1, 1], c.signal)
+      expect(calls.filter((u) => u.includes('/api/v3/cells'))).toHaveLength(2)
+    } finally {
+      globalThis.fetch = real
+    }
+  })
+})

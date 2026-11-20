@@ -1,4 +1,4 @@
-import type { CellProps, Coverage, Status } from './api'
+import type { CellProps, Coverage, Status, Zone } from './api'
 import type { V3Texts } from './text'
 
 /** Overlay classes in the order release.py assigns them (the first that applies wins). */
@@ -142,4 +142,9 @@ export function cellLines(c: CellProps, t: V3Texts): string[] {
     `${t.maskedLabel}: ${c.masked_share === null ? '—' : `${Math.round(c.masked_share * 100)}%`}   ${t.confidenceLabel}: ${c.confidence ?? '—'}`,
     `${t.coverageLabel}: ${cov}`,
   ]
+}
+
+/** Rows of the zone list (same rows as the ranked sites). */
+export function zoneItems(zones: Zone[], t: V3Texts) {
+  return zones.map((z) => ({ id: z.id, lat: z.lat, lon: z.lon, value: z.typicality.median, sub: t.cellsArea(z.cells, z.area_km2) }))
 }

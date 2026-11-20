@@ -12,7 +12,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
-from discovery.healpix import NSIDE, cell_area_km2, corners, pix2ang  # noqa: E402
+from discovery.healpix import NSIDE, ang2pix, cell_area_km2, corners, pix2ang  # noqa: E402
 from discovery.release import coverage_class  # noqa: E402
 
 CELL_CAP = 5000                       # cells in one view (ADR-004)
@@ -97,31 +97,67 @@ def _env(rel: Release, env) -> str:
     return env
 
 
+def _props(rel: Release, idx: np.ndarray, t: str) -> list[dict]:
+    """Value with its spread, windows, overlay class, confidence, masks and requirements of the cells idx."""
+    sub = {k: rel.col(k)[idx] for k in ("cell", "windows", "masked_share", "cover_unknown", "confidence",
+                                        f"{t}:windows", f"{t}:valid", f"{t}:screened_out")}
+    cls = coverage_class(sub, t) if idx.size else np.array([], object)
+    med, p25, p75 = (_f(rel.col(f"{t}:{k}"))[idx] for k in ("median", "p25", "p75"))
+    tv, tw = _f(rel.col(f"{t}:valid"))[idx], _f(rel.col(f"{t}:windows"))[idx]
+    ms = _f(rel.col("masked_share"))[idx]
+    num = lambda v: None if not np.isfinite(v) else round(float(v), 4)  # noqa: E731
+    return [{"id": str(rel.ids[i]), "lat": round(float(rel.lat[i]), 5), "lon": round(float(rel.lon[i]), 5),
+             "typicality": {"median": num(med[k]), "p25": num(p25[k]), "p75": num(p75[k])},
+             "windows": {"valid": None if not np.isfinite(tv[k]) else int(tv[k]),
+                         "total": None if not np.isfinite(tw[k]) else int(tw[k])},
+             "coverage": str(cls[k]), "confidence": _txt(rel.col("confidence")[i]), "masked_share": num(ms[k]),
+             "requirements": {r: _txt(rel.col(f"req:{r}")[i]) for r in REQUIREMENTS}}
+            for k, i in enumerate(idx)]
+
+
 def cells_in_bbox(rel: Release, bbox, env: str) -> dict:
     """GeoJSON polygons of the cells whose centre is in the view, with value, spread, state and coverage."""
     t = _env(rel, env)
     idx = np.flatnonzero(_in_bbox(rel, bbox))
     if idx.size > CELL_CAP:
         raise QueryError(f"{idx.size} cells in this view, {CELL_CAP} at most: zoom in")
-    sub = {k: rel.col(k)[idx] for k in ("cell", "windows", "masked_share", "cover_unknown", "confidence",
-                                        f"{t}:windows", f"{t}:valid", f"{t}:screened_out")}
-    cls = coverage_class(sub, t) if idx.size else np.array([], object)
     clat, clon = corners(NSIDE, rel.ids[idx])
-    med, p25, p75 = (_f(rel.col(f"{t}:{k}"))[idx] for k in ("median", "p25", "p75"))
-    tv, tw = _f(rel.col(f"{t}:valid"))[idx], _f(rel.col(f"{t}:windows"))[idx]
-    num = lambda v: None if not np.isfinite(v) else round(float(v), 4)  # noqa: E731
     feats = []
-    for k, i in enumerate(idx):
+    for k, p in enumerate(_props(rel, idx, t)):
         ring = [[round(float(clon[k, j]), 5), round(float(clat[k, j]), 5)] for j in range(4)]
-        feats.append({"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [ring + [ring[0]]]},
-                      "properties": {"id": str(rel.ids[i]), "lat": round(float(rel.lat[i]), 5), "lon": round(float(rel.lon[i]), 5),
-                                     "typicality": {"median": num(med[k]), "p25": num(p25[k]), "p75": num(p75[k])},
-                                     "windows": {"valid": None if not np.isfinite(tv[k]) else int(tv[k]),
-                                                 "total": None if not np.isfinite(tw[k]) else int(tw[k])},
-                                     "coverage": str(cls[k]), "confidence": _txt(rel.col("confidence")[i]),
-                                     "masked_share": num(_f(rel.col("masked_share"))[i]),
-                                     "requirements": {r: _txt(rel.col(f"req:{r}")[i]) for r in REQUIREMENTS}}})
+        feats.append({"type": "Feature", "geometry": {"type": "Polygon", "coordinates": [ring + [ring[0]]]}, "properties": p})
     return {**rel.head, "type": "FeatureCollection", "env": t, "features": feats}
+
+
+MAX_POINTS = 100
+NOT_ASSESSED = "not assessed: no assessed cell here (sea, or no window near any lunar target at 90 m)"
+
+
+def cells_at(rel: Release, points, envs: list[str]) -> dict:
+    """The cell holding each named point (for example a known site), with its values for each environment."""
+    if not isinstance(points, list) or not points:
+        raise QueryError("points must be a non-empty list")
+    if len(points) > MAX_POINTS:
+        raise QueryError(f"{MAX_POINTS} points at most")
+    ts = [_env(rel, e) for e in envs]
+    out = []
+    for p in points:
+        if not isinstance(p, dict) or not isinstance(p.get("id"), str):
+            raise QueryError("each point needs an id")
+        lat, lon = p.get("lat"), p.get("lon")
+        if not isinstance(lat, (int, float)) or not -90 <= lat <= 90:
+            raise QueryError("lat must be a number from -90 to 90")
+        if not isinstance(lon, (int, float)) or not -180 <= lon <= 180:
+            raise QueryError("lon must be a number from -180 to 180")
+        cid = int(np.asarray(ang2pix(NSIDE, np.array([float(lat)]), np.array([float(lon)]))).ravel()[0])
+        k = int(np.searchsorted(rel.ids, cid))
+        if k >= rel.ids.size or rel.ids[k] != cid:
+            out.append({"id": p["id"][:60], "lat": lat, "lon": lon, "cell": None, "values": None, "reason": NOT_ASSESSED})
+            continue
+        idx = np.array([k])
+        out.append({"id": p["id"][:60], "lat": lat, "lon": lon, "cell": str(cid),
+                    "values": {t: _props(rel, idx, t)[0] for t in ts}})
+    return {**rel.head, "points": out}
 
 
 def run_query(rel: Release, q: dict) -> dict:

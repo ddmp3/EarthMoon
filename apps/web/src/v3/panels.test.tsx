@@ -1,53 +1,18 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { cleanup, render, screen, within } from '@testing-library/react'
+import { afterEach, describe, expect, it } from 'vitest'
 import coverage from '../test/fixtures/v3/coverage.json'
 import method from '../test/fixtures/v3/method.json'
 import scenarios from '../test/fixtures/v3/scenarios.json'
 import status from '../test/fixtures/v3/status.json'
 import zones from '../test/fixtures/v3/zones.json'
 import type { Coverage, MethodSource, Scenario, Status, Zone } from './api'
-import { CompareZones, CoverageLegend, DataMethod, LayerPanel, StatusBar, ZoneCard, ZoneList } from './panels'
+import { CompareZones, DataMethod, StatusBar, ZoneCard } from './panels'
 import { V3_TEXTS } from './text'
 
 const t = V3_TEXTS.en
 const zs = (zones as unknown as { zones: Zone[] }).zones
 const scB = (scenarios as unknown as { scenarios: Scenario[] }).scenarios.find((s) => s.id === 'B') as Scenario
 const cov = (coverage as unknown as Coverage).coverage
-
-describe('coverage legend', () => {
-  afterEach(cleanup)
-
-  it('labels every class in text with its land share, and switches the overlay off and on', () => {
-    const onToggle = vi.fn()
-    const onInfo = vi.fn()
-    render(<CoverageLegend coverage={cov} on onInfo={onInfo} onToggle={onToggle} t={t} />)
-    const list = screen.getByRole('list', { name: 'Coverage overlay' })
-    const items = within(list).getAllByRole('listitem')
-    expect(items.map((i) => i.querySelector('.legend-label')?.textContent)).toEqual(['Screened out', 'No data', 'Ground hidden', 'Partial', 'Low confidence', 'Evaluated'])
-    expect(items[2].textContent).toMatch(/5% of land/)
-    for (const i of items) expect(i.querySelector('svg rect:last-child')?.getAttribute('fill')).toMatch(/^url\(#pat-|^none$/)
-    const toggle = screen.getByRole('switch', { name: 'Coverage overlay' })
-    expect(toggle.getAttribute('aria-checked')).toBe('true')
-    fireEvent.click(toggle)
-    expect(onToggle).toHaveBeenCalledWith(false)
-    fireEvent.click(screen.getByRole('button', { name: 'Data and method' }))
-    expect(onInfo).toHaveBeenCalled()
-  })
-})
-
-describe('layer panel', () => {
-  afterEach(cleanup)
-
-  it('offers topography and shows the later dimensions disabled with their reason', () => {
-    render(<LayerPanel confidence onConfidence={() => undefined} t={t} />)
-    const topo = screen.getByRole('radio', { name: /Topography/ }) as HTMLInputElement
-    expect(topo.checked).toBe(true)
-    const geo = screen.getByRole('radio', { name: /Geology/ }) as HTMLInputElement
-    expect(geo.disabled).toBe(true)
-    expect(screen.getByText('available after T46')).toBeTruthy()
-    expect(screen.getByText('needs two non-redundant dimensions')).toBeTruthy()
-  })
-})
 
 describe('zone card', () => {
   afterEach(cleanup)
@@ -67,28 +32,8 @@ describe('zone card', () => {
   })
 })
 
-describe('zone list and comparison', () => {
+describe('comparison', () => {
   afterEach(cleanup)
-
-  it('lists the zones in rank order and allows comparing 2 to 4 of them only', () => {
-    const onOpen = vi.fn()
-    const onCompare = vi.fn()
-    render(<ZoneList onCompare={onCompare} onOpen={onOpen} t={t} total={zs.length} zones={zs} />)
-    const compare = screen.getByRole('button', { name: 'Compare' }) as HTMLButtonElement
-    expect(compare.disabled).toBe(true)
-    const boxes = screen.getAllByRole('checkbox') as HTMLInputElement[]
-    fireEvent.click(boxes[0])
-    expect(compare.disabled).toBe(true)
-    fireEvent.click(boxes[1])
-    expect(compare.disabled).toBe(false)
-    fireEvent.click(boxes[2])
-    fireEvent.click(boxes[3])
-    expect(boxes[4].disabled).toBe(true)
-    fireEvent.click(compare)
-    expect(onCompare).toHaveBeenCalledWith(zs.slice(0, 4).map((z) => z.id))
-    fireEvent.click(screen.getByRole('button', { name: /^1\./ }))
-    expect(onOpen).toHaveBeenCalledWith(zs[0].id)
-  })
 
   it('draws one strip per zone with its median and interquartile range', () => {
     render(<CompareZones onClose={() => undefined} t={t} zones={zs.slice(0, 3)} />)

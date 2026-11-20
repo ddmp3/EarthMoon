@@ -2,6 +2,23 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-20 · T45b v3 inside the missions (PR #27)
+- **David's review of T45:** the separate discovery page looked added at the last minute, and the missions did not use the new data. The v3 results now live in the missions:
+  - **robotics (B) and colony (A):**
+    - the 37 known sites keep their v2 ranking, with a v3 mark: typicality of the 5 km cell holding each site;
+    - a "Discovered zones" tab;
+    - one map with the v3 layers, legend, cells and coverage overlay;
+    - validity line, zone card, comparison, provenance;
+  - **site card:** "Our v3 data at this place", one row per lunar environment (new `GET /api/v3/sites`, discovery service `/points`). At Atacama, for B: lit highlands 0.56, shadowed regions 0.66, mare plains 0.07, polar cap 0.57, all high confidence;
+  - **free criteria:** a v3 search of the whole Earth in the current map view (`POST /api/v3/query`), the map and zones before any v2 run; `#discover` opens it;
+  - **calibration:** says that scenario C is not computed in v3 yet.
+- **Translations:** scenarios, requirements, limits, processing steps and coverage classes served in English now have French versions (a test covers every text of a release).
+- **Fixes the UI audit found:**
+  - empty v3 tiles showed as broken images;
+  - long French labels overflowed on phones;
+  - release documents were fetched again on every screen. They are now read once per page, since a release never changes.
+- **ADR-006 budget:** +17.1 KB gzip of JavaScript for v3 (145.3 against 128.2 before v3), first view 0.7 s, 24 tile requests, 0 defects on desktop and phone.
+
 ## 2026-11-20 · T45 Interface: discovery map, coverage overlay, comparison (PR #26)
 - **Discovery map** (`apps/web/src/v3/`, `#discover`, linked from Home), on API v3:
   - pickers: scenario and lunar environment (targets that are not comparable stay listed, disabled, with the reason);

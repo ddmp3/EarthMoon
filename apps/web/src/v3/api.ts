@@ -72,11 +72,32 @@ export interface CellCollection {
   features: CellFeature[]
 }
 
+export interface QueryResult {
+  release: string
+  env: string
+  matched: number
+  area_km2: number
+  cells: { id: string; lat: number; lon: number; typicality: number; confidence: string | null }[]
+}
+
 export function apiUrl(): string {
   return (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/+$/, '')
 }
 
-async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
+// The documents of a release never change once published (ADR-004): read once per page, not once per screen.
+const cache = new Map<string, Promise<unknown>>()
+
+function get<T>(path: string, signal?: AbortSignal): Promise<T> {
+  if (signal) return fetchJson<T>(path, signal)          // cells of a view: never cached, cancellable
+  if (!cache.has(path)) {
+    const p = fetchJson<T>(path)
+    cache.set(path, p)
+    p.catch(() => cache.delete(path))                     // a failure is retried next time
+  }
+  return cache.get(path) as Promise<T>
+}
+
+async function fetchJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   const response = await fetch(`${apiUrl()}/api/v3/${path}`, signal ? { signal } : undefined)
   if (!response.ok) {
     let detail = ''
@@ -102,6 +123,14 @@ export const v3 = {
   zone: (id: string) => get<ZoneDetail>(`zones/${encodeURIComponent(id)}`),
   method: () => get<{ release: string; sources: MethodSource[]; processing: Record<string, unknown>[] }>('method'),
   status: () => get<Status>('status'),
+  sites: (scenario: string) =>
+    get<{ release: string; scenario: string; points: { id: string; cell: string | null; values: Record<string, CellProps> | null; reason?: string }[] }>(`sites?${q({ scenario })}`),
+  query: async (body: Record<string, unknown>) => {
+    const response = await fetch(`${apiUrl()}/api/v3/query`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+    const data = (await response.json().catch(() => ({}))) as Record<string, unknown>
+    if (!response.ok) throw new Error(typeof data.error === 'string' ? data.error : `HTTP ${response.status}`)
+    return data as unknown as QueryResult
+  },
   cells: (scenario: string, env: string, bbox: [number, number, number, number], signal?: AbortSignal) =>
     get<CellCollection>(`cells?${q({ scenario, env, bbox: bbox.map((v) => v.toFixed(4)).join(',') })}`, signal),
 }

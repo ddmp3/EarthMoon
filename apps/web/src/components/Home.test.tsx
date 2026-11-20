@@ -25,11 +25,4 @@ describe('Home', () => {
     render(<Home onPick={() => {}} siteCount={37} />)
     expect(screen.getByText(String(parameterCatalog.length))).toBeTruthy()
   })
-
-  it('offers the discovery map when the page provides it', () => {
-    const onDiscover = vi.fn()
-    render(<Home onDiscover={onDiscover} onPick={() => {}} siteCount={37} />)
-    fireEvent.click(screen.getByRole('button', { name: /Discovery map/ }))
-    expect(onDiscover).toHaveBeenCalled()
-  })
 })

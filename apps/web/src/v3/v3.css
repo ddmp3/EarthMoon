@@ -95,3 +95,50 @@ html:has(.v3-page) { scroll-padding-bottom: 110px; }
   .v3-cannot-bar { font-size: 0.74rem; max-height: 4.6em; overflow-y: auto; }
   .v3-dims th, .v3-dims td { padding: 5px 6px; }
 }
+
+/* ---------- v3 inside the missions (T45b): same panels, rows and chips as the v2 pages ---------- */
+.ranking { display: flex; flex-direction: column; }
+.ranking > ol, .rank-scroll { flex: 1; min-height: 0; overflow-y: auto; }
+.rank-scroll > ol { list-style: none; margin: 0; padding: 6px; display: grid; gap: 2px; }
+.rank-tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 14px 0; }
+.rank-tabs .chip { cursor: pointer; background: none; }
+.rank-tabs .chip-on { background: var(--accent); }
+.rank-side { display: grid; justify-items: end; gap: 4px; }
+.v3-chip { font-size: 0.7rem; font-variant-numeric: tabular-nums; padding: 1px 6px; border-radius: 6px; border: 1px solid var(--line); border-bottom-width: 3px; color: var(--text); white-space: nowrap; }
+.v3-chip-none { color: var(--muted); border-bottom-color: var(--line); }
+.zone-row-wrap { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 4px; }
+.zone-row-wrap:not(:has(.zone-pick)) { grid-template-columns: minmax(0, 1fr); }
+.zone-pick { width: 18px; height: 18px; accent-color: var(--accent); margin-left: 6px; }
+.zone-row { grid-template-columns: 26px 22px minmax(0, 1fr) auto; }
+.zone-swatch { width: 18px; height: 18px; border-radius: 50%; border: 1.5px solid var(--accent); }
+.zone-settings { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 14px 0; }
+.zone-settings select { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; color: var(--text); }
+.map-wrap { position: relative; }
+.map-legend { position: absolute; z-index: 500; left: 10px; bottom: 26px; max-width: min(270px, calc(100% - 20px)); background: rgba(5, 7, 13, 0.88); border: 1px solid var(--line); border-radius: 10px; font-size: 0.78rem; }
+.map-legend-toggle { background: none; border: 0; color: var(--text); font-weight: 600; padding: 6px 10px; width: 100%; text-align: left; }
+.map-legend-body { display: grid; gap: 5px; padding: 0 10px 10px; }
+.map-legend-body small { color: var(--muted); }
+.map-legend .v3-legend { gap: 3px; font-size: 0.76rem; }
+.map-legend .v3-legend li { grid-template-columns: 20px 1fr auto; }
+.map-note { position: absolute; z-index: 500; right: 10px; top: 10px; background: rgba(5, 7, 13, 0.88); border: 1px solid #ff7a6b; border-radius: 8px; padding: 6px 10px; font-size: 0.8rem; max-width: calc(100% - 20px); }
+.v3-under { margin: 0 var(--gutter) 40px; }
+.v3-under .v3-card { border-radius: 20px; padding: 24px clamp(18px, 3vw, 36px); }
+.v3-statusline { margin: 0; padding: 10px var(--gutter); font-size: 0.82rem; color: var(--muted); border-bottom: 1px solid var(--line); }
+.v3-statusline strong { color: var(--text); font-weight: 600; }
+.v3-statusline.v3-status-not_validated strong::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #ff9f6b; margin-right: 8px; }
+.v3-statusline.v3-status-validated strong::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #6fd39a; margin-right: 8px; }
+.v3-search-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; }
+.v3-search-row label { display: grid; gap: 4px; font-size: 0.74rem; color: var(--muted); }
+.v3-search-row select, .v3-search-row input { width: 100%; height: 40px; }
+.v3-search-row input { background: var(--panel-2); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; color: var(--text); }
+.v3-search-reqs { display: flex; flex-wrap: wrap; gap: 8px 22px; border: 0; padding: 0; margin: 0; }
+.v3-search-reqs legend { font-size: 0.74rem; color: var(--muted); margin-bottom: 6px; }
+.v3-site .scorecard td, .v3-site .scorecard th { vertical-align: middle; }
+.v3-site .ghost { justify-self: start; margin-top: 10px; }
+.controls .field { flex-wrap: wrap; min-width: 0; max-width: 100%; }
+.controls .field select { max-width: 100%; min-width: 0; }
+.map-layers { list-style: none; margin: 2px 0; padding: 0; display: grid; gap: 1px; font-size: 0.72rem; }
+.map-layers .on { color: var(--text); }
+.map-layers .on::before { content: "● "; color: var(--accent); }
+.map-layers .off { color: var(--muted); }
+.map-layers .off::before { content: "○ "; }
