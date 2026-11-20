@@ -2,6 +2,24 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-20 · T44 API v3: layers, zones, custom queries (PR #PRNUM)
+- **Static releases** (`tools/discovery/release.py`, ADR-004, ADR-009). A validated run is exported once into JSON files: release, profiles, scenarios, method, coverage, status, and the zones of every τ and size of the grid. The id is a hash of the content; the index keeps the current release and the last 3.
+- **Tiles** (`tools/discovery/tiles.py`): PNG, zoom 0 to 7, typicality (cividis) and the coverage overlay per scenario and target. Measured on run-002: 127,062 tiles, 612 MB. Typicality 95.7 MB per layer, coverage 26.6 MB per layer; ADR-002 estimated 50 MB.
+- **API `/api/v3`** (contract first in `openapi.yaml`):
+  - releases, profiles, scenarios, method, coverage, status, zones and zone cards, served from the release files;
+  - layers (own rate limit, 204 for an empty tile);
+  - every answer carries the release and the methodology version.
+- **Discovery service** `apps/discovery` (FastAPI, ADR-005): internal network only, read-only, no outbound network. It serves the cells in view (5,000 at most) and custom queries (1,000,000 cells, 16 KB body, 30 s).
+- **Coverage and Data and method** (David's clarification of 19/11):
+  - coverage: land share of six overlay classes;
+  - method: catalogue sources with status and verification date, and the processing chain of the run.
+- **Status** (ADR-009). The release is validated only when every protocol check passes: run-002 is "not validated" (no positives, masks 17/18, pits). Sources show "not checkable" until the refresher (T52).
+- **Fixed before release:**
+  - lunar sources listed twice, and the lunar cube shown as "not in catalogue";
+  - zone records sorted the 6.3 M cell ids for every zone (hours per file).
+- **run-002 release** `r-98f6eee4`: written in 1.8 h, tiles in 6.5 min, in `earthmoon-data/releases/` (not in git). Run the stack on it with `EARTHMOON_RELEASES=C:\Users\david\earthmoon-data\releases docker compose up --build`.
+- **Tests:** API 173, discovery service 11, release 13. Docker e2e: TF-16 and TF-17 on a synthetic fixture release.
+
 ## 2026-11-19 · T43b run-002 with protocol v3 (PR #24)
 - **Protocol v3** (tag `validation-protocol-v3`, David's decision when signing G4, 19/11, before run-002):
   - 5 km cells are HEALPix cells (NSIDE 1303, 25.04 km², one grid for the globe; `tools/discovery/healpix.py`, pure numpy). A cell cut by tile edges keeps the windows of every tile;

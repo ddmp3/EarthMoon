@@ -89,3 +89,47 @@ def test_query_area_is_limited_to_one_million_cells(release, monkeypatch):
     monkeypatch.setattr(core, "QUERY_CELL_CAP", 5)
     with pytest.raises(QueryError, match="1,000,000 cells|cells at most"):
         run_query(release, {"env": "moon-psr"})
+
+
+def test_columns_are_compact_arrays_once_loaded_so_a_request_never_walks_millions_of_python_objects(release):
+    for name in ("windows", "valid_unmasked", "masked_share", "moon-psr:median", "moon-psr:p25", "moon-psr:windows",
+                 "moon-psr:screened_out"):
+        assert release.col(name).dtype.kind == "f", name                   # booleans with nulls: 1, 0, NaN
+    for name in ("confidence", "req:climbing_limit_lrv"):
+        assert release.col(name).dtype.kind == "U", name                   # text: fixed-width, '' for missing
+
+
+def test_a_missing_text_value_is_returned_as_null_not_as_an_empty_string(tmp_path):
+    n = 3
+    ids = np.unique(ang2pix(NSIDE, np.array([10.1, 10.2, 10.3]), np.array([20.1, 20.1, 20.1])))
+    n = ids.size
+    cols = {"cell": ids.astype(str), "windows": np.full(n, 25.0), "valid_unmasked": np.full(n, 24.0),
+            "masked_share": np.zeros(n), "cover_unknown": np.zeros(n),
+            "confidence": pa.array([None] + ["high"] * (n - 1), pa.string()),
+            "moon-psr:windows": np.full(n, 25.0), "moon-psr:valid": np.full(n, 24.0), "moon-psr:median": np.full(n, 0.5),
+            "moon-psr:p25": np.full(n, 0.4), "moon-psr:p75": np.full(n, 0.6),
+            "moon-psr:screened_out": pa.array([None] * n, pa.bool_()),
+            "req:climbing_limit_lrv": pa.array([None] * n, pa.string()), "req:base_slope": np.full(n, "met"),
+            "req:climbing_limit_viper": np.full(n, "unknown")}
+    d = tmp_path / "r-11111111"
+    d.mkdir()
+    pq.write_table(pa.table(cols), d / "cells.parquet")
+    (d / "release.json").write_text('{"release": "r-11111111", "methodology_version": "v3"}')
+    rel = Release(d, targets=["moon-psr"])
+    props = [f["properties"] for f in cells_in_bbox(rel, (20.0, 10.0, 20.2, 10.4), "moon-psr")["features"]]
+    assert any(p["confidence"] is None for p in props)
+    assert all(p["requirements"]["climbing_limit_lrv"] is None for p in props)
+    out = run_query(rel, {"env": "moon-psr", "min_confidence": "medium"})
+    assert out["matched"] == n - 1                                          # the cell without a confidence is not counted
+
+
+def test_the_service_loads_the_current_release_at_start_up(tmp_path, release, monkeypatch):
+    import json as _json
+    import app as service
+    root = release.folder.parent
+    (root / "index.json").write_text(_json.dumps({"current": "r-00000000", "releases": [{"id": "r-00000000"}]}))
+    (release.folder / "scenarios.json").write_text(_json.dumps({"scenarios": [{"assessed_targets": ["moon-psr"]}]}))
+    monkeypatch.setattr(service, "ROOT", root)
+    service._RELEASES.clear()
+    service.preload()
+    assert list(service._RELEASES) == ["r-00000000"]
