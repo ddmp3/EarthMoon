@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import {
   analyzeSites,
   getEarthLimits,
@@ -21,6 +21,9 @@ import { FR_SOURCES } from './content-fr'
 import { useT, type Lang, type Texts } from './i18n'
 import { MISSION_ORDER } from './shared'
 import { useAppStore, type CriterionDraft, type SelectedMode } from './store'
+
+// The v3 discovery map is its own chunk: the v2 pages do not load it (ADR-006 budget, checked by the UI audit).
+const Discover = lazy(() => import('./v3/Discover').then((m) => ({ default: m.Discover })))
 
 /** Mode 4 criteria entered in the form; throws a readable error if the input is invalid. */
 function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
@@ -56,6 +59,7 @@ function App() {
     document.documentElement.lang = lang
   }, [lang])
   const [mode, setMode] = useState<SelectedMode | null>(() => parseHash().mode)
+  const [discover, setDiscover] = useState(() => window.location.hash === '#discover')
   const [sites, setSites] = useState<SiteResult[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(() => parseHash().site)
   const [loading, setLoading] = useState(false)
@@ -133,16 +137,21 @@ function App() {
   // State -> address. Changing screen (home <-> mission) adds a history entry, so the browser Back button
   // returns to the missions; selecting another site only replaces the current entry.
   useEffect(() => {
+    if (discover) {
+      if (window.location.hash !== '#discover') window.history.pushState(null, '', '#discover')
+      return
+    }
     const hash = mode ? `#${mode}${selectedId ? `/${selectedId}` : ''}` : ''
     if (window.location.hash === hash) return
     const url = hash || window.location.pathname + window.location.search
     if (parseHash().mode !== mode) window.history.pushState(null, '', url)
     else window.history.replaceState(null, '', url)
-  }, [mode, selectedId])
+  }, [mode, selectedId, discover])
 
   // Address -> state: Back and Forward buttons, a pasted link, a bookmark opened in the same tab.
   useEffect(() => {
     const onAddressChange = () => {
+      setDiscover(window.location.hash === '#discover')
       const next = parseHash()
       setMode((current) => {
         if (current !== next.mode) {
@@ -177,7 +186,7 @@ function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <button className="brand" onClick={() => setMode(null)} type="button">
+        <button className="brand" onClick={() => { setDiscover(false); setMode(null) }} type="button">
           <span className="brand-mark" aria-hidden="true" />
           <span>
             <strong>{t.brand}</strong>
@@ -197,8 +206,12 @@ function App() {
       </header>
 
       <main>
-        {mode === null ? (
-          <Home onPick={pick} siteCount={manifest ? Object.keys(manifest.sites).length : 37} />
+        {discover ? (
+          <Suspense fallback={<p className="note">…</p>}>
+            <Discover onBack={() => { setDiscover(false); setMode(null) }} />
+          </Suspense>
+        ) : mode === null ? (
+          <Home onDiscover={() => { setDiscover(true); window.scrollTo({ top: 0 }) }} onPick={pick} siteCount={manifest ? Object.keys(manifest.sites).length : 37} />
         ) : (
           <Mission
             builderError={builderError}

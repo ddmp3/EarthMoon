@@ -236,3 +236,26 @@ def test_visuals_polar_latlon():
     assert lat == pytest.approx(-90.0, abs=1e-6)
     lat, lon = sv.polar_latlon(3791.5, 7583, 7584, 40.0)              # bord droit : 85°S, longitude 90°E
     assert lat == pytest.approx(-85.0, abs=0.01) and lon == pytest.approx(90.0, abs=0.01)
+
+
+# ------------------------------------------------------------------ site_visuals (T45)
+def test_site_relief_values_come_from_terrain_v2_when_the_dataset_has_them():
+    pytest.importorskip("rasterio")
+    import site_visuals as sv
+    site = {"id": "atacama", "precomputed": {"slope_mean": 7.97, "slope_max": 16.64, "roughness": 40.57}}
+    dataset = {"sites": {"atacama": {"values": {"slope_mean": {"value": 7.85}, "slope_max": {"value": 15.2},
+                                                "roughness": {"value": 38.9}}}}}
+    assert sv.relief_values(site, dataset) == {"slope_mean": 7.85, "slope_max": 15.2, "roughness": 38.9, "basis": "terrain_v2"}
+    assert sv.relief_values(site, None) == {"slope_mean": 7.97, "slope_max": 16.64, "roughness": 40.57, "basis": "precomputed (v1)"}
+    assert sv.relief_values({"id": "x", "precomputed": {}}, dataset) is None
+
+
+def test_the_match_panel_shows_the_same_relief_values_as_the_scorecard():
+    root = os.path.join(os.path.dirname(__file__), "..", "..")
+    manifest = json.load(open(os.path.join(root, "apps/web/public/sites/manifest.json"), encoding="utf-8"))
+    dataset = json.load(open(os.path.join(root, "data/dataset-v2.json"), encoding="utf-8"))
+    for sid, entry in manifest["sites"].items():
+        v2 = dataset["sites"][sid]["values"]
+        assert entry["earth"]["basis"] == "terrain_v2", sid
+        for k in ("slope_mean", "roughness"):
+            assert entry["earth"][k] == pytest.approx(v2[k]["value"]), (sid, k)

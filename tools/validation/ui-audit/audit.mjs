@@ -4,6 +4,7 @@
 // and takes screenshots. Exit code 1 if any defect is found.
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
+import { gzipSync } from "node:zlib";
 
 const WEB = (process.argv[2] ?? "http://localhost:8080").replace(/\/+$/, "");
 const OUT = process.argv[3] ?? "./shots";
@@ -35,6 +36,120 @@ async function overflow(page, where) {
   });
   if (info.scrollWidth > info.vw + 1) defect(where, `page scrolls sideways: content ${info.scrollWidth}px for a ${info.vw}px screen; ${info.wide.join(", ")}`);
   else if (info.wide.length) defect(where, `elements wider than the screen: ${info.wide.join(", ")}`);
+}
+
+
+// WCAG contrast ratio of two CSS colours "rgb(r, g, b)" or "#rrggbb".
+function contrast(a, b) {
+  const rgb = (c) => c.startsWith("#") ? [1, 3, 5].map((i) => parseInt(c.slice(i, i + 2), 16)) : c.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number);
+  const lum = (c) => { const [r, g, b2] = rgb(c).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; }); return 0.2126 * r + 0.7152 * g + 0.0722 * b2; };
+  const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m);
+  return (x + 0.05) / (y + 0.05);
+}
+
+// --- v3 discovery map (T45): states, overlay, panels, comparison, cells, French, ADR-006 budget
+async function discovery(page, name, shot) {
+  const js = new Map();
+  const tiles = [];
+  const onResponse = async (r) => {
+    const u = r.url();
+    if (u.endsWith(".js") && r.status() === 200) js.set(u, (await r.body().catch(() => Buffer.alloc(0))));
+    if (u.includes("/api/v3/layers/")) tiles.push(u);
+  };
+  await page.goto(`${WEB}/`, { waitUntil: "networkidle" });
+  const before = new Set(await page.evaluate(() => performance.getEntriesByType("resource").map((e) => e.name).filter((n) => n.endsWith(".js"))));
+  page.on("response", onResponse);
+  const t0 = Date.now();
+  await page.locator(".discover-card").click();
+  await page.locator(".v3-zones li").first().waitFor({ timeout: 30000 }).catch(() => defect(name, "discovery: no zone listed"));
+  await page.waitForLoadState("networkidle");
+  const firstView = Date.now() - t0;
+  if (firstView > 2500) defect(name, `discovery: first map view took ${firstView} ms (budget 2,500 ms, ADR-006)`);
+  const added = [...js.entries()].filter(([u]) => !before.has(u));
+  const kb = added.reduce((s, [, b]) => s + gzipSync(b).length, 0) / 1024;
+  if (kb > 60) defect(name, `discovery: ${kb.toFixed(1)} KB gzip of JavaScript added by v3 (budget 60 KB, ADR-006)`);
+  if (tiles.length > 40) defect(name, `discovery: ${tiles.length} tile requests for the first view (budget 40, ADR-006)`);
+  notes.push(`${name} discovery: first view ${firstView} ms, v3 JavaScript ${kb.toFixed(1)} KB gzip, ${tiles.length} tile requests`);
+  for (const cls of ["Screened out", "No data", "Ground hidden", "Partial", "Low confidence", "Evaluated"]) {
+    if (!(await page.locator(".v3-legend .legend-label", { hasText: cls }).count())) defect(name, `discovery: legend lacks "${cls}"`);
+  }
+  const alert = page.locator(".v3-page [role=alert]");
+  if (await alert.count()) defect(name, `discovery: error shown: ${(await alert.first().innerText()).slice(0, 200)}`);
+  const status = page.locator(".v3-status");
+  if (!(await status.count()) || (await status.first().innerText()).match(/validated/i) === null) {
+    defect(name, "discovery: no validity indicator");
+    return;
+  }
+  if (!(await page.locator(".v3-layers .v3-disabled", { hasText: "T46" }).count())) defect(name, "discovery: the geology layer is not shown as waiting for T46");
+  if (!(await page.locator(".v3-cannot-bar").isVisible())) defect(name, "discovery: the line on what Earth cannot reproduce is not visible");
+  // contrast: pastel hatching against the panel (graphics, at least 3:1) and legend text (at least 4.5:1)
+  const colours = await page.evaluate(() => {
+    const panel = getComputedStyle(document.querySelector(".v3-block")).backgroundColor;
+    const label = getComputedStyle(document.querySelector(".legend-label")).color;
+    const share = getComputedStyle(document.querySelector(".legend-share")).color;
+    return { panel, label, share };
+  });
+  if (contrast("#b9c6e8", colours.panel) < 3) defect(name, `discovery: pastel hatching contrast ${contrast("#b9c6e8", colours.panel).toFixed(2)} on the panel (needs 3)`);
+  for (const [k, c] of [["legend label", colours.label], ["legend share", colours.share]]) {
+    if (contrast(c, colours.panel) < 4.5) defect(name, `discovery: ${k} contrast ${contrast(c, colours.panel).toFixed(2)} (needs 4.5)`);
+  }
+  await overflow(page, `${name} discovery`);
+  await shot("07-discovery");
+  // overlay switch
+  const sw = page.getByRole("switch", { name: "Coverage overlay" });
+  await sw.click();
+  if ((await sw.getAttribute("aria-checked")) !== "false") defect(name, "discovery: the overlay switch does not turn off");
+  await sw.click();
+  // Data and method
+  await page.getByRole("button", { name: "Data and method" }).click();
+  const dialog = page.getByRole("dialog", { name: "Data and method" });
+  for (const h of ["What we cover", "Sources used", "How we processed it", "What it cannot say"]) {
+    if (!(await dialog.getByRole("heading", { name: h }).count())) defect(name, `Data and method: no "${h}" block`);
+  }
+  if ((await dialog.locator(".v3-sources > li").count()) < 3) defect(name, "Data and method: fewer than 3 sources");
+  await overflow(page, `${name} data and method`);
+  await shot("08-data-method", false);
+  await page.keyboard.press("Escape");
+  // zone card, opened in under 300 ms (data cached)
+  const z0 = Date.now();
+  await page.locator(".v3-zone-btn").first().click();
+  await page.locator(".v3-card").first().waitFor({ timeout: 5000 }).catch(() => defect(name, "discovery: the zone card does not open"));
+  const zoneMs = Date.now() - z0;
+  if (zoneMs > 300) defect(name, `discovery: zone card opened in ${zoneMs} ms (budget 300 ms, ADR-006)`);
+  for (const text of ["Topography (slope)", "not evaluated (T46)", "Earth cannot reproduce", "Confidence"]) {
+    if (!(await page.locator(".v3-card").first().getByText(text, { exact: false }).count())) defect(name, `zone card lacks "${text}"`);
+  }
+  await page.getByRole("button", { name: "Provenance" }).click();
+  if (!(await page.getByRole("dialog").getByText("release", { exact: false }).count())) defect(name, "provenance: no release");
+  await page.keyboard.press("Escape");
+  // cells above zoom 7 (the card flew the map to the zone)
+  await page.waitForFunction(() => !document.querySelector(".v3-map-note") && document.querySelectorAll(".v3-map path.v3-cell").length > 20, null, { timeout: 20000 })
+    .catch(() => defect(name, "discovery: no cell drawn at zoom 9 around the zone"));
+  const hatched = await page.evaluate(() => [...document.querySelectorAll(".v3-map path.v3-hatch")].filter((p) => (p.getAttribute("fill") ?? "").startsWith("url(#pat-")).length);
+  await page.locator(".v3-map").scrollIntoViewIfNeeded();
+  notes.push(`${name} discovery: ${hatched} hatched cells at the first zone`);
+  await overflow(page, `${name} zone card`);
+  await shot("09-zone-card");
+  // comparison of 2 zones
+  const boxes = page.locator(".v3-zones input[type=checkbox]");
+  if ((await boxes.count()) >= 2) {
+    await boxes.nth(0).check();
+    await boxes.nth(1).check();
+    await page.getByRole("button", { name: "Compare", exact: true }).click();
+    if ((await page.locator(".v3-compare svg[data-strip]").count()) !== 2) defect(name, "comparison: not one strip per zone");
+    await overflow(page, `${name} comparison`);
+    await shot("10-compare");
+  }
+  // French
+  await page.locator(".lang-switch button", { hasText: "FR" }).click();
+  if (!(await page.locator(".v3-head h1").textContent())?.includes("Carte de découverte")) defect(name, "discovery in French: title not translated");
+  const fr = await page.locator(".v3-page").innerText();
+  for (const english of ["Coverage overlay", "Candidate zones", "Earth cannot reproduce", "Layers", "Not validated"]) {
+    if (fr.includes(english)) defect(name, `discovery in French still shows "${english}"`);
+  }
+  await overflow(page, `${name} discovery (fr)`);
+  await page.locator(".lang-switch button", { hasText: "EN" }).click();
+  page.off("response", onResponse);
 }
 
 async function run(name, viewport, mobile) {
@@ -190,10 +305,13 @@ async function run(name, viewport, mobile) {
   await page.waitForLoadState("networkidle");
   await overflow(page, `${name} robotics site card`);
   await shot("05-robotics-atacama");
+  await discovery(page, name, shot);
   await browser.close();
 }
 
 await run("desktop", { width: 1440, height: 900 }, false);
+// The API allows 120 requests per minute and per IP: the two passes act as two visitors, one window apart.
+await new Promise((resolve) => setTimeout(resolve, 61_000));
 await run("phone", { width: 390, height: 844 }, true);
 
 for (const n of notes) console.log("note  ", n);

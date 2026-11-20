@@ -220,6 +220,16 @@ describe("HTTP server", () => {
     expect((await fetch(`${limited.url}/api/health`)).status).toBe(200);
     await limited.close();
   });
+
+  it("rate limit: the cells of a map view have their own, higher limit (a view moves often), like tiles (T45)", async () => {
+    const limited = await start({ rateLimitPerMinute: 3 });
+    for (let i = 0; i < 4; i++) await fetch(`${limited.url}/api/modes`);
+    expect((await fetch(`${limited.url}/api/modes`)).status).toBe(429);
+    const cells: number[] = [];
+    for (let i = 0; i < 6; i++) cells.push((await fetch(`${limited.url}/api/v3/cells?scenario=B&env=moon-psr&bbox=0,0,1,1`)).status);
+    expect(cells.every((c) => c !== 429)).toBe(true);
+    await limited.close();
+  });
 });
 
 describe("openapi.yaml contract ↔ real responses", () => {

@@ -1,4 +1,4 @@
-import type { SiteResult } from '../api'
+import { paramInfo, type ParamId, type SiteDetail, type SiteResult } from '../api'
 import { useT } from '../i18n'
 import { stabilityLevel } from '../shared'
 
@@ -37,5 +37,38 @@ export function ConfidenceNotes({ site, rank, total }: { site: SiteResult; rank:
       )}
       {vegetationFactor !== undefined && <p>{t.vegetationNote(Math.round(vegetationFactor * 100))}</p>}
     </div>
+  )
+}
+
+type Explanation = SiteDetail['explanation']
+
+/** What the v2 API says about the solidity of a result: confidence, coverage, hard requirements and why (T45). */
+export function Assessment({ site, explanation }: { site: SiteResult; explanation: Explanation | null }) {
+  const { t, lang } = useT()
+  const names = (ids: readonly ParamId[] | undefined) => (ids ?? []).map((id) => paramInfo(id, lang).label).join(', ')
+  return (
+    <section aria-label={t.assessmentTitle} className="assessment">
+      <h4>{t.assessmentTitle}</h4>
+      {site.confidence && (
+        <p>
+          <strong className={`conf conf-${site.confidence}`}>{t.confidenceLevels[site.confidence]}</strong> <small>{t.confidenceHint}</small>
+        </p>
+      )}
+      <p>{t.coverageLine(Math.round(site.coverage * 100), site.totalRange.min, site.totalRange.max)}</p>
+      <p>
+        <strong className={`req req-${site.requirements}`}>{t.requirementsState[site.requirements]}</strong>
+        {site.failedRequirements && site.failedRequirements.length > 0 && <> · {t.failedList}: {names(site.failedRequirements)}</>}
+      </p>
+      {site.missing && site.missing.length > 0 && !explanation && <p className="note">{t.missingList}: {names(site.missing)}</p>}
+      {explanation && (
+        <dl className="explain">
+          {explanation.strengths.length > 0 && (<><dt>{t.strengths}</dt><dd>{names(explanation.strengths.map((c) => c.param))}</dd></>)}
+          {explanation.weaknesses.length > 0 && (<><dt>{t.weaknesses}</dt><dd>{names(explanation.weaknesses.map((c) => c.param))}</dd></>)}
+          {explanation.decisive.length > 0 && (<><dt>{t.decisive}</dt><dd>{names(explanation.decisive)}</dd></>)}
+          {explanation.missing.length > 0 && (<><dt>{t.missingList}</dt><dd>{names(explanation.missing)}</dd></>)}
+        </dl>
+      )}
+      {explanation && explanation.expertShare > 0 && <p className="note">{t.expertShare(Math.round(explanation.expertShare * 100))}</p>}
+    </section>
   )
 }

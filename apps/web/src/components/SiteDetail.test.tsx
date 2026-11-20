@@ -2,6 +2,7 @@ import { cleanup, render, screen, within } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { SiteResult } from '../api'
 import maunaKea from '../test/fixtures/mauna-kea-calibration.json'
+import { Assessment } from './Stability'
 import { SiteDetail } from './SiteDetail'
 
 // Real API response (methodology v2, calibration mode, 17 Nov 2026): wind, specific humidity and
@@ -43,5 +44,34 @@ describe('SiteDetail scorecard', () => {
   it('counts only evaluated criteria', () => {
     renderSite()
     expect(screen.getByText(/4\/7/)).toBeTruthy()
+  })
+})
+
+describe('Assessment block (T45: confidence, coverage, requirements, explanation)', () => {
+  afterEach(cleanup)
+
+  it('shows confidence, coverage with the total range, and the requirements state', () => {
+    render(<Assessment explanation={null} site={site} />)
+    const block = screen.getByRole('region', { name: 'Assessment' })
+    expect(within(block).getByText('Low confidence')).toBeTruthy()
+    expect(within(block).getByText(/Data cover 60% of the criteria weight: .* between 10 and 50/)).toBeTruthy()
+    expect(within(block).getByText('Hard requirements met')).toBeTruthy()
+    expect(within(block).getByText(/Wind/)).toBeTruthy()
+  })
+
+  it('lists failed requirements and the explanation when the API gives them', () => {
+    const failed = { ...site, requirements: 'failed' as const, failedRequirements: ['slope_mean' as const] }
+    const explanation = {
+      strengths: [{ param: 'lst_amplitude' as const, contribution: 12, loss: 0 }],
+      weaknesses: [{ param: 't2m_mean' as const, contribution: 0, loss: 10 }],
+      decisive: ['slope_mean' as const], missing: ['wind' as const], flagged: [], expertShare: 0.25,
+    }
+    render(<Assessment explanation={explanation} site={failed} />)
+    const block = screen.getByRole('region', { name: 'Assessment' })
+    expect(within(block).getByText('Hard requirements failed')).toBeTruthy()
+    expect(within(block).getAllByText(/Mean slope/).length).toBeGreaterThan(0)
+    expect(within(block).getByText(/Day-night swing/)).toBeTruthy()
+    expect(within(block).getByText(/Mean air temperature/)).toBeTruthy()
+    expect(within(block).getByText('25% of the total rests on expert judgements rather than measurements.')).toBeTruthy()
   })
 })

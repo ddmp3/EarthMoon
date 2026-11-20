@@ -68,11 +68,19 @@ export function createApp(deps: AppDeps): express.Express {
     v3LayersRouter(deps.releases, log),
   );
 
+  // Cells of a map view: one request per pan or zoom, so their own limit (5x); not counted in the general one.
+  app.use(
+    "/api/v3/cells",
+    rateLimit({ windowMs: 60_000, limit: (deps.rateLimitPerMinute ?? 120) * 5, standardHeaders: "draft-7", legacyHeaders: false,
+      message: { error: "Too many requests, try again in a minute" } }),
+  );
+
   app.use(
     "/api",
     rateLimit({
       windowMs: 60_000,
       limit: deps.rateLimitPerMinute ?? 120,
+      skip: (req) => req.originalUrl.startsWith("/api/v3/cells"),
       standardHeaders: "draft-7",
       legacyHeaders: false,
       message: { error: "Too many requests, try again in a minute" },

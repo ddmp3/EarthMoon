@@ -68,6 +68,18 @@ const en = {
   bareSoilHint: 'NDVI above 0.2 lowers the score; dense vegetation (0.6+) is excluded',
   screeningNote:
     'A screening tool: scores rank sites worth studying, they do not approve a mission. Weights and ranges are expert estimates, so each rank comes with a stability reading.',
+  assessmentTitle: 'Assessment',
+  confidenceLevels: { high: 'High confidence', medium: 'Medium confidence', low: 'Low confidence' },
+  confidenceHint: 'Separate from the score: data coverage, required criteria with data, and how much the total moves.',
+  coverageLine: (pct: number, min: number, max: number) =>
+    min === max ? `Data cover ${pct}% of the criteria weight.` : `Data cover ${pct}% of the criteria weight: with the missing criteria, the total could lie between ${min} and ${max}.`,
+  requirementsState: { met: 'Hard requirements met', failed: 'Hard requirements failed', unknown: 'Hard requirements unknown: a required criterion has no data' },
+  failedList: 'Failed',
+  strengths: 'Strengths',
+  weaknesses: 'Weaknesses',
+  decisive: 'Decisive (required, failed)',
+  missingList: 'No data',
+  expertShare: (pct: number) => `${pct}% of the total rests on expert judgements rather than measurements.`,
   stabilityTitle: 'Rank stability',
   stabilityLevels: { high: 'Stable', medium: 'Moderate', low: 'Fragile' },
   stabilityLine: (rank: number, low: number, high: number) =>
@@ -190,6 +202,18 @@ const fr: Texts = {
   bareSoilHint: 'Un NDVI supérieur à 0,2 abaisse le score ; la végétation dense (0,6 et plus) est écartée',
   screeningNote:
     'Un outil de présélection : les scores classent les sites qui méritent une étude, ils ne valident pas une mission. Les poids et les intervalles sont des estimations d’experts, donc chaque rang est accompagné d’une lecture de sa stabilité.',
+  assessmentTitle: 'Évaluation',
+  confidenceLevels: { high: 'Confiance haute', medium: 'Confiance moyenne', low: 'Confiance faible' },
+  confidenceHint: 'Distincte du score : couverture des données, critères requis renseignés, et variation du total.',
+  coverageLine: (pct: number, min: number, max: number) =>
+    min === max ? `Les données couvrent ${pct} % du poids des critères.` : `Les données couvrent ${pct} % du poids des critères : avec les critères manquants, le total pourrait aller de ${min} à ${max}.`,
+  requirementsState: { met: 'Exigences strictes respectées', failed: 'Exigences strictes non respectées', unknown: 'Exigences strictes inconnues : un critère requis n’a pas de donnée' },
+  failedList: 'Non respectées',
+  strengths: 'Points forts',
+  weaknesses: 'Points faibles',
+  decisive: 'Décisifs (requis, non respectés)',
+  missingList: 'Sans donnée',
+  expertShare: (pct: number) => `${pct} % du total repose sur des jugements d’experts plutôt que sur des mesures.`,
   stabilityTitle: 'Stabilité du rang',
   stabilityLevels: { high: 'Stable', medium: 'Modérée', low: 'Fragile' },
   stabilityLine: (rank: number, low: number, high: number) =>

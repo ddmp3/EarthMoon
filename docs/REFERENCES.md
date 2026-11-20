@@ -127,7 +127,7 @@ The NASA records were read through the NTRS API (`https://ntrs.nasa.gov/api/cita
 | NTRS 20240013903 | "VIPER Rover Overview and Mobility and Hardware" (B. Bluethmann, presentation, 2024) | **The 15° VIPER climbing limit is not in the abstract.** The slides could not be read. This limit is the only hard requirement of the v2 mobility scenario, so it stays an unverified expert decision (E1 in [LIMITS.md](LIMITS.md)) |
 | NTRS 20250004148 | "VIPER Rover Design and Mission Operations" (T. Fong, presentation, 2025) | Same: no slope figure in the abstract |
 | NTRS 20250011301 | "Apollo Lunar Roving Vehicle as Traversed Performance Metrics: Preparing for Artemis Mobile Vehicle Traverse Planning" (S. R. Jacob et al., abstract) | **Verified:** "The LRVs were designed to navigate a 20–23° slope in favorable conditions with a max of 25°." Slopes computed from 2 m NAC DTMs |
-| NTRS 19930008250 | "A seismic risk for the lunar base" (J. Oberst and Y. Nakamura, conference paper, 1992). The v1 docs attributed it to Nakamura alone | Shallow moonquakes exist. The v1 figure "28 shallow moonquakes in 8 years" was not found on the page read |
+| NTRS 19930008250 | "A seismic risk for the lunar base" (J. Oberst and Y. Nakamura, conference paper, 1992). The v1 docs attributed it to Nakamura alone | Shallow moonquakes exist. The v1 figure "28 shallow moonquakes in 8 years" was not found on the page read; removed from the interface in T45 |
 | NTRS 19780005006 | "Results From the Apollo Passive Seismic Experiment" (conference paper, 1977) | Title verified; content not read |
 | NASA SP-4214 (Apollo LRV chapter) | PDF larger than the fetch limit | Not verified |
 | Lunar Sourcebook (R9, R10) | LPI page refused automated access | Not verified (book) |

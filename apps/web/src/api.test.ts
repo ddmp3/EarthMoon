@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { paramInfo, parameterCatalog } from './api'
+import { deprecation, moonNote, paramInfo, parameterCatalog } from './api'
 import { FR_PARAMS } from './content-fr'
 
 describe('parameter catalog', () => {
@@ -17,5 +17,17 @@ describe('parameter catalog', () => {
   it('every catalog parameter has a real label in both languages, not its raw id', () => {
     const raw = parameterCatalog.filter((p) => paramInfo(p.id, 'en').label === p.id || paramInfo(p.id, 'fr').label === p.id).map((p) => p.id)
     expect(raw).toEqual([])
+  })
+
+  it('flags the deprecated parameters with the reason and the replacement, in both languages (T45)', () => {
+    for (const id of ['humidity', 'quake_count', 'volcano_distance'] as const) {
+      expect(deprecation(id, 'en'), id).toMatch(/^Deprecated: /)
+      expect(deprecation(id, 'fr'), id).toMatch(/^Déprécié : /)
+    }
+    expect(deprecation('slope_mean', 'en')).toBeNull()
+  })
+
+  it('the lunar note of earthquakes carries no unsourced figure (T13, REFERENCES section 8)', () => {
+    for (const lang of ['en', 'fr'] as const) expect(moonNote('quake_count', lang) ?? '').not.toMatch(/\d/)
   })
 })

@@ -317,3 +317,13 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
   .source-cell { max-width: none; }
   .group-row { padding-bottom: 0 !important; border-bottom: 0 !important; }
 }
+
+.note-warn { color: #ffc457; }
+.assessment { display: grid; gap: 6px; margin: 10px 0; padding: 12px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); font-size: 0.88rem; }
+.assessment h4 { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.assessment .conf-high, .assessment .req-met { color: #6fd39a; }
+.assessment .conf-medium, .assessment .req-unknown { color: #ffc457; }
+.assessment .conf-low, .assessment .req-failed { color: #ff7a6b; }
+.assessment .explain { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+.assessment .explain dt { color: var(--muted); }
+.assessment .explain dd { margin: 0; }

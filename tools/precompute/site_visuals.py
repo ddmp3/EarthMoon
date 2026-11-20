@@ -152,6 +152,20 @@ def save_mask(mask: np.ndarray, path: str) -> None:
     Image.fromarray(rgba, "RGBA").save(path, optimize=True)
 
 
+def relief_values(site: dict, dataset: dict | None) -> dict | None:
+    """Mean slope, maximum slope and roughness of a site: the terrain_v2 values of data/dataset-v2.json (the ones the
+    scorecard shows) when given, else the v1 precomputed ones. None when the mean slope or roughness is missing."""
+    v2 = ((dataset or {}).get("sites", {}).get(site["id"]) or {}).get("values") or {}
+    if dataset is not None and v2:
+        get = lambda k: (v2.get(k) or {}).get("value")  # noqa: E731
+        out = {"slope_mean": get("slope_mean"), "slope_max": get("slope_max"), "roughness": get("roughness"), "basis": "terrain_v2"}
+    else:
+        pre = site.get("precomputed") or {}
+        out = {"slope_mean": pre.get("slope_mean"), "slope_max": pre.get("slope_max"), "roughness": pre.get("roughness"),
+               "basis": "precomputed (v1)"}
+    return out if out["slope_mean"] is not None and out["roughness"] is not None else None
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("candidates", help="data/candidates-precomputed.json (with slope_mean and roughness)")
@@ -160,10 +174,12 @@ def main(argv=None) -> int:
     ap.add_argument("--only", default="", help="comma-separated ids")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--refetch-photos", action="store_true", help="also re-downloads the satellite views")
+    ap.add_argument("--dataset", default="", help="data/dataset-v2.json: take the terrain_v2 values the scorecard shows (T45)")
     args = ap.parse_args(argv)
 
     with open(args.candidates, encoding="utf-8") as f:
         sites = json.load(f)
+    dataset = json.load(open(args.dataset, encoding="utf-8")) if args.dataset else None
     only = {s for s in args.only.split(",") if s}
     os.makedirs(args.out, exist_ok=True)
     manifest_path = os.path.join(args.out, "manifest.json")
@@ -202,9 +218,9 @@ def main(argv=None) -> int:
         if not args.force and sid in manifest["sites"] and os.path.exists(os.path.join(folder, "moon-relief.jpg")):
             print(f"  skip  {sid}")
             continue
-        pre = s.get("precomputed") or {}
-        if pre.get("slope_mean") is None or pre.get("roughness") is None:
-            print(f"  FAIL  {sid}: no precomputed relief")
+        pre = relief_values(s, dataset)
+        if pre is None:
+            print(f"  FAIL  {sid}: no relief values")
             continue
         os.makedirs(folder, exist_ok=True)
         entry: dict = {}
@@ -235,7 +251,7 @@ def main(argv=None) -> int:
             lat, lon = polar_latlon(cy, cx, size, PIXEL_M)
             entry.update({
                 "earth": {"slope_mean": pre["slope_mean"], "slope_max": pre.get("slope_max"), "roughness": pre["roughness"],
-                          "match_share": round(float(earth_mask.mean()), 3)},
+                          "match_share": round(float(earth_mask.mean()), 3), "basis": pre["basis"]},
                 "twin": {"lat": round(lat, 3), "lon": round(lon, 3), "slope_mean": round(float(sm[r, c]), 2),
                          "slope_max": round(float(smax[r, c]), 2), "roughness": round(float(rg[r, c]), 2),
                          "distance": round(dist, 3), "match_share": round(float(moon_mask.mean()), 3)},
