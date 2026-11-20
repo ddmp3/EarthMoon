@@ -44,3 +44,10 @@ def test_cell_statistic_ignores_missing_samples_and_says_when_none_is_valid():
     v = np.array([[1.0, 2.0, np.nan], [np.nan, np.nan, np.nan]])
     med, n = sample_stat(v)
     assert med[0] == pytest.approx(1.5) and n.tolist() == [2, 0] and np.isnan(med[1])
+
+
+def test_an_aridity_value_of_zero_is_no_data_never_hyper_arid():
+    # v3.1 writes 0 over the sea and nowhere states a nodata value: 0 cannot be told from AI < 0.0001
+    from discovery.context import aridity_from_raw
+    assert np.isnan(aridity_from_raw(np.array([0.0]))[0])
+    assert aridity_from_raw(np.array([10.0]))[0] == pytest.approx(0.001)

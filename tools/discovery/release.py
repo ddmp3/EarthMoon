@@ -94,7 +94,29 @@ def cell_index(cells: dict) -> dict:
     geo = {k: _f(v) for k, v in cells.items() if k.startswith("geo:") and k.count(":") == 2}
     if geo:
         out["geo"] = geo
+    if "ctx:frozen_e4" in cells:
+        out["ctx"] = {"frozen_e4": np.asarray(cells["ctx:frozen_e4"], dtype=object), "magt_c": _f(cells["ctx:magt_c"]),
+                      "aridity_class": np.asarray(cells["ctx:aridity_class"], dtype=object)}
     return out
+
+
+FROZEN_STATES = ("met", "partial", "failed", "not covered")
+ARIDITY_NAMES = ("hyper-arid", "arid", "semi-arid", "dry sub-humid", "humid", "no data")
+
+
+def zone_context(ix: dict, rows: np.ndarray) -> dict | None:
+    """Earth context of a zone (T47, E18): share of its cells per frozen-ground state and aridity class. A model,
+    never a similarity with the Moon."""
+    ctx = ix.get("ctx")
+    if not ctx or rows.size == 0:
+        return None
+    fz, ac, m = ctx["frozen_e4"][rows], ctx["aridity_class"][rows], ctx["magt_c"][rows]
+    share = lambda a, k: round(float(np.mean(a == k)), 4)  # noqa: E731
+    return {"class": "model", "comparable_with_moon": False,
+            "frozen_e4": {k: share(fz, k) for k in FROZEN_STATES},
+            "magt_c_median": round(float(np.nanmedian(m)), 2) if np.isfinite(m).any() else None,
+            "aridity": {k: share(ac, k) for k in ARIDITY_NAMES},
+            "sources": ["obu-permafrost-2018", "global-aridity-index-v3"]}
 
 
 GEO_STATES = ("match", "partial", "no_match", "unresolved", "no_map")
@@ -137,6 +159,7 @@ def zone_record(z: dict, rank: int, tau: float, min_cells: int, cells: dict, ind
                      "cells_by_confidence": {c: int(np.sum(conf == c)) for c in ("high", "medium", "low")}},
         "monte_carlo": {"top_decile_share": z["mc_top_decile_share"]} if "mc_top_decile_share" in z else None,
         "geology": zone_geology(ix, r, z["target"]),
+        "context": zone_context(ix, r),
         "tiles": z.get("tiles", []),
     }
 
@@ -309,6 +332,32 @@ def land_cells(cube: Path, workers: int = 12) -> np.ndarray:
     return np.unique(np.concatenate(parts)) if parts else np.zeros(0, np.int64)
 
 
+def _context(run: Path, cells: dict) -> dict:
+    """Context columns of the run (context.parquet of tools/discovery/context.py), in the order of `cells`."""
+    import pyarrow.parquet as pq
+    f = run / "context.parquet"
+    if not f.exists():
+        return {}
+    t = pq.read_table(f)
+    ids = np.asarray(t.column("cell").to_numpy(zero_copy_only=False)).astype(np.int64)
+    order = np.argsort(ids)
+    want = np.asarray(cells["cell"]).astype(np.int64)
+    k = np.clip(np.searchsorted(ids[order], want), 0, ids.size - 1)
+    found = ids[order][k] == want
+    out = {}
+    for name in t.column_names:
+        if not name.startswith("ctx:"):
+            continue
+        col = t.column(name).to_numpy(zero_copy_only=False)[order]
+        if col.dtype.kind == "f":
+            v = np.full(want.size, np.nan, np.float32)
+        else:
+            v = np.full(want.size, "no data" if "aridity" in name else "not covered", dtype=object)
+        v[found] = col[k[found]]
+        out[name] = v
+    return out
+
+
 def _geology(run: Path, cells: dict) -> dict:
     """Geology columns of the run (geology.parquet of tools/discovery/geology.py), in the order of `cells`; empty if
     the run has no geology assessment."""
@@ -341,15 +390,22 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     cells = load_cells(str(run / "cells.parquet"), cols)
     geo_table = _geology(run, cells)                              # T46: geology of each cell, when assessed
     cells.update(geo_table)
+    ctx_table = _context(run, cells)                              # T47: Earth context of each cell, when assessed
+    cells.update(ctx_table)
     land = land_km2(cube)
     validation = json.loads((run / "validation.json").read_text()) if (run / "validation.json").exists() else {}
     profs = profiles()
     used = list(EARTH_SOURCES) + profile_sources(profs, targets)
     if geo_table:
         used.append("macrostrat")
+    if ctx_table:
+        used += ["obu-permafrost-2018", "global-aridity-index-v3"]
+    context_summary = ({k: v for k, v in json.loads((run / "context.json").read_text()).items() if k != "layers"}
+                       if ctx_table and (run / "context.json").exists() else None)
     geology_summary = json.loads((run / "geology.json").read_text()) if geo_table and (run / "geology.json").exists() else None
     content = {"run": run.name, "methodology_version": METHODOLOGY_VERSION, "protocol": PROTOCOL, "commit": commit,
-               "processing": processing_steps(run), "validation": validation, "land_km2": land, "geology": geology_summary}
+               "processing": processing_steps(run), "validation": validation, "land_km2": land, "geology": geology_summary,
+               "context": context_summary}
     rid = release_id(content)
     d = out / rid
     (d / "zones").mkdir(parents=True, exist_ok=True)
@@ -365,6 +421,9 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     table = pq.read_table(run / "cells.parquet", columns=[c for c in cols if c not in ("lat", "lon", "area_km2", "tile")])
     for k, v in geo_table.items():
         table = table.append_column(k, pa.array(np.asarray(v, np.float32)))
+    for k, v in ctx_table.items():
+        arr = np.asarray(v)
+        table = table.append_column(k, pa.array(arr.astype(np.float32) if arr.dtype.kind == "f" else arr.tolist()))
     pq.write_table(table, d / "cells.parquet", compression="zstd")
     write(d / "release.json", {**head, **content, "created": date.today().isoformat(),
                                "grid": {"tau": list(TAUS), "min_cells": list(MIN_CELLS), "nominal": {"tau": TAU, "min_cells": MIN}}})

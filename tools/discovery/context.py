@@ -34,6 +34,7 @@ LAYERS = {
         "not_meaning": "not the water content of the ground; not lunar dryness (the Moon has no atmosphere)",
         "threshold": "UNEP classes: hyper-arid < 0.03, arid < 0.2, semi-arid < 0.5, dry sub-humid < 0.65, humid",
         "interannual_sigma": False, "sigma": "none: a 1970 to 2000 climatology",
+        "no_data": "0 in the file (sea, or an index below 0.0001: not told apart) is treated as no data",
         "source": "global-aridity-index-v3",
     },
 }
@@ -59,6 +60,13 @@ def aridity_class(ai) -> np.ndarray:
         out[ai < limit] = name
     out[~np.isfinite(ai)] = "no data"
     return out
+
+
+def aridity_from_raw(raw) -> np.ndarray:
+    """Aridity index from the v3.1 integers (x 10,000). 0 is no data: the file writes 0 over the sea and states no
+    nodata value, so 0 cannot be told from an index below 0.0001 (data improvement D11)."""
+    raw = np.asarray(raw, float)
+    return np.where(raw > 0, raw * 1e-4, np.nan)
 
 
 def sample_stat(values: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -116,7 +124,7 @@ def assess(run: Path, magt: Path, magtsd: Path, perprob: Path, aridity: Path) ->
     m, n_m = sample_stat(_sample_raster(magt, slat, slon))
     sd, _ = sample_stat(_sample_raster(magtsd, slat, slon))
     pp, _ = sample_stat(_sample_raster(perprob, slat, slon))
-    ai, n_ai = sample_stat(_sample_raster(aridity, slat, slon, scale=1e-4))
+    ai, n_ai = sample_stat(aridity_from_raw(_sample_raster(aridity, slat, slon)))
     covered = (lat >= 25) & (n_m > 0)
     cols = {"cell": t.column("cell"),
             "ctx:magt_c": pa.array(np.where(covered, m, np.nan).astype(np.float32)),

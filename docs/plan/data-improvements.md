@@ -17,6 +17,7 @@ Status: **blocked** (waiting on an action), **ready** (can be done), **done** (w
 | D7 | Finer national geological maps (for example Newfoundland and Labrador 1:1M; OneGeology services) | Mistastin's anorthosite is below the 1:5M map; anorthosite bodies of impact structures | OneGeology portal certificate error; national licences to check | Check each map's licence and access | ready |
 | D8 | A bare-earth DEM (forest and buildings removed, for example FABDEM) | 38% of the evaluated land is masked as hidden ground; slope under forest could be measured instead | Licence (FABDEM is non-commercial; to verify) and its own error model | Verify licence and accuracy; compare on the pilot tiles | ready |
 | D9 | ESA Permafrost_cci v5 | Frozen ground in both hemispheres (Obu 2018 covers only the north) | Licence not stated on page (partly verified) | Verify licence | ready |
+| D11 | Aridity index v3.1 with a stated nodata value, or a land mask | 0 marks both the sea and an index below 0.0001; treated as no data, so the driest cores (Atacama) may show no data | The README (figshare, MD5 ad026eba…) states no nodata value | Ask the authors (Zomer, Trabucco), or mask the sea with our own land cells | ready |
 | D10 | An independent list of expected analogs and negative controls (E10) | Positive validation of scenarios A and B: none exists today | Needs analog researchers outside the project | David or the jury names reviewers | blocked |
 
 ## Moon
