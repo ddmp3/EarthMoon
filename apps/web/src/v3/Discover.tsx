@@ -295,7 +295,7 @@ export function Discover({ onBack }: { onBack: () => void }) {
           </div>
           {compare && compare.length >= 2 && <CompareZones onClose={() => setCompare(null)} t={t} zones={compare} />}
           {open && (
-            <ZoneCard cannotAssess={cannot} onClose={() => setOpen(null)} onProvenance={() => setShowProv(true)} scenario={scenario} t={t} zone={open} />
+            <ZoneCard cannotAssess={cannot} status={status} onClose={() => setOpen(null)} onProvenance={() => setShowProv(true)} scenario={scenario} t={t} zone={open} />
           )}
         </div>
       </div>
@@ -307,7 +307,7 @@ export function Discover({ onBack }: { onBack: () => void }) {
       {showMethod && method && (
         <DataMethod cannotAssess={cannot} coverage={coverage} onClose={() => setShowMethod(false)} processing={method.processing} sources={method.sources} t={t} />
       )}
-      {showProv && open && <Provenance onClose={() => setShowProv(false)} release={release && { release: release.release, run: release.run, protocol: release.protocol, commit: release.commit }} t={t} zone={open} />}
+      {showProv && open && <Provenance onClose={() => setShowProv(false)} status={status} release={release && { release: release.release, run: release.run, protocol: release.protocol, commit: release.commit }} t={t} zone={open} />}
     </section>
   )
 }

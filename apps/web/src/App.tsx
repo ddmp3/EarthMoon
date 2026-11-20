@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
 import {
   analyzeSites,
   getEarthLimits,
@@ -17,11 +17,13 @@ import {
 import { Home } from './components/Home'
 import { Mission } from './components/Mission'
 import { SiteDetail } from './components/SiteDetail'
-import { Discover } from './v3/Discover'
 import { FR_SOURCES } from './content-fr'
 import { useT, type Lang, type Texts } from './i18n'
 import { MISSION_ORDER } from './shared'
 import { useAppStore, type CriterionDraft, type SelectedMode } from './store'
+
+// The v3 discovery map is its own chunk: the v2 pages do not load it (ADR-006 budget, checked by the UI audit).
+const Discover = lazy(() => import('./v3/Discover').then((m) => ({ default: m.Discover })))
 
 /** Mode 4 criteria entered in the form; throws a readable error if the input is invalid. */
 function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
@@ -205,7 +207,9 @@ function App() {
 
       <main>
         {discover ? (
-          <Discover onBack={() => { setDiscover(false); setMode(null) }} />
+          <Suspense fallback={<p className="note">…</p>}>
+            <Discover onBack={() => { setDiscover(false); setMode(null) }} />
+          </Suspense>
         ) : mode === null ? (
           <Home onDiscover={() => { setDiscover(true); window.scrollTo({ top: 0 }) }} onPick={pick} siteCount={manifest ? Object.keys(manifest.sites).length : 37} />
         ) : (

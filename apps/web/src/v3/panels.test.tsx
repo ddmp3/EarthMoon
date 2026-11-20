@@ -53,8 +53,9 @@ describe('zone card', () => {
   afterEach(cleanup)
 
   it('gives the value with its spread, the missing dimensions by name, requirements, confidence and the limits', () => {
-    render(<ZoneCard cannotAssess={scB.cannot_assess} onClose={() => undefined} onProvenance={() => undefined} scenario={scB} t={t} zone={zs[0]} />)
+    render(<ZoneCard cannotAssess={scB.cannot_assess} onClose={() => undefined} onProvenance={() => undefined} scenario={scB} status={status as unknown as Status} t={t} zone={zs[0]} />)
     const card = screen.getByRole('region', { name: /Zone 1/ })
+    expect(within(card).getByRole('status').textContent).toMatch(/Not validated/)
     expect(within(card).getByText('0.88')).toBeTruthy()
     expect(within(card).getByText('0.87–0.91')).toBeTruthy()
     expect(within(card).getByText('not evaluated (T46)')).toBeTruthy()

@@ -170,9 +170,10 @@ function Requirements({ scenario, zone, t }: { scenario: Scenario | null; zone: 
   )
 }
 
-export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, t }: {
+export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, status = null, t }: {
   zone: Zone
   scenario: Scenario | null
+  status?: Status | null
   cannotAssess: string[]
   onClose: () => void
   onProvenance: () => void
@@ -186,6 +187,7 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
         <button aria-label={t.close} className="v3-close" onClick={onClose} type="button">×</button>
       </header>
       <p className="note">{zone.lat.toFixed(4)}, {zone.lon.toFixed(4)}</p>
+      <StatusBar status={status} t={t} />
       <table className="v3-dims">
         <thead>
           <tr><th scope="col">{t.dimension}</th><th scope="col">{t.median}</th><th scope="col">{t.iqr}</th><th scope="col">n ({t.windows})</th><th scope="col">{t.source}</th></tr>
@@ -360,8 +362,9 @@ export function DataMethod({ coverage, sources, processing, cannotAssess, onClos
   )
 }
 
-export function Provenance({ zone, release, onClose, t }: {
+export function Provenance({ zone, release, onClose, status = null, t }: {
   zone: Zone
+  status?: Status | null
   release: { release: string; run: string; protocol?: string; commit?: string } | null
   onClose: () => void
   t: V3Texts
@@ -369,6 +372,7 @@ export function Provenance({ zone, release, onClose, t }: {
   return (
     <Dialog label={`${t.provenance} · ${t.zone} ${zone.rank}`} onClose={onClose} t={t}>
       <p className="note">{t.provenanceLead}</p>
+      <StatusBar status={status} t={t} />
       <dl className="v3-prov">
         <dt>{t.median}</dt><dd>{two(zone.typicality.median)} ({t.iqr} {two(zone.typicality.p25)}–{two(zone.typicality.p75)}), {zone.coverage.valid_unmasked} {t.windows}</dd>
         <dt>{t.provenanceRelease}</dt><dd>{release?.release ?? '—'}</dd>
