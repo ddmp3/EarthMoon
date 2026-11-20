@@ -341,7 +341,7 @@ paths:
       parameters:
         - { name: scenario, in: path, required: true, schema: { type: string } }
         - { name: env, in: path, required: true, schema: { type: string } }
-        - { name: parameter, in: path, required: true, schema: { type: string, enum: [typicality, coverage] } }
+        - { name: parameter, in: path, required: true, schema: { type: string, enum: [typicality, coverage, geology] } }
         - { name: z, in: path, required: true, schema: { type: integer, minimum: 0, maximum: 7 } }
         - { name: x, in: path, required: true, schema: { type: integer, minimum: 0 } }
         - { name: y, in: path, required: true, schema: { type: integer, minimum: 0 } }
@@ -564,6 +564,18 @@ components:
           properties:
             top_decile_share: { type: number }
         tiles: { type: array, items: { type: string } }
+        geology:
+          type: object
+          nullable: true
+          description: "T46: mean share of the 9 samples of the zone's cells in each geology state, for the group of lunar environments of the target (crosswalk E17). null when the release has no geology."
+          properties:
+            group: { type: string, enum: [highland, mare, pits] }
+            source: { type: string }
+            match: { type: number }
+            partial: { type: number }
+            no_match: { type: number }
+            unresolved: { type: number }
+            no_map: { type: number }
     ZonePage:
       allOf:
         - $ref: "#/components/schemas/V3Doc"

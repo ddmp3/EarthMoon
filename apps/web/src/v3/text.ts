@@ -2,6 +2,14 @@ import type { Lang } from '../i18n'
 
 /** Texts of the discovery map (v3). English is the default; French mirrors every key (checked by a test). */
 const en = {
+  geoState: { match: 'match', partial: 'partial', no_match: 'no match', unresolved: 'unresolved', no_map: 'no map' } as Record<string, string>,
+  geoLegend: 'Geology (lithology of the geological map)',
+  geoClass: { 1: 'Same rock family (match)', 2: 'Related rock (partial)', 3: 'Other rock family (no match)', 4: 'Unresolved or no map' } as Record<number, string>,
+  geoGroup: { highland: 'anorthositic highlands', mare: 'mare basalt', pits: 'pits (impact melt, a few in maria)' } as Record<string, string>,
+  geoSummary: (match: number, partial: number, noMatch: number, open: number) =>
+    `${Math.round(match * 100)}% match · ${Math.round(partial * 100)}% partial · ${Math.round(noMatch * 100)}% no match · ${Math.round(open * 100)}% unresolved or no map`,
+  geoSource: 'Macrostrat (CC-BY 4.0), crosswalk E17',
+  layerPick: 'Layer',
   tabKnown: 'Known sites',
   cellsWord: 'cells',
   tabZones: 'Discovered zones',
@@ -171,6 +179,14 @@ const en = {
 export type V3Texts = typeof en
 
 const fr: V3Texts = {
+  geoState: { match: 'correspond', partial: 'partiel', no_match: 'ne correspond pas', unresolved: 'non résolu', no_map: 'pas de carte' },
+  geoLegend: 'Géologie (lithologie de la carte géologique)',
+  geoClass: { 1: 'Même famille de roche (correspond)', 2: 'Roche apparentée (partiel)', 3: 'Autre famille de roche (ne correspond pas)', 4: 'Non résolu ou pas de carte' },
+  geoGroup: { highland: 'hautes terres anorthositiques', mare: 'basalte des mers', pits: 'fosses (melt d’impact, quelques-unes dans les mers)' },
+  geoSummary: (match: number, partial: number, noMatch: number, open: number) =>
+    `${Math.round(match * 100)} % correspond · ${Math.round(partial * 100)} % partiel · ${Math.round(noMatch * 100)} % ne correspond pas · ${Math.round(open * 100)} % non résolu ou sans carte`,
+  geoSource: 'Macrostrat (CC-BY 4.0), correspondance E17',
+  layerPick: 'Couche',
   tabKnown: 'Sites connus',
   cellsWord: 'cellules',
   tabZones: 'Zones découvertes',

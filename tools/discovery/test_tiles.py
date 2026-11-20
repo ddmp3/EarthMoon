@@ -81,3 +81,27 @@ def test_only_tiles_holding_cells_are_rendered():
     lat, lon = np.array([10.0, -45.0]), np.array([20.0, 170.0])
     t = tiles_with_cells(ang2pix(NSIDE, lat, lon), zoom=3)
     assert t == {(3, 4, 3), (3, 7, 5)}
+
+
+def test_geology_class_of_a_cell_follows_the_majority_of_its_samples():
+    import numpy as np
+    from discovery.tiles import geology_class
+    m = np.array([0.6, 0.3, 0.0, 0.1, np.nan], np.float32)
+    p = np.array([0.0, 0.3, 0.0, 0.1, np.nan], np.float32)
+    n = np.array([0.4, 0.4, 0.8, 0.2, np.nan], np.float32)
+    assert geology_class(m, p, n).tolist() == [1, 2, 3, 4, 0]   # match, partial, no match, unresolved, not assessed
+
+
+def test_geology_tiles_colour_match_partial_and_no_match_and_hatch_unresolved():
+    import numpy as np
+    from discovery.tiles import GEO_COLOURS, render_geology
+    cells = np.array([[1, 2], [3, 4]] * 128, dtype=np.int64).repeat(128, axis=1)[:256, :256]
+    ids = np.array([1, 2, 3, 4], np.int64)
+    gcls = np.array([1, 2, 3, 4], np.uint8)
+    img = render_geology(cells, ids, gcls, 3, 0, 0)
+    assert tuple(img[0, 0, :3]) == GEO_COLOURS[1] and img[0, 0, 3] == 255
+    assert tuple(img[0, 200, :3]) == GEO_COLOURS[2]
+    assert tuple(img[1, 0, :3]) == GEO_COLOURS[3]
+    hatched = img[1, 128:, 3] > 0
+    assert hatched.any() and not hatched.all()                    # unresolved: pattern, not a fill
+    assert img[cells == 99].size == 0 or not img[cells == 99][..., 3].any()

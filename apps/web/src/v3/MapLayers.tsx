@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { CircleMarker, GeoJSON, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet'
 import { useAppStore } from '../store'
 import { layerUrl, v3, type CellCollection, type CellProps, type Zone } from './api'
-import { cellLines, cellState, cividis, PATTERN, type CoverageClass } from './model'
+import { cellLines, cellState, cividis, geologyClass, PATTERN, type CoverageClass } from './model'
 import { V3_TEXTS } from './text'
 
 export const TILE_MAX_ZOOM = 7 // raster tiles exist for zoom 0 to 7 (ADR-004); 5 km cells above
@@ -13,7 +13,10 @@ export const MAP_MAX_ZOOM = 11
 const EMPTY_TILE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'
 
 /** Cells of the view above zoom 7: value (cividis), confidence outline, and the coverage hatching on top. */
-function Cells({ scenario, env, overlay, confidence, onError }: {
+const GEO_FILL: Record<number, string> = { 1: 'rgb(0, 158, 115)', 2: 'rgb(86, 180, 233)', 3: 'rgb(120, 126, 140)' }
+
+function Cells({ scenario, env, overlay, confidence, onError, layer }: {
+  layer: 'typicality' | 'geology'
   scenario: string
   env: string
   overlay: boolean
@@ -58,7 +61,10 @@ function Cells({ scenario, env, overlay, confidence, onError }: {
   const value = (f?: Feature): PathOptions => {
     const p = props(f)
     const st = cellState(p, t).state
-    const fill = p.typicality.median === null || st === 'not_evaluated' || st === 'masked' ? '#2a3044' : cividis(p.typicality.median)
+    const gc = layer === 'geology' ? geologyClass(p) : 0
+    const fill = layer === 'geology'
+      ? (GEO_FILL[gc] ?? '#2a3044')
+      : p.typicality.median === null || st === 'not_evaluated' || st === 'masked' ? '#2a3044' : cividis(p.typicality.median)
     const outline = !confidence || p.confidence === 'high' ? { stroke: false } : { stroke: true, color: '#eef0f6', weight: p.confidence === 'low' ? 1.2 : 0.6, dashArray: p.confidence === 'low' ? '3 3' : undefined }
     return { className: 'v3-cell', fillColor: fill, fillOpacity: 0.8, ...outline }
   }
@@ -75,7 +81,7 @@ function Cells({ scenario, env, overlay, confidence, onError }: {
     }
     layer.bindTooltip(el, { sticky: true, className: 'v3-tip' })
   }
-  const key = `${data.release}-${scenario}-${env}-${data.features.length}-${data.features[0]?.properties.id ?? ''}-${lang}`
+  const key = `${data.release}-${scenario}-${env}-${layer}-${data.features.length}-${data.features[0]?.properties.id ?? ''}-${lang}`
   return (
     <>
       <GeoJSON data={geo} key={`v-${key}-${confidence}`} onEachFeature={tip} style={value} />
@@ -85,7 +91,8 @@ function Cells({ scenario, env, overlay, confidence, onError }: {
 }
 
 /** v3 layers inside a mission map: typicality tiles to zoom 7, the coverage overlay, cells above zoom 7. */
-export function V3Layers({ release, scenario, env, overlay, confidence, onCellsError }: {
+export function V3Layers({ release, scenario, env, overlay, confidence, onCellsError, layer = 'typicality' }: {
+  layer?: 'typicality' | 'geology'
   release: string
   scenario: string
   env: string
@@ -98,14 +105,14 @@ export function V3Layers({ release, scenario, env, overlay, confidence, onCellsE
       <TileLayer
         attribution="EarthMoon v3 · Copernicus DEM GLO-30 · ESA WorldCover"
         errorTileUrl={EMPTY_TILE}
-        key={`ty-${scenario}-${env}`}
+        key={`${layer}-${scenario}-${env}`}
         maxNativeZoom={TILE_MAX_ZOOM}
         maxZoom={TILE_MAX_ZOOM}
         opacity={0.8}
-        url={layerUrl(scenario, env, 'typicality', release)}
+        url={layerUrl(scenario, env, layer, release)}
       />
       {overlay && <TileLayer errorTileUrl={EMPTY_TILE} key={`co-${scenario}-${env}`} maxNativeZoom={TILE_MAX_ZOOM} maxZoom={TILE_MAX_ZOOM} url={layerUrl(scenario, env, 'coverage', release)} />}
-      <Cells confidence={confidence} env={env} onError={onCellsError} overlay={overlay} scenario={scenario} />
+      <Cells confidence={confidence} env={env} layer={layer} onError={onCellsError} overlay={overlay} scenario={scenario} />
     </>
   )
 }

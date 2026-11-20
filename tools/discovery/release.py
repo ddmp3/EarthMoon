@@ -88,9 +88,27 @@ def cell_index(cells: dict) -> dict:
     """Arrays a zone record reads, prepared once per release: sorting 6 M cell ids for every zone took hours."""
     table = np.asarray(cells["cell"]).astype(np.int64)
     order = np.argsort(table)
-    return {"sorted": table[order], "order": order, "windows": _f(cells["windows"]),
-            "valid_unmasked": _f(cells["valid_unmasked"]), "cover_unknown": _f(cells["cover_unknown"]),
-            "confidence": np.asarray(cells["confidence"], dtype=object)}
+    out = {"sorted": table[order], "order": order, "windows": _f(cells["windows"]),
+           "valid_unmasked": _f(cells["valid_unmasked"]), "cover_unknown": _f(cells["cover_unknown"]),
+           "confidence": np.asarray(cells["confidence"], dtype=object)}
+    geo = {k: _f(v) for k, v in cells.items() if k.startswith("geo:") and k.count(":") == 2}
+    if geo:
+        out["geo"] = geo
+    return out
+
+
+GEO_STATES = ("match", "partial", "no_match", "unresolved", "no_map")
+GEO_SOURCE = "Macrostrat carto tiles, zoom 8 (CC-BY 4.0); crosswalk E17"
+
+
+def zone_geology(ix: dict, rows: np.ndarray, target: str) -> dict | None:
+    """Mean share of each geology state over the 9 samples of every cell of a zone, for the target's group (T46)."""
+    from discovery.geology import TARGET_GROUP
+    geo, g = ix.get("geo"), TARGET_GROUP.get(target)
+    if not geo or g is None or f"geo:{g}:match" not in geo or rows.size == 0:
+        return None
+    return {"group": g, "source": GEO_SOURCE,
+            **{st: round(float(np.nanmean(geo[f"geo:{g}:{st}"][rows])), 4) for st in GEO_STATES}}
 
 
 def _rows(ids: list, index: dict) -> np.ndarray:
@@ -118,6 +136,7 @@ def zone_record(z: dict, rank: int, tau: float, min_cells: int, cells: dict, ind
                      "cover_unknown": int(np.nansum(ix["cover_unknown"][r])),
                      "cells_by_confidence": {c: int(np.sum(conf == c)) for c in ("high", "medium", "low")}},
         "monte_carlo": {"top_decile_share": z["mc_top_decile_share"]} if "mc_top_decile_share" in z else None,
+        "geology": zone_geology(ix, r, z["target"]),
         "tiles": z.get("tiles", []),
     }
 
@@ -290,6 +309,28 @@ def land_cells(cube: Path, workers: int = 12) -> np.ndarray:
     return np.unique(np.concatenate(parts)) if parts else np.zeros(0, np.int64)
 
 
+def _geology(run: Path, cells: dict) -> dict:
+    """Geology columns of the run (geology.parquet of tools/discovery/geology.py), in the order of `cells`; empty if
+    the run has no geology assessment."""
+    import pyarrow.parquet as pq
+    f = run / "geology.parquet"
+    if not f.exists():
+        return {}
+    t = pq.read_table(f)
+    ids = np.asarray(t.column("cell").to_numpy(zero_copy_only=False)).astype(np.int64)
+    order = np.argsort(ids)
+    want = np.asarray(cells["cell"]).astype(np.int64)
+    k = np.clip(np.searchsorted(ids[order], want), 0, ids.size - 1)
+    found = ids[order][k] == want
+    out = {}
+    for name in t.column_names:
+        if name.startswith("geo:") and name.count(":") == 2:
+            v = np.full(want.size, np.nan, np.float32)
+            v[found] = t.column(name).to_numpy(zero_copy_only=False)[order][k[found]]
+            out[name] = v
+    return out
+
+
 def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     from discovery.discover import MIN, MIN_CELLS, SCENARIO_TARGETS, TAU, TAUS, load_cells, zones_for
     cols = ["cell", "windows", "valid_unmasked", "masked_share", "cover_unknown", "confidence", "lat", "lon", "area_km2",
@@ -298,12 +339,17 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     for t in targets:
         cols += [f"{t}:{k}" for k in ("windows", "valid", "screened_out", "median", "p25", "p75")]
     cells = load_cells(str(run / "cells.parquet"), cols)
+    geo_table = _geology(run, cells)                              # T46: geology of each cell, when assessed
+    cells.update(geo_table)
     land = land_km2(cube)
     validation = json.loads((run / "validation.json").read_text()) if (run / "validation.json").exists() else {}
     profs = profiles()
     used = list(EARTH_SOURCES) + profile_sources(profs, targets)
+    if geo_table:
+        used.append("macrostrat")
+    geology_summary = json.loads((run / "geology.json").read_text()) if geo_table and (run / "geology.json").exists() else None
     content = {"run": run.name, "methodology_version": METHODOLOGY_VERSION, "protocol": PROTOCOL, "commit": commit,
-               "processing": processing_steps(run), "validation": validation, "land_km2": land}
+               "processing": processing_steps(run), "validation": validation, "land_km2": land, "geology": geology_summary}
     rid = release_id(content)
     d = out / rid
     (d / "zones").mkdir(parents=True, exist_ok=True)
@@ -315,8 +361,11 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     from datetime import date
     head = {"release": rid, "methodology_version": METHODOLOGY_VERSION}
     import pyarrow.parquet as pq                                  # the cells the discovery service reads (ADR-005)
-    pq.write_table(pq.read_table(run / "cells.parquet", columns=[c for c in cols if c not in ("lat", "lon", "area_km2", "tile")]),
-                   d / "cells.parquet", compression="zstd")
+    import pyarrow as pa
+    table = pq.read_table(run / "cells.parquet", columns=[c for c in cols if c not in ("lat", "lon", "area_km2", "tile")])
+    for k, v in geo_table.items():
+        table = table.append_column(k, pa.array(np.asarray(v, np.float32)))
+    pq.write_table(table, d / "cells.parquet", compression="zstd")
     write(d / "release.json", {**head, **content, "created": date.today().isoformat(),
                                "grid": {"tau": list(TAUS), "min_cells": list(MIN_CELLS), "nominal": {"tau": TAU, "min_cells": MIN}}})
     write(d / "profiles.json", {**head, "profiles": profs})
@@ -331,10 +380,15 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
         for t in ts:
             for tau in TAUS:
                 for mc in MIN_CELLS:
+                    cached = run / "zones-grid" / sc / t / f"t{tau}-m{mc}.json"
                     if tau == TAU and mc == MIN and (run / f"zones-{sc}-{t}.json").exists():
                         zs = json.loads((run / f"zones-{sc}-{t}.json").read_text())     # nominal: carries the Monte Carlo
+                    elif cached.exists():
+                        zs = json.loads(cached.read_text())                              # same run, same zones
                     else:
                         zs = zones_for(cells, sc, t, tau, mc)
+                        cached.parent.mkdir(parents=True, exist_ok=True)
+                        cached.write_text(json.dumps(zs))
                     write(d / "zones" / sc / t / f"t{tau}-m{mc}.json",
                           {**head, "scenario": sc, "target": t, "tau": tau, "min_cells": mc,
                            "zones": [zone_record(z, k + 1, tau, mc, cells, index) for k, z in enumerate(zs)]})

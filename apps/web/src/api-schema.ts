@@ -798,7 +798,7 @@ export interface paths {
                 path: {
                     scenario: string;
                     env: string;
-                    parameter: "typicality" | "coverage";
+                    parameter: "typicality" | "coverage" | "geology";
                     z: number;
                     x: number;
                     y: number;
@@ -1143,6 +1143,17 @@ export interface components {
                 top_decile_share?: number;
             } | null;
             tiles?: string[];
+            /** @description T46: mean share of the 9 samples of the zone's cells in each geology state, for the group of lunar environments of the target (crosswalk E17). null when the release has no geology. */
+            geology?: {
+                /** @enum {string} */
+                group?: "highland" | "mare" | "pits";
+                source?: string;
+                match?: number;
+                partial?: number;
+                no_match?: number;
+                unresolved?: number;
+                no_map?: number;
+            } | null;
         };
         ZonePage: components["schemas"]["V3Doc"] & {
             scenario: string;

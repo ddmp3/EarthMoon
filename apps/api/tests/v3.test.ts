@@ -50,6 +50,8 @@ async function writeRelease(dir: string): Promise<void> {
     zones: Array.from({ length: 250 }, (_, k) => zone(k + 1)) });
   await mkdir(path.join(dir, RID, "layers/moon-psr/coverage/3/4"), { recursive: true });
   await writeFile(path.join(dir, RID, "layers/moon-psr/coverage/3/4/3.png"), PNG);
+  await mkdir(path.join(dir, RID, "layers/moon-psr/geology/3/4"), { recursive: true });
+  await writeFile(path.join(dir, RID, "layers/moon-psr/geology/3/4/3.png"), PNG);
   await w(`${OLD}/release.json`, { release: OLD, methodology_version: "v3", run: "run-001", grid: { tau: [0.5], min_cells: [3], nominal: { tau: 0.5, min_cells: 3 } } });
 }
 
@@ -207,6 +209,33 @@ describe("API v3 without a release", () => {
     expect(v3.body.error).toMatch(/release/);
     expect((await fetch(`${api.url}/api/modes`)).status).toBe(200);
     await api.close();
+  });
+});
+
+describe("API v3 geology (T46)", () => {
+  let dir: string;
+  let api: Running;
+  beforeAll(async () => {
+    dir = await mkdtemp(path.join(tmpdir(), "releases-"));
+    await writeRelease(dir);
+    api = await start(await ReleaseStore.open(dir));
+  });
+  afterAll(async () => {
+    await api.close();
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("serves the geology layer of a target", async () => {
+    const res = await fetch(`${api.url}/api/v3/layers/B/moon-psr/geology/3/4/3.png`);
+    expect(res.status).toBe(200);
+    expect(res.headers.get("content-type")).toMatch(/png/);
+  });
+
+  it("documents the geology of a zone in the contract", async () => {
+    const doc = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as Record<string, any>;
+    const zone = doc.components.schemas.Zone.properties;
+    expect(zone.geology.nullable).toBe(true);
+    expect(Object.keys(zone.geology.properties)).toEqual(["group", "source", "match", "partial", "no_match", "unresolved", "no_map"]);
   });
 });
 

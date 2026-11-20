@@ -163,3 +163,34 @@ describe('release documents are read once per page', () => {
     }
   })
 })
+
+
+describe('geology (T46)', () => {
+  it('turns on the geology layer when the release carries it', async () => {
+    const { layerList } = await import('./model')
+    expect(layerList(en, ['topography', 'geology']).filter((l) => l.enabled).map((l) => l.id)).toEqual(['topography', 'geology'])
+    expect(layerList(en).find((l) => l.id === 'geology')?.reason).toBe('available after T46')
+  })
+
+  it('reports a zone as shares of geology states, and as not evaluated without geology', async () => {
+    const { zoneDimensions } = await import('./model')
+    const g = { group: 'highland', source: 'Macrostrat', match: 0.75, partial: 0.25, no_match: 0, unresolved: 0, no_map: 0 }
+    expect(zoneDimensions({ median: 0.8, p25: 0.7, p75: 0.9 }, 100, en, g)[1]).toMatchObject({
+      name: 'Geology', missing: null, text: '75% match · 25% partial · 0% no match · 0% unresolved or no map' })
+    expect(zoneDimensions({ median: 0.8, p25: 0.7, p75: 0.9 }, 100, en, null)[1].missing).toBe('not evaluated (T46)')
+  })
+
+  it('the hover text of a cell gives its geology', async () => {
+    const { cellLines } = await import('./model')
+    const lines = cellLines(cell({ geology: { group: 'mare', source: 'Macrostrat', match: 1, partial: 0, no_match: 0, unresolved: 0, no_map: 0 } }), en)
+    expect(lines[2]).toBe('Geology: 100% match · 0% partial · 0% no match · 0% unresolved or no map')
+  })
+})
+
+describe('geology class of a cell on the map', () => {
+  it('follows the majority of the samples, like the tiles', async () => {
+    const { geologyClass } = await import('./model')
+    const g = (match: number, partial: number, no_match: number) => cell({ geology: { group: 'mare', source: 'x', match, partial, no_match, unresolved: 0, no_map: 0 } })
+    expect([g(0.6, 0, 0.4), g(0.3, 0.3, 0.4), g(0, 0, 0.8), g(0.1, 0.1, 0.2), cell({})].map(geologyClass)).toEqual([1, 2, 3, 4, 0])
+  })
+})

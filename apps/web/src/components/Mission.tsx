@@ -147,6 +147,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
   const vt = V3_TEXTS[lang]
   const [tabChoice, setTab] = useState<Tab>('sites')
   const [overlay, setOverlay] = useState(true)
+  const [layerChoice, setLayer] = useState<'typicality' | 'geology'>('typicality')
   const [showMethod, setShowMethod] = useState(false)
   const [zoneId, setZoneId] = useState<string | null>(null)
   const [provenance, setProvenance] = useState(false)
@@ -156,6 +157,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
   const [bbox, setBbox] = useState<[number, number, number, number] | null>(null)
   const [cellsError, setCellsError] = useState<string | null>(null)
   const hasV3 = Boolean(v3.release && v3.scenario && v3.env)
+  const layer = layerChoice === 'geology' && v3.available.includes('geology') ? 'geology' : 'typicality'
   // free criteria opens on the discovered zones until the v2 criteria are run
   const tab: Tab = tabChoice === 'sites' && sites.length === 0 && hasV3 ? 'zones' : tabChoice
   const zones = v3.zones?.zones ?? []
@@ -214,7 +216,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
           </span>
         </label>
         {mode !== 'calibration' && (
-          <V3Controls onMethod={() => setShowMethod(true)} onOverlay={setOverlay} overlay={overlay} v={v3} />
+          <V3Controls layer={layer} onLayer={setLayer} onMethod={() => setShowMethod(true)} onOverlay={setOverlay} overlay={overlay} v={v3} />
         )}
       </section>
       <Patterns />
@@ -348,7 +350,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
               <MapContainer center={[25, 10]} maxZoom={hasV3 ? MAP_MAX_ZOOM : 8} minZoom={1} scrollWheelZoom={false} worldCopyJump zoom={2}>
                 <TileLayer attribution="NASA Blue Marble · NASA GIBS" maxNativeZoom={8} url={GIBS_TILES} />
                 {hasV3 && v3.release && v3.scenario && (
-                  <V3Layers confidence env={v3.env} onCellsError={setCellsError} overlay={overlay} release={v3.release.release} scenario={v3.scenario.id} />
+                  <V3Layers confidence env={v3.env} layer={layer} onCellsError={setCellsError} overlay={overlay} release={v3.release.release} scenario={v3.scenario.id} />
                 )}
                 <Bounds onBounds={setBbox} />
                 {tab === 'sites' && <FlyTo site={selected} />}
@@ -384,7 +386,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                   )
                 })}
               </MapContainer>
-              {hasV3 && <MapLegend coverage={v3.coverage} overlay={overlay} />}
+              {hasV3 && <MapLegend available={v3.available} coverage={v3.coverage} layer={layer} overlay={overlay} />}
               {cellsError && <div className="map-note map-note-error" role="alert">{vt.cellsError}: {cellsError}</div>}
             </div>
           </section>

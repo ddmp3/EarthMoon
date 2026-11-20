@@ -132,6 +132,33 @@ def write_png(path: Path, img: np.ndarray) -> int:
     return path.stat().st_size
 
 
+# T46 geology: Okabe-Ito colours (colour-blind safe); unresolved or no map is hatched, never a "no match" colour
+GEO_COLOURS = {1: (0, 158, 115), 2: (86, 180, 233), 3: (120, 126, 140)}
+
+
+def geology_class(match, partial, no_match) -> np.ndarray:
+    """1 match, 2 partial, 3 no match (majority of the 9 samples), 4 unresolved or no map, 0 not assessed."""
+    m, p, n = (np.asarray(a, float) for a in (match, partial, no_match))
+    out = np.full(m.shape, 4, np.uint8)
+    out[n >= 0.5] = 3
+    out[m + p >= 0.5] = 2
+    out[m >= 0.5] = 1
+    out[~np.isfinite(m)] = 0
+    return out
+
+
+def render_geology(cells: np.ndarray, ids: np.ndarray, gclass: np.ndarray, z: int, x: int, y: int) -> np.ndarray:
+    """RGBA tile of the geology layer of one target."""
+    k, hit = _lookup(cells, ids)
+    g = np.where(hit, np.asarray(gclass)[k] if ids.size else 0, 0)
+    gx, gy = _global(z, x, y)
+    img = np.zeros((SIZE, SIZE, 4), np.uint8)
+    for code, rgb in GEO_COLOURS.items():
+        img[g == code] = (*rgb, 255 if code != 3 else 170)
+    img[(g == 4) & ((gx + gy) % 3 == 0)] = (*PASTEL, 230)
+    return img
+
+
 _LAYERS: dict = {}
 
 
@@ -153,7 +180,12 @@ def _render_job(args) -> tuple[int, int]:
     cells = pixel_cells(z, x, y)
     files = size = 0
     for name, (ids, value, codes, land) in _LAYERS.items():
-        img = render_coverage(cells, ids, codes, z, x, y, land) if value is None else render_value(cells, ids, value, codes, z, x, y, land)
+        if name.endswith("/geology"):
+            img = render_geology(cells, ids, codes, z, x, y)
+        elif value is None:
+            img = render_coverage(cells, ids, codes, z, x, y, land)
+        else:
+            img = render_value(cells, ids, value, codes, z, x, y, land)
         if img[..., 3].any():
             size += write_png(Path(out) / name / str(z) / str(x) / f"{y}.png", img)
             files += 1
@@ -188,6 +220,15 @@ def render_release(run: Path, release: Path, land_path: Path | None, workers: in
             if kind == "typicality":
                 np.save(work / f"{key}.value.npy", np.asarray(cells[f"{t}:median"], float)[order].astype("float32"))
             names.append(f"{t}/{kind}")
+    from discovery.geology import TARGET_GROUP
+    from discovery.release import _geology
+    geo = _geology(run, cells)                                    # T46: one geology layer per target when assessed
+    for t in targets if geo else []:
+        g = TARGET_GROUP.get(t)
+        if g and f"geo:{g}:match" in geo:
+            np.save(work / f"{t}__geology.codes.npy",
+                    geology_class(geo[f"geo:{g}:match"], geo[f"geo:{g}:partial"], geo[f"geo:{g}:no_match"])[order])
+            names.append(f"{t}/geology")
     del cells
     jobs = sorted({tile for zoom in range(MAX_ZOOM + 1) for tile in tiles_with_cells(land if land is not None else ids[order], zoom)})
     files = size = 0

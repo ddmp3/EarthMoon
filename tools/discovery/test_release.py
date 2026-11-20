@@ -148,3 +148,24 @@ def test_zone_records_with_a_prepared_index_equal_the_plain_ones():
     z = {"target": "moon-psr", "scenario": "B", "cells": 3, "area_km2": 75.1, "lat": 1.0, "lon": 2.0, "median": 0.8,
          "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 0.3, "cell_ids": ["6", "2", "4"]}
     assert zone_record(z, 2, 0.7, 9, cells, idx) == zone_record(z, 2, 0.7, 9, cells)
+
+
+def test_a_zone_carries_the_geology_shares_of_its_cells_for_its_target_group():
+    import numpy as np
+    from discovery.release import cell_index
+    cells = _cells()
+    for g in ("highland", "mare", "pits"):
+        for st, v in (("match", [1.0, 0, 0, 0.5, 0, 0]), ("partial", [0, 1.0, 0, 0.5, 0, 0]), ("no_match", [0, 0, 1.0, 0, 0, 0]),
+                      ("unresolved", [0, 0, 0, 0, 1.0, 0]), ("no_map", [0, 0, 0, 0, 0, 1.0])):
+            cells[f"geo:{g}:{st}"] = np.array(v, np.float32)
+    z = {"target": "moon-psr", "scenario": "A", "cells": 2, "area_km2": 50.1, "lat": 1.0, "lon": 2.0, "median": 0.8,
+         "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 1.0, "cell_ids": ["1", "4"]}
+    geo = zone_record(z, 1, 0.5, 3, cells, cell_index(cells))["geology"]
+    assert geo["group"] == "highland" and geo["source"].startswith("Macrostrat")
+    assert geo["match"] == 0.75 and geo["partial"] == 0.25 and geo["no_match"] == 0 and geo["no_map"] == 0
+
+
+def test_without_a_geology_assessment_a_zone_says_geology_was_not_evaluated():
+    z = {"target": "moon-psr", "scenario": "A", "cells": 1, "area_km2": 25.0, "lat": 1.0, "lon": 2.0, "median": 0.8,
+         "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 1.0, "cell_ids": ["1"]}
+    assert zone_record(z, 1, 0.5, 3, _cells())["geology"] is None
