@@ -2,7 +2,7 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
-## 2026-11-20 · T44 API v3: layers, zones, custom queries (PR #PRNUM)
+## 2026-11-20 · T44 API v3: layers, zones, custom queries (PR #25)
 - **Static releases** (`tools/discovery/release.py`, ADR-004, ADR-009). A validated run is exported once into JSON files: release, profiles, scenarios, method, coverage, status, and the zones of every τ and size of the grid. The id is a hash of the content; the index keeps the current release and the last 3.
 - **Tiles** (`tools/discovery/tiles.py`): PNG, zoom 0 to 7, typicality (cividis) and the coverage overlay per scenario and target. Measured on run-002: 127,062 tiles, 612 MB. Typicality 95.7 MB per layer, coverage 26.6 MB per layer; ADR-002 estimated 50 MB.
 - **API `/api/v3`** (contract first in `openapi.yaml`):
