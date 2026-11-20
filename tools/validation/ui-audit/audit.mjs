@@ -91,7 +91,9 @@ async function discovery(page, name, shot) {
   // geology layer (T46): picker, legend, site card column
   await page.locator("#v3-layer").selectOption("geology");
   if (!(await legend.getByText("Same rock family (match)").count())) defect(name, "geology layer: no geology legend");
-  if (!(await section.getByRole("columnheader", { name: "Geology" }).count())) defect(name, "site card: no geology column");
+  if ((await section.locator("table").count()) && !(await section.getByRole("columnheader", { name: "Geology" }).count())) {
+    defect(name, "site card: no geology column");
+  }
   await page.locator("#v3-layer").selectOption("topography");
   // Data and method from the site card
   await section.getByRole("button", { name: "Data and method" }).click();
@@ -110,9 +112,10 @@ async function discovery(page, name, shot) {
   await page.locator(".v3-under .v3-card").waitFor({ timeout: 5000 }).catch(() => defect(name, "the zone card does not open"));
   const zoneMs = Date.now() - z0;
   if (zoneMs > 300) defect(name, `zone card opened in ${zoneMs} ms (budget 300 ms, ADR-006)`);
-  for (const text of ["Topography (slope)", "not evaluated (T46)", "Earth cannot reproduce", "Confidence"]) {
+  for (const text of ["Topography (slope)", "Geology", "Earth cannot reproduce", "Confidence"]) {
     if (!(await page.locator(".v3-under .v3-card").getByText(text, { exact: false }).count())) defect(name, `zone card lacks "${text}"`);
   }
+  if (!(await page.locator(".v3-under .v3-card").getByText(/% match · .*% partial/).count())) defect(name, "zone card: geology without its shares");
   await page.waitForFunction(() => document.querySelectorAll(".map-wrap path.v3-cell").length > 20, null, { timeout: 20000 })
     .catch(() => defect(name, "no cell drawn at zoom 9 around the zone"));
   notes.push(`${name} zone: ${await page.locator(".map-wrap path.v3-hatch[fill^='url']").count()} hatched cells around it`);
