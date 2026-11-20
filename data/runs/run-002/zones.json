@@ -1,0 +1,5983 @@
+{
+ "rule": {
+  "tau": 0.5,
+  "min_cells": 3,
+  "grid": {
+   "tau": [
+    0.5,
+    0.7,
+    0.9
+   ],
+   "min_cells": [
+    1,
+    3,
+    9
+   ]
+  }
+ },
+ "scenarios": {
+  "A": {
+   "targets": {
+    "moon-polar-lit-highlands": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 29299,
+       "area_km2": 4582631.7
+      },
+      "tau=0.5,min=3": {
+       "zones": 9961,
+       "area_km2": 3975132.4
+      },
+      "tau=0.5,min=9": {
+       "zones": 3379,
+       "area_km2": 3233896.1
+      },
+      "tau=0.7,min=1": {
+       "zones": 20461,
+       "area_km2": 1383158.7
+      },
+      "tau=0.7,min=3": {
+       "zones": 4509,
+       "area_km2": 893974.8
+      },
+      "tau=0.7,min=9": {
+       "zones": 865,
+       "area_km2": 502152.0
+      },
+      "tau=0.9,min=1": {
+       "zones": 442,
+       "area_km2": 14545.3
+      },
+      "tau=0.9,min=3": {
+       "zones": 24,
+       "area_km2": 3179.4
+      },
+      "tau=0.9,min=9": {
+       "zones": 3,
+       "area_km2": 1026.4
+      }
+     },
+     "zones": 9961,
+     "top": [
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -21.13309,
+       "lon": -44.48196,
+       "median": 0.8885,
+       "cell_median_p25": 0.8303,
+       "cell_median_p75": 0.9046,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-45"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.347
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -0.59119,
+       "lon": -80.1746,
+       "median": 0.8864,
+       "cell_median_p25": 0.8399,
+       "cell_median_p75": 0.9176,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-1,-81"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.251
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": -26.34637,
+       "lon": 31.3653,
+       "median": 0.8797,
+       "cell_median_p25": 0.772,
+       "cell_median_p75": 0.8838,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-27,31"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.16
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 58.90465,
+       "lon": 114.98539,
+       "median": 0.871,
+       "cell_median_p25": 0.8567,
+       "cell_median_p75": 0.8816,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "58,114",
+        "58,115"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.336
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 12,
+       "area_km2": 300.4,
+       "lat": 6.8491,
+       "lon": 12.91347,
+       "median": 0.8659,
+       "cell_median_p25": 0.8129,
+       "cell_median_p75": 0.8891,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "6,12"
+       ],
+       "req:base_slope": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.373
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 61.8386,
+       "lon": -65.05152,
+       "median": 0.86,
+       "cell_median_p25": 0.8287,
+       "cell_median_p75": 0.8803,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "61,-65",
+        "61,-66"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.489
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 47.864,
+       "lon": 119.586,
+       "median": 0.8585,
+       "cell_median_p25": 0.7296,
+       "cell_median_p75": 0.8843,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "47,119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.425
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 14,
+       "area_km2": 350.5,
+       "lat": -20.94167,
+       "lon": 48.21674,
+       "median": 0.8522,
+       "cell_median_p25": 0.7622,
+       "cell_median_p75": 0.8927,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,48",
+        "-22,48"
+       ],
+       "req:base_slope": {
+        "met": 11,
+        "failed": 3,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 14,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 14,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.328
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 37.40311,
+       "lon": 40.32387,
+       "median": 0.8522,
+       "cell_median_p25": 0.8409,
+       "cell_median_p75": 0.8879,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,40"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.412
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": 66.20511,
+       "lon": -138.45365,
+       "median": 0.8512,
+       "cell_median_p25": 0.7611,
+       "cell_median_p75": 0.8771,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "66,-139"
+       ],
+       "req:base_slope": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.493
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 46.14039,
+       "lon": -118.60319,
+       "median": 0.851,
+       "cell_median_p25": 0.8449,
+       "cell_median_p75": 0.8835,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "46,-119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.233
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.13788,
+       "lon": 67.68996,
+       "median": 0.8501,
+       "cell_median_p25": 0.6782,
+       "cell_median_p75": 0.8772,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,67"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.299
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -12.55162,
+       "lon": -40.88162,
+       "median": 0.8486,
+       "cell_median_p25": 0.8106,
+       "cell_median_p75": 0.8639,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-13,-41"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.348
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 15,
+       "area_km2": 375.5,
+       "lat": -6.10316,
+       "lon": 24.43055,
+       "median": 0.8472,
+       "cell_median_p25": 0.8178,
+       "cell_median_p75": 0.8623,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-7,24"
+       ],
+       "req:base_slope": {
+        "met": 13,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 15,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 15,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.307
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": -4.40995,
+       "lon": 18.88609,
+       "median": 0.8431,
+       "cell_median_p25": 0.8304,
+       "cell_median_p75": 0.8741,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-5,18"
+       ],
+       "req:base_slope": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.289
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 14.88284,
+       "lon": -24.41673,
+       "median": 0.8431,
+       "cell_median_p25": 0.7953,
+       "cell_median_p75": 0.8949,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "14,-25"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.314
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -18.75764,
+       "lon": -44.01573,
+       "median": 0.8421,
+       "cell_median_p25": 0.8094,
+       "cell_median_p75": 0.8766,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-19,-44",
+        "-19,-45"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.253
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -34.02562,
+       "lon": -71.50038,
+       "median": 0.8396,
+       "cell_median_p25": 0.6948,
+       "cell_median_p75": 0.8455,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-34,-72",
+        "-35,-72"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.274
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -20.08909,
+       "lon": -45.84037,
+       "median": 0.8364,
+       "cell_median_p25": 0.7734,
+       "cell_median_p75": 0.8388,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,-46"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.518
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 26.06102,
+       "lon": 63.75288,
+       "median": 0.836,
+       "cell_median_p25": 0.7388,
+       "cell_median_p75": 0.8576,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "26,63"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.259
+      }
+     ]
+    },
+    "moon-psr": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 27904,
+       "area_km2": 7696960.7
+      },
+      "tau=0.5,min=3": {
+       "zones": 9912,
+       "area_km2": 7134574.4
+      },
+      "tau=0.5,min=9": {
+       "zones": 3697,
+       "area_km2": 6431691.8
+      },
+      "tau=0.7,min=1": {
+       "zones": 27441,
+       "area_km2": 3295056.6
+      },
+      "tau=0.7,min=3": {
+       "zones": 8864,
+       "area_km2": 2710739.7
+      },
+      "tau=0.7,min=9": {
+       "zones": 2654,
+       "area_km2": 2009209.0
+      },
+      "tau=0.9,min=1": {
+       "zones": 3299,
+       "area_km2": 124674.3
+      },
+      "tau=0.9,min=3": {
+       "zones": 251,
+       "area_km2": 38003.1
+      },
+      "tau=0.9,min=9": {
+       "zones": 28,
+       "area_km2": 15696.9
+      }
+     },
+     "zones": 9912,
+     "top": [
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 46.14039,
+       "lon": -118.60319,
+       "median": 0.9403,
+       "cell_median_p25": 0.8703,
+       "cell_median_p75": 0.9474,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "46,-119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.233
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -21.45821,
+       "lon": -43.98695,
+       "median": 0.9351,
+       "cell_median_p25": 0.9139,
+       "cell_median_p75": 0.9515,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-44"
+       ],
+       "req:base_slope": {
+        "met": 1,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -20.81391,
+       "lon": -44.48196,
+       "median": 0.9236,
+       "cell_median_p25": 0.9042,
+       "cell_median_p75": 0.9291,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,-45"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.042
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.13788,
+       "lon": 67.68996,
+       "median": 0.9182,
+       "cell_median_p25": 0.7475,
+       "cell_median_p75": 0.9327,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,67"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.299
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -32.3558,
+       "lon": 28.71067,
+       "median": 0.9159,
+       "cell_median_p25": 0.8905,
+       "cell_median_p75": 0.9229,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-33,28"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.258
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -0.59119,
+       "lon": -80.1746,
+       "median": 0.9145,
+       "cell_median_p25": 0.8769,
+       "cell_median_p75": 0.9309,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-1,-81"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.251
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 64.03586,
+       "lon": 166.12971,
+       "median": 0.9133,
+       "cell_median_p25": 0.8906,
+       "cell_median_p75": 0.9163,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "63,166",
+        "64,166"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.07
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -21.75249,
+       "lon": -44.28627,
+       "median": 0.9133,
+       "cell_median_p25": 0.9122,
+       "cell_median_p75": 0.9215,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-45"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.051
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": -4.40995,
+       "lon": 18.88609,
+       "median": 0.9068,
+       "cell_median_p25": 0.8718,
+       "cell_median_p75": 0.9134,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-5,18"
+       ],
+       "req:base_slope": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.289
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -13.55973,
+       "lon": -40.27725,
+       "median": 0.9056,
+       "cell_median_p25": 0.8864,
+       "cell_median_p75": 0.9157,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-14,-41"
+       ],
+       "req:base_slope": {
+        "met": 1,
+        "failed": 3,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 37.50036,
+       "lon": -8.49003,
+       "median": 0.9047,
+       "cell_median_p25": 0.8628,
+       "cell_median_p75": 0.9147,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,-9"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 3,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.004
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.53115,
+       "lon": 37.48272,
+       "median": 0.9,
+       "cell_median_p25": 0.8912,
+       "cell_median_p75": 0.9051,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,37"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.194
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": -21.63552,
+       "lon": -44.11503,
+       "median": 0.8958,
+       "cell_median_p25": 0.8839,
+       "cell_median_p75": 0.9225,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-45"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 5,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 9,
+       "area_km2": 225.3,
+       "lat": -16.10305,
+       "lon": -41.88411,
+       "median": 0.8945,
+       "cell_median_p25": 0.8754,
+       "cell_median_p75": 0.9065,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-17,-42"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 6,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 9,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 9,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 57.41746,
+       "lon": -6.65115,
+       "median": 0.8919,
+       "cell_median_p25": 0.7549,
+       "cell_median_p75": 0.9008,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "57,-7"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.369
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 18.89702,
+       "lon": 75.8749,
+       "median": 0.8916,
+       "cell_median_p25": 0.8449,
+       "cell_median_p75": 0.9017,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "18,75"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.03
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 10,
+       "area_km2": 250.3,
+       "lat": 47.64976,
+       "lon": 119.59407,
+       "median": 0.8909,
+       "cell_median_p25": 0.8067,
+       "cell_median_p75": 0.9049,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "47,119"
+       ],
+       "req:base_slope": {
+        "met": 9,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 10,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 10,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.307
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 23,
+       "area_km2": 575.8,
+       "lat": -20.50542,
+       "lon": -44.28527,
+       "median": 0.8903,
+       "cell_median_p25": 0.8371,
+       "cell_median_p75": 0.9013,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,-45"
+       ],
+       "req:base_slope": {
+        "met": 8,
+        "failed": 15,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 23,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 23,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -12.55162,
+       "lon": -40.88162,
+       "median": 0.8901,
+       "cell_median_p25": 0.8469,
+       "cell_median_p75": 0.9059,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-13,-41"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.348
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "A",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -4.52407,
+       "lon": 18.27514,
+       "median": 0.887,
+       "cell_median_p25": 0.8768,
+       "cell_median_p75": 0.9015,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-5,18"
+       ],
+       "req:base_slope": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.281
+      }
+     ]
+    },
+    "moon-pits": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 36846,
+       "area_km2": 6925281.8
+      },
+      "tau=0.5,min=3": {
+       "zones": 12290,
+       "area_km2": 6162039.8
+      },
+      "tau=0.5,min=9": {
+       "zones": 4125,
+       "area_km2": 5245483.4
+      },
+      "tau=0.7,min=1": {
+       "zones": 27992,
+       "area_km2": 2722130.7
+      },
+      "tau=0.7,min=3": {
+       "zones": 7199,
+       "area_km2": 2081409.9
+      },
+      "tau=0.7,min=9": {
+       "zones": 1756,
+       "area_km2": 1487454.5
+      },
+      "tau=0.9,min=1": {
+       "zones": 909,
+       "area_km2": 34748.6
+      },
+      "tau=0.9,min=3": {
+       "zones": 62,
+       "area_km2": 10765.0
+      },
+      "tau=0.9,min=9": {
+       "zones": 9,
+       "area_km2": 5532.7
+      }
+     },
+     "zones": 12290,
+     "top": [
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 41.10625,
+       "lon": -99.32461,
+       "median": 0.9188,
+       "cell_median_p25": 0.9105,
+       "cell_median_p75": 0.9244,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "41,-100"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 5.18603,
+       "lon": 14.41289,
+       "median": 0.9041,
+       "cell_median_p25": 0.8727,
+       "cell_median_p75": 0.9059,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "5,14"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 13,
+       "area_km2": 325.5,
+       "lat": 0.24354,
+       "lon": -51.40504,
+       "median": 0.893,
+       "cell_median_p25": 0.8708,
+       "cell_median_p75": 0.9151,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "0,-52"
+       ],
+       "req:base_slope": {
+        "met": 13,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 13,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 13,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -31.08068,
+       "lon": -54.30161,
+       "median": 0.8782,
+       "cell_median_p25": 0.845,
+       "cell_median_p75": 0.8967,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-32,-55"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 11,
+       "area_km2": 275.4,
+       "lat": -8.58131,
+       "lon": 35.01291,
+       "median": 0.8745,
+       "cell_median_p25": 0.738,
+       "cell_median_p75": 0.8911,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-9,34",
+        "-9,35"
+       ],
+       "req:base_slope": {
+        "met": 11,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 11,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 11,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 41.37914,
+       "lon": -98.54183,
+       "median": 0.8708,
+       "cell_median_p25": 0.8561,
+       "cell_median_p75": 0.8708,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "41,-99"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": -5.41959,
+       "lon": -50.02839,
+       "median": 0.8672,
+       "cell_median_p25": 0.8561,
+       "cell_median_p75": 0.8708,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-6,-50",
+        "-6,-51"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 20.40676,
+       "lon": 94.93861,
+       "median": 0.8672,
+       "cell_median_p25": 0.8349,
+       "cell_median_p75": 0.8865,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "20,94"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -5.49027,
+       "lon": 13.73369,
+       "median": 0.8672,
+       "cell_median_p25": 0.7786,
+       "cell_median_p75": 0.8764,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-6,13"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -3.70357,
+       "lon": -45.73388,
+       "median": 0.8653,
+       "cell_median_p25": 0.8616,
+       "cell_median_p75": 0.869,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-4,-46"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.953
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": -21.79879,
+       "lon": -51.16117,
+       "median": 0.8635,
+       "cell_median_p25": 0.8561,
+       "cell_median_p75": 0.8635,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-52"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 21.52122,
+       "lon": 94.52417,
+       "median": 0.8635,
+       "cell_median_p25": 0.7934,
+       "cell_median_p75": 0.8708,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "21,94"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -12.54411,
+       "lon": 36.27974,
+       "median": 0.8635,
+       "cell_median_p25": 0.8542,
+       "cell_median_p75": 0.8782,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-13,36"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.21145,
+       "lon": 39.39371,
+       "median": 0.8635,
+       "cell_median_p25": 0.845,
+       "cell_median_p75": 0.8635,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,39"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 40.27501,
+       "lon": -4.12702,
+       "median": 0.8616,
+       "cell_median_p25": 0.8339,
+       "cell_median_p75": 0.8764,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "40,-5"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": -19.13732,
+       "lon": -45.46623,
+       "median": 0.8598,
+       "cell_median_p25": 0.8395,
+       "cell_median_p75": 0.8875,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-20,-46"
+       ],
+       "req:base_slope": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 41.28546,
+       "lon": -99.25554,
+       "median": 0.8598,
+       "cell_median_p25": 0.8561,
+       "cell_median_p75": 0.8708,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "41,-100"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.988
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 47.80949,
+       "lon": -103.0642,
+       "median": 0.8598,
+       "cell_median_p25": 0.8118,
+       "cell_median_p75": 0.8819,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "47,-104"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 13,
+       "area_km2": 325.5,
+       "lat": 12.13209,
+       "lon": 26.06115,
+       "median": 0.8561,
+       "cell_median_p25": 0.7306,
+       "cell_median_p75": 0.8782,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "11,25",
+        "12,25",
+        "12,26"
+       ],
+       "req:base_slope": {
+        "met": 13,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 13,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 13,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-pits",
+       "scenario": "A",
+       "cells": 9,
+       "area_km2": 225.3,
+       "lat": 59.6845,
+       "lon": -73.86566,
+       "median": 0.8561,
+       "cell_median_p25": 0.8192,
+       "cell_median_p75": 0.8635,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "59,-74",
+        "59,-75"
+       ],
+       "req:base_slope": {
+        "met": 9,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 9,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 9,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      }
+     ]
+    }
+   },
+   "dossier_zones": [
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 46.14039,
+     "lon": -118.60319,
+     "median": 0.9403,
+     "cell_median_p25": 0.8703,
+     "cell_median_p75": 0.9474,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "46,-119"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.233,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": -21.45821,
+     "lon": -43.98695,
+     "median": 0.9351,
+     "cell_median_p25": 0.9139,
+     "cell_median_p75": 0.9515,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-22,-44"
+     ],
+     "req:base_slope": {
+      "met": 1,
+      "failed": 2,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": -20.81391,
+     "lon": -44.48196,
+     "median": 0.9236,
+     "cell_median_p25": 0.9042,
+     "cell_median_p75": 0.9291,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-21,-45"
+     ],
+     "req:base_slope": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.042,
+     "also_for": []
+    },
+    {
+     "target": "moon-pits",
+     "scenario": "A",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": 41.10625,
+     "lon": -99.32461,
+     "median": 0.9188,
+     "cell_median_p25": 0.9105,
+     "cell_median_p75": 0.9244,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "41,-100"
+     ],
+     "req:base_slope": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 1.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 37.13788,
+     "lon": 67.68996,
+     "median": 0.9182,
+     "cell_median_p25": 0.7475,
+     "cell_median_p75": 0.9327,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "37,67"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.299,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": -32.3558,
+     "lon": 28.71067,
+     "median": 0.9159,
+     "cell_median_p25": 0.8905,
+     "cell_median_p75": 0.9229,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-33,28"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.258,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 6,
+     "area_km2": 150.2,
+     "lat": -0.59119,
+     "lon": -80.1746,
+     "median": 0.9145,
+     "cell_median_p25": 0.8769,
+     "cell_median_p75": 0.9309,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-1,-81"
+     ],
+     "req:base_slope": {
+      "met": 5,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.251,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 5,
+     "area_km2": 125.2,
+     "lat": 64.03586,
+     "lon": 166.12971,
+     "median": 0.9133,
+     "cell_median_p25": 0.8906,
+     "cell_median_p75": 0.9163,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "63,166",
+      "64,166"
+     ],
+     "req:base_slope": {
+      "met": 5,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 5,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 5,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.07,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": -21.75249,
+     "lon": -44.28627,
+     "median": 0.9133,
+     "cell_median_p25": 0.9122,
+     "cell_median_p75": 0.9215,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-22,-45"
+     ],
+     "req:base_slope": {
+      "met": 2,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.051,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 7,
+     "area_km2": 175.2,
+     "lat": -4.40995,
+     "lon": 18.88609,
+     "median": 0.9068,
+     "cell_median_p25": 0.8718,
+     "cell_median_p75": 0.9134,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-5,18"
+     ],
+     "req:base_slope": {
+      "met": 7,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 7,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 7,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.289,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": -13.55973,
+     "lon": -40.27725,
+     "median": 0.9056,
+     "cell_median_p25": 0.8864,
+     "cell_median_p75": 0.9157,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-14,-41"
+     ],
+     "req:base_slope": {
+      "met": 1,
+      "failed": 3,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 6,
+     "area_km2": 150.2,
+     "lat": 37.50036,
+     "lon": -8.49003,
+     "median": 0.9047,
+     "cell_median_p25": 0.8628,
+     "cell_median_p75": 0.9147,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "37,-9"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 3,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.004,
+     "also_for": []
+    },
+    {
+     "target": "moon-pits",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 5.18603,
+     "lon": 14.41289,
+     "median": 0.9041,
+     "cell_median_p25": 0.8727,
+     "cell_median_p75": 0.9059,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "5,14"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 1.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 37.53115,
+     "lon": 37.48272,
+     "median": 0.9,
+     "cell_median_p25": 0.8912,
+     "cell_median_p75": 0.9051,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "37,37"
+     ],
+     "req:base_slope": {
+      "met": 2,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.194,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 8,
+     "area_km2": 200.3,
+     "lat": -21.63552,
+     "lon": -44.11503,
+     "median": 0.8958,
+     "cell_median_p25": 0.8839,
+     "cell_median_p75": 0.9225,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-22,-45"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 5,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 8,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 8,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 9,
+     "area_km2": 225.3,
+     "lat": -16.10305,
+     "lon": -41.88411,
+     "median": 0.8945,
+     "cell_median_p25": 0.8754,
+     "cell_median_p75": 0.9065,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-17,-42"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 6,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 9,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 9,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-pits",
+     "scenario": "A",
+     "cells": 13,
+     "area_km2": 325.5,
+     "lat": 0.24354,
+     "lon": -51.40504,
+     "median": 0.893,
+     "cell_median_p25": 0.8708,
+     "cell_median_p75": 0.9151,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "0,-52"
+     ],
+     "req:base_slope": {
+      "met": 13,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 13,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 13,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 1.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 57.41746,
+     "lon": -6.65115,
+     "median": 0.8919,
+     "cell_median_p25": 0.7549,
+     "cell_median_p75": 0.9008,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "57,-7"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.369,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 18.89702,
+     "lon": 75.8749,
+     "median": 0.8916,
+     "cell_median_p25": 0.8449,
+     "cell_median_p75": 0.9017,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "18,75"
+     ],
+     "req:base_slope": {
+      "met": 2,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.03,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "A",
+     "cells": 10,
+     "area_km2": 250.3,
+     "lat": 47.64976,
+     "lon": 119.59407,
+     "median": 0.8909,
+     "cell_median_p25": 0.8067,
+     "cell_median_p75": 0.9049,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "47,119"
+     ],
+     "req:base_slope": {
+      "met": 9,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 10,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 10,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.307,
+     "also_for": []
+    }
+   ]
+  },
+  "B": {
+   "targets": {
+    "moon-polar-lit-highlands": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 29299,
+       "area_km2": 4582631.7
+      },
+      "tau=0.5,min=3": {
+       "zones": 9961,
+       "area_km2": 3975132.4
+      },
+      "tau=0.5,min=9": {
+       "zones": 3379,
+       "area_km2": 3233896.1
+      },
+      "tau=0.7,min=1": {
+       "zones": 20461,
+       "area_km2": 1383158.7
+      },
+      "tau=0.7,min=3": {
+       "zones": 4509,
+       "area_km2": 893974.8
+      },
+      "tau=0.7,min=9": {
+       "zones": 865,
+       "area_km2": 502152.0
+      },
+      "tau=0.9,min=1": {
+       "zones": 442,
+       "area_km2": 14545.3
+      },
+      "tau=0.9,min=3": {
+       "zones": 24,
+       "area_km2": 3179.4
+      },
+      "tau=0.9,min=9": {
+       "zones": 3,
+       "area_km2": 1026.4
+      }
+     },
+     "zones": 9961,
+     "top": [
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -21.13309,
+       "lon": -44.48196,
+       "median": 0.8885,
+       "cell_median_p25": 0.8303,
+       "cell_median_p75": 0.9046,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-45"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.995
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -0.59119,
+       "lon": -80.1746,
+       "median": 0.8864,
+       "cell_median_p25": 0.8399,
+       "cell_median_p75": 0.9176,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-1,-81"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": -26.34637,
+       "lon": 31.3653,
+       "median": 0.8797,
+       "cell_median_p25": 0.772,
+       "cell_median_p75": 0.8838,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-27,31"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.998
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 58.90465,
+       "lon": 114.98539,
+       "median": 0.871,
+       "cell_median_p25": 0.8567,
+       "cell_median_p75": 0.8816,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "58,114",
+        "58,115"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 12,
+       "area_km2": 300.4,
+       "lat": 6.8491,
+       "lon": 12.91347,
+       "median": 0.8659,
+       "cell_median_p25": 0.8129,
+       "cell_median_p75": 0.8891,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "6,12"
+       ],
+       "req:base_slope": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 61.8386,
+       "lon": -65.05152,
+       "median": 0.86,
+       "cell_median_p25": 0.8287,
+       "cell_median_p75": 0.8803,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "61,-65",
+        "61,-66"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.987
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 47.864,
+       "lon": 119.586,
+       "median": 0.8585,
+       "cell_median_p25": 0.7296,
+       "cell_median_p75": 0.8843,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "47,119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 14,
+       "area_km2": 350.5,
+       "lat": -20.94167,
+       "lon": 48.21674,
+       "median": 0.8522,
+       "cell_median_p25": 0.7622,
+       "cell_median_p75": 0.8927,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,48",
+        "-22,48"
+       ],
+       "req:base_slope": {
+        "met": 11,
+        "failed": 3,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 14,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 14,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 37.40311,
+       "lon": 40.32387,
+       "median": 0.8522,
+       "cell_median_p25": 0.8409,
+       "cell_median_p75": 0.8879,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,40"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": 66.20511,
+       "lon": -138.45365,
+       "median": 0.8512,
+       "cell_median_p25": 0.7611,
+       "cell_median_p75": 0.8771,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "66,-139"
+       ],
+       "req:base_slope": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 46.14039,
+       "lon": -118.60319,
+       "median": 0.851,
+       "cell_median_p25": 0.8449,
+       "cell_median_p75": 0.8835,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "46,-119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.13788,
+       "lon": 67.68996,
+       "median": 0.8501,
+       "cell_median_p25": 0.6782,
+       "cell_median_p75": 0.8772,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,67"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.982
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -12.55162,
+       "lon": -40.88162,
+       "median": 0.8486,
+       "cell_median_p25": 0.8106,
+       "cell_median_p75": 0.8639,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-13,-41"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.992
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 15,
+       "area_km2": 375.5,
+       "lat": -6.10316,
+       "lon": 24.43055,
+       "median": 0.8472,
+       "cell_median_p25": 0.8178,
+       "cell_median_p75": 0.8623,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-7,24"
+       ],
+       "req:base_slope": {
+        "met": 13,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 15,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 15,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.997
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": -4.40995,
+       "lon": 18.88609,
+       "median": 0.8431,
+       "cell_median_p25": 0.8304,
+       "cell_median_p75": 0.8741,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-5,18"
+       ],
+       "req:base_slope": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.971
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 14.88284,
+       "lon": -24.41673,
+       "median": 0.8431,
+       "cell_median_p25": 0.7953,
+       "cell_median_p75": 0.8949,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "14,-25"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.996
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -18.75764,
+       "lon": -44.01573,
+       "median": 0.8421,
+       "cell_median_p25": 0.8094,
+       "cell_median_p75": 0.8766,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-19,-44",
+        "-19,-45"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.997
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -34.02562,
+       "lon": -71.50038,
+       "median": 0.8396,
+       "cell_median_p25": 0.6948,
+       "cell_median_p75": 0.8455,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-34,-72",
+        "-35,-72"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.981
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -20.08909,
+       "lon": -45.84037,
+       "median": 0.8364,
+       "cell_median_p25": 0.7734,
+       "cell_median_p75": 0.8388,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,-46"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.99
+      },
+      {
+       "target": "moon-polar-lit-highlands",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 26.06102,
+       "lon": 63.75288,
+       "median": 0.836,
+       "cell_median_p25": 0.7388,
+       "cell_median_p75": 0.8576,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "26,63"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.99
+      }
+     ]
+    },
+    "moon-psr": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 27904,
+       "area_km2": 7696960.7
+      },
+      "tau=0.5,min=3": {
+       "zones": 9912,
+       "area_km2": 7134574.4
+      },
+      "tau=0.5,min=9": {
+       "zones": 3697,
+       "area_km2": 6431691.8
+      },
+      "tau=0.7,min=1": {
+       "zones": 27441,
+       "area_km2": 3295056.6
+      },
+      "tau=0.7,min=3": {
+       "zones": 8864,
+       "area_km2": 2710739.7
+      },
+      "tau=0.7,min=9": {
+       "zones": 2654,
+       "area_km2": 2009209.0
+      },
+      "tau=0.9,min=1": {
+       "zones": 3299,
+       "area_km2": 124674.3
+      },
+      "tau=0.9,min=3": {
+       "zones": 251,
+       "area_km2": 38003.1
+      },
+      "tau=0.9,min=9": {
+       "zones": 28,
+       "area_km2": 15696.9
+      }
+     },
+     "zones": 9912,
+     "top": [
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 46.14039,
+       "lon": -118.60319,
+       "median": 0.9403,
+       "cell_median_p25": 0.8703,
+       "cell_median_p75": 0.9474,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "46,-119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -21.45821,
+       "lon": -43.98695,
+       "median": 0.9351,
+       "cell_median_p25": 0.9139,
+       "cell_median_p75": 0.9515,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-44"
+       ],
+       "req:base_slope": {
+        "met": 1,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.976
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -20.81391,
+       "lon": -44.48196,
+       "median": 0.9236,
+       "cell_median_p25": 0.9042,
+       "cell_median_p75": 0.9291,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,-45"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.985
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.13788,
+       "lon": 67.68996,
+       "median": 0.9182,
+       "cell_median_p25": 0.7475,
+       "cell_median_p75": 0.9327,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,67"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.982
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -32.3558,
+       "lon": 28.71067,
+       "median": 0.9159,
+       "cell_median_p25": 0.8905,
+       "cell_median_p75": 0.9229,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-33,28"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.989
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -0.59119,
+       "lon": -80.1746,
+       "median": 0.9145,
+       "cell_median_p25": 0.8769,
+       "cell_median_p75": 0.9309,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-1,-81"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 64.03586,
+       "lon": 166.12971,
+       "median": 0.9133,
+       "cell_median_p25": 0.8906,
+       "cell_median_p75": 0.9163,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "63,166",
+        "64,166"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -21.75249,
+       "lon": -44.28627,
+       "median": 0.9133,
+       "cell_median_p25": 0.9122,
+       "cell_median_p75": 0.9215,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-45"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.981
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": -4.40995,
+       "lon": 18.88609,
+       "median": 0.9068,
+       "cell_median_p25": 0.8718,
+       "cell_median_p75": 0.9134,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-5,18"
+       ],
+       "req:base_slope": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.971
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -13.55973,
+       "lon": -40.27725,
+       "median": 0.9056,
+       "cell_median_p25": 0.8864,
+       "cell_median_p75": 0.9157,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-14,-41"
+       ],
+       "req:base_slope": {
+        "met": 1,
+        "failed": 3,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.974
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 37.50036,
+       "lon": -8.49003,
+       "median": 0.9047,
+       "cell_median_p25": 0.8628,
+       "cell_median_p75": 0.9147,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,-9"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 3,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.977
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.53115,
+       "lon": 37.48272,
+       "median": 0.9,
+       "cell_median_p25": 0.8912,
+       "cell_median_p75": 0.9051,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,37"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.99
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": -21.63552,
+       "lon": -44.11503,
+       "median": 0.8958,
+       "cell_median_p25": 0.8839,
+       "cell_median_p75": 0.9225,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-45"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 5,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.984
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 9,
+       "area_km2": 225.3,
+       "lat": -16.10305,
+       "lon": -41.88411,
+       "median": 0.8945,
+       "cell_median_p25": 0.8754,
+       "cell_median_p75": 0.9065,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-17,-42"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 6,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 9,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 9,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.984
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 57.41746,
+       "lon": -6.65115,
+       "median": 0.8919,
+       "cell_median_p25": 0.7549,
+       "cell_median_p75": 0.9008,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "57,-7"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.998
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 18.89702,
+       "lon": 75.8749,
+       "median": 0.8916,
+       "cell_median_p25": 0.8449,
+       "cell_median_p75": 0.9017,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "18,75"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.93
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 10,
+       "area_km2": 250.3,
+       "lat": 47.64976,
+       "lon": 119.59407,
+       "median": 0.8909,
+       "cell_median_p25": 0.8067,
+       "cell_median_p75": 0.9049,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "47,119"
+       ],
+       "req:base_slope": {
+        "met": 9,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 10,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 10,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 23,
+       "area_km2": 575.8,
+       "lat": -20.50542,
+       "lon": -44.28527,
+       "median": 0.8903,
+       "cell_median_p25": 0.8371,
+       "cell_median_p75": 0.9013,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,-45"
+       ],
+       "req:base_slope": {
+        "met": 8,
+        "failed": 15,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 23,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 23,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.961
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -12.55162,
+       "lon": -40.88162,
+       "median": 0.8901,
+       "cell_median_p25": 0.8469,
+       "cell_median_p75": 0.9059,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-13,-41"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.992
+      },
+      {
+       "target": "moon-psr",
+       "scenario": "B",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -4.52407,
+       "lon": 18.27514,
+       "median": 0.887,
+       "cell_median_p25": 0.8768,
+       "cell_median_p75": 0.9015,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-5,18"
+       ],
+       "req:base_slope": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.958
+      }
+     ]
+    },
+    "moon-mare-plains": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 24375,
+       "area_km2": 2222331.9
+      },
+      "tau=0.5,min=3": {
+       "zones": 5670,
+       "area_km2": 1654763.4
+      },
+      "tau=0.5,min=9": {
+       "zones": 1385,
+       "area_km2": 1187034.5
+      },
+      "tau=0.7,min=1": {
+       "zones": 6644,
+       "area_km2": 346033.8
+      },
+      "tau=0.7,min=3": {
+       "zones": 959,
+       "area_km2": 179676.2
+      },
+      "tau=0.7,min=9": {
+       "zones": 152,
+       "area_km2": 95258.2
+      },
+      "tau=0.9,min=1": {
+       "zones": 30,
+       "area_km2": 851.2
+      },
+      "tau=0.9,min=3": {
+       "zones": 1,
+       "area_km2": 75.1
+      },
+      "tau=0.9,min=9": {
+       "zones": 0,
+       "area_km2": 0.0
+      }
+     },
+     "zones": 5670,
+     "top": [
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 4.40155,
+       "lon": 15.23024,
+       "median": 0.849,
+       "cell_median_p25": 0.8311,
+       "cell_median_p75": 0.8687,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "4,15"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 7.57353,
+       "lon": -0.44206,
+       "median": 0.8391,
+       "cell_median_p25": 0.7405,
+       "cell_median_p75": 0.8422,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "7,-1"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 39.3306,
+       "lon": 75.08923,
+       "median": 0.8343,
+       "cell_median_p25": 0.7588,
+       "cell_median_p75": 0.8496,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "39,75"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.48187,
+       "lon": -99.25556,
+       "median": 0.8129,
+       "cell_median_p25": 0.6793,
+       "cell_median_p75": 0.8347,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,-100"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 66.52058,
+       "lon": 68.97598,
+       "median": 0.7968,
+       "cell_median_p25": 0.6752,
+       "cell_median_p75": 0.8156,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "66,68",
+        "66,69"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 38.58603,
+       "lon": 95.00769,
+       "median": 0.7914,
+       "cell_median_p25": 0.6619,
+       "cell_median_p75": 0.8003,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "38,94",
+        "38,95"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 33.82542,
+       "lon": 51.52725,
+       "median": 0.7906,
+       "cell_median_p25": 0.6951,
+       "cell_median_p75": 0.8102,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "33,51"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 4.66621,
+       "lon": 13.98695,
+       "median": 0.7902,
+       "cell_median_p25": 0.7853,
+       "cell_median_p75": 0.824,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "4,13",
+        "4,14"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -13.18058,
+       "lon": -47.00307,
+       "median": 0.7891,
+       "cell_median_p25": 0.7626,
+       "cell_median_p75": 0.8148,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-14,-47",
+        "-14,-48"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 8.13283,
+       "lon": -4.50691,
+       "median": 0.7882,
+       "cell_median_p25": 0.7811,
+       "cell_median_p75": 0.8144,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "8,-5"
+       ],
+       "req:base_slope": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -32.2171,
+       "lon": -68.82962,
+       "median": 0.7868,
+       "cell_median_p25": 0.6976,
+       "cell_median_p75": 0.8275,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-33,-69"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 6.65181,
+       "lon": 23.73292,
+       "median": 0.7861,
+       "cell_median_p25": 0.7549,
+       "cell_median_p75": 0.8172,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "6,23"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.07661,
+       "lon": 86.58097,
+       "median": 0.7829,
+       "cell_median_p25": 0.6662,
+       "cell_median_p75": 0.8256,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,86"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 9.27461,
+       "lon": -65.58327,
+       "median": 0.7821,
+       "cell_median_p25": 0.7217,
+       "cell_median_p75": 0.7839,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "9,-66"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 37.9327,
+       "lon": 88.39409,
+       "median": 0.7812,
+       "cell_median_p25": 0.7285,
+       "cell_median_p75": 0.8057,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,88"
+       ],
+       "req:base_slope": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 9.63123,
+       "lon": 1.53108,
+       "median": 0.781,
+       "cell_median_p25": 0.6653,
+       "cell_median_p75": 0.8175,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "9,1"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -17.10915,
+       "lon": 38.00077,
+       "median": 0.7791,
+       "cell_median_p25": 0.7424,
+       "cell_median_p75": 0.7983,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-18,37",
+        "-18,38"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 39.89822,
+       "lon": 97.28703,
+       "median": 0.7757,
+       "cell_median_p25": 0.73,
+       "cell_median_p75": 0.8535,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "39,97"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 7.97,
+       "lon": 8.66845,
+       "median": 0.7754,
+       "cell_median_p25": 0.6305,
+       "cell_median_p75": 0.8009,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "7,8",
+        "8,8"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-mare-plains",
+       "scenario": "B",
+       "cells": 10,
+       "area_km2": 250.3,
+       "lat": -26.63133,
+       "lon": -67.57597,
+       "median": 0.7751,
+       "cell_median_p25": 0.6749,
+       "cell_median_p75": 0.8229,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-27,-68"
+       ],
+       "req:base_slope": {
+        "met": 10,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 10,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 10,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      }
+     ]
+    },
+    "moon-south-polar-cap-v2": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 29192,
+       "area_km2": 4608217.5
+      },
+      "tau=0.5,min=3": {
+       "zones": 9953,
+       "area_km2": 4003497.1
+      },
+      "tau=0.5,min=9": {
+       "zones": 3369,
+       "area_km2": 3260783.7
+      },
+      "tau=0.7,min=1": {
+       "zones": 20587,
+       "area_km2": 1398455.1
+      },
+      "tau=0.7,min=3": {
+       "zones": 4580,
+       "area_km2": 907343.5
+      },
+      "tau=0.7,min=9": {
+       "zones": 875,
+       "area_km2": 508936.5
+      },
+      "tau=0.9,min=1": {
+       "zones": 439,
+       "area_km2": 14420.2
+      },
+      "tau=0.9,min=3": {
+       "zones": 26,
+       "area_km2": 3254.6
+      },
+      "tau=0.9,min=9": {
+       "zones": 3,
+       "area_km2": 1001.4
+      }
+     },
+     "zones": 9953,
+     "top": [
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -21.13309,
+       "lon": -44.48196,
+       "median": 0.8868,
+       "cell_median_p25": 0.8299,
+       "cell_median_p75": 0.903,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-22,-45"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.995
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -0.59119,
+       "lon": -80.1746,
+       "median": 0.8864,
+       "cell_median_p25": 0.8379,
+       "cell_median_p75": 0.917,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-1,-81"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 6,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": -26.34637,
+       "lon": 31.3653,
+       "median": 0.8816,
+       "cell_median_p25": 0.7724,
+       "cell_median_p75": 0.8838,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-27,31"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.998
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 58.90465,
+       "lon": 114.98539,
+       "median": 0.8701,
+       "cell_median_p25": 0.8568,
+       "cell_median_p75": 0.8799,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "58,114",
+        "58,115"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 12,
+       "area_km2": 300.4,
+       "lat": 6.8491,
+       "lon": 12.91347,
+       "median": 0.866,
+       "cell_median_p25": 0.8145,
+       "cell_median_p75": 0.8901,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "6,12"
+       ],
+       "req:base_slope": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 12,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 61.8386,
+       "lon": -65.05152,
+       "median": 0.8603,
+       "cell_median_p25": 0.8306,
+       "cell_median_p75": 0.8794,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "61,-65",
+        "61,-66"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.987
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 47.864,
+       "lon": 119.586,
+       "median": 0.8565,
+       "cell_median_p25": 0.727,
+       "cell_median_p75": 0.883,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "47,119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 14,
+       "area_km2": 350.5,
+       "lat": -20.94167,
+       "lon": 48.21674,
+       "median": 0.8533,
+       "cell_median_p25": 0.7632,
+       "cell_median_p75": 0.8938,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,48",
+        "-22,48"
+       ],
+       "req:base_slope": {
+        "met": 11,
+        "failed": 3,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 14,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 14,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": 66.20511,
+       "lon": -138.45365,
+       "median": 0.8533,
+       "cell_median_p25": 0.7612,
+       "cell_median_p75": 0.8783,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "66,-139"
+       ],
+       "req:base_slope": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 8,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -12.55162,
+       "lon": -40.88162,
+       "median": 0.8504,
+       "cell_median_p25": 0.8119,
+       "cell_median_p75": 0.8647,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-13,-41"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.992
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 37.40311,
+       "lon": 40.32387,
+       "median": 0.8498,
+       "cell_median_p25": 0.8431,
+       "cell_median_p75": 0.8877,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,40"
+       ],
+       "req:base_slope": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 5,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 46.14039,
+       "lon": -118.60319,
+       "median": 0.8486,
+       "cell_median_p25": 0.8448,
+       "cell_median_p75": 0.8822,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "46,-119"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 1.0
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 37.13788,
+       "lon": 67.68996,
+       "median": 0.8477,
+       "cell_median_p25": 0.6739,
+       "cell_median_p75": 0.8759,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "37,67"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.982
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 15,
+       "area_km2": 375.5,
+       "lat": -6.10316,
+       "lon": 24.43055,
+       "median": 0.8462,
+       "cell_median_p25": 0.8195,
+       "cell_median_p75": 0.861,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-7,24"
+       ],
+       "req:base_slope": {
+        "met": 13,
+        "failed": 2,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 15,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 15,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.997
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 14.88284,
+       "lon": -24.41673,
+       "median": 0.8435,
+       "cell_median_p25": 0.7949,
+       "cell_median_p75": 0.8956,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "14,-25"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.996
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": -4.40995,
+       "lon": 18.88609,
+       "median": 0.8429,
+       "cell_median_p25": 0.8291,
+       "cell_median_p75": 0.8747,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-5,18"
+       ],
+       "req:base_slope": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 7,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.971
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -18.75764,
+       "lon": -44.01573,
+       "median": 0.8424,
+       "cell_median_p25": 0.8099,
+       "cell_median_p75": 0.8768,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-19,-44",
+        "-19,-45"
+       ],
+       "req:base_slope": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 4,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.997
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -20.08909,
+       "lon": -45.84037,
+       "median": 0.8387,
+       "cell_median_p25": 0.7739,
+       "cell_median_p75": 0.8387,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-21,-46"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.99
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -26.81402,
+       "lon": 151.69224,
+       "median": 0.8375,
+       "cell_median_p25": 0.7263,
+       "cell_median_p75": 0.8669,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-27,151"
+       ],
+       "req:base_slope": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.995
+      },
+      {
+       "target": "moon-south-polar-cap-v2",
+       "scenario": "B",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -34.02562,
+       "lon": -71.50038,
+       "median": 0.8372,
+       "cell_median_p25": 0.6976,
+       "cell_median_p75": 0.8431,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-34,-72",
+        "-35,-72"
+       ],
+       "req:base_slope": {
+        "met": 2,
+        "failed": 1,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 3,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": 0.981
+      }
+     ]
+    }
+   },
+   "dossier_zones": [
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 46.14039,
+     "lon": -118.60319,
+     "median": 0.9403,
+     "cell_median_p25": 0.8703,
+     "cell_median_p75": 0.9474,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "46,-119"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 1.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": -21.45821,
+     "lon": -43.98695,
+     "median": 0.9351,
+     "cell_median_p25": 0.9139,
+     "cell_median_p75": 0.9515,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-22,-44"
+     ],
+     "req:base_slope": {
+      "met": 1,
+      "failed": 2,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.976,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": -20.81391,
+     "lon": -44.48196,
+     "median": 0.9236,
+     "cell_median_p25": 0.9042,
+     "cell_median_p75": 0.9291,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-21,-45"
+     ],
+     "req:base_slope": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.985,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 37.13788,
+     "lon": 67.68996,
+     "median": 0.9182,
+     "cell_median_p25": 0.7475,
+     "cell_median_p75": 0.9327,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "37,67"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.982,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": -32.3558,
+     "lon": 28.71067,
+     "median": 0.9159,
+     "cell_median_p25": 0.8905,
+     "cell_median_p75": 0.9229,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-33,28"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.989,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 6,
+     "area_km2": 150.2,
+     "lat": -0.59119,
+     "lon": -80.1746,
+     "median": 0.9145,
+     "cell_median_p25": 0.8769,
+     "cell_median_p75": 0.9309,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-1,-81"
+     ],
+     "req:base_slope": {
+      "met": 5,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 1.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 5,
+     "area_km2": 125.2,
+     "lat": 64.03586,
+     "lon": 166.12971,
+     "median": 0.9133,
+     "cell_median_p25": 0.8906,
+     "cell_median_p75": 0.9163,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "63,166",
+      "64,166"
+     ],
+     "req:base_slope": {
+      "met": 5,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 5,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 5,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 1.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": -21.75249,
+     "lon": -44.28627,
+     "median": 0.9133,
+     "cell_median_p25": 0.9122,
+     "cell_median_p75": 0.9215,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-22,-45"
+     ],
+     "req:base_slope": {
+      "met": 2,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.981,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 7,
+     "area_km2": 175.2,
+     "lat": -4.40995,
+     "lon": 18.88609,
+     "median": 0.9068,
+     "cell_median_p25": 0.8718,
+     "cell_median_p75": 0.9134,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-5,18"
+     ],
+     "req:base_slope": {
+      "met": 7,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 7,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 7,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.971,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": -13.55973,
+     "lon": -40.27725,
+     "median": 0.9056,
+     "cell_median_p25": 0.8864,
+     "cell_median_p75": 0.9157,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-14,-41"
+     ],
+     "req:base_slope": {
+      "met": 1,
+      "failed": 3,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.974,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 6,
+     "area_km2": 150.2,
+     "lat": 37.50036,
+     "lon": -8.49003,
+     "median": 0.9047,
+     "cell_median_p25": 0.8628,
+     "cell_median_p75": 0.9147,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "37,-9"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 3,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 6,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.977,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 37.53115,
+     "lon": 37.48272,
+     "median": 0.9,
+     "cell_median_p25": 0.8912,
+     "cell_median_p75": 0.9051,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "37,37"
+     ],
+     "req:base_slope": {
+      "met": 2,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.99,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 8,
+     "area_km2": 200.3,
+     "lat": -21.63552,
+     "lon": -44.11503,
+     "median": 0.8958,
+     "cell_median_p25": 0.8839,
+     "cell_median_p75": 0.9225,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-22,-45"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 5,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 8,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 8,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.984,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 9,
+     "area_km2": 225.3,
+     "lat": -16.10305,
+     "lon": -41.88411,
+     "median": 0.8945,
+     "cell_median_p25": 0.8754,
+     "cell_median_p75": 0.9065,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-17,-42"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 6,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 9,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 9,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.984,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 57.41746,
+     "lon": -6.65115,
+     "median": 0.8919,
+     "cell_median_p25": 0.7549,
+     "cell_median_p75": 0.9008,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "57,-7"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.998,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": 18.89702,
+     "lon": 75.8749,
+     "median": 0.8916,
+     "cell_median_p25": 0.8449,
+     "cell_median_p75": 0.9017,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "18,75"
+     ],
+     "req:base_slope": {
+      "met": 2,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.93,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 10,
+     "area_km2": 250.3,
+     "lat": 47.64976,
+     "lon": 119.59407,
+     "median": 0.8909,
+     "cell_median_p25": 0.8067,
+     "cell_median_p75": 0.9049,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "47,119"
+     ],
+     "req:base_slope": {
+      "met": 9,
+      "failed": 1,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 10,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 10,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 1.0,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 23,
+     "area_km2": 575.8,
+     "lat": -20.50542,
+     "lon": -44.28527,
+     "median": 0.8903,
+     "cell_median_p25": 0.8371,
+     "cell_median_p75": 0.9013,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-21,-45"
+     ],
+     "req:base_slope": {
+      "met": 8,
+      "failed": 15,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 23,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 23,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.961,
+     "also_for": []
+    },
+    {
+     "target": "moon-psr",
+     "scenario": "B",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": -12.55162,
+     "lon": -40.88162,
+     "median": 0.8901,
+     "cell_median_p25": 0.8469,
+     "cell_median_p75": 0.9059,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-13,-41"
+     ],
+     "req:base_slope": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 4,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.992,
+     "also_for": []
+    },
+    {
+     "target": "moon-polar-lit-highlands",
+     "scenario": "B",
+     "cells": 3,
+     "area_km2": 75.1,
+     "lat": -21.13309,
+     "lon": -44.48196,
+     "median": 0.8885,
+     "cell_median_p25": 0.8303,
+     "cell_median_p75": 0.9046,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-22,-45"
+     ],
+     "req:base_slope": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 3,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": 0.995,
+     "also_for": []
+    }
+   ]
+  }
+ }
+}
