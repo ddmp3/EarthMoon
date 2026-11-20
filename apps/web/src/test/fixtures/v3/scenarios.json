@@ -1,0 +1,175 @@
+{
+ "release": "r-7a96120e",
+ "methodology_version": "v3",
+ "scenarios": [
+  {
+   "id": "A",
+   "name": "Permanent lunar base",
+   "objective": "Find Earth places where the terrain, materials and thermal behaviour of a lunar south polar base area can be studied, to rehearse site characterization, construction on slopes and mobility around a base.",
+   "targets": [
+    "moon-polar-lit-highlands",
+    "moon-persistently-lit",
+    "moon-psr",
+    "moon-pits"
+   ],
+   "assessed_targets": [
+    "moon-polar-lit-highlands",
+    "moon-psr",
+    "moon-pits"
+   ],
+   "not_comparable": {
+    "moon-persistently-lit": "no Earth cube at this target's pixel scale (for example 5 m)"
+   },
+   "similarity": [
+    {
+     "parameter": "slope_mean",
+     "status": "available",
+     "why": "buildability and mobility depend on slope first"
+    },
+    {
+     "parameter": "lithology_class",
+     "status": "waiting for T46",
+     "why": "construction materials and geology"
+    },
+    {
+     "parameter": "lst_amplitude",
+     "status": "waiting for T47",
+     "why": "thermal behaviour of the surface, as a relative quantity"
+    }
+   ],
+   "context": [
+    "traversable_20",
+    "latitude_abs"
+   ],
+   "requirements": [
+    {
+     "id": "base_slope",
+     "what": "Slope of the base footprint",
+     "value": "at most 5° preferred, unsuitable above 10°",
+     "expert_decision": "E2",
+     "eliminating": false,
+     "rule": {
+      "param": "slope_mean",
+      "at_most": 10.0,
+      "scale": "glo30-40m"
+     }
+    },
+    {
+     "id": "base_site_beyond_slope",
+     "what": "Bearing capacity, boulder density, landing hazards",
+     "value": "not set",
+     "expert_decision": "E13",
+     "eliminating": false,
+     "rule": null
+    },
+    {
+     "id": "target_environment",
+     "what": "Which environments the base area spans",
+     "value": "lit highlands for the base; persistently lit areas for power; shadowed regions and pits as nearby targets",
+     "expert_decision": "E16",
+     "eliminating": false,
+     "rule": null
+    }
+   ],
+   "suitability": {
+    "id": "base_slope_suitability",
+    "param": "slope_mean",
+    "good": 5.0,
+    "bad": 10.0,
+    "scale": "glo30-40m",
+    "why": "5° preferred, unsuitable above 10° (E2), linear between"
+   },
+   "cannot_assess": [
+    "Lunar gravity, vacuum and radiation.",
+    "Illumination by a Sun grazing the horizon; permanently shadowed cryogenic surfaces.",
+    "Regolith mechanics (no layer in the catalogues; E9).",
+    "Volatile resources (lunar indicators have no Earth equivalent).",
+    "Mass wasting under lunar gravity (only slope is compared)."
+   ]
+  },
+  {
+   "id": "B",
+   "name": "Robotic lunar exploration",
+   "objective": "Find Earth terrain whose slope distribution matches a lunar target environment, to test rover mobility, navigation and traverse planning.",
+   "targets": [
+    "moon-polar-lit-highlands",
+    "moon-psr",
+    "moon-mare-plains",
+    "moon-south-polar-cap-v2"
+   ],
+   "assessed_targets": [
+    "moon-polar-lit-highlands",
+    "moon-psr",
+    "moon-mare-plains",
+    "moon-south-polar-cap-v2"
+   ],
+   "not_comparable": {},
+   "similarity": [
+    {
+     "parameter": "slope_mean",
+     "status": "available",
+     "why": "the only independent terrain property at 1 km and 40 m (T21)"
+    },
+    {
+     "parameter": "lithology_class",
+     "status": "waiting for T46",
+     "why": "regolith parent material, indirect"
+    }
+   ],
+   "context": [
+    "traversable_20",
+    "traversable_15",
+    "roughness_detrended"
+   ],
+   "requirements": [
+    {
+     "id": "climbing_limit_lrv",
+     "what": "Slope a crewed lunar rover was designed for",
+     "value": "20 to 23° in favourable conditions, maximum 25° (Apollo LRV)",
+     "source": "NTRS 20250011301",
+     "eliminating": true,
+     "rule": {
+      "param": "traversable_20",
+      "at_least": 0.5,
+      "scale": "glo30-40m"
+     }
+    },
+    {
+     "id": "climbing_limit_viper",
+     "what": "Slope limit of a polar robotic rover",
+     "value": "15° (VIPER), not stated in the NTRS abstracts read",
+     "expert_decision": "E1",
+     "eliminating": false,
+     "rule": {
+      "param": "traversable_15",
+      "at_least": 0.5,
+      "scale": "glo30-40m"
+     }
+    },
+    {
+     "id": "traversable_share",
+     "what": "Share of a window that must be at or below the climbing limit",
+     "value": "half of the window",
+     "expert_decision": "E1",
+     "eliminating": false,
+     "rule": null
+    }
+   ],
+   "suitability": {
+    "id": "traversable_share_20",
+    "param": "traversable_20",
+    "good": 1.0,
+    "bad": 0.0,
+    "scale": "glo30-40m",
+    "why": "share of the window at or below 20°"
+   },
+   "cannot_assess": [
+    "Obstacles below the DEM pixel (rocks, small craters, the slope under a wheel).",
+    "Traction and sinkage in regolith under lunar gravity.",
+    "Thermal limits of the lunar night and of shadowed regions.",
+    "Communication and navigation conditions (no GNSS on the Moon).",
+    "Roughness, until the T41 effective resolution test (context only)."
+   ]
+  }
+ ]
+}
