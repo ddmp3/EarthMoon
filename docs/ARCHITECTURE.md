@@ -84,7 +84,7 @@ v3 routes (T44, ADR-004). Every answer carries `release` and `methodology_versio
 | `GET /api/v3/coverage?scenario&env` | land share per overlay class |
 | `GET /api/v3/status` | validity of the release (every protocol check) and freshness of each source; `not_checkable` until the refresher (T52) |
 | `GET /api/v3/layers/{scenario}/{env}/{typicality or coverage}/{z}/{x}/{y}.png` | PNG tiles, zoom 0 to 7 (own rate limit) |
-| `GET /api/v3/cells?scenario&env&bbox`, `POST /api/v3/query` | forwarded to `apps/discovery` (503 if it is down) |
+| `GET /api/v3/cells?scenario&env&bbox`, `POST /api/v3/query`, `GET /api/v3/sites?scenario` | forwarded to `apps/discovery` (503 if it is down); `sites` places the known sites of the missions in their cells |
 
 A release is written by `tools/discovery/release.py` (JSON and cells) and `tools/discovery/tiles.py` (tiles). Compose serves `data/releases-fixture` (synthetic test data) unless `EARTHMOON_RELEASES` points to a real releases folder.
 

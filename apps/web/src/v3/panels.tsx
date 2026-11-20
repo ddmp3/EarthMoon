@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import type { Coverage, MethodSource, Scenario, Status, Zone } from './api'
-import { cividis, layerList, legendRows, statusLines, zoneDimensions } from './model'
+import { cividis, legendRows, statusLines, zoneDimensions } from './model'
+import { useAppStore } from '../store'
+import { limitText, requirementText, stepText } from './content'
 import type { V3Texts } from './text'
 
 const two = (v: number | null | undefined) => (v === null || v === undefined ? '—' : v.toFixed(2))
@@ -32,121 +34,9 @@ export function Patterns() {
   )
 }
 
-function Swatch({ pattern }: { pattern: string }) {
-  return (
-    <svg aria-hidden="true" className="legend-swatch" height="16" width="22">
-      <rect fill="#1d2335" height="16" width="22" />
-      <rect fill={pattern === 'pat-none' ? 'none' : `url(#${pattern})`} height="16" stroke="#b9c6e8" strokeOpacity="0.5" width="22" />
-    </svg>
-  )
-}
-
-export function CoverageLegend({ coverage, on, onToggle, onInfo, t }: {
-  coverage: Coverage['coverage'] | null
-  on: boolean
-  onToggle: (on: boolean) => void
-  onInfo: () => void
-  t: V3Texts
-}) {
-  return (
-    <section className="v3-block" aria-labelledby="v3-overlay-title">
-      <div className="v3-row">
-        <button aria-checked={on} aria-label={t.overlay} className="v3-switch" onClick={() => onToggle(!on)} role="switch" type="button">
-          <span aria-hidden="true" />
-        </button>
-        <h3 id="v3-overlay-title">{t.overlay}</h3>
-        <button className="v3-info" onClick={onInfo} type="button" aria-label={t.dataMethod} title={t.dataMethod}>i</button>
-      </div>
-      <p className="note">{t.overlayHint}</p>
-      {coverage && (
-        <ul aria-label={t.overlay} className="v3-legend">
-          {legendRows(coverage, t).map((r) => (
-            <li key={r.id} title={r.meaning}>
-              <Swatch pattern={r.pattern} />
-              <span className="legend-label">{r.label}</span>
-              <span className="legend-share">{pct(r.share)} {t.landShare}</span>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
-  )
-}
-
-export function ValueLegend({ t }: { t: V3Texts }) {
-  const stops = Array.from({ length: 11 }, (_, i) => cividis(i / 10))
-  return (
-    <section className="v3-block" aria-labelledby="v3-value-title">
-      <h3 id="v3-value-title">{t.legendTitle}</h3>
-      <div aria-hidden="true" className="v3-ramp" style={{ background: `linear-gradient(to right, ${stops.join(', ')})` }} />
-      <div className="v3-ramp-ends"><span>{t.legendLow}</span><span>{t.legendHigh}</span></div>
-      <p className="note">{t.legendScale}</p>
-      <ul className="v3-states">
-        <li><Swatch pattern="pat-none" />{t.states.evaluated}</li>
-        <li><Swatch pattern="pat-light" />{t.states.partial}</li>
-        <li><Swatch pattern="pat-dots" />{t.states.not_evaluated}</li>
-        <li><Swatch pattern="pat-hidden" />{t.states.masked}</li>
-      </ul>
-    </section>
-  )
-}
-
-export function LayerPanel({ confidence, onConfidence, t }: { confidence: boolean; onConfidence: (on: boolean) => void; t: V3Texts }) {
-  return (
-    <fieldset className="v3-block v3-layers">
-      <legend>{t.layers}</legend>
-      {layerList(t).map((l) => (
-        <label className={l.enabled ? '' : 'v3-disabled'} key={l.id}>
-          <input checked={l.enabled} disabled={!l.enabled} name="v3-layer" readOnly type="radio" value={l.id} />
-          <span>{l.label}</span>
-          {l.reason && <small>{l.reason}</small>}
-        </label>
-      ))}
-      <label className="v3-check">
-        <input checked={confidence} onChange={(e) => onConfidence(e.target.checked)} type="checkbox" />
-        <span>{t.confidence}</span>
-      </label>
-    </fieldset>
-  )
-}
-
-export function ZoneList({ zones, total, onOpen, onCompare, t }: {
-  zones: Zone[]
-  total: number
-  onOpen: (id: string) => void
-  onCompare: (ids: string[]) => void
-  t: V3Texts
-}) {
-  const [chosen, setPicked] = useState<string[]>([])
-  const picked = chosen.filter((id) => zones.some((z) => z.id === id)) // a zone no longer listed is dropped
-  const toggle = (id: string) => setPicked(picked.includes(id) ? picked.filter((x) => x !== id) : picked.length < 4 ? [...picked, id] : picked)
-  if (zones.length === 0) return <p className="note">{t.noZone}</p>
-  return (
-    <div className="v3-zones">
-      <p className="note">{t.zoneCount(total)} · {t.compareHint}</p>
-      <ol aria-label={t.textAlternative}>
-        {zones.map((z) => (
-          <li key={z.id}>
-            <input
-              aria-label={`${t.compare} ${t.zone} ${z.rank}`}
-              checked={picked.includes(z.id)}
-              disabled={!picked.includes(z.id) && picked.length >= 4}
-              onChange={() => toggle(z.id)}
-              type="checkbox"
-            />
-            <button className="v3-zone-btn" onClick={() => onOpen(z.id)} type="button">
-              <span>{z.rank}. {z.lat.toFixed(2)}, {z.lon.toFixed(2)}</span>
-              <span className="v3-zone-val" style={{ borderColor: cividis(z.typicality.median) }}>{two(z.typicality.median)}</span>
-            </button>
-          </li>
-        ))}
-      </ol>
-      <button className="ghost" disabled={picked.length < 2} onClick={() => onCompare(picked)} type="button">{t.compare}</button>
-    </div>
-  )
-}
 
 function Requirements({ scenario, zone, t }: { scenario: Scenario | null; zone: Zone; t: V3Texts }) {
+  const lang = useAppStore((st) => st.lang)
   const reqs = (scenario?.requirements ?? []).filter((r) => zone.requirements[r.id])
   if (reqs.length === 0) return null
   return (
@@ -159,8 +49,8 @@ function Requirements({ scenario, zone, t }: { scenario: Scenario | null; zone: 
           return (
             <li key={r.id}>
               <span className={`v3-req v3-req-${state}`}>{t.reqState[state]}</span>
-              <span>{r.what}</span>
-              <span className="note">{r.value}</span>
+              <span>{requirementText(r.id, lang, r).what}</span>
+              <span className="note">{requirementText(r.id, lang, r).value}</span>
               <span className="note">{t.reqCells(c.met ?? 0, c.failed ?? 0, c.unknown ?? 0)}</span>
             </li>
           )
@@ -180,6 +70,7 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
   t: V3Texts
 }) {
   const conf = zone.coverage.cells_by_confidence
+  const lang = useAppStore((st) => st.lang)
   return (
     <section aria-label={`${t.zone} ${zone.rank}`} className="v3-card" role="region">
       <header>
@@ -216,12 +107,12 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
       <section>
         <h4>{t.confidenceLabel}</h4>
         <p>{t.highShare(zone.high_confidence_share)}</p>
-        <p className="note">high {conf.high ?? 0} · medium {conf.medium ?? 0} · low {conf.low ?? 0}</p>
+        <p className="note">{t.confidenceLevel.high} {conf.high ?? 0} · {t.confidenceLevel.medium} {conf.medium ?? 0} · {t.confidenceLevel.low} {conf.low ?? 0}</p>
         <p className="note">{zone.monte_carlo?.top_decile_share != null ? t.monteCarlo(zone.monte_carlo.top_decile_share) : t.monteCarloNone}</p>
       </section>
       <section className="v3-cannot">
         <h4>{t.cannotReproduce}</h4>
-        <ul>{cannotAssess.map((c) => <li key={c}>{c}</li>)}</ul>
+        <ul>{cannotAssess.map((c) => <li key={c}>{limitText(c, lang)}</li>)}</ul>
       </section>
       <button className="ghost" onClick={onProvenance} type="button">{t.provenance}</button>
     </section>
@@ -296,9 +187,9 @@ function Dialog({ label, onClose, children, t }: { label: string; onClose: () =>
   )
 }
 
-function stepText(s: Record<string, unknown>): string {
+/** Parameters of a processing step (scales, classes, rules), as recorded by the run: technical, kept as written. */
+function stepDetail(s: Record<string, unknown>): string {
   const parts: string[] = []
-  if (typeof s.what === 'string') parts.push(s.what)
   for (const [k, v] of Object.entries(s)) {
     if (k === 'step' || k === 'what' || v === null || v === undefined) continue
     parts.push(`${k}: ${typeof v === 'object' ? JSON.stringify(v).replace(/[{}"[\]]/g, '').replace(/,/g, ', ').replace(/:/g, ': ') : String(v)}`)
@@ -314,6 +205,7 @@ export function DataMethod({ coverage, sources, processing, cannotAssess, onClos
   onClose: () => void
   t: V3Texts
 }) {
+  const lang = useAppStore((st) => st.lang)
   return (
     <Dialog label={t.dataMethod} onClose={onClose} t={t}>
       <section>
@@ -326,6 +218,7 @@ export function DataMethod({ coverage, sources, processing, cannotAssess, onClos
       </section>
       <section>
         <h3>{t.sourcesUsed}</h3>
+        {t.catalogueNote && <p className="note">{t.catalogueNote}</p>}
         <ul className="v3-sources">
           {sources.map((s, i) => (
             <li aria-label={`source ${s.id}`} key={`${s.id}-${i}`}>
@@ -351,14 +244,15 @@ export function DataMethod({ coverage, sources, processing, cannotAssess, onClos
         <ol className="v3-steps">
           {processing.map((s, i) => (
             <li aria-label={`step ${String(s.step ?? i + 1)}`} key={i}>
-              <strong>{String(s.step ?? '')}</strong> {stepText(s)}
+              {stepText(String(s.step ?? ''), lang, typeof s.what === 'string' ? s.what : null)}
+              {stepDetail(s) && <small className="note"> · {stepDetail(s)}</small>}
             </li>
           ))}
         </ol>
       </section>
       <section>
         <h3>{t.whatItCannotSay}</h3>
-        <ul>{cannotAssess.map((c) => <li key={c}>{c}</li>)}</ul>
+        <ul>{cannotAssess.map((c) => <li key={c}>{limitText(c, lang)}</li>)}</ul>
       </section>
     </Dialog>
   )

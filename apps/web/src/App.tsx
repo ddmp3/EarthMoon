@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   analyzeSites,
   getEarthLimits,
@@ -20,10 +20,11 @@ import { SiteDetail } from './components/SiteDetail'
 import { FR_SOURCES } from './content-fr'
 import { useT, type Lang, type Texts } from './i18n'
 import { MISSION_ORDER } from './shared'
+import { SiteV3Section } from './v3/MissionV3'
+import { DataMethod } from './v3/panels'
+import { V3_TEXTS } from './v3/text'
+import { useV3 } from './v3/useV3'
 import { useAppStore, type CriterionDraft, type SelectedMode } from './store'
-
-// The v3 discovery map is its own chunk: the v2 pages do not load it (ADR-006 budget, checked by the UI audit).
-const Discover = lazy(() => import('./v3/Discover').then((m) => ({ default: m.Discover })))
 
 /** Mode 4 criteria entered in the form; throws a readable error if the input is invalid. */
 function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
@@ -47,6 +48,7 @@ function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
 
 /** Shareable address: #mission or #mission/site (for example #colony/tunnunik). */
 function parseHash(): { mode: SelectedMode | null; site: string | null } {
+  if (window.location.hash === '#discover') return { mode: 'custom', site: null } // the v3 map now lives in mission 4
   const [mode, site] = window.location.hash.replace(/^#/, '').split('/')
   return MISSION_ORDER.includes(mode as SelectedMode) ? { mode: mode as SelectedMode, site: site || null } : { mode: null, site: null }
 }
@@ -59,7 +61,11 @@ function App() {
     document.documentElement.lang = lang
   }, [lang])
   const [mode, setMode] = useState<SelectedMode | null>(() => parseHash().mode)
-  const [discover, setDiscover] = useState(() => window.location.hash === '#discover')
+  // v3 scenario of each mission: robotics = B, colony = A, free criteria = the one picked in its search; calibration has none yet.
+  const [customScenario, setCustomScenario] = useState('B')
+  const scenarioId = mode === 'robotics' ? 'B' : mode === 'colony' ? 'A' : mode === 'custom' ? customScenario : null
+  const v3 = useV3(scenarioId)
+  const [siteMethod, setSiteMethod] = useState(false)
   const [sites, setSites] = useState<SiteResult[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(() => parseHash().site)
   const [loading, setLoading] = useState(false)
@@ -137,21 +143,16 @@ function App() {
   // State -> address. Changing screen (home <-> mission) adds a history entry, so the browser Back button
   // returns to the missions; selecting another site only replaces the current entry.
   useEffect(() => {
-    if (discover) {
-      if (window.location.hash !== '#discover') window.history.pushState(null, '', '#discover')
-      return
-    }
     const hash = mode ? `#${mode}${selectedId ? `/${selectedId}` : ''}` : ''
     if (window.location.hash === hash) return
     const url = hash || window.location.pathname + window.location.search
     if (parseHash().mode !== mode) window.history.pushState(null, '', url)
     else window.history.replaceState(null, '', url)
-  }, [mode, selectedId, discover])
+  }, [mode, selectedId])
 
   // Address -> state: Back and Forward buttons, a pasted link, a bookmark opened in the same tab.
   useEffect(() => {
     const onAddressChange = () => {
-      setDiscover(window.location.hash === '#discover')
       const next = parseHash()
       setMode((current) => {
         if (current !== next.mode) {
@@ -186,7 +187,7 @@ function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <button className="brand" onClick={() => { setDiscover(false); setMode(null) }} type="button">
+        <button className="brand" onClick={() => setMode(null)} type="button">
           <span className="brand-mark" aria-hidden="true" />
           <span>
             <strong>{t.brand}</strong>
@@ -206,14 +207,11 @@ function App() {
       </header>
 
       <main>
-        {discover ? (
-          <Suspense fallback={<p className="note">…</p>}>
-            <Discover onBack={() => { setDiscover(false); setMode(null) }} />
-          </Suspense>
-        ) : mode === null ? (
-          <Home onDiscover={() => { setDiscover(true); window.scrollTo({ top: 0 }) }} onPick={pick} siteCount={manifest ? Object.keys(manifest.sites).length : 37} />
+        {mode === null ? (
+          <Home onPick={pick} siteCount={manifest ? Object.keys(manifest.sites).length : 37} />
         ) : (
           <Mission
+            key={mode}
             builderError={builderError}
             error={error}
             loading={loading}
@@ -222,8 +220,10 @@ function App() {
             onBack={() => setMode(null)}
             onRun={() => void run(mode)}
             onSelect={setSelectedId}
+            onScenario={setCustomScenario}
             selectedId={selectedId}
             sites={sites}
+            v3={v3}
           >
             {selected && (
               <SiteDetail
@@ -235,6 +235,7 @@ function App() {
                 rankedTotal={sites.filter((site) => !site.excluded).length}
                 site={selected}
                 sources={sources}
+                v3Section={<SiteV3Section onMethod={() => setSiteMethod(true)} release={v3.release?.release ?? null} scenario={v3.scenario} site={v3.sites?.[selected.id]} />}
                 visual={manifest?.sites[selected.id]}
               />
             )}
@@ -265,6 +266,10 @@ function App() {
         </section>
       </main>
 
+      {siteMethod && v3.method && (
+        <DataMethod cannotAssess={v3.scenario?.cannot_assess ?? []} coverage={v3.coverage} onClose={() => setSiteMethod(false)}
+          processing={v3.method.processing} sources={v3.method.sources} t={V3_TEXTS[lang]} />
+      )}
       <footer className="footer">{t.footer}</footer>
     </div>
   )

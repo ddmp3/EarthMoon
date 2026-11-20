@@ -112,6 +112,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T43b](tasks/T43b-run-002.md) | run-002: protocol v3 (global equal-area cells, high-confidence candidates) | G4 | done (PR #24; no artefact left in the top 40, 2 plausible places, 21 unknown; still not robust to NASADEM) |
 | [T44](tasks/T44-api-layers.md) | API: layers and zones | G4 | done (PR #25; static releases, internal discovery service, coverage, method and status; run-002 release r-98f6eee4, 61 MB of tiles per layer) |
 | [T45](tasks/T45-ui-map.md) | Interface: layer map, hatching, comparison | T44 | done (PR #26; discovery map with coverage overlay, Data and method, zone cards, comparison, status; v2 gaps fixed; zone-vs-reference Q–Q plot left open: the release has no window quantiles per zone) |
+| [T45b](tasks/T45b-missions.md) | v3 inside the missions (David's review of T45) | T45 | done (PR #PRNUM; sites enriched with their v3 cell, zones tab, v3 search in mission 4, French texts; separate page removed) |
 | [T46](tasks/T46-geology.md) | Geology and mineralogy dimension | G4 | todo |
 | [T47](tasks/T47-thermal-hydric.md) | Thermal, ice and hydric dimensions | G4 | todo |
 | [T48](tasks/T48-mars.md) | Mars profiles and discovery | T46, T47 | todo |
