@@ -1,0 +1,1506 @@
+{
+ "source": "https://macrostrat.org/api/v2/defs/lithologies?all",
+ "retrieved": "2026-11-20",
+ "licence": "CC-BY 4.0",
+ "citation": "Peters, S.E. et al. Macrostrat: a platform for geological data integration and deep-time research. https://macrostrat.org, accessed 2026-11-20",
+ "lithologies": [
+  {
+   "lith_id": 1,
+   "name": "siliciclastic",
+   "type": "siliciclastic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 2,
+   "name": "gravel",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 3,
+   "name": "sand",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 4,
+   "name": "silt",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 5,
+   "name": "mud",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 6,
+   "name": "claystone",
+   "type": "siliciclastic",
+   "group": "mudrocks",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 7,
+   "name": "mudstone",
+   "type": "siliciclastic",
+   "group": "mudrocks",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 8,
+   "name": "shale",
+   "type": "siliciclastic",
+   "group": "mudrocks",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 9,
+   "name": "siltstone",
+   "type": "siliciclastic",
+   "group": "mudrocks",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 10,
+   "name": "sandstone",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 11,
+   "name": "arkose",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 12,
+   "name": "greywacke",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 14,
+   "name": "conglomerate",
+   "type": "siliciclastic",
+   "group": "conglomerates",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 15,
+   "name": "breccia",
+   "type": "siliciclastic",
+   "group": "conglomerates",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 16,
+   "name": "diamictite",
+   "type": "siliciclastic",
+   "group": "conglomerates",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 17,
+   "name": "mixed carbonate-siliciclastic",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 18,
+   "name": "carbonate",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 19,
+   "name": "marl",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 20,
+   "name": "lime mudstone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 21,
+   "name": "wackestone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 22,
+   "name": "packstone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 23,
+   "name": "grainstone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 24,
+   "name": "boundstone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 25,
+   "name": "floatstone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 26,
+   "name": "rudstone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 27,
+   "name": "bafflestone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 28,
+   "name": "bindstone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 29,
+   "name": "framestone",
+   "type": "carbonate",
+   "group": "Dunham",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 30,
+   "name": "limestone",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 31,
+   "name": "dolomite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 32,
+   "name": "siderite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 33,
+   "name": "ankerite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 34,
+   "name": "evaporite",
+   "type": "evaporite",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 35,
+   "name": "halite",
+   "type": "evaporite",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 36,
+   "name": "gypsum",
+   "type": "evaporite",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 37,
+   "name": "anhydrite",
+   "type": "evaporite",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 38,
+   "name": "coal",
+   "type": "organic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 39,
+   "name": "peat",
+   "type": "organic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 40,
+   "name": "lignite",
+   "type": "organic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 43,
+   "name": "anthracite",
+   "type": "organic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 44,
+   "name": "tar",
+   "type": "organic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 45,
+   "name": "chert",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 46,
+   "name": "phosphorite",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 47,
+   "name": "ironstone",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 48,
+   "name": "iron formation",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 49,
+   "name": "volcaniclastic",
+   "type": "siliciclastic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 52,
+   "name": "plutonic",
+   "type": "plutonic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 53,
+   "name": "granite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 54,
+   "name": "monzonite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 55,
+   "name": "granodiorite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 56,
+   "name": "syenite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 57,
+   "name": "diorite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 58,
+   "name": "tonalite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 59,
+   "name": "gabbro",
+   "type": "plutonic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 60,
+   "name": "foidolite",
+   "type": "plutonic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 61,
+   "name": "peridotite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 62,
+   "name": "pyroxenite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 63,
+   "name": "volcanic",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 64,
+   "name": "rhyolite",
+   "type": "volcanic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 65,
+   "name": "phonolite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 66,
+   "name": "trachyte",
+   "type": "volcanic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 67,
+   "name": "rhyodacite",
+   "type": "volcanic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 68,
+   "name": "dacite",
+   "type": "volcanic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 69,
+   "name": "andesite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 70,
+   "name": "basalt",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 71,
+   "name": "latite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 72,
+   "name": "felsite",
+   "type": "volcanic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 73,
+   "name": "mafite",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 74,
+   "name": "volcanic glass",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 75,
+   "name": "ash",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 76,
+   "name": "tuff",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 77,
+   "name": "welded tuff",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 78,
+   "name": "metamorphic",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 79,
+   "name": "gneiss",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 80,
+   "name": "migmatite",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 81,
+   "name": "mylonite",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 82,
+   "name": "slate",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 83,
+   "name": "phyllite",
+   "type": "metasedimentary",
+   "group": "mudrocks",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 84,
+   "name": "schist",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 85,
+   "name": "quartzite",
+   "type": "metasedimentary",
+   "group": "sandstones",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 86,
+   "name": "amphibolite",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 87,
+   "name": "greenstone",
+   "type": "metavolcanic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 88,
+   "name": "serpentinite",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 89,
+   "name": "hornfels",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 90,
+   "name": "marble",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 91,
+   "name": "argillite",
+   "type": "siliciclastic",
+   "group": "mudrocks",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 92,
+   "name": "chalk",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 93,
+   "name": "clay",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 94,
+   "name": "diabase",
+   "type": "plutonic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 95,
+   "name": "igneous",
+   "type": "igneous",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 96,
+   "name": "ignimbrite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 97,
+   "name": "till",
+   "type": "siliciclastic",
+   "group": "conglomerates",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 98,
+   "name": "greenschist",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 99,
+   "name": "quartz monzonite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 100,
+   "name": "kimberlite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 101,
+   "name": "anorthosite",
+   "type": "plutonic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 102,
+   "name": "carbonatite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 103,
+   "name": "diatomite",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 104,
+   "name": "calcareous ooze",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 105,
+   "name": "troctolite",
+   "type": "plutonic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 106,
+   "name": "bauxite",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 107,
+   "name": "lamprophyre",
+   "type": "plutonic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 108,
+   "name": "norite",
+   "type": "plutonic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 109,
+   "name": "granofel",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 110,
+   "name": "granulite",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 111,
+   "name": "sedimentary",
+   "type": "sedimentary",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 112,
+   "name": "siliceous ooze",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 113,
+   "name": "graywacke",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 114,
+   "name": "dolostone",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 115,
+   "name": "micrite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 116,
+   "name": "greensand",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 117,
+   "name": "grit",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 118,
+   "name": "orthogneiss",
+   "type": "metaigneous",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 119,
+   "name": "tephra",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 120,
+   "name": "paragneiss",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 121,
+   "name": "loess",
+   "type": "siliciclastic",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 122,
+   "name": "metasedimentary",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 123,
+   "name": "coquina",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 124,
+   "name": "flint",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 125,
+   "name": "oolite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 126,
+   "name": "trachyandesite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 127,
+   "name": "komatiite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 128,
+   "name": "dunite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 129,
+   "name": "charnockite",
+   "type": "plutonic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 130,
+   "name": "aplite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 131,
+   "name": "trondhjemite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 132,
+   "name": "eclogite",
+   "type": "metaigneous",
+   "group": "mafic",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 133,
+   "name": "metapelite",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 134,
+   "name": "arenite",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 135,
+   "name": "pelite",
+   "type": "siliciclastic",
+   "group": "mudrocks",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 136,
+   "name": "biomicrite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 137,
+   "name": "oomicrite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 138,
+   "name": "biosparite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 139,
+   "name": "pelmicrite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 140,
+   "name": "oosparite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 141,
+   "name": "pelsparite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 142,
+   "name": "intrasparite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 143,
+   "name": "intramicrite",
+   "type": "carbonate",
+   "group": "Folk",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 144,
+   "name": "monzogranite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 145,
+   "name": "syenogranite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 146,
+   "name": "novaculite",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 147,
+   "name": "travertine",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 148,
+   "name": "trona",
+   "type": "evaporite",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 149,
+   "name": "scoria",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 150,
+   "name": "pumice",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 151,
+   "name": "pegmatite",
+   "type": "plutonic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 152,
+   "name": "dolerite",
+   "type": "plutonic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 153,
+   "name": "encrinite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 154,
+   "name": "alluvium",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 155,
+   "name": "colluvium",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 156,
+   "name": "regolith",
+   "type": "regolith",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 157,
+   "name": "soil",
+   "type": "regolith",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 158,
+   "name": "paleosol",
+   "type": "regolith",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 159,
+   "name": "laterite",
+   "type": "regolith",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 160,
+   "name": "eluvium",
+   "type": "regolith",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 161,
+   "name": "mafic",
+   "type": "igneous",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 162,
+   "name": "subarkose",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 163,
+   "name": "lherzolite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 164,
+   "name": "harzburgite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 165,
+   "name": "wehrlite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 166,
+   "name": "websterite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 167,
+   "name": "orthopyroxenite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 168,
+   "name": "clinopyroxenite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 169,
+   "name": "quartz arenite",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 170,
+   "name": "metabasalt",
+   "type": "metaigneous",
+   "group": "mafic",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 171,
+   "name": "metagabbro",
+   "type": "metaigneous",
+   "group": "mafic",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 172,
+   "name": "cataclasite",
+   "type": "cataclastic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 173,
+   "name": "fault gouge",
+   "type": "cataclastic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 174,
+   "name": "fault breccia",
+   "type": "cataclastic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 175,
+   "name": "pseudotachylite",
+   "type": "cataclastic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 176,
+   "name": "blueschist",
+   "type": "metavolcanic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 177,
+   "name": "skarn",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 178,
+   "name": "metavolcanic",
+   "type": "metaigneous",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 179,
+   "name": "obsidian",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 180,
+   "name": "gyttja",
+   "type": "organic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 181,
+   "name": "drift",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 182,
+   "name": "tillite",
+   "type": "siliciclastic",
+   "group": "conglomerates",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 184,
+   "name": "metaconglomerate",
+   "type": "metasedimentary",
+   "group": "conglomerates",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 185,
+   "name": "diatexite",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 186,
+   "name": "ankaramite",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 187,
+   "name": "wacke",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 188,
+   "name": "agglomerate",
+   "type": "volcanic",
+   "group": "conglomerates",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 189,
+   "name": "leucogranite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 190,
+   "name": "metaigneous",
+   "type": "metaigneous",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 191,
+   "name": "tufa",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 192,
+   "name": "metarhyolite",
+   "type": "metaigneous",
+   "group": "felsic",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 193,
+   "name": "metagraywacke",
+   "type": "metasedimentary",
+   "group": "sandstones",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 194,
+   "name": "bentonite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 195,
+   "name": "metasiltstone",
+   "type": "metasedimentary",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 196,
+   "name": "basanite",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 197,
+   "name": "tuffite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 198,
+   "name": "litharenite",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 199,
+   "name": "sublitharenite",
+   "type": "siliciclastic",
+   "group": "sandstones",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 200,
+   "name": "radiolarite",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 201,
+   "name": "calcarenite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 202,
+   "name": "calcilutite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 203,
+   "name": "metabasite",
+   "type": "metaigneous",
+   "group": "mafic",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 204,
+   "name": "diamicton",
+   "type": "siliciclastic",
+   "group": "unconsolidated",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 205,
+   "name": "porcellanite",
+   "type": "chemical",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 206,
+   "name": "hyaloclastite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 207,
+   "name": "hawaiite",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 208,
+   "name": "mugearite",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 209,
+   "name": "granophyre",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 210,
+   "name": "comendite",
+   "type": "volcanic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 211,
+   "name": "tephrite",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 212,
+   "name": "spilite",
+   "type": "volcanic",
+   "group": "mafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 213,
+   "name": "benmoreite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 215,
+   "name": "hornblendite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 216,
+   "name": "picrite",
+   "type": "plutonic",
+   "group": "ultramafic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 217,
+   "name": "foidite",
+   "type": "volcanic",
+   "group": "",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 218,
+   "name": "phyllonite",
+   "type": "metamorphic",
+   "group": "",
+   "class": "metamorphic"
+  },
+  {
+   "lith_id": 219,
+   "name": "alaskite",
+   "type": "plutonic",
+   "group": "felsic",
+   "class": "igneous"
+  },
+  {
+   "lith_id": 220,
+   "name": "calcisiltite",
+   "type": "carbonate",
+   "group": "",
+   "class": "sedimentary"
+  },
+  {
+   "lith_id": 221,
+   "name": "adakite",
+   "type": "volcanic",
+   "group": "felsic",
+   "class": "igneous"
+  }
+ ]
+}
