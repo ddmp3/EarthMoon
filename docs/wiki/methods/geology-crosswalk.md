@@ -40,3 +40,8 @@ Every other lithology with a known class is "no match" for all three rows.
 - Lac-Saint-Jean and the Marcy massif (Adirondacks) are recognized as anorthosite (1:5M and finer).
 - Holuhraun is recognized as basalt. The Deccan traps appear only on the world map, as "flood basalt; mafic volcanic rocks; basalt" (lithology ids 63, 70, 161): a match under question 5.
 - A lithology class is not a mineralogy, and a mineralogy is not regolith mechanics (to be written in `docs/LIMITS.md`).
+
+## Amendment of 20/11/2026, after the first global assessment (delegated decision)
+- **Compound names are read whole.** "anorthositic gabbro" is a gabbro (partial), and "gabbroic anorthosite" is an anorthosite (match).
+- **Mixed units.** The first run applied choice 5 to large undivided units of small-scale maps. For example, the Geological Map of the Arctic lists "granite, granodiorite … gabbro, anorthositic gabbro, peridotite" over much of the Canadian Shield. That made most of the shield, Pingualuit included, a highland match (11,501 cells), which is misleading.
+- **New rule:** in a unit that mixes rock families, the lunar rock counts only when the map lists it first. Otherwise the unit is **unresolved**: it holds the rock somewhere, and we cannot say where.

@@ -32,7 +32,11 @@ CROSSWALK = {
 GENERIC = {"igneous", "plutonic", "volcanic", "mafic", "ultramafic", "metamorphic", "metaigneous", "metavolcanic"}
 # words of map legends that name a Macrostrat lithology in another form (whole words only)
 ALIASES = {"granitic": "granite", "gabbroic": "gabbro", "anorthositic": "anorthosite", "tholeiite": "basalt",
-           "tholeiitic basalt": "basalt", "metaanorthosite": "metaanorthosite", "noritic": "norite"}
+           "tholeiitic basalt": "basalt", "metaanorthosite": "metaanorthosite", "noritic": "norite",
+           # compound names: the noun names the rock, the adjective qualifies it (read whole, before the single words)
+           "anorthositic gabbro": "gabbro", "gabbroic anorthosite": "anorthosite", "anorthositic norite": "norite",
+           "noritic anorthosite": "anorthosite", "anorthositic gneiss": "gneiss", "granitic gneiss": "gneiss",
+           "gabbroic gneiss": "gneiss", "basaltic andesite": "andesite", "olivine basalt": "basalt", "alkali basalt": "basalt"}
 
 
 @lru_cache(maxsize=1)
@@ -77,16 +81,23 @@ def _state(name: str, group: str) -> str:
 
 
 def unit_state(text: str | None, group: str) -> tuple[str, bool]:
-    """State of a map unit for a group of lunar environments, and whether the unit mixes rock families."""
+    """State of a map unit for a group of lunar environments, and whether the unit mixes rock families.
+
+    E17, as amended on 20/11/2026 after the first global run: a unit that lists the lunar rock among other rock
+    families counts as match or partial only when the map lists that rock first; otherwise the unit contains the rock
+    somewhere and is unresolved (large undivided units of small-scale maps named every rock of a shield)."""
     names, major = lith_names(text)
     considered = major if major else names
     states = [_state(n, group) for n in considered]
     specific = [s for s in states if s != "unresolved"]
     if not specific:
         return "unresolved", False
+    mixed = "no match" in specific and ("match" in specific or "partial" in specific)
     for best in ("match", "partial"):
         if best in specific:
-            return best, "no match" in specific
+            if mixed and specific[0] != best:
+                return "unresolved", True
+            return best, mixed
     return "no match", False
 
 

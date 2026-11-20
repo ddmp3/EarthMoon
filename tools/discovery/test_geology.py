@@ -30,7 +30,9 @@ def test_known_basalt_fields_are_a_match_for_the_maria():
 
 def test_partial_matches_follow_the_crosswalk():
     assert unit_state("norite", "highland")[0] == "partial"
-    assert unit_state("gneiss, gabbroic, metagabbro, pyroxenite", "highland")[0] == "partial"
+    assert unit_state("metagabbro, gneiss", "highland")[0] == "partial"
+    # Marcy facies on the local map lists gneiss first: the unit holds metagabbro somewhere, unresolved
+    assert unit_state("gneiss, gabbroic, metagabbro, pyroxenite", "highland") == ("unresolved", True)
     assert unit_state("diabase", "mare")[0] == "partial"
     assert unit_state("basalt", "pits")[0] == "partial"                               # no full match for pits
     assert unit_state("plutonic: anorthosite", "pits")[0] == "no match"
@@ -47,9 +49,9 @@ def test_a_known_lithology_of_another_family_is_no_match():
     assert unit_state("plutonic: undivided granitic rocks", "mare")[0] == "no match"
 
 
-def test_mixed_units_take_the_best_major_lithology_and_are_flagged():
-    assert unit_state("sandstone, basalt", "mare") == ("match", True)
+def test_minor_lithologies_do_not_count_when_the_map_marks_the_major_ones():
     assert unit_state("Major:{sandstone}, Minor:{basalt}", "mare") == ("no match", False)   # basalt only minor
+    assert unit_state("Major:{basalt}, Minor:{sandstone}", "mare") == ("match", False)
 
 
 def test_every_lunar_target_of_the_scenarios_has_a_group():
@@ -94,3 +96,18 @@ def test_a_tile_assigns_each_point_the_state_of_the_unit_that_holds_it():
     assert out["source_id"] == [7, 1080]
     empty = classify_points(b"", z, x, y, [pts[0][1]], [pts[0][0]])
     assert empty["highland"] == [None] and empty["source_id"] == [None]
+
+
+def test_a_compound_rock_name_is_read_whole():
+    assert lith_names("gabbro, anorthositic gabbro")[0] == ["gabbro"]
+    assert lith_names("metagabbro, gabbroic anorthosite, anorthosite")[0] == ["metagabbro", "anorthosite"]
+    assert unit_state("anorthositic gabbro", "highland")[0] == "partial"
+
+
+def test_in_a_mixed_unit_the_lunar_rock_counts_only_when_the_map_lists_it_first():
+    # Geological map of the Arctic, Pingualuit: a large undivided intrusive unit that also lists anorthositic gabbro
+    arctic = "granite, granodiorite; syenogranite; tonalite gneiss, quartz diorite; gabbro, anorthositic gabbro, peridotite; pyroxenite"
+    assert unit_state(arctic, "highland") == ("unresolved", True)
+    assert unit_state("anorthosite, gabbro, granite", "highland") == ("match", True)
+    assert unit_state("basalt, sandstone", "mare") == ("match", True)
+    assert unit_state("sandstone, basalt", "mare") == ("unresolved", True)
