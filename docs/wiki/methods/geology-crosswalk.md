@@ -1,6 +1,6 @@
-# Geology crosswalk: Earth lithology against lunar environments (T46, proposal E17)
+# Geology crosswalk: Earth lithology against lunar environments (T46, decision E17)
 
-**Status: proposal, waiting for David's decision (expert decision E17). Nothing is computed before it is signed.**
+**Status: expert decision E17, delegated by David to Claude on 20/11/2026 ("do what is best"). Taken as proposed below; to be reviewed by lunar geologists before G5.**
 
 ## Source
 - **Earth:** Macrostrat (API v2 and `carto` vector tiles, CC-BY 4.0, David's choice of 20/11/2026). Each map unit has a lithology text and lithology ids from the Macrostrat definitions (214 lithologies, `class` > `type` > `group`).
@@ -28,7 +28,7 @@ The geology dimension is reported on its own, never averaged with slope (T23, E5
 
 Every other lithology with a known class is "no match" for all three rows.
 
-## Questions for David (E17)
+## The five choices of E17 (all taken as proposed)
 1. **Partial matches for the highlands.** Should norite, troctolite, gabbro and metagabbro count as partial? The basis is that they are plagioclase-bearing mafic plutonic rocks, and R41 uses norite in a highland simulant. Or should only anorthosite count?
 2. **Mare plains.** Should dolerite, diabase (same composition as basalt, intrusive texture) and metabasalt count as partial?
 3. **Pits.** No Earth rock stands for lunar impact melt, so the proposal has no full match. Is basalt (lava-tube setting) right as a partial match?

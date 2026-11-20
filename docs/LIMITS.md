@@ -6,7 +6,7 @@ Full version (uncertainty table, data weaknesses, biases): [wiki/v2/SCIENTIFIC_L
 
 - That a site is equivalent to the Moon, or "X% similar".
 - That it is a validated test site: only a field campaign by the team that will test can say so.
-- Anything about the ground material. Lithology, mineralogy, grain size, regolith mechanics and dust are not measured yet.
+- Much about the ground material. v3 compares the **lithology class** of geological maps (T46). A lithology class is not a mineralogy, and a mineralogy is not regolith mechanics: grain size, cohesion, bearing capacity and dust are not measured. Where the map has no unit or only a generic class, geology is "no map" or "unresolved", never "no match".
 - Anything below the 40 m DEM scale: rocks, small craters, the slope under a wheel.
 - That a site without a lava tube level has no cave: it was **not assessed**.
 - That few earthquakes means a quiet site for a seismometer, or that a high latitude reproduces lunar polar lighting.
@@ -48,3 +48,4 @@ Provisional choices, labelled `expert_judgement` in the API, until a named exper
 | E14 | Mars rover mobility limit per terrain | R43 abstract (read 18 Nov 2026): up to 22° on smooth bedrock, 28° on some cohesive soils, embedding at 17° in loose sand. Which applies needs the terrain type, which no global layer gives | Mars rover mobility engineers |
 | E15 | Site requirements of each instrument in scenario C | None set; every instrument row is marked as an open requirement | Instrument teams |
 | E16 | Which planetary environment each scenario targets | Proposed in [SCENARIOS.md](SCENARIOS.md) from the T20 environments (refines E8) | Lunar and Mars landing-site teams |
+| E17 | Which Earth lithologies match the lunar highlands, maria and pits | Crosswalk of [wiki/methods/geology-crosswalk.md](wiki/methods/geology-crosswalk.md). Delegated by David to Claude on 20/11/2026; to be reviewed before G5 | Lunar geologists, planetary sample scientists |
