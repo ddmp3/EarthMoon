@@ -2,6 +2,26 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-20 · T46 Geology dimension (PR #PRNUM)
+- **Source:** Macrostrat, David's choice of 20/11 (CC-BY 4.0): `carto` vector tiles at zoom 8, which hold the finest map unit Macrostrat has at each place. 20,307 tiles, 362 MB, 0 failures. GLiM was set aside: its polygons have no stated licence, and its grid is 50 km.
+- **Crosswalk E17** (`docs/wiki/methods/geology-crosswalk.md`, delegated by David to Claude, to be reviewed before G5):
+  - highlands: anorthosite, with plagioclase-bearing mafic rocks as partial;
+  - maria: basalt, with dolerite and diabase as partial;
+  - pits: basalt as partial only;
+  - a generic class or no map is unresolved, never "no match".
+  - Amended after the first global run: a mixed unit counts the lunar rock only when the map lists it first. This fixed a false highland match over most of the Canadian Shield.
+- **Results** (`docs/wiki/runs/run-002-geology.md`):
+  - no map unit 29.2%, unresolved 21.5 to 21.8%;
+  - highland match 0.05% (the Grenville and Labrador anorthosite massifs), mare match 1.1% (Paraná, Canaries, Iceland);
+  - none of the 40 top slope zones matches;
+  - Mistastin is no match: its anorthosite is below the 1:5M map.
+- **In the product:**
+  - release `r-51bfb3d5` (zones carry geology shares; the zone cache makes the next exports faster);
+  - a geology tile layer per target;
+  - geology of cells and sites in the discovery service;
+  - in the missions: a layer picker, a geology legend, the zone card row, a site card column and the hover line.
+- **Open:** mineralogy (EMIT, 52°N to 52°S) is not used; the T46 test "EMIT absence is not covered" waits for it.
+
 ## 2026-11-20 · T45b v3 inside the missions (PR #27)
 - **David's review of T45:** the separate discovery page looked added at the last minute, and the missions did not use the new data. The v3 results now live in the missions:
   - **robotics (B) and colony (A):**

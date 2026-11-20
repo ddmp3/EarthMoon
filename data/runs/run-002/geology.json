@@ -1,0 +1,27 @@
+{
+ "cells": 6296808,
+ "tiles": 20307,
+ "missing_tiles": 0,
+ "no_map_share": 0.29223752027305827,
+ "highland": {
+  "match": 0.0005,
+  "partial": 0.0016,
+  "no match": 0.4879,
+  "unresolved": 0.2177,
+  "no map": 0.2922
+ },
+ "mare": {
+  "match": 0.011,
+  "partial": 0.0003,
+  "no match": 0.4797,
+  "unresolved": 0.2168,
+  "no map": 0.2922
+ },
+ "pits": {
+  "match": 0.0,
+  "partial": 0.011,
+  "no match": 0.4817,
+  "unresolved": 0.2151,
+  "no map": 0.2922
+ }
+}

@@ -1,5 +1,16 @@
 # Validation
 
+## v3, run-002 geology (20 November 2026)
+
+The lithology of geological maps (Macrostrat), compared with the lunar surface material by crosswalk E17. Full report: [wiki/runs/run-002-geology.md](wiki/runs/run-002-geology.md).
+
+| Check | Result |
+|---|---|
+| A known anorthosite body is recognized | yes: Lac-Saint-Jean (1:5M); not Mistastin (below the map's scale) |
+| Known basalt fields are recognized | yes: Holuhraun, Craters of the Moon, Payunia, the Paraná |
+| Unknown lithology stays missing, never "no match" | yes: 29.2% no map, 21.5 to 21.8% unresolved, shown hatched |
+| Top slope zones that match by geology | 0 of 40 |
+
 ## v3, run-002 (19 November 2026)
 
 run-001 again with the two rules of protocol `validation-protocol-v3`: one global equal-area grid of 5 km cells (HEALPix), and candidate zones on high-confidence cells only. Full report: [wiki/runs/run-002.md](wiki/runs/run-002.md).
