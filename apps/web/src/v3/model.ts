@@ -44,7 +44,7 @@ export function legendRows(cov: Coverage['coverage'], t: V3Texts): LegendRow[] {
 }
 
 export interface Layer {
-  id: 'topography' | 'geology' | 'thermal' | 'operational' | 'multi'
+  id: 'topography' | 'geology' | 'frozen' | 'aridity' | 'thermal' | 'operational' | 'multi'
   label: string
   enabled: boolean
   reason: string | null
@@ -53,7 +53,7 @@ export interface Layer {
 /** Every dimension is listed; one that waits for a later task is disabled with its reason, never hidden.
  *  `available`: the dimensions the release carries (topography always; geology once T46 is in the release). */
 export function layerList(t: V3Texts, available: string[] = ['topography']): Layer[] {
-  return (['topography', 'geology', 'thermal', 'operational', 'multi'] as const).map((id) => {
+  return (['topography', 'geology', 'frozen', 'aridity', 'thermal', 'operational', 'multi'] as const).map((id) => {
     const on = id === 'topography' || available.includes(id)
     return { id, label: t.layer[id], enabled: on, reason: on ? null : t.layerWait[id] }
   })
@@ -77,15 +77,36 @@ export function geologyText(g: GeologyShares | null | undefined, t: V3Texts): st
   return t.geoSummary(g.match ?? 0, g.partial ?? 0, g.no_match ?? 0, (g.unresolved ?? 0) + (g.no_map ?? 0))
 }
 
+export interface ZoneContext {
+  frozen_e4: Record<string, number>
+  magt_c_median: number | null
+  aridity: Record<string, number>
+}
+
+export function contextRows(ctx: ZoneContext | null | undefined, t: V3Texts): DimensionRow[] {
+  if (!ctx) {
+    return [{ name: t.layer.thermal, median: null, p25: null, p75: null, n: null, source: null, missing: t.layerWait.thermal }]
+  }
+  const f = ctx.frozen_e4
+  const ar = Object.entries(ctx.aridity).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1])
+    .map(([k, v]) => `${t.aridityName[k] ?? k} ${Math.round(v * 100)}%`).join(' · ')
+  return [
+    { name: t.layer.frozen, median: null, p25: null, p75: null, n: null, source: 'Obu et al. 2018', missing: null,
+      text: t.frozenSummary(f.met ?? 0, f.partial ?? 0, f.failed ?? 0, f['not covered'] ?? 0, ctx.magt_c_median) },
+    { name: t.layer.aridity, median: null, p25: null, p75: null, n: null, source: 'Global Aridity Index v3.1', missing: null, text: ar || '—' },
+    { name: t.layer.thermal, median: null, p25: null, p75: null, n: null, source: null, missing: t.layerWait.thermal },
+  ]
+}
+
 export function zoneDimensions(spread: { median: number; p25: number; p75: number }, windows: number, t: V3Texts,
-  geology: GeologyShares | null = null): DimensionRow[] {
+  geology: GeologyShares | null = null, context: ZoneContext | null = null): DimensionRow[] {
   const geo = geologyText(geology, t)
   return [
     { name: t.layer.topography, ...spread, n: windows, source: 'Copernicus DEM GLO-30', missing: null },
     geo
       ? { name: t.layer.geology, median: null, p25: null, p75: null, n: null, source: t.geoSource, missing: null, text: geo }
       : { name: t.layer.geology, median: null, p25: null, p75: null, n: null, source: null, missing: t.geologyMissing },
-    { name: t.layer.thermal, median: null, p25: null, p75: null, n: null, source: null, missing: t.thermalMissing },
+    ...contextRows(context, t),
   ]
 }
 

@@ -182,3 +182,29 @@ def test_a_cell_carries_its_geology_for_the_group_of_the_target_when_the_release
 def test_without_geology_columns_a_cell_says_geology_is_not_evaluated(release):
     p = cells_in_bbox(release, (20.2, 10.2, 20.4, 10.4), "moon-psr")["features"][0]["properties"]
     assert p["geology"] is None
+
+
+def test_a_cell_carries_its_earth_context_labelled_as_a_model(tmp_path):
+    ids = np.unique(ang2pix(NSIDE, np.array([60.1, 60.2]), np.array([20.1, 20.1])))
+    n = ids.size
+    cols = {"cell": ids.astype(str), "windows": np.full(n, 25.0), "valid_unmasked": np.full(n, 24.0),
+            "masked_share": np.zeros(n), "cover_unknown": np.zeros(n), "confidence": np.full(n, "high"),
+            "moon-psr:windows": np.full(n, 25.0), "moon-psr:valid": np.full(n, 24.0), "moon-psr:median": np.full(n, 0.5),
+            "moon-psr:p25": np.full(n, 0.4), "moon-psr:p75": np.full(n, 0.6),
+            "moon-psr:screened_out": pa.array([None] * n, pa.bool_()),
+            "req:base_slope": np.full(n, "met"), "req:climbing_limit_lrv": np.full(n, "met"), "req:climbing_limit_viper": np.full(n, "met"),
+            "ctx:magt_c": np.full(n, -7.5, np.float32), "ctx:magt_sd_c": np.full(n, 0.8, np.float32),
+            "ctx:permafrost_prob": np.full(n, 0.9, np.float32), "ctx:frozen_e4": np.full(n, "met"),
+            "ctx:aridity_index": np.full(n, 0.25, np.float32), "ctx:aridity_class": np.full(n, "semi-arid")}
+    d = tmp_path / "r-33333333"
+    d.mkdir()
+    pq.write_table(pa.table(cols), d / "cells.parquet")
+    (d / "release.json").write_text('{"release": "r-33333333", "methodology_version": "v3"}')
+    rel = Release(d, targets=["moon-psr"])
+    p = cells_in_bbox(rel, (20.0, 60.0, 20.2, 60.4), "moon-psr")["features"][0]["properties"]
+    assert p["context"] == {"class": "model", "frozen_e4": "met", "magt_c": -7.5, "magt_sd_c": 0.8, "permafrost_prob": 0.9,
+                            "aridity_index": 0.25, "aridity_class": "semi-arid"}
+
+
+def test_without_context_columns_a_cell_has_no_context(release):
+    assert cells_in_bbox(release, (20.2, 10.2, 20.4, 10.4), "moon-psr")["features"][0]["properties"]["context"] is None

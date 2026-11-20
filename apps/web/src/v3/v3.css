@@ -142,3 +142,6 @@ html:has(.v3-page) { scroll-padding-bottom: 110px; }
 .map-layers .on::before { content: "● "; color: var(--accent); }
 .map-layers .off { color: var(--muted); }
 .map-layers .off::before { content: "○ "; }
+.v3-ctx { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 0.85rem; margin-top: 10px; }
+.v3-ctx dt { color: var(--muted); }
+.v3-ctx dd { margin: 0; }

@@ -15,6 +15,7 @@ export interface V3Release {
   commit?: string
   grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } }
   geology?: unknown
+  context?: unknown
 }
 
 /** What a v2 mission needs from the current v3 release. Every part loads on its own: a missing part never blocks
@@ -91,7 +92,7 @@ export function useV3(scenarioId: string | null) {
   }, [scenario])
 
   // dimensions the release carries: topography always, geology once T46 is in it
-  const available = release?.geology ? ['topography', 'geology'] : ['topography']
+  const available = ['topography', ...(release?.geology ? ['geology'] : []), ...(release?.context ? ['frozen', 'aridity'] : [])]
   return {
     release, scenarios, scenario, status, method, unavailable, available,
     env, setEnv, tau, setTau, minCells, setMin,

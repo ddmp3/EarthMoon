@@ -52,6 +52,8 @@ async function writeRelease(dir: string): Promise<void> {
   await writeFile(path.join(dir, RID, "layers/moon-psr/coverage/3/4/3.png"), PNG);
   await mkdir(path.join(dir, RID, "layers/moon-psr/geology/3/4"), { recursive: true });
   await writeFile(path.join(dir, RID, "layers/moon-psr/geology/3/4/3.png"), PNG);
+  await mkdir(path.join(dir, RID, "layers/_earth/frozen/3/4"), { recursive: true });
+  await writeFile(path.join(dir, RID, "layers/_earth/frozen/3/4/3.png"), PNG);
   await w(`${OLD}/release.json`, { release: OLD, methodology_version: "v3", run: "run-001", grid: { tau: [0.5], min_cells: [3], nominal: { tau: 0.5, min_cells: 3 } } });
 }
 
@@ -229,6 +231,14 @@ describe("API v3 geology (T46)", () => {
     const res = await fetch(`${api.url}/api/v3/layers/B/moon-psr/geology/3/4/3.png`);
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toMatch(/png/);
+  });
+
+  it("serves the Earth context layers whatever the lunar target (T47)", async () => {
+    for (const env of ["moon-psr", "moon-mare-plains"]) {
+      const res = await fetch(`${api.url}/api/v3/layers/B/${env}/frozen/3/4/3.png`);
+      expect(res.status, env).toBe(env === "moon-psr" ? 200 : 400);   // moon-mare-plains is not assessed in this release
+    }
+    expect((await fetch(`${api.url}/api/v3/layers/B/moon-psr/aridity/3/4/3.png`)).status).toBe(204);
   });
 
   it("documents the geology of a zone in the contract", async () => {

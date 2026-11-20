@@ -798,7 +798,7 @@ export interface paths {
                 path: {
                     scenario: string;
                     env: string;
-                    parameter: "typicality" | "coverage" | "geology";
+                    parameter: "typicality" | "coverage" | "geology" | "frozen" | "aridity";
                     z: number;
                     x: number;
                     y: number;
@@ -1143,6 +1143,20 @@ export interface components {
                 top_decile_share?: number;
             } | null;
             tiles?: string[];
+            /** @description T47, decision E18: Earth context of the zone's cells (models, never a similarity with the Moon): share per frozen-ground state (E4) and per aridity class. null when the release has no context. */
+            context?: {
+                /** @enum {string} */
+                class?: "model";
+                comparable_with_moon?: boolean;
+                frozen_e4?: {
+                    [key: string]: number;
+                };
+                magt_c_median?: number | null;
+                aridity?: {
+                    [key: string]: number;
+                };
+                sources?: string[];
+            } | null;
             /** @description T46: mean share of the 9 samples of the zone's cells in each geology state, for the group of lunar environments of the target (crosswalk E17). null when the release has no geology. */
             geology?: {
                 /** @enum {string} */

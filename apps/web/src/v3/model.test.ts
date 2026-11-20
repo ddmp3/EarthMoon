@@ -52,7 +52,7 @@ describe('coverage legend', () => {
 describe('layers', () => {
   it('lists every dimension; the ones waiting for a later task stay visible, disabled, with the reason', () => {
     const layers = layerList(en)
-    expect(layers.map((l) => l.id)).toEqual(['topography', 'geology', 'thermal', 'operational', 'multi'])
+    expect(layers.map((l) => l.id)).toEqual(['topography', 'geology', 'frozen', 'aridity', 'thermal', 'operational', 'multi'])
     expect(layers.filter((l) => l.enabled).map((l) => l.id)).toEqual(['topography'])
     expect(layers.find((l) => l.id === 'geology')?.reason).toBe('available after T46')
     expect(layers.find((l) => l.id === 'multi')?.reason).toBe('needs two non-redundant dimensions')
@@ -63,7 +63,10 @@ describe('zone dimensions', () => {
   it('gives topography with its spread and lists the dimensions not evaluated by name', () => {
     const rows = zoneDimensions({ median: 0.81, p25: 0.66, p75: 0.9 }, 214, en)
     expect(rows[0]).toMatchObject({ name: 'Topography (slope)', median: 0.81, p25: 0.66, p75: 0.9, n: 214, source: 'Copernicus DEM GLO-30' })
-    expect(rows.slice(1).map((r) => [r.name, r.missing])).toEqual([['Geology', 'not evaluated (T46)'], ['Thermal', 'not evaluated (T47)']])
+    expect(rows.slice(1).map((r) => [r.name, r.missing])).toEqual([
+      ['Geology', 'not evaluated (T46)'],
+      ['Surface thermal cycling', 'waits for MODIS (NASA Earthdata account, data improvement D1)'],
+    ])
   })
 })
 
@@ -192,5 +195,19 @@ describe('geology class of a cell on the map', () => {
     const { geologyClass } = await import('./model')
     const g = (match: number, partial: number, no_match: number) => cell({ geology: { group: 'mare', source: 'x', match, partial, no_match, unresolved: 0, no_map: 0 } })
     expect([g(0.6, 0, 0.4), g(0.3, 0.3, 0.4), g(0, 0, 0.8), g(0.1, 0.1, 0.2), cell({})].map(geologyClass)).toEqual([1, 2, 3, 4, 0])
+  })
+})
+
+describe('Earth context of a zone (T47, E18)', () => {
+  it('gives frozen ground and aridity as shares, labelled, and thermal cycling as waiting for its data', async () => {
+    const { zoneDimensions } = await import('./model')
+    const ctx = { frozen_e4: { met: 0.5, partial: 0.5, failed: 0, 'not covered': 0 }, magt_c_median: -6.2,
+      aridity: { 'hyper-arid': 0, arid: 0.75, 'semi-arid': 0.25, 'dry sub-humid': 0, humid: 0, 'no data': 0 } }
+    const rows = zoneDimensions({ median: 0.8, p25: 0.7, p75: 0.9 }, 100, en, null, ctx)
+    expect(rows.map((r) => r.name)).toEqual(['Topography (slope)', 'Geology', 'Frozen ground (Earth context, model)',
+      'Aridity (Earth context, model)', 'Surface thermal cycling'])
+    expect(rows[2].text).toBe('E4 met 50% · partial 50% · not met 0% · not covered 0% · ground -6.2 °C')
+    expect(rows[3].text).toBe('arid 75% · semi-arid 25%')
+    expect(rows[4].missing).toMatch(/Earthdata/)
   })
 })

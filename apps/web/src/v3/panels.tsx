@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import type { Coverage, GeologyShares, MethodSource, Scenario, Status, Zone } from './api'
-import { cividis, legendRows, statusLines, zoneDimensions } from './model'
+import { cividis, legendRows, statusLines, zoneDimensions, type ZoneContext } from './model'
 import { useAppStore } from '../store'
 import { limitText, requirementText, stepText } from './content'
 import type { V3Texts } from './text'
@@ -85,7 +85,8 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
           <tr><th scope="col">{t.dimension}</th><th scope="col">{t.median}</th><th scope="col">{t.iqr}</th><th scope="col">n ({t.windows})</th><th scope="col">{t.source}</th></tr>
         </thead>
         <tbody>
-          {zoneDimensions(zone.typicality, zone.coverage.valid_unmasked, t, (zone as { geology?: GeologyShares | null }).geology ?? null).map((d) => (
+          {zoneDimensions(zone.typicality, zone.coverage.valid_unmasked, t, (zone as { geology?: GeologyShares | null }).geology ?? null,
+            (zone as { context?: ZoneContext | null }).context ?? null).map((d) => (
             <tr className={d.missing ? 'v3-missing' : ''} key={d.name}>
               <th scope="row">{d.name}</th>
               {d.missing ? (

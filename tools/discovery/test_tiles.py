@@ -105,3 +105,14 @@ def test_geology_tiles_colour_match_partial_and_no_match_and_hatch_unresolved():
     hatched = img[1, 128:, 3] > 0
     assert hatched.any() and not hatched.all()                    # unresolved: pattern, not a fill
     assert img[cells == 99].size == 0 or not img[cells == 99][..., 3].any()
+
+
+def test_context_tiles_colour_each_class_and_leave_no_data_transparent():
+    import numpy as np
+    from discovery.tiles import CONTEXT_COLOURS, render_classes
+    cells = np.array([[1, 2], [3, 4]] * 128, dtype=np.int64).repeat(128, axis=1)[:256, :256]
+    ids = np.array([1, 2, 3, 4], np.int64)
+    codes = np.array([1, 2, 3, 0], np.uint8)
+    img = render_classes(cells, ids, codes, CONTEXT_COLOURS["frozen"])
+    assert tuple(img[0, 0, :3]) == CONTEXT_COLOURS["frozen"][1] and img[0, 0, 3] > 0
+    assert img[1, 200, 3] == 0                                     # code 0: not covered, nothing drawn

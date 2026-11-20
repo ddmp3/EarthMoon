@@ -159,6 +159,25 @@ def render_geology(cells: np.ndarray, ids: np.ndarray, gclass: np.ndarray, z: in
     return img
 
 
+# T47 Earth context (E18): one layer each for the whole release (they do not depend on the lunar target)
+CONTEXT_COLOURS = {
+    "frozen": {1: (0, 114, 178), 2: (86, 180, 233), 3: (230, 159, 0)},                    # met, partial, failed
+    "aridity": {1: (166, 97, 26), 2: (223, 194, 125), 3: (245, 245, 245), 4: (128, 205, 193), 5: (1, 133, 113)},
+}
+FROZEN_CODE = {"met": 1, "partial": 2, "failed": 3}
+ARIDITY_CODE = {"hyper-arid": 1, "arid": 2, "semi-arid": 3, "dry sub-humid": 4, "humid": 5}
+
+
+def render_classes(cells: np.ndarray, ids: np.ndarray, codes: np.ndarray, colours: dict) -> np.ndarray:
+    """RGBA tile of a class layer: one colour per code, nothing where the code is 0 (no data or not covered)."""
+    k, hit = _lookup(cells, ids)
+    c = np.where(hit, np.asarray(codes)[k] if ids.size else 0, 0)
+    img = np.zeros((SIZE, SIZE, 4), np.uint8)
+    for code, rgb in colours.items():
+        img[c == code] = (*rgb, 210)
+    return img
+
+
 _LAYERS: dict = {}
 
 
@@ -180,7 +199,9 @@ def _render_job(args) -> tuple[int, int]:
     cells = pixel_cells(z, x, y)
     files = size = 0
     for name, (ids, value, codes, land) in _LAYERS.items():
-        if name.endswith("/geology"):
+        if name.startswith("_earth/"):
+            img = render_classes(cells, ids, codes, CONTEXT_COLOURS[name.split("/")[1]])
+        elif name.endswith("/geology"):
             img = render_geology(cells, ids, codes, z, x, y)
         elif value is None:
             img = render_coverage(cells, ids, codes, z, x, y, land)
@@ -229,6 +250,14 @@ def render_release(run: Path, release: Path, land_path: Path | None, workers: in
             np.save(work / f"{t}__geology.codes.npy",
                     geology_class(geo[f"geo:{g}:match"], geo[f"geo:{g}:partial"], geo[f"geo:{g}:no_match"])[order])
             names.append(f"{t}/geology")
+    from discovery.release import _context
+    ctx = _context(run, cells)                                    # T47: Earth context layers, once per release
+    if ctx:
+        fz = np.array([FROZEN_CODE.get(v, 0) for v in ctx["ctx:frozen_e4"]], np.uint8)[order]
+        ar = np.array([ARIDITY_CODE.get(v, 0) for v in ctx["ctx:aridity_class"]], np.uint8)[order]
+        for nm, codes in (("frozen", fz), ("aridity", ar)):
+            np.save(work / f"_earth__{nm}.codes.npy", codes)
+            names.append(f"_earth/{nm}")
     del cells
     jobs = sorted({tile for zoom in range(MAX_ZOOM + 1) for tile in tiles_with_cells(land if land is not None else ids[order], zoom)})
     files = size = 0
