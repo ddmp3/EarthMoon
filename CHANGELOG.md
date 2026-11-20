@@ -2,7 +2,7 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
-## 2026-11-19 · T43b run-002 with protocol v3 (PR #PRNUM)
+## 2026-11-19 · T43b run-002 with protocol v3 (PR #24)
 - **Protocol v3** (tag `validation-protocol-v3`, David's decision when signing G4, 19/11, before run-002):
   - 5 km cells are HEALPix cells (NSIDE 1303, 25.04 km², one grid for the globe; `tools/discovery/healpix.py`, pure numpy). A cell cut by tile edges keeps the windows of every tile;
   - candidate zones are made of, and ranked on, high-confidence cells only.
