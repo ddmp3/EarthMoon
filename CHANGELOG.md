@@ -2,7 +2,7 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
-## 2026-11-20 · T46 Geology dimension (PR #PRNUM)
+## 2026-11-20 · T46 Geology dimension (PR #28)
 - **Source:** Macrostrat, David's choice of 20/11 (CC-BY 4.0): `carto` vector tiles at zoom 8, which hold the finest map unit Macrostrat has at each place. 20,307 tiles, 362 MB, 0 failures. GLiM was set aside: its polygons have no stated licence, and its grid is 50 km.
 - **Crosswalk E17** (`docs/wiki/methods/geology-crosswalk.md`, delegated by David to Claude, to be reviewed before G5):
   - highlands: anorthosite, with plagioclase-bearing mafic rocks as partial;
