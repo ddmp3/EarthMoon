@@ -1,4 +1,6 @@
-"""T43: write the run-001 zone dossiers into docs/wiki/runs/run-001/ (run in Docker with the repo at /repo).
+"""Write the zone dossier pages and world maps of a run into docs/wiki/runs/<label>/ (run in Docker with the repo at /repo).
+
+    python tools/discovery/run_pages.py run-002 /data/run002
 
 Outcomes come from tools/discovery/dossier.outcome (rule committed before any dossier was written).
 Images: DEM hillshades at 80 m (one per place) and world maps at 0.25°, to keep the repository light."""
@@ -12,8 +14,8 @@ sys.path.insert(0, "/repo/tools")
 from discovery.discover import load_cells  # noqa: E402
 from discovery.dossier import outcome, world_map, write_png_rgb, zone_hillshade  # noqa: E402
 
-RUN = Path("/data/run001")
-OUT = Path("/repo/docs/wiki/runs/run-001")
+LABEL, RUN = sys.argv[1], Path(sys.argv[2])
+OUT = Path("/repo/docs/wiki/runs") / LABEL
 (OUT / "zones").mkdir(parents=True, exist_ok=True)
 facts = json.loads((RUN / "report/zones/facts.json").read_text(encoding="utf-8"))
 evidence = json.loads((RUN / "dossier-evidence.json").read_text())
@@ -43,7 +45,7 @@ for zid in sorted(facts):
     lines = [
         f"# Zone {zid}: {f['place']}",
         "",
-        f"run-001, scenario {zid[0]}, target `{f['target']}`" + (f", also found for {', '.join('`' + x + '`' for x in f['also_for'])}" if f["also_for"] else "") + ".",
+        f"{LABEL}, scenario {zid[0]}, target `{f['target']}`" + (f", also found for {', '.join('`' + x + '`' for x in f['also_for'])}" if f["also_for"] else "") + ".",
         "",
         f"**Outcome: {res}.** {why[0].upper() + why[1:]}.",
         "",

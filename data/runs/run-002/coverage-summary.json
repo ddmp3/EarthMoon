@@ -1,0 +1,10 @@
+{
+ "cells": 6296808,
+ "half_or_more_masked": 0.5284,
+ "confidence": {
+  "high": 0.3114,
+  "medium": 0.1266,
+  "low": 0.562
+ },
+ "confidence_missing": 0
+}

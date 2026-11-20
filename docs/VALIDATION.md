@@ -1,5 +1,23 @@
 # Validation
 
+## v3, run-002 (19 November 2026)
+
+run-001 again with the two rules of protocol `validation-protocol-v3`: one global equal-area grid of 5 km cells (HEALPix), and candidate zones on high-confidence cells only. Full report: [wiki/runs/run-002.md](wiki/runs/run-002.md).
+
+| Check | run-001 | run-002 | Pass |
+|---|---|---|---|
+| Positive controls | none exist for A and B | none exist | no validation |
+| Negatives in the top 10% | 0 of 18 for every target | 0 of 18 for every target | yes |
+| Masks | 17 of 18 | 17 of 18 | no |
+| Self-consistency (KS ≤ 0.05) | 4 of 5 (pits 0.056) | 4 of 5 (pits 0.056) | partly |
+| Reproducibility | 5 of 5 tiles identical | 5 of 5 tiles identical | yes |
+
+**What it means:**
+- The two artefacts of run-001 are gone from the top: none of the 40 best zones is a tile-edge fragment or a remnant between hidden ground.
+- That does not make the top zones analogs. 2 of 23 places are plausible from the literature (Andrelândia, Brazil; northern Skye, Scotland); the other 21 are unknown.
+- About 30% fewer zones, and a larger share stays stable under slope noise (shadowed regions 23%, lit highlands 75%, mare plains 85%).
+- The ranking changes with the DEM source (NASADEM: Spearman 0.08 and 0.34, top-20 overlap 35 and 45%) and less with the scale (30 m: 60 and 65% kept, against 35 and 40% in run-001). It is not a ranking of places.
+
 ## v3, run-001 (19 November 2026)
 
 The first global discovery run of v3: topography only, scenarios A (lunar base) and B (lunar robotics), protocol `validation-protocol-v2`. Full report: [wiki/runs/run-001.md](wiki/runs/run-001.md).
