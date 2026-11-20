@@ -73,7 +73,13 @@ async function discovery(page, name, shot) {
   for (const cls of ["Screened out", "No data", "Ground hidden", "Partial", "Low confidence", "Evaluated"]) {
     if (!(await page.locator(".v3-legend .legend-label", { hasText: cls }).count())) defect(name, `discovery: legend lacks "${cls}"`);
   }
-  if ((await page.locator(".v3-status").first().innerText()).match(/validated/i) === null) defect(name, "discovery: no validity indicator");
+  const alert = page.locator(".v3-page [role=alert]");
+  if (await alert.count()) defect(name, `discovery: error shown: ${(await alert.first().innerText()).slice(0, 200)}`);
+  const status = page.locator(".v3-status");
+  if (!(await status.count()) || (await status.first().innerText()).match(/validated/i) === null) {
+    defect(name, "discovery: no validity indicator");
+    return;
+  }
   if (!(await page.locator(".v3-layers .v3-disabled", { hasText: "T46" }).count())) defect(name, "discovery: the geology layer is not shown as waiting for T46");
   if (!(await page.locator(".v3-cannot-bar").isVisible())) defect(name, "discovery: the line on what Earth cannot reproduce is not visible");
   // contrast: pastel hatching against the panel (graphics, at least 3:1) and legend text (at least 4.5:1)

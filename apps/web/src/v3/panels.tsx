@@ -188,6 +188,7 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
       </header>
       <p className="note">{zone.lat.toFixed(4)}, {zone.lon.toFixed(4)}</p>
       <StatusBar status={status} t={t} />
+      <div className="v3-scroll">
       <table className="v3-dims">
         <thead>
           <tr><th scope="col">{t.dimension}</th><th scope="col">{t.median}</th><th scope="col">{t.iqr}</th><th scope="col">n ({t.windows})</th><th scope="col">{t.source}</th></tr>
@@ -197,7 +198,7 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
             <tr className={d.missing ? 'v3-missing' : ''} key={d.name}>
               <th scope="row">{d.name}</th>
               {d.missing ? (
-                <td colSpan={4}><span className="match-bar-missing v3-missing-chip">{d.missing}</span></td>
+                <td colSpan={4}><span className="v3-missing-chip">{d.missing}</span></td>
               ) : (
                 <>
                   <td>{two(d.median)}</td>
@@ -210,6 +211,7 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
           ))}
         </tbody>
       </table>
+      </div>
       <Requirements scenario={scenario} t={t} zone={zone} />
       <section>
         <h4>{t.confidenceLabel}</h4>
@@ -260,7 +262,7 @@ export function CompareZones({ zones, onClose, t }: { zones: Zone[]; onClose: ()
           </thead>
           <tbody>
             <tr><th scope="row">{t.layer.topography}</th>{zones.map((z) => <td key={z.id}><Strip zone={z} /></td>)}</tr>
-            <tr><th scope="row">{t.layer.geology}</th>{zones.map((z) => <td key={z.id}><span className="match-bar-missing v3-missing-chip">{t.geologyMissing}</span></td>)}</tr>
+            <tr><th scope="row">{t.layer.geology}</th>{zones.map((z) => <td key={z.id}><span className="v3-missing-chip">{t.geologyMissing}</span></td>)}</tr>
             {reqIds.map((id) => (
               <tr key={id}><th scope="row">{id}</th>{zones.map((z) => <td key={z.id}>{req(z, id)}</td>)}</tr>
             ))}

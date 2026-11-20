@@ -3,7 +3,7 @@
 .discover-card strong { font-family: "Space Grotesk Variable", sans-serif; font-size: 1.25rem; }
 .discover-card:hover { border-color: var(--accent); }
 .v3-patterns { position: absolute; width: 0; height: 0; overflow: hidden; }
-.v3-page { padding: 20px clamp(16px, 3vw, 40px) 0; display: grid; gap: 16px; }
+.v3-page { padding: 96px var(--gutter, clamp(16px, 3vw, 40px)) 0; display: grid; gap: 16px; }
 .v3-head { display: grid; gap: 10px; }
 .v3-head h1 { font-family: "Space Grotesk Variable", sans-serif; font-size: clamp(1.6rem, 3vw, 2.2rem); }
 .v3-selectors { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -54,7 +54,7 @@
 .v3-dims, .v3-compare table { width: 100%; border-collapse: collapse; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
 .v3-dims th, .v3-dims td, .v3-compare th, .v3-compare td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
 .v3-dims thead th, .v3-compare thead th { color: var(--muted); font-weight: 500; font-size: 0.75rem; }
-.v3-missing-chip { display: inline-block; padding: 2px 8px; border-radius: 6px; color: #1a1f2e; font-size: 0.78rem; }
+.v3-missing-chip { display: inline-block; padding: 2px 8px; border-radius: 6px; color: var(--text); font-size: 0.78rem; border: 1px dashed #b9c6e8; background: repeating-linear-gradient(135deg, var(--panel-2) 0 6px, color-mix(in srgb, #b9c6e8 18%, transparent) 6px 8px); }
 .v3-reqs { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 0.85rem; }
 .v3-reqs li { display: grid; grid-template-columns: auto 1fr; gap: 2px 8px; }
 .v3-reqs li .note { grid-column: 2; }
@@ -87,4 +87,11 @@
   .v3-body { grid-template-columns: minmax(0, 1fr); }
   .v3-main { order: -1; }
   .v3-map { height: 58vh; }
+}
+html:has(.v3-page) { scroll-padding-bottom: 110px; }
+.v3-zones input[type="checkbox"] { width: 20px; height: 20px; }
+.v3-card header h3 { min-width: 0; }
+@media (max-width: 640px) {
+  .v3-cannot-bar { font-size: 0.74rem; max-height: 4.6em; overflow-y: auto; }
+  .v3-dims th, .v3-dims td { padding: 5px 6px; }
 }
