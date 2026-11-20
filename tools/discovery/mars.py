@@ -31,7 +31,13 @@ def read_pds4(img: Path) -> np.ndarray:
     n = [int(x) for x in re.findall(r"<(?:\w+:)?elements>(\d+)<", label)[:2]]
     m = re.search(r'<(?:\w+:)?offset unit="byte">(\d+)<', label)
     offset = int(m.group(1)) if m else 0
-    return np.fromfile(img, dtype=dtype, count=n[0] * n[1], offset=offset).reshape(n[0], n[1]).astype(dtype.replace(">", "").replace("<", "") if dtype[1] != "f" else "f4")
+    a = np.fromfile(img, dtype=dtype, count=n[0] * n[1], offset=offset).reshape(n[0], n[1])
+    elem = label[label.find("<Element_Array>"):label.find("</Element_Array>")] if "<Element_Array>" in label else ""
+    sc = re.search(r"<(?:\w+:)?scaling_factor>([^<]+)<", elem)
+    off = re.search(r"<(?:\w+:)?value_offset>([^<]+)<", elem)
+    if sc or off:                                          # polar grids: elevation = raw x 0.25 - 8000 m
+        return a.astype("float64") * (float(sc.group(1)) if sc else 1.0) + (float(off.group(1)) if off else 0.0)
+    return a.astype(dtype.replace(">", "").replace("<", "") if dtype[1] != "f" else "f4")
 
 
 def observed_fraction(counts: np.ndarray) -> float:
@@ -67,14 +73,18 @@ def band_windows(z: np.ndarray, lats: np.ndarray, ppd: int, window_px: int = WIN
     return out
 
 
-def polar_latlon(row: np.ndarray, col: np.ndarray, size: int, pixel_m: float, north: bool = True):
+POLAR_R_M = 3376200.0    # radius of the polar MEGDR projection (a_axis_radius 3376.2 km in their labels)
+POLAR_PIXEL_M = 115.089465                  # pixel_resolution of the 512 ppd polar labels (km 0.115089465)
+
+
+def polar_latlon(row: np.ndarray, col: np.ndarray, size: int, pixel_m: float, north: bool = True, radius_m: float = POLAR_R_M):
     """Latitude and longitude of pixel centres of a MEGDR polar grid (polar stereographic, pole at the centre; north:
     longitude 0 straight down, 90°E to the right; south: 0 straight up, 90°E to the right, per the MEGDR page)."""
     c = (size - 1) / 2
     x = (np.asarray(col, float) - c) * pixel_m
     y = (np.asarray(row, float) - c) * pixel_m
     rho = np.hypot(x, y)
-    lat_abs = 90 - np.degrees(2 * np.arctan(rho / (2 * MARS_R_M)))
+    lat_abs = 90 - np.degrees(2 * np.arctan(rho / (2 * radius_m)))
     if north:
         lon = np.degrees(np.arctan2(x, y)) % 360
         return lat_abs, lon
@@ -89,11 +99,12 @@ MIN_OBSERVED = 0.5        # E19: a window needs a MOLA shot in half its pixels; 
 SWIM_MIN = 0.0            # SWIM states no class boundary: Ci > 0 is "consistent with ice" (0 inconclusive); 0.25, 0.5 tested
 
 
-def polar_windows(t_img: Path, c_img: Path, north: bool, pixel_m: float, window_px: int = WINDOW_PX) -> dict:
-    """Every window of a MEGDR polar grid, in strips of window_px rows: metrics, observed share, centre lat/lon."""
+def polar_windows(t_img: Path, c_img: Path | None, north: bool, pixel_m: float, window_px: int = WINDOW_PX) -> dict:
+    """Every window of a MEGDR polar grid, in strips of window_px rows: metrics, observed share (NaN when no count
+    grid is published, as for the 512 ppd polar grids), centre lat/lon."""
     from discovery.windows import ALL_METRICS, window_metrics_grid
     z = read_pds4(t_img)
-    cnt = read_pds4(c_img)
+    cnt = read_pds4(c_img) if c_img is not None and Path(c_img).exists() else None
     size = z.shape[0]
     cols = {k: [] for k in METRICS}
     cols.update(lat=[], lon=[], observed_frac=[])
@@ -103,8 +114,11 @@ def polar_windows(t_img: Path, c_img: Path, north: bool, pixel_m: float, window_
         n = w["slope_mean"].shape[1]
         for k in METRICS:
             cols[k].append(w[k].ravel())
-        cs = cnt[r0:r0 + window_px, :n * window_px] > 0
-        cols["observed_frac"].append(cs.reshape(window_px, n, window_px).mean(axis=(0, 2)))
+        if cnt is not None:
+            cs = cnt[r0:r0 + window_px, :n * window_px] > 0
+            cols["observed_frac"].append(cs.reshape(window_px, n, window_px).mean(axis=(0, 2)))
+        else:
+            cols["observed_frac"].append(np.full(n, np.nan))
         rc = np.full(n, r0 + (window_px - 1) / 2)
         cc = np.arange(n) * window_px + (window_px - 1) / 2
         la, lo = polar_latlon(rc, cc, size, pixel_m, north)
@@ -156,18 +170,21 @@ def build_profiles(mola: Path, swim: Path, out_dir: Path, json_dir: Path) -> dic
     import pyarrow as pa
     import pyarrow.parquet as pq
     from discovery.profiles import file_input, summarise
-    pole_px = 2 * math.pi * MARS_R_M / 360 / 512
+    pole_px = POLAR_PIXEL_M
     out = {}
     envs = {}
     for name, north in (("mars-north-polar", True), ("mars-south-polar", False)):
         p = "n" if north else "s"
-        w = polar_windows(mola / f"megt_{p}_512_1.img", mola / f"megc_{p}_512_1.img", north, pole_px)
+        w = polar_windows(mola / f"megt_{p}_512_1.img", None, north, pole_px)
         phi = 80.0                                                    # nominal; 75 and 85 reported as sensitivity
-        sel = (np.abs(w["lat"]) >= phi) & (w["observed_frac"] >= MIN_OBSERVED)
-        sens = {str(f): int(((np.abs(w["lat"]) >= f) & (w["observed_frac"] >= MIN_OBSERVED)).sum()) for f in (75, 80, 85)}
-        envs[name] = (w, sel, {"phi_deg": phi, "pixel_m": round(pole_px, 2), "window_px": WINDOW_PX,
-                               "min_observed": MIN_OBSERVED, "windows_by_phi": sens},
-                      {f"mola/{p}": file_input(mola / f"megt_{p}_512_1.img"), f"mola/{p}-counts": file_input(mola / f"megc_{p}_512_1.img")})
+        valid = np.isfinite(w["slope_mean"])
+        sel = (np.abs(w["lat"]) >= phi) & valid
+        # the polar grids reach about 78°: 75° cannot be tested; no count grid is published at 512 ppd
+        sens = {str(f): int(((np.abs(w["lat"]) >= f) & valid).sum()) for f in (80, 85)}
+        envs[name] = (w, sel, {"phi_deg": phi, "pixel_m": round(pole_px, 3), "window_px": WINDOW_PX,
+                               "observed_share": "not available: no count grid is published for the 512 ppd polar grids",
+                               "grid_extent": "about 78° to the pole", "windows_by_phi": sens},
+                      {f"mola/{p}": file_input(mola / f"megt_{p}_512_1.img")})
     tiles = []
     for la, top in (("88n", 88.0), ("44n", 44.0)):
         for lo in ("000", "090", "180", "270"):

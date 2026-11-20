@@ -56,3 +56,13 @@ def test_swim_coordinates_follow_its_grid_centred_on_180():
     x, y = swim_xy(np.array([0.0, 30.0]), np.array([180.0, 0.0]))
     assert x[0] == pytest.approx(0.0) and y[0] == pytest.approx(0.0)
     assert x[1] == pytest.approx(-MARS_R_M * math.pi) and y[1] == pytest.approx(MARS_R_M * math.pi / 6)
+
+
+def test_a_grid_with_scaling_in_its_label_is_converted_to_metres(tmp_path):
+    raw = np.array([[32000, 32004]], dtype=np.uint16)
+    (tmp_path / "megt_n_512_1.img").write_bytes(raw.astype(">u2").tobytes())
+    (tmp_path / "megt_n_512_1.xml").write_text("""<Array_2D_Image><offset unit="byte">0</offset><Element_Array>
+<data_type>UnsignedMSB2</data_type><unit>meter</unit><scaling_factor>0.25</scaling_factor><value_offset>-8000</value_offset>
+</Element_Array><Axis_Array><elements>1</elements></Axis_Array><Axis_Array><elements>2</elements></Axis_Array></Array_2D_Image>""")
+    z = read_pds4(tmp_path / "megt_n_512_1.img")
+    assert z.tolist() == [[0.0, 1.0]]
