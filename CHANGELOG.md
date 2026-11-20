@@ -2,6 +2,29 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-19 · T43b run-002 with protocol v3 (PR #PRNUM)
+- **Protocol v3** (tag `validation-protocol-v3`, David's decision when signing G4, 19/11, before run-002):
+  - 5 km cells are HEALPix cells (NSIDE 1303, 25.04 km², one grid for the globe; `tools/discovery/healpix.py`, pure numpy). A cell cut by tile edges keeps the windows of every tile;
+  - candidate zones are made of, and ranked on, high-confidence cells only.
+  - EASE-Grid 2.0 was tried first and replaced before the tag: its cells stretch near the poles.
+- **run-002:**
+  - 6,296,808 cells, 0.48 h, 0 failures;
+  - cells with fewer than 10 windows: 5.6% → 1.1%;
+  - zones: about 30% fewer than in run-001, and a larger share stable in Monte Carlo for every target.
+- **Validation:** as in run-001.
+  - negatives: 0 of 18 (pass);
+  - masks: 17 of 18 (fail);
+  - self-consistency: 4 of 5 (pits fail);
+  - rebuild: identical (pass).
+- **Dossiers:**
+  - no artefact left in the top 40;
+  - 2 plausible places (Andrelândia, Brazil; northern Skye, Scotland), 21 unknown;
+  - 36 of the 40 are shadowed-region zones.
+  - ranking against NASADEM: Spearman 0.08 (A) and 0.34 (B), not robust; at 30 m: 60 and 65% of the top 20 kept (run-001: 35 and 40%).
+- **Fixed during the run:** coverage and confidence are now read at the finest scale where each cell has windows. Before the fix, 7.8% of cells had no confidence. Test added; the assessment was rerun.
+- `tools/discovery/run_pages.py` replaces `run001_pages.py` and writes the dossier pages of any run.
+- Report: `docs/wiki/runs/run-002.md`; summary: `docs/VALIDATION.md`.
+
 ## 2026-11-19 · T43 First global discovery run, topography (PR #23)
 - **Protocol v2** (tag `validation-protocol-v2`, David's decision of 18/11, before run-001). The pilot showed only 10 of 18 negatives masked. The engine now masks the 7 hidden-ground classes (cropland, herbaceous wetland and mangroves added), and the masks check reads 1 km windows. Controls and thresholds are unchanged.
 - **run-001:**
