@@ -193,7 +193,7 @@ describe("API v3 (static release)", () => {
     const doc = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { paths: Record<string, unknown> };
     for (const p of ["/api/v3/releases", "/api/v3/releases/{id}", "/api/v3/profiles", "/api/v3/profiles/{id}",
       "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}", "/api/v3/coverage", "/api/v3/method", "/api/v3/status",
-      "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png", "/api/v3/cells", "/api/v3/query"]) {
+      "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png", "/api/v3/cells", "/api/v3/query", "/api/v3/sites"]) {
       expect(doc.paths[p], p).toBeDefined();
     }
   });
@@ -225,7 +225,11 @@ describe("API v3 forwarding to the discovery service", () => {
       req.on("end", () => {
         seen.push({ url: req.url ?? "", body });
         res.setHeader("content-type", "application/json");
-        if (req.url?.startsWith("/cells")) {
+        if (req.url?.startsWith("/points")) {
+          const b = JSON.parse(body) as { points: { id: string }[]; envs: string[] };
+          res.end(JSON.stringify({ release: RID, methodology_version: "v3",
+            points: b.points.map((p) => ({ ...p, cell: "1", values: Object.fromEntries(b.envs.map((e) => [e, { coverage: "evaluated" }])) })) }));
+        } else if (req.url?.startsWith("/cells")) {
           res.end(JSON.stringify({ release: RID, methodology_version: "v3", type: "FeatureCollection", features: [] }));
         } else if (body.includes("tooBig")) {
           res.statusCode = 400;
@@ -238,7 +242,8 @@ describe("API v3 forwarding to the discovery service", () => {
     await new Promise<void>((r) => fake.listen(0, "127.0.0.1", () => r()));
     const { port } = fake.address() as AddressInfo;
     const openapi = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as Record<string, unknown>;
-    const app = createApp({ sites: [], connectors: [], sourceNames: [], openapi, releases: await ReleaseStore.open(dir),
+    const sites = [{ id: "atacama", lat: -23.0, lon: -68.0 }, { id: "haughton", lat: 75.38, lon: -89.67 }] as unknown as Parameters<typeof createApp>[0]["sites"];
+    const app = createApp({ sites, connectors: [], sourceNames: [], openapi, releases: await ReleaseStore.open(dir),
       discoveryUrl: `http://127.0.0.1:${port}` });
     const server: Server = await new Promise((resolve) => {
       const s = app.listen(0, "127.0.0.1", () => resolve(s));
@@ -257,6 +262,18 @@ describe("API v3 forwarding to the discovery service", () => {
     expect(status).toBe(200);
     expect(body.type).toBe("FeatureCollection");
     expect(seen.at(-1)?.url).toBe(`/cells?bbox=20%2C10%2C20.5%2C10.5&env=moon-psr&release=${RID}`);
+  });
+
+  it("the known sites of the missions get the values of their cell for every environment of the scenario", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/sites?scenario=B`);
+    expect(status).toBe(200);
+    expect(body.release).toBe(RID);
+    expect(body.scenario).toBe("B");
+    expect(body.points.map((p: { id: string }) => p.id)).toEqual(["atacama", "haughton"]);
+    expect(Object.keys(body.points[0].values)).toEqual(["moon-psr"]);
+    expect(JSON.parse(seen.at(-1)!.body)).toEqual({
+      points: [{ id: "atacama", lat: -23.0, lon: -68.0 }, { id: "haughton", lat: 75.38, lon: -89.67 }], envs: ["moon-psr"] });
+    expect((await json(`${api.url}/api/v3/sites?scenario=Z`)).status).toBe(404);
   });
 
   it("invalid views never reach the service", async () => {

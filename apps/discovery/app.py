@@ -13,7 +13,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import Body, FastAPI, HTTPException, Query
 
-from core import QueryError, Release, cells_in_bbox, run_query
+from core import QueryError, Release, cells_at, cells_in_bbox, run_query
 
 ROOT = Path(os.environ.get("RELEASES_DIR", "/data/releases"))
 _RELEASES: dict[str, Release] = {}
@@ -69,5 +69,17 @@ def cells(bbox: str = Query(..., max_length=100), env: str = Query(..., max_leng
 def query(q: dict = Body(...), release: str | None = Query(None, max_length=20)) -> dict:
     try:
         return run_query(_release(release), q)
+    except QueryError as e:
+        raise HTTPException(400, str(e)) from e
+
+
+@app.post("/points")
+def points(body: dict = Body(...), release: str | None = Query(None, max_length=20)) -> dict:
+    """Values at named points (the known sites of the missions), for the given environments."""
+    try:
+        envs = body.get("envs")
+        if not isinstance(envs, list) or not envs:
+            raise QueryError("envs must be a non-empty list")
+        return cells_at(_release(release), body.get("points"), envs)
     except QueryError as e:
         raise HTTPException(400, str(e)) from e

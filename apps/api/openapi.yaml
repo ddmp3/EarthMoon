@@ -438,6 +438,22 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Status" }
         "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/sites:
+    get:
+      tags: [V3]
+      summary: Values of the cell holding each known site of the missions, for every environment of the scenario
+      description: Forwarded to the internal discovery service (ADR-005). A site whose place was not assessed has cell null and the reason.
+      parameters:
+        - { $ref: "#/components/parameters/Release" }
+        - { $ref: "#/components/parameters/Scenario" }
+      responses:
+        "200":
+          description: One entry per known site
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
 components:
   parameters:
     Release:

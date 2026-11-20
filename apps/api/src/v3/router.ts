@@ -11,6 +11,7 @@ export function v3Router(
   store: ReleaseStore | undefined,
   log: (message: string, error?: unknown) => void,
   discoveryUrl?: string,
+  sites: { id: string; lat: number; lon: number }[] = [],
 ): express.Router {
   const r = express.Router();
 
@@ -154,6 +155,22 @@ export function v3Router(
       if (box.length !== 4 || !box.every(Number.isFinite)) throw new BadRequest("bbox must be west,south,east,north in degrees");
       const q = new URLSearchParams({ bbox: box.join(","), env: s.target, release });
       return forward(`/cells?${q.toString()}`);
+    }),
+  );
+
+  // The known sites of the v2 missions, placed in the v3 grid: one call per scenario, cached per release.
+  const siteCache = new Map<string, unknown>();
+  r.get(
+    "/sites",
+    handle(async (req, release) => {
+      const s = await store!.scenario(release, req.query.scenario);
+      const key = `${release}|${s.id}`;
+      if (!siteCache.has(key)) {
+        const points = sites.map((x) => ({ id: x.id, lat: x.lat, lon: x.lon }));
+        const out = (await forward(`/points?${new URLSearchParams({ release }).toString()}`, { body: { points, envs: s.assessed_targets } })) as Record<string, unknown>;
+        siteCache.set(key, { ...out, scenario: s.id });
+      }
+      return siteCache.get(key);
     }),
   );
 

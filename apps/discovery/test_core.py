@@ -10,7 +10,7 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
-from core import CELL_CAP, QueryError, Release, cells_in_bbox, run_query  # noqa: E402
+from core import CELL_CAP, QueryError, Release, cells_at, cells_in_bbox, run_query  # noqa: E402
 from discovery.healpix import NSIDE, ang2pix  # noqa: E402
 
 
@@ -133,3 +133,25 @@ def test_the_service_loads_the_current_release_at_start_up(tmp_path, release, mo
     service._RELEASES.clear()
     service.preload()
     assert list(service._RELEASES) == ["r-00000000"]
+
+
+def test_values_at_named_points_give_the_cell_of_each_point_or_say_it_was_not_assessed(release):
+    pts = [{"id": "inside", "lat": 10.5, "lon": 20.5}, {"id": "sea", "lat": -40.0, "lon": -30.0}]
+    out = cells_at(release, pts, ["moon-psr"])
+    assert out["release"] == "r-00000000" and out["methodology_version"] == "v3"
+    by = {p["id"]: p for p in out["points"]}
+    v = by["inside"]["values"]["moon-psr"]
+    assert by["inside"]["cell"] == str(int(np.asarray(ang2pix(NSIDE, np.array([10.5]), np.array([20.5]))).ravel()[0]))
+    assert set(v["typicality"]) == {"median", "p25", "p75"} and v["coverage"] in ("evaluated", "low_confidence")
+    assert by["sea"]["cell"] is None and by["sea"]["values"] is None
+    assert "not assessed" in by["sea"]["reason"]
+
+
+@pytest.mark.parametrize("bad, why", [
+    ([{"id": "x", "lat": 95, "lon": 0}], "lat"),
+    ([{"id": "x", "lat": 0}], "lon"),
+    ([{"id": "x", "lat": 0, "lon": 0}] * 101, "100 points"),
+])
+def test_points_are_checked(release, bad, why):
+    with pytest.raises(QueryError, match=why):
+        cells_at(release, bad, ["moon-psr"])
