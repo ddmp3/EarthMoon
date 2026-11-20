@@ -125,3 +125,17 @@ def test_status_is_validated_only_when_every_check_passes():
            "self_consistency": {"t": {"pass": True}}, "reproducibility": {"pass": True}}
     assert status(val, [], "r-1", "2026-11-19")["validity"]["state"] == "validated"
     assert status({}, [], "r-1", "2026-11-19")["validity"]["state"] == "not_validated"
+
+
+def test_profile_sources_are_catalogue_ids_listed_once_with_the_lunar_cube_expanded():
+    from discovery.release import profile_sources
+    profs = [{"id": "moon-mare-plains", "inputs": {"moon-cube/manifest": {}, "moon-cube/inputs": {
+                 "SLDEM2015_512_00N_30N_000_045_FLOAT.IMG": {}, "GeoUnits.shp": {}, "ironhd.txt": {}},
+                 "lp-grs-ns-special-products/ironhd": {}}},
+             {"id": "moon-psr", "inputs": {"lro-lola-ldem-85s-40m": {}, "lola-polar-illumination/psr": {},
+                                           "lola-polar-illumination/average": {}}},
+             {"id": "moon-pits", "inputs": {"lroc-pits-atlas/list": {}, "moon-cube/manifest": {}}},
+             {"id": "moon-persistently-lit", "inputs": {"lola-south-pole-5m-mosaic/elevation": {}}}]
+    got = profile_sources(profs, ["moon-mare-plains", "moon-psr", "moon-pits"])
+    assert got == ["sldem2015", "usgs-unified-geologic-map", "lp-grs-ns-special-products", "lro-lola-ldem-85s-40m",
+                   "lola-polar-illumination", "lroc-pits-atlas"]

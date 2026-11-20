@@ -173,6 +173,37 @@ def status(validation: dict, sources: list[dict], release: str, created: str) ->
                                       for s in sources]}}
 
 
+# Files of the lunar cube (T41, docs/wiki/runs/moon-profiles.md) by name prefix, and the catalogue entry they come from.
+MOON_CUBE_FILES = (("SLDEM2015_", "sldem2015"), ("GeoUnits.", "usgs-unified-geologic-map"), ("ironhd", "lp-grs-ns-special-products"))
+
+
+def profile_sources(profs: list[dict], targets: list[str]) -> list[str]:
+    """Catalogue ids of the lunar sources behind the assessed targets, each once, in order of first use. The lunar cube
+    is not a catalogue entry: it is replaced by the sources of its input files (SLDEM2015 when none are listed)."""
+    out: list[str] = []
+
+    def add(sid: str) -> None:
+        if sid not in out:
+            out.append(sid)
+
+    for p in profs:
+        if p["id"] not in targets:
+            continue
+        inputs = p.get("inputs") or {}
+        for key, val in inputs.items():
+            sid = key.split("/")[0]
+            if sid != "moon-cube":
+                add(sid)
+            elif key == "moon-cube/inputs" and isinstance(val, dict):
+                for name in val:
+                    for prefix, cat in MOON_CUBE_FILES:
+                        if name.startswith(prefix):
+                            add(cat)
+            elif "moon-cube/inputs" not in inputs:
+                add("sldem2015")
+    return out
+
+
 def scenarios() -> list[dict]:
     import yaml
     from discovery.compare_run import RULES, SUITABILITY
@@ -261,10 +292,7 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     land = land_km2(cube)
     validation = json.loads((run / "validation.json").read_text()) if (run / "validation.json").exists() else {}
     profs = profiles()
-    used = list(EARTH_SOURCES)
-    for p in profs:
-        if p["id"] in targets:
-            used += [k.split("/")[0] for k in (p.get("inputs") or {}) if k.split("/")[0] not in used]
+    used = list(EARTH_SOURCES) + profile_sources(profs, targets)
     content = {"run": run.name, "methodology_version": METHODOLOGY_VERSION, "protocol": PROTOCOL, "commit": commit,
                "processing": processing_steps(run), "validation": validation, "land_km2": land}
     rid = release_id(content)
