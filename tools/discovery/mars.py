@@ -80,3 +80,132 @@ def polar_latlon(row: np.ndarray, col: np.ndarray, size: int, pixel_m: float, no
         return lat_abs, lon
     lon = np.degrees(np.arctan2(x, -y)) % 360
     return -lat_abs, lon
+
+
+# --- profiles of the Martian environments (T48) ----------------------------------------------------------------
+
+METRICS = ("slope_mean", "slope_p95", "roughness_detrended")
+MIN_OBSERVED = 0.5        # E19: a window needs a MOLA shot in half its pixels; below, its terrain is mostly interpolated
+SWIM_MIN = 0.0            # SWIM states no class boundary: Ci > 0 is "consistent with ice" (0 inconclusive); 0.25, 0.5 tested
+
+
+def polar_windows(t_img: Path, c_img: Path, north: bool, pixel_m: float, window_px: int = WINDOW_PX) -> dict:
+    """Every window of a MEGDR polar grid, in strips of window_px rows: metrics, observed share, centre lat/lon."""
+    from discovery.windows import ALL_METRICS, window_metrics_grid
+    z = read_pds4(t_img)
+    cnt = read_pds4(c_img)
+    size = z.shape[0]
+    cols = {k: [] for k in METRICS}
+    cols.update(lat=[], lon=[], observed_frac=[])
+    for r0 in range(0, size - window_px + 1, window_px):
+        strip = z[r0:r0 + window_px].astype("float64")
+        w = window_metrics_grid(strip, pixel_m, window_px, margin=0, metrics=ALL_METRICS)
+        n = w["slope_mean"].shape[1]
+        for k in METRICS:
+            cols[k].append(w[k].ravel())
+        cs = cnt[r0:r0 + window_px, :n * window_px] > 0
+        cols["observed_frac"].append(cs.reshape(window_px, n, window_px).mean(axis=(0, 2)))
+        rc = np.full(n, r0 + (window_px - 1) / 2)
+        cc = np.arange(n) * window_px + (window_px - 1) / 2
+        la, lo = polar_latlon(rc, cc, size, pixel_m, north)
+        cols["lat"].append(la)
+        cols["lon"].append(lo)
+    return {k: np.concatenate(v) for k, v in cols.items()}
+
+
+def global_windows(tiles: list[tuple[Path, Path, float, float]], ppd: int = 128, lat_min: float = 0.0, lat_max: float = 60.0,
+                   window_px: int = WINDOW_PX) -> dict:
+    """Windows of the 128 ppd tiles (top latitude, west longitude) between lat_min and lat_max."""
+    cols: dict = {k: [] for k in (*METRICS, "lat", "lon", "observed_frac")}
+    for t_img, c_img, top, west in tiles:
+        z = read_pds4(t_img)
+        cnt = read_pds4(c_img)
+        span = z.shape[1] / ppd
+        for r0 in range(0, z.shape[0] - window_px + 1, window_px):
+            lats = top - (np.arange(r0, r0 + window_px) + 0.5) / ppd
+            if lats.mean() < lat_min or lats.mean() > lat_max:
+                continue
+            w = band_windows(z[r0:r0 + window_px], lats, ppd, window_px, counts=cnt[r0:r0 + window_px])
+            for k in (*METRICS, "lat", "observed_frac"):
+                cols[k].append(np.asarray(w[k]))
+            cols["lon"].append(west + w["lon_frac"] * span)
+    return {k: np.concatenate(v) if v else np.array([]) for k, v in cols.items()}
+
+
+def swim_xy(lat, lon):
+    """Metres of the SWIM grid: Mars equidistant cylindrical, sphere 3396190 m, central meridian 180°."""
+    d = (np.mod(np.asarray(lon, float), 360) - 180 + 180) % 360 - 180
+    return MARS_R_M * np.radians(d), MARS_R_M * np.radians(np.asarray(lat, float))
+
+
+def sample_swim(path: Path, lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
+    """SWIM combined ice consistency at points (lon 0..360°E); NaN outside the map or at its nodata (-30)."""
+    import rasterio
+    x, y = swim_xy(lat, lon)
+    with rasterio.open(path) as src:
+        vals = np.array([v[0] for v in src.sample(list(zip(x.tolist(), y.tolist())))], float)
+        nod = src.nodata if src.nodata is not None else -30
+    vals[(vals == nod) | (vals <= -29)] = np.nan
+    return vals
+
+
+def build_profiles(mola: Path, swim: Path, out_dir: Path, json_dir: Path) -> dict:
+    """The three MOLA environments of phase 1 (polar terrain north and south, ice-rich mid-latitudes): windows
+    parquet for the comparison engine, and a JSON summary per environment. Volcanic plains wait for the Tanaka map."""
+    import json
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from discovery.profiles import file_input, summarise
+    pole_px = 2 * math.pi * MARS_R_M / 360 / 512
+    out = {}
+    envs = {}
+    for name, north in (("mars-north-polar", True), ("mars-south-polar", False)):
+        p = "n" if north else "s"
+        w = polar_windows(mola / f"megt_{p}_512_1.img", mola / f"megc_{p}_512_1.img", north, pole_px)
+        phi = 80.0                                                    # nominal; 75 and 85 reported as sensitivity
+        sel = (np.abs(w["lat"]) >= phi) & (w["observed_frac"] >= MIN_OBSERVED)
+        sens = {str(f): int(((np.abs(w["lat"]) >= f) & (w["observed_frac"] >= MIN_OBSERVED)).sum()) for f in (75, 80, 85)}
+        envs[name] = (w, sel, {"phi_deg": phi, "pixel_m": round(pole_px, 2), "window_px": WINDOW_PX,
+                               "min_observed": MIN_OBSERVED, "windows_by_phi": sens},
+                      {f"mola/{p}": file_input(mola / f"megt_{p}_512_1.img"), f"mola/{p}-counts": file_input(mola / f"megc_{p}_512_1.img")})
+    tiles = []
+    for la, top in (("88n", 88.0), ("44n", 44.0)):
+        for lo in ("000", "090", "180", "270"):
+            tiles.append((mola / f"megt{la}{lo}hb.img", mola / f"megc{la}{lo}hb.img", top, float(lo)))
+    w = global_windows(tiles, 128, 0.0, 60.0)
+    ci = sample_swim(swim, w["lat"], w["lon"])
+    w["swim_ci"] = ci
+    sel = (ci > SWIM_MIN) & (w["observed_frac"] >= MIN_OBSERVED)
+    sens = {str(c): int(((ci > c) & (w["observed_frac"] >= MIN_OBSERVED)).sum()) for c in (0.0, 0.25, 0.5)}
+    envs["mars-ice-rich-midlatitudes"] = (w, sel, {"swim_ci_above": SWIM_MIN, "pixel_m": round(2 * math.pi * MARS_R_M / 360 / 128, 2),
+                                                   "window_px": WINDOW_PX, "min_observed": MIN_OBSERVED, "windows_by_ci": sens},
+                                          {"swim/Northern_Ci": file_input(swim), **{f"mola/{t[0].name}": file_input(t[0]) for t in tiles}})
+    for name, (w, sel, params, inputs) in envs.items():
+        cols = {k: np.asarray(w[k])[sel].astype("float32") for k in (*METRICS, "observed_frac")}
+        cols["lat"] = np.asarray(w["lat"])[sel].astype("float64")
+        cols["lon"] = np.asarray(w["lon"])[sel].astype("float64")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        pq.write_table(pa.table(cols), out_dir / f"{name}.windows.parquet", compression="zstd")
+        rec = {"id": name, "body": "mars", "spec": f"data/profiles/spec/{name}.yaml", "inputs": inputs, "params": params,
+               "decision": "E19", **summarise({k: np.asarray(w[k]) for k in METRICS}, sel, METRICS)}
+        json_dir.mkdir(parents=True, exist_ok=True)
+        (json_dir / f"{name}.json").write_text(json.dumps(rec, indent=1) + "\n", encoding="utf-8")
+        out[name] = {"windows": rec["windows"], "slope_mean": rec["metrics"]["slope_mean"], "params": params}
+    return out
+
+
+def main(argv=None) -> int:
+    import argparse
+    import json
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--mola", type=Path, default=Path("/data/mola"))
+    ap.add_argument("--swim", type=Path, default=Path("/data/swim/Northern_Ci.tif"))
+    ap.add_argument("--out", type=Path, default=Path("/data/profiles/mars"))
+    ap.add_argument("--json", type=Path, default=Path("data/profiles/mars"))
+    a = ap.parse_args(argv)
+    print(json.dumps(build_profiles(a.mola, a.swim, a.out, a.json), indent=1))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

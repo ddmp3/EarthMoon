@@ -49,3 +49,10 @@ def test_polar_grid_centre_is_the_pole_and_latitude_falls_outwards():
     assert lat[0] == pytest.approx(90.0, abs=0.01)
     assert lat[1] < lat[0] and lat[2] < lat[0]
     assert lat[1] == pytest.approx(lat[2], abs=1e-6)                    # same distance from the pole
+
+
+def test_swim_coordinates_follow_its_grid_centred_on_180():
+    from discovery.mars import swim_xy
+    x, y = swim_xy(np.array([0.0, 30.0]), np.array([180.0, 0.0]))
+    assert x[0] == pytest.approx(0.0) and y[0] == pytest.approx(0.0)
+    assert x[1] == pytest.approx(-MARS_R_M * math.pi) and y[1] == pytest.approx(MARS_R_M * math.pi / 6)
