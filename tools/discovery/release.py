@@ -84,18 +84,27 @@ def zone_id(scenario: str, target: str, tau: float, min_cells: int, rank: int) -
     return f"{scenario}.{target}.t{tau}.m{min_cells}.{rank}"
 
 
-def _rows(ids: list, cells: dict) -> np.ndarray:
+def cell_index(cells: dict) -> dict:
+    """Arrays a zone record reads, prepared once per release: sorting 6 M cell ids for every zone took hours."""
     table = np.asarray(cells["cell"]).astype(np.int64)
     order = np.argsort(table)
+    return {"sorted": table[order], "order": order, "windows": _f(cells["windows"]),
+            "valid_unmasked": _f(cells["valid_unmasked"]), "cover_unknown": _f(cells["cover_unknown"]),
+            "confidence": np.asarray(cells["confidence"], dtype=object)}
+
+
+def _rows(ids: list, index: dict) -> np.ndarray:
+    srt, order = index["sorted"], index["order"]
     a = np.asarray(ids).astype(np.int64)
-    k = np.clip(np.searchsorted(table[order], a), 0, table.size - 1)
-    return order[k][table[order][k] == a]
+    k = np.clip(np.searchsorted(srt, a), 0, srt.size - 1)
+    return order[k][srt[k] == a]
 
 
-def zone_record(z: dict, rank: int, tau: float, min_cells: int, cells: dict) -> dict:
+def zone_record(z: dict, rank: int, tau: float, min_cells: int, cells: dict, index: dict | None = None) -> dict:
     """A zone as the API serves it: values with their spread, requirements, coverage of its cells, Monte Carlo."""
-    r = _rows(z["cell_ids"], cells)
-    conf = np.asarray(cells["confidence"], dtype=object)[r]
+    ix = index if index is not None else cell_index(cells)
+    r = _rows(z["cell_ids"], ix)
+    conf = ix["confidence"][r]
     return {
         "id": zone_id(z["scenario"], z["target"], tau, min_cells, rank), "rank": rank,
         "scenario": z["scenario"], "target": z["target"], "lat": z["lat"], "lon": z["lon"],
@@ -104,9 +113,9 @@ def zone_record(z: dict, rank: int, tau: float, min_cells: int, cells: dict) -> 
         "high_confidence_share": z["high_confidence_share"],
         "requirements": {k[4:]: v for k, v in z.items() if k.startswith("req:")},
         "suitability_median": z.get("suitability_median"),
-        "coverage": {"windows": int(np.nansum(_f(cells["windows"])[r])),
-                     "valid_unmasked": int(np.nansum(_f(cells["valid_unmasked"])[r])),
-                     "cover_unknown": int(np.nansum(_f(cells["cover_unknown"])[r])),
+        "coverage": {"windows": int(np.nansum(ix["windows"][r])),
+                     "valid_unmasked": int(np.nansum(ix["valid_unmasked"][r])),
+                     "cover_unknown": int(np.nansum(ix["cover_unknown"][r])),
                      "cells_by_confidence": {c: int(np.sum(conf == c)) for c in ("high", "medium", "low")}},
         "monte_carlo": {"top_decile_share": z["mc_top_decile_share"]} if "mc_top_decile_share" in z else None,
         "tiles": z.get("tiles", []),
@@ -317,6 +326,7 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     write(d / "status.json", {**head, **status(validation, meth["sources"], rid, date.today().isoformat())})
     write(d / "coverage.json", {**head, "scenarios": {sc: {t: coverage_shares(cells, t, land) for t in ts}
                                                        for sc, ts in SCENARIO_TARGETS.items()}})
+    index = cell_index(cells)
     for sc, ts in SCENARIO_TARGETS.items():
         for t in ts:
             for tau in TAUS:
@@ -327,7 +337,7 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
                         zs = zones_for(cells, sc, t, tau, mc)
                     write(d / "zones" / sc / t / f"t{tau}-m{mc}.json",
                           {**head, "scenario": sc, "target": t, "tau": tau, "min_cells": mc,
-                           "zones": [zone_record(z, k + 1, tau, mc, cells) for k, z in enumerate(zs)]})
+                           "zones": [zone_record(z, k + 1, tau, mc, cells, index) for k, z in enumerate(zs)]})
     idx_path = out / "index.json"
     idx = json.loads(idx_path.read_text()) if idx_path.exists() else {"releases": []}
     entry = {"id": rid, "run": run.name, "methodology_version": METHODOLOGY_VERSION, "protocol": PROTOCOL,
