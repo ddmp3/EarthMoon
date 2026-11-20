@@ -1,6 +1,6 @@
-# Thermal, ice and aridity dimensions (T47, proposal E18)
+# Thermal, ice and aridity dimensions (T47, decision E18)
 
-**Status: proposal, waiting for David's decisions (E18 and data access). Nothing is computed before.**
+**Status: E18 accepted by David on 20/11/2026: no quantile match, three labelled context layers. Frozen ground and aridity first; surface thermal cycling waits for the Earthdata account (data improvement D1).**
 
 ## Why there is no thermal "match"
 - Lunar surface temperatures have no Earth equivalent:

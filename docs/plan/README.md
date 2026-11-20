@@ -58,6 +58,10 @@ Reusable as is: `tools/precompute/terrain_metrics.py` (any grid), the value/sigm
 - No weight without sensitivity analysis. No two parameters measuring the same property without a stated reason.
 - Every computed product records its inputs (with SHA-256), code version and parameters.
 
+**Data first (David, 20/11/2026)**
+- The data and making them available are the core of the project; the interface exists so that experts can use them easily and judge their quality.
+- When a better source exists but is blocked (account, licence, compute), add it to [data-improvements.md](data-improvements.md) with what it would improve and who can unblock it. Review that list at every gate.
+
 **History (decision 6.2)**
 - One branch per task: `feat/T<nn>-<short-name>` (or `docs/`, `fix/`).
 - PR description: what, why, files, tests run with their output, scientific effect, risks.

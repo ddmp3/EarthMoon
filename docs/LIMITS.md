@@ -49,3 +49,4 @@ Provisional choices, labelled `expert_judgement` in the API, until a named exper
 | E15 | Site requirements of each instrument in scenario C | None set; every instrument row is marked as an open requirement | Instrument teams |
 | E16 | Which planetary environment each scenario targets | Proposed in [SCENARIOS.md](SCENARIOS.md) from the T20 environments (refines E8) | Lunar and Mars landing-site teams |
 | E17 | Which Earth lithologies match the lunar highlands, maria and pits | Crosswalk of [wiki/methods/geology-crosswalk.md](wiki/methods/geology-crosswalk.md). Delegated by David to Claude on 20/11/2026; to be reviewed before G5 | Lunar geologists, planetary sample scientists |
+| E18 | How thermal, ice and aridity data are compared with the Moon | Not as a similarity: Earth-side context layers, each labelled direct or model (no within-planet quantile match). Accepted by David on 20/11/2026 | Lunar thermal modellers, instrument teams |
