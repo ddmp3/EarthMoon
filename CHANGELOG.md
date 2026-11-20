@@ -2,6 +2,16 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-20 · T47 Earth context: frozen ground and aridity (PR #PRNUM)
+- **E18, accepted by David:** no thermal "match" with the Moon. The within-planet quantile match was rejected: equal rank is not equal behaviour. Thermal, ice and aridity are Earth-side context layers, each labelled with its class (here, model) and what it does not mean.
+- **Frozen ground:** Obu et al. 2018 (1 km, CC-BY 3.0), read against threshold E4 (-6 °C). Met on 3.8% of cells, partial on 5.5%; not covered south of 25°N (58.3%). The model spread is carried, labelled as not interannual.
+- **Aridity:** Global Aridity Index v3.1 (1 km). The figshare API states CC BY 4.0; the catalogue was corrected. 0 is treated as no data, because the sea and an index below 0.0001 cannot be told apart (D11). 6.3% of cells are hyper-arid and 15.8% have no data.
+- **None of the 40 top slope zones is frozen or arid.**
+- **Surface thermal cycling (MODIS)** waits for a NASA Earthdata account (D1).
+- **David's data-first rule:** a data improvement backlog now sits in the plan (`docs/plan/data-improvements.md`), with 11 Earth and 3 lunar entries.
+- **Release `r-bd4da8c0`** (14 min thanks to the zone cache). **In the product:** zones carry their context; the discovery service returns it per cell; two release-wide tile layers; frozen and aridity layers in the missions, with legends, zone card rows and site card lines.
+- Report: `docs/wiki/runs/run-002-context.md`.
+
 ## 2026-11-20 · T46 Geology dimension (PR #28)
 - **Source:** Macrostrat, David's choice of 20/11 (CC-BY 4.0): `carto` vector tiles at zoom 8, which hold the finest map unit Macrostrat has at each place. 20,307 tiles, 362 MB, 0 failures. GLiM was set aside: its polygons have no stated licence, and its grid is 50 km.
 - **Crosswalk E17** (`docs/wiki/methods/geology-crosswalk.md`, delegated by David to Claude, to be reviewed before G5):

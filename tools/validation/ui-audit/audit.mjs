@@ -94,6 +94,9 @@ async function discovery(page, name, shot) {
   if ((await section.locator("table").count()) && !(await section.getByRole("columnheader", { name: "Geology" }).count())) {
     defect(name, "site card: no geology column");
   }
+  await page.locator("#v3-layer").selectOption("frozen");
+  if (!(await legend.getByText(/Frozen ground for drilling/).count())) defect(name, "frozen layer: no legend");
+  if (!(await legend.getByText(/Not a comparison with the Moon/).count())) defect(name, "frozen layer: not labelled as Earth context");
   await page.locator("#v3-layer").selectOption("topography");
   // Data and method from the site card
   await section.getByRole("button", { name: "Data and method" }).click();

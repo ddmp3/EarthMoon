@@ -1,5 +1,15 @@
 # Validation
 
+## v3, run-002 Earth context (20 November 2026)
+
+Frozen ground and aridity, as context layers rather than comparisons with the Moon (E18). Report: [wiki/runs/run-002-context.md](wiki/runs/run-002-context.md).
+
+| T47 check | Result |
+|---|---|
+| A modelled value is flagged as a model | yes: both layers say "model" in the release, the API and the interface |
+| Multi-year statistics carry an interannual sigma | no: the ground temperature sigma is the model spread, and aridity has none; both say so. MODIS, the source with an interannual sigma, waits for an account (D1) |
+| Inversion-prone valleys are flagged when an elevation correction is used | no elevation correction is used on any temperature |
+
 ## v3, run-002 geology (20 November 2026)
 
 The lithology of geological maps (Macrostrat), compared with the lunar surface material by crosswalk E17. Full report: [wiki/runs/run-002-geology.md](wiki/runs/run-002-geology.md).

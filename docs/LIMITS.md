@@ -6,6 +6,7 @@ Full version (uncertainty table, data weaknesses, biases): [wiki/v2/SCIENTIFIC_L
 
 - That a site is equivalent to the Moon, or "X% similar".
 - That it is a validated test site: only a field campaign by the team that will test can say so.
+- Anything thermal about the Moon. Frozen ground and aridity are Earth context from models (E18); surface thermal cycling is not computed yet.
 - Much about the ground material. v3 compares the **lithology class** of geological maps (T46). A lithology class is not a mineralogy, and a mineralogy is not regolith mechanics: grain size, cohesion, bearing capacity and dust are not measured. Where the map has no unit or only a generic class, geology is "no map" or "unresolved", never "no match".
 - Anything below the 40 m DEM scale: rocks, small craters, the slope under a wheel.
 - That a site without a lava tube level has no cave: it was **not assessed**.
