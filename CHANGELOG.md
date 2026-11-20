@@ -2,7 +2,7 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
-## 2026-11-20 · T47 Earth context: frozen ground and aridity (PR #PRNUM)
+## 2026-11-20 · T47 Earth context: frozen ground and aridity (PR #29)
 - **E18, accepted by David:** no thermal "match" with the Moon. The within-planet quantile match was rejected: equal rank is not equal behaviour. Thermal, ice and aridity are Earth-side context layers, each labelled with its class (here, model) and what it does not mean.
 - **Frozen ground:** Obu et al. 2018 (1 km, CC-BY 3.0), read against threshold E4 (-6 °C). Met on 3.8% of cells, partial on 5.5%; not covered south of 25°N (58.3%). The model spread is carried, labelled as not interannual.
 - **Aridity:** Global Aridity Index v3.1 (1 km). The figshare API states CC BY 4.0; the catalogue was corrected. 0 is treated as no data, because the sea and an index below 0.0001 cannot be told apart (D11). 6.3% of cells are hyper-arid and 15.8% have no data.
