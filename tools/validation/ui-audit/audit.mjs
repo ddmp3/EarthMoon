@@ -88,6 +88,11 @@ async function discovery(page, name, shot) {
   if (contrast("#b9c6e8", panel) < 3) defect(name, `pastel hatching contrast ${contrast("#b9c6e8", panel).toFixed(2)} on the panel (needs 3)`);
   await overflow(page, `${name} robotics v3`);
   await shot("07-robotics-v3");
+  // geology layer (T46): picker, legend, site card column
+  await page.locator("#v3-layer").selectOption("geology");
+  if (!(await legend.getByText("Same rock family (match)").count())) defect(name, "geology layer: no geology legend");
+  if (!(await section.getByRole("columnheader", { name: "Geology" }).count())) defect(name, "site card: no geology column");
+  await page.locator("#v3-layer").selectOption("topography");
   // Data and method from the site card
   await section.getByRole("button", { name: "Data and method" }).click();
   const dialog = page.getByRole("dialog", { name: "Data and method" });

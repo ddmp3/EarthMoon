@@ -56,6 +56,13 @@ def build(out: Path) -> str:
         pq.write_table(pa.table(land), cube / "glo90-90m" / "fixture.windows.parquet")
         (run / "validation.json").write_text(json.dumps({"note": "synthetic fixture: no validation was run"}))
         np.save(run / "land-cells.npy", ids)
+        geo = {"cell": pa.array([str(c) for c in ids])}                      # synthetic geology (T46): random shares
+        for g in ("highland", "mare", "pits"):
+            w = rng.dirichlet(np.ones(5), size=ids.size).astype(np.float32)
+            for k, st in enumerate(("match", "partial", "no_match", "unresolved", "no_map")):
+                geo[f"geo:{g}:{st}"] = pa.array(w[:, k])
+        pq.write_table(pa.table(geo), run / "geology.parquet")
+        (run / "geology.json").write_text(json.dumps({"note": "synthetic fixture geology"}))
         if out.exists():
             shutil.rmtree(out)
         rid = export(run, cube, out, commit="synthetic-fixture")
