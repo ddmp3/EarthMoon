@@ -5,6 +5,7 @@ import { cellState, cividis, geologyText, layerList, legendRows } from './model'
 import { coverageMeaning, requirementText, scenarioText } from './content'
 import { Patterns } from './panels'
 import { targetName, V3_TEXTS } from './text'
+import type { MapLayer } from './MapLayers'
 import type { SiteV3, V3State } from './useV3'
 import './v3.css'
 
@@ -17,8 +18,8 @@ function useV3Texts() {
 
 /** v3 settings in the mission's control bar: lunar environment, coverage overlay, Data and method. */
 export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = false, onScenario, layer, onLayer }: {
-  layer: 'typicality' | 'geology'
-  onLayer: (l: 'typicality' | 'geology') => void
+  layer: MapLayer
+  onLayer: (l: MapLayer) => void
   v: V3State
   overlay: boolean
   onOverlay: (on: boolean) => void
@@ -55,7 +56,7 @@ export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = f
       {s && (
         <label className="field">
           <span>{t.layerPick}</span>
-          <select id="v3-layer" onChange={(e) => onLayer(e.target.value === 'geology' ? 'geology' : 'typicality')} value={layer === 'geology' ? 'geology' : 'topography'}>
+          <select id="v3-layer" onChange={(e) => onLayer(e.target.value === 'topography' ? 'typicality' : (e.target.value as MapLayer))} value={layer === 'typicality' ? 'topography' : layer}>
             {layerList(t, v.available).map((l) => (
               <option disabled={!l.enabled} key={l.id} value={l.id}>{l.label}{l.reason ? ` (${l.reason})` : ''}</option>
             ))}
@@ -185,6 +186,20 @@ export function SiteV3Section({ site, scenario, release, onMethod }: {
           </table>
         </div>
       )}
+      {site.cell && (() => {
+        const c = site.values?.[scenario.assessed_targets[0]]?.context
+        if (!c) return null
+        return (
+          <dl className="v3-ctx">
+            <dt>{t.layer.frozen}</dt>
+            <dd>{c.frozen_e4 ? (t.frozenState[c.frozen_e4] ?? c.frozen_e4) : '—'}{c.magt_c != null ? ` · ${c.magt_c.toFixed(1)} °C ± ${c.magt_sd_c?.toFixed(1) ?? '—'}` : ''}</dd>
+            <dt>{t.layer.aridity}</dt>
+            <dd>{c.aridity_class ? (t.aridityName[c.aridity_class] ?? c.aridity_class) : '—'}{c.aridity_index != null ? ` · ${c.aridity_index.toFixed(3)}` : ''}</dd>
+            <dt />
+            <dd className="note">{t.ctxNote}</dd>
+          </dl>
+        )
+      })()}
       <button className="ghost" onClick={onMethod} type="button">{t.dataMethod}</button>
     </section>
   )
@@ -233,10 +248,15 @@ export function ZoneRows({ items, selectedId, onSelect, picked, onPick }: {
 /** Legend drawn over the mission map: typicality ramp, and the coverage classes with their land share. */
 const GEO_SWATCH: Record<number, string> = { 1: 'rgb(0, 158, 115)', 2: 'rgb(86, 180, 233)', 3: 'rgb(120, 126, 140)' }
 
+const CTX_SWATCH: Record<string, Record<number, string>> = {
+  frozen: { 1: 'rgb(0, 114, 178)', 2: 'rgb(86, 180, 233)', 3: 'rgb(230, 159, 0)' },
+  aridity: { 1: 'rgb(166, 97, 26)', 2: 'rgb(223, 194, 125)', 3: 'rgb(245, 245, 245)', 4: 'rgb(128, 205, 193)', 5: 'rgb(1, 133, 113)' },
+}
+
 export function MapLegend({ coverage, overlay, layer = 'typicality', available = ['topography'] }: {
   coverage: V3State['coverage']
   overlay: boolean
-  layer?: 'typicality' | 'geology'
+  layer?: MapLayer
   available?: string[]
 }) {
   const { t, lang } = useV3Texts()
@@ -247,7 +267,20 @@ export function MapLegend({ coverage, overlay, layer = 'typicality', available =
       <button aria-expanded={open} className="map-legend-toggle" onClick={() => setOpen(!open)} type="button">{t.mapLegend}</button>
       {open && (
         <div className="map-legend-body">
-          {layer === 'geology' ? (
+          {layer === 'frozen' || layer === 'aridity' ? (
+            <>
+              <strong>{layer === 'frozen' ? t.frozenLegend : t.aridityLegend}</strong>
+              <ul aria-label={layer === 'frozen' ? t.frozenLegend : t.aridityLegend} className="v3-legend">
+                {Object.entries(CTX_SWATCH[layer]).map(([k, colour]) => (
+                  <li key={k}>
+                    <svg aria-hidden="true" className="legend-swatch" height="14" width="20"><rect fill={colour} height="14" width="20" /></svg>
+                    <span className="legend-label">{(layer === 'frozen' ? t.frozenClass : t.aridityClass)[Number(k)]}</span>
+                  </li>
+                ))}
+              </ul>
+              <small>{t.ctxNote}</small>
+            </>
+          ) : layer === 'geology' ? (
             <>
               <strong>{t.geoLegend}</strong>
               <ul aria-label={t.geoLegend} className="v3-legend">

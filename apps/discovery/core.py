@@ -16,6 +16,7 @@ from discovery.healpix import NSIDE, ang2pix, cell_area_km2, corners, pix2ang  #
 from discovery.geology import TARGET_GROUP  # noqa: E402
 from discovery.release import GEO_SOURCE, GEO_STATES, coverage_class  # noqa: E402
 
+CONTEXT_COLUMNS = ("ctx:frozen_e4", "ctx:magt_c", "ctx:magt_sd_c", "ctx:permafrost_prob", "ctx:aridity_index", "ctx:aridity_class")
 CELL_CAP = 5000                       # cells in one view (ADR-004)
 QUERY_CELL_CAP = 1_000_000            # cells in the area of one query (ADR-003)
 MAX_RETURNED = 500
@@ -41,6 +42,7 @@ class Release:
         need |= {f"req:{r}" for r in REQUIREMENTS}
         need |= {f"{t}:{k}" for t in self.targets for k in ("windows", "valid", "screened_out", "median", "p25", "p75")}
         need |= {f"geo:{g}:{st}" for g in {TARGET_GROUP.get(t) for t in self.targets} if g for st in GEO_STATES}
+        need |= set(CONTEXT_COLUMNS)
         names = pq.read_schema(self.folder / "cells.parquet").names
         t = pq.read_table(self.folder / "cells.parquet", columns=[n for n in names if n in need])
         ids = np.asarray(t.column("cell").to_numpy(zero_copy_only=False)).astype(np.int64)
@@ -116,12 +118,21 @@ def _props(rel: Release, idx: np.ndarray, t: str) -> list[dict]:
             return None
         return {"group": g, "source": GEO_SOURCE, **{st: num(geo[st][k]) for st in GEO_STATES}}
 
+    has_ctx = "ctx:frozen_e4" in rel._cols
+
+    def context(i: int):
+        if not has_ctx:
+            return None
+        return {"class": "model", "frozen_e4": _txt(rel.col("ctx:frozen_e4")[i]), "magt_c": num(_f(rel.col("ctx:magt_c"))[i]),
+                "magt_sd_c": num(_f(rel.col("ctx:magt_sd_c"))[i]), "permafrost_prob": num(_f(rel.col("ctx:permafrost_prob"))[i]),
+                "aridity_index": num(_f(rel.col("ctx:aridity_index"))[i]), "aridity_class": _txt(rel.col("ctx:aridity_class")[i])}
+
     return [{"id": str(rel.ids[i]), "lat": round(float(rel.lat[i]), 5), "lon": round(float(rel.lon[i]), 5),
              "typicality": {"median": num(med[k]), "p25": num(p25[k]), "p75": num(p75[k])},
              "windows": {"valid": None if not np.isfinite(tv[k]) else int(tv[k]),
                          "total": None if not np.isfinite(tw[k]) else int(tw[k])},
              "coverage": str(cls[k]), "confidence": _txt(rel.col("confidence")[i]), "masked_share": num(ms[k]),
-             "requirements": {r: _txt(rel.col(f"req:{r}")[i]) for r in REQUIREMENTS}, "geology": geology(k)}
+             "requirements": {r: _txt(rel.col(f"req:{r}")[i]) for r in REQUIREMENTS}, "geology": geology(k), "context": context(i)}
             for k, i in enumerate(idx)]
 
 

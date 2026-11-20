@@ -341,7 +341,7 @@ paths:
       parameters:
         - { name: scenario, in: path, required: true, schema: { type: string } }
         - { name: env, in: path, required: true, schema: { type: string } }
-        - { name: parameter, in: path, required: true, schema: { type: string, enum: [typicality, coverage, geology] } }
+        - { name: parameter, in: path, required: true, schema: { type: string, enum: [typicality, coverage, geology, frozen, aridity] } }
         - { name: z, in: path, required: true, schema: { type: integer, minimum: 0, maximum: 7 } }
         - { name: x, in: path, required: true, schema: { type: integer, minimum: 0 } }
         - { name: y, in: path, required: true, schema: { type: integer, minimum: 0 } }
@@ -564,6 +564,17 @@ components:
           properties:
             top_decile_share: { type: number }
         tiles: { type: array, items: { type: string } }
+        context:
+          type: object
+          nullable: true
+          description: "T47, decision E18: Earth context of the zone's cells (models, never a similarity with the Moon): share per frozen-ground state (E4) and per aridity class. null when the release has no context."
+          properties:
+            class: { type: string, enum: [model] }
+            comparable_with_moon: { type: boolean }
+            frozen_e4: { type: object, additionalProperties: { type: number } }
+            magt_c_median: { type: number, nullable: true }
+            aridity: { type: object, additionalProperties: { type: number } }
+            sources: { type: array, items: { type: string } }
         geology:
           type: object
           nullable: true

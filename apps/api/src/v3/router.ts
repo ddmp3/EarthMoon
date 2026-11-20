@@ -198,7 +198,9 @@ const QUERY_FIELDS = ["scenario", "env", "min_typicality", "min_confidence", "re
 class Unavailable extends Error {}
 class TooLarge extends Error {}
 
-export const LAYER_PARAMETERS = ["typicality", "coverage", "geology"] as const;
+export const LAYER_PARAMETERS = ["typicality", "coverage", "geology", "frozen", "aridity"] as const;
+/** Earth context layers (T47): the same for every lunar target, stored once per release. */
+const EARTH_LAYERS = new Set(["frozen", "aridity"]);
 export const MAX_ZOOM = 7;
 
 /** Raster tiles of a release (zoom 0 to 7). Mounted before the general rate limit: a map view asks for many tiles. */
@@ -222,7 +224,7 @@ export function v3LayersRouter(store: ReleaseStore | undefined, log: (message: s
       if (![z, x, y].every(Number.isInteger) || z < 0 || z > MAX_ZOOM || x < 0 || x >= n || y < 0 || y >= n || !/^[0-9]+$/.test(req.params.x)) {
         throw new BadRequest(`Tiles exist for zoom 0 to ${MAX_ZOOM}, with x and y inside the zoom`);
       }
-      const file = await store.layerTile(release, s.target, parameter, z, x, y);
+      const file = await store.layerTile(release, EARTH_LAYERS.has(parameter) ? "_earth" : s.target, parameter, z, x, y);
       res.setHeader("X-Release", release);
       res.setHeader("Cache-Control", "public, max-age=3600");
       if (!file) {

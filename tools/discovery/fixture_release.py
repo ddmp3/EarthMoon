@@ -63,6 +63,15 @@ def build(out: Path) -> str:
                 geo[f"geo:{g}:{st}"] = pa.array(w[:, k])
         pq.write_table(pa.table(geo), run / "geology.parquet")
         (run / "geology.json").write_text(json.dumps({"note": "synthetic fixture geology"}))
+        fz = rng.choice(["met", "partial", "failed", "not covered"], size=ids.size)        # synthetic context (T47)
+        ar = rng.choice(["hyper-arid", "arid", "semi-arid", "dry sub-humid", "humid", "no data"], size=ids.size)
+        pq.write_table(pa.table({"cell": pa.array([str(c) for c in ids]), "ctx:frozen_e4": pa.array(fz.tolist()),
+                                 "ctx:magt_c": pa.array(rng.uniform(-15, 10, ids.size).astype(np.float32)),
+                                 "ctx:magt_sd_c": pa.array(rng.uniform(0, 2, ids.size).astype(np.float32)),
+                                 "ctx:permafrost_prob": pa.array(rng.uniform(0, 1, ids.size).astype(np.float32)),
+                                 "ctx:aridity_index": pa.array(rng.uniform(0, 1, ids.size).astype(np.float32)),
+                                 "ctx:aridity_class": pa.array(ar.tolist())}), run / "context.parquet")
+        (run / "context.json").write_text(json.dumps({"note": "synthetic fixture context"}))
         if out.exists():
             shutil.rmtree(out)
         rid = export(run, cube, out, commit="synthetic-fixture")

@@ -15,7 +15,7 @@ import { useT } from '../i18n'
 import { useAppStore, type SelectedMode } from '../store'
 import { missionImage, scoreTone, siteName } from '../shared'
 import type { QueryResult, Zone } from '../v3/api'
-import { FlyToPoint, MAP_MAX_ZOOM, V3Layers, ZoneMarkers } from '../v3/MapLayers'
+import { FlyToPoint, MAP_MAX_ZOOM, V3Layers, ZoneMarkers, type MapLayer } from '../v3/MapLayers'
 import { MapLegend, RankTabs, SiteV3Chip, V3Controls, V3Search, V3StatusLine, ZoneRows, type Tab } from '../v3/MissionV3'
 import { zoneItems } from '../v3/model'
 import { CompareZones, DataMethod, Patterns, Provenance, ZoneCard } from '../v3/panels'
@@ -147,7 +147,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
   const vt = V3_TEXTS[lang]
   const [tabChoice, setTab] = useState<Tab>('sites')
   const [overlay, setOverlay] = useState(true)
-  const [layerChoice, setLayer] = useState<'typicality' | 'geology'>('typicality')
+  const [layerChoice, setLayer] = useState<MapLayer>('typicality')
   const [showMethod, setShowMethod] = useState(false)
   const [zoneId, setZoneId] = useState<string | null>(null)
   const [provenance, setProvenance] = useState(false)
@@ -157,7 +157,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
   const [bbox, setBbox] = useState<[number, number, number, number] | null>(null)
   const [cellsError, setCellsError] = useState<string | null>(null)
   const hasV3 = Boolean(v3.release && v3.scenario && v3.env)
-  const layer = layerChoice === 'geology' && v3.available.includes('geology') ? 'geology' : 'typicality'
+  const layer: MapLayer = layerChoice !== 'typicality' && v3.available.includes(layerChoice) ? layerChoice : 'typicality'
   // free criteria opens on the discovered zones until the v2 criteria are run
   const tab: Tab = tabChoice === 'sites' && sites.length === 0 && hasV3 ? 'zones' : tabChoice
   const zones = v3.zones?.zones ?? []

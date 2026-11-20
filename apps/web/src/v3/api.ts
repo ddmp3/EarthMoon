@@ -60,6 +60,18 @@ export interface CellProps {
   masked_share: number | null
   requirements: Record<string, string | null>
   geology?: GeologyShares | null
+  context?: CellContext | null
+}
+
+/** T47: Earth context of a cell (models, never a similarity with the Moon). */
+export interface CellContext {
+  class: string
+  frozen_e4: string | null
+  magt_c: number | null
+  magt_sd_c: number | null
+  permafrost_prob: number | null
+  aridity_index: number | null
+  aridity_class: string | null
 }
 
 /** T46: share of the 9 samples of a cell (or mean over a zone) in each geology state, for the target's group. */
@@ -127,7 +139,7 @@ const q = (params: Record<string, string | number>) => new URLSearchParams(Objec
 
 export const v3 = {
   releases: () => get<ReleaseIndex>('releases'),
-  release: (id: string) => get<{ release: string; run: string; geology?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
+  release: (id: string) => get<{ release: string; run: string; geology?: unknown; context?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
   scenarios: () => get<{ release: string; scenarios: Scenario[] }>('scenarios'),
   coverage: (scenario: string, env: string) => get<Coverage>(`coverage?${q({ scenario, env })}`),
   zones: (scenario: string, env: string, tau: number, minCells: number, limit = 50) =>
@@ -148,6 +160,6 @@ export const v3 = {
 }
 
 /** Address of a raster tile layer (zoom 0 to 7), in Leaflet's {z}/{x}/{y} template form. */
-export function layerUrl(scenario: string, env: string, parameter: 'typicality' | 'coverage' | 'geology', release: string): string {
+export function layerUrl(scenario: string, env: string, parameter: 'typicality' | 'coverage' | 'geology' | 'frozen' | 'aridity', release: string): string {
   return `${apiUrl()}/api/v3/layers/${encodeURIComponent(scenario)}/${encodeURIComponent(env)}/${parameter}/{z}/{x}/{y}.png?release=${encodeURIComponent(release)}`
 }

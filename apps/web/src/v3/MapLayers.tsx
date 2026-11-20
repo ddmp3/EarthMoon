@@ -15,8 +15,12 @@ const EMPTY_TILE = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALA
 /** Cells of the view above zoom 7: value (cividis), confidence outline, and the coverage hatching on top. */
 const GEO_FILL: Record<number, string> = { 1: 'rgb(0, 158, 115)', 2: 'rgb(86, 180, 233)', 3: 'rgb(120, 126, 140)' }
 
+export type MapLayer = 'typicality' | 'geology' | 'frozen' | 'aridity'
+const FROZEN_FILL: Record<string, string> = { met: 'rgb(0, 114, 178)', partial: 'rgb(86, 180, 233)', failed: 'rgb(230, 159, 0)' }
+const ARIDITY_FILL: Record<string, string> = { 'hyper-arid': 'rgb(166, 97, 26)', arid: 'rgb(223, 194, 125)', 'semi-arid': 'rgb(245, 245, 245)', 'dry sub-humid': 'rgb(128, 205, 193)', humid: 'rgb(1, 133, 113)' }
+
 function Cells({ scenario, env, overlay, confidence, onError, layer }: {
-  layer: 'typicality' | 'geology'
+  layer: MapLayer
   scenario: string
   env: string
   overlay: boolean
@@ -62,7 +66,9 @@ function Cells({ scenario, env, overlay, confidence, onError, layer }: {
     const p = props(f)
     const st = cellState(p, t).state
     const gc = layer === 'geology' ? geologyClass(p) : 0
-    const fill = layer === 'geology'
+    const fill = layer === 'frozen' ? (FROZEN_FILL[p.context?.frozen_e4 ?? ''] ?? '#2a3044')
+      : layer === 'aridity' ? (ARIDITY_FILL[p.context?.aridity_class ?? ''] ?? '#2a3044')
+      : layer === 'geology'
       ? (GEO_FILL[gc] ?? '#2a3044')
       : p.typicality.median === null || st === 'not_evaluated' || st === 'masked' ? '#2a3044' : cividis(p.typicality.median)
     const outline = !confidence || p.confidence === 'high' ? { stroke: false } : { stroke: true, color: '#eef0f6', weight: p.confidence === 'low' ? 1.2 : 0.6, dashArray: p.confidence === 'low' ? '3 3' : undefined }
@@ -92,7 +98,7 @@ function Cells({ scenario, env, overlay, confidence, onError, layer }: {
 
 /** v3 layers inside a mission map: typicality tiles to zoom 7, the coverage overlay, cells above zoom 7. */
 export function V3Layers({ release, scenario, env, overlay, confidence, onCellsError, layer = 'typicality' }: {
-  layer?: 'typicality' | 'geology'
+  layer?: MapLayer
   release: string
   scenario: string
   env: string

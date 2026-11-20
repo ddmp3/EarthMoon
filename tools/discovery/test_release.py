@@ -169,3 +169,26 @@ def test_without_a_geology_assessment_a_zone_says_geology_was_not_evaluated():
     z = {"target": "moon-psr", "scenario": "A", "cells": 1, "area_km2": 25.0, "lat": 1.0, "lon": 2.0, "median": 0.8,
          "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 1.0, "cell_ids": ["1"]}
     assert zone_record(z, 1, 0.5, 3, _cells())["geology"] is None
+
+
+def test_a_zone_carries_its_earth_context_frozen_ground_and_aridity():
+    import numpy as np
+    from discovery.release import cell_index
+    cells = _cells()
+    cells["ctx:frozen_e4"] = np.array(["met", "partial", "not covered", "met", "failed", "met"], dtype=object)
+    cells["ctx:magt_c"] = np.array([-7.0, -3.0, np.nan, -9.0, 2.0, -6.5], np.float32)
+    cells["ctx:aridity_class"] = np.array(["arid", "arid", "humid", "hyper-arid", "arid", "arid"], dtype=object)
+    cells["ctx:aridity_index"] = np.array([0.1, 0.15, 0.9, 0.02, 0.1, 0.1], np.float32)
+    z = {"target": "moon-psr", "scenario": "A", "cells": 2, "area_km2": 50.1, "lat": 1.0, "lon": 2.0, "median": 0.8,
+         "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 1.0, "cell_ids": ["1", "4"]}
+    ctx = zone_record(z, 1, 0.5, 3, cells, cell_index(cells))["context"]
+    assert ctx["frozen_e4"] == {"met": 1.0, "partial": 0.0, "failed": 0.0, "not covered": 0.0}
+    assert ctx["magt_c_median"] == -8.0
+    assert ctx["aridity"] == {"hyper-arid": 0.5, "arid": 0.5, "semi-arid": 0.0, "dry sub-humid": 0.0, "humid": 0.0, "no data": 0.0}
+    assert ctx["class"] == "model" and ctx["comparable_with_moon"] is False
+
+
+def test_without_context_a_zone_says_so():
+    z = {"target": "moon-psr", "scenario": "A", "cells": 1, "area_km2": 25.0, "lat": 1.0, "lon": 2.0, "median": 0.8,
+         "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 1.0, "cell_ids": ["1"]}
+    assert zone_record(z, 1, 0.5, 3, _cells())["context"] is None

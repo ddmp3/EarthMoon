@@ -1,0 +1,28 @@
+{
+ "layers": [
+  "moon-mare-plains/typicality",
+  "moon-mare-plains/coverage",
+  "moon-pits/typicality",
+  "moon-pits/coverage",
+  "moon-polar-lit-highlands/typicality",
+  "moon-polar-lit-highlands/coverage",
+  "moon-psr/typicality",
+  "moon-psr/coverage",
+  "moon-south-polar-cap-v2/typicality",
+  "moon-south-polar-cap-v2/coverage",
+  "moon-mare-plains/geology",
+  "moon-pits/geology",
+  "moon-polar-lit-highlands/geology",
+  "moon-psr/geology",
+  "moon-south-polar-cap-v2/geology",
+  "_earth/frozen",
+  "_earth/aridity"
+ ],
+ "zoom": [
+  0,
+  7
+ ],
+ "tiles": 119,
+ "bytes": 214232,
+ "mb_per_layer": 0.0
+}

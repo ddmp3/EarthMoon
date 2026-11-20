@@ -565,7 +565,7 @@ products:
     product: "Global Aridity Index and Potential Evapotranspiration Database, version 3.1 (Global-AI_PET_v3); v3.0 is deprecated"
     producer: "R. Zomer, A. Trabucco (CGIAR-CSI)"
     url: https://figshare.com/articles/dataset/Global_Aridity_Index_and_Potential_Evapotranspiration_ET0_Climate_Database_v2/7504448
-    access: {format: GeoTIFF, size: "not stated on page", licence: "non-commercial use (EarthMoon is not commercial)", account: false}
+    access: {format: GeoTIFF, size: "annual AI and ET0: 645,783,906 bytes (figshare API, 20/11/2026)", licence: "CC BY 4.0 (figshare API, 20/11/2026; the page read on 18/11 was noted as non-commercial)", account: false}
     attribution: "Zomer, R.J.; Xu, J.; Trabucco, A. 2022. Version 3 of the Global Aridity Index and Potential Evapotranspiration Database. Scientific Data 9, 409"
     use: [similarity, mask]
     coverage: "global (Antarctica not stated on page)"
@@ -575,7 +575,7 @@ products:
     units: "precipitation / ET0, multiplied by 10,000 (integers); lower is drier"
     nature: model
     uncertainty: "not stated on page; v3.0 had a dry bias from a net longwave error, corrected in v3.1"
-    limitations: "Use v3.1 only. Climatology of 1970 to 2000, not current conditions. page read in a browser by David on 18/11/2026 (host refuses automated reading)"
+    limitations: "Use v3.1 only. Climatology of 1970 to 2000, not current conditions; no interannual sigma. Page read in a browser by David on 18/11/2026 (host refuses automated reading); file list, licence and MD5 from the figshare API (api.figshare.com/v2/articles/7504448) on 20/11/2026"
     dimensions: [hydric]
     environments: [global-land]
     status: verified

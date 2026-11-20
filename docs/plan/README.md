@@ -58,6 +58,10 @@ Reusable as is: `tools/precompute/terrain_metrics.py` (any grid), the value/sigm
 - No weight without sensitivity analysis. No two parameters measuring the same property without a stated reason.
 - Every computed product records its inputs (with SHA-256), code version and parameters.
 
+**Data first (David, 20/11/2026)**
+- The data and making them available are the core of the project; the interface exists so that experts can use them easily and judge their quality.
+- When a better source exists but is blocked (account, licence, compute), add it to [data-improvements.md](data-improvements.md) with what it would improve and who can unblock it. Review that list at every gate.
+
 **History (decision 6.2)**
 - One branch per task: `feat/T<nn>-<short-name>` (or `docs/`, `fix/`).
 - PR description: what, why, files, tests run with their output, scientific effect, risks.
@@ -115,7 +119,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T45b](tasks/T45b-missions.md) | v3 inside the missions (David's review of T45) | T45 | done (PR #27; sites enriched with their v3 cell, zones tab, v3 search in mission 4, French texts; separate page removed) |
 | T45c | Interface review with David (the v3 integration does not yet match what he wants) | T45b | todo (David, when he has time: he gives the target design, then we rework) |
 | [T46](tasks/T46-geology.md) | Geology and mineralogy dimension | G4 | done (PR #28; lithology from Macrostrat, crosswalk E17 delegated to Claude; half the land without usable lithology; no top slope zone matches; mineralogy (EMIT) left open) |
-| [T47](tasks/T47-thermal-hydric.md) | Thermal, ice and hydric dimensions | G4 | todo |
+| [T47](tasks/T47-thermal-hydric.md) | Thermal, ice and hydric dimensions | G4 | done (PR #29; E18: Earth context layers, no thermal comparison with the Moon; frozen ground and aridity; thermal cycling waits for the Earthdata account, D1) |
 | [T48](tasks/T48-mars.md) | Mars profiles and discovery | T46, T47 | todo |
 | [T49](tasks/T49-validation-report.md) | v3 validation report and limits | T45-T48, T52 | todo |
 | G5 | Gate: release | T49 | todo |
