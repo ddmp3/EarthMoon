@@ -130,7 +130,10 @@ __all__ = ["candidates", "rank_zones", "locate_points", "percentile_rank", "lati
 
 # --- assessment of one tile (IO) ---------------------------------------------------------------------------
 
+# Body-specific settings. The lunar run uses these; the Mars run (tools/discovery/mars_run.py, T48) replaces them.
+PRODUCT = "glo30"                                    # DEM product of the Earth cubes the windows come from
 SCALES = {"glo30-40m": 40.0, "glo30-59m": 59.225293836}
+COVERAGE_SCALES = ("glo30-40m", "glo30-59m")         # finest first: coverage and confidence read at the finest one
 TARGET_SCALE = {"moon-south-polar-cap-v2": "glo30-40m", "moon-polar-lit-highlands": "glo30-40m",
                 "moon-psr": "glo30-40m", "moon-mare-plains": "glo30-59m", "moon-pits": "glo30-59m"}
 SCENARIO_TARGETS = {"A": ["moon-polar-lit-highlands", "moon-psr", "moon-pits"],
@@ -230,7 +233,7 @@ def owned_windows(key: str, scale: str, cube: str, refined: dict, ctx: dict) -> 
         if scale not in refined.get(nk, []):
             continue
         nla, nlo = (int(v) for v in nk.split(","))
-        f = Path(cube) / scale / f"{tile_name(nla, nlo, 'glo30')}.windows.parquet"
+        f = Path(cube) / scale / f"{tile_name(nla, nlo, PRODUCT)}.windows.parquet"
         if not f.exists():
             continue
         t = pq.read_table(f, columns=WCOLS)
@@ -297,7 +300,7 @@ def _assess(key: str, cube: str, refs_path: str, rock_path: str, refined: dict) 
     # requirements, suitability, coverage and confidence at the finest scale where the cell has windows
     reqs = [{"id": rid, **{k: v for k, v in rule.items() if k in ("param", "at_least", "at_most")}} for rid, rule in RULES.items()]
     done: set = set()
-    for cov_scale in ("glo30-40m", "glo30-59m"):
+    for cov_scale in COVERAGE_SCALES:
         if cov_scale not in win:
             continue
         w0 = win[cov_scale]

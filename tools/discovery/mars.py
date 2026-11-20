@@ -21,7 +21,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 MARS_R_M = 3396190.0                         # IAU sphere used by the MEGDR labels (a_axis_radius 3396.0 km)
 WINDOW_PX = 25                               # E19
-DTYPES = {"SignedMSB2": ">i2", "UnsignedMSB2": ">u2", "SignedLSB2": "<i2", "IEEE754MSBSingle": ">f4"}
+DTYPES = {"SignedMSB2": ">i2", "UnsignedMSB2": ">u2", "SignedLSB2": "<i2", "IEEE754MSBSingle": ">f4", "UnsignedByte": "u1", "SignedByte": "i1"}
 
 
 def read_pds4(img: Path) -> np.ndarray:
