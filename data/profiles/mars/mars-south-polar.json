@@ -1,0 +1,60 @@
+{
+ "id": "mars-south-polar",
+ "body": "mars",
+ "spec": "data/profiles/spec/mars-south-polar.yaml",
+ "inputs": {
+  "mola/s": {
+   "file": "megt_s_512_1.img",
+   "size": 301989888,
+   "sha256": "e137a52eb00853bd5bbf1c06a95bdb0415e5280141f4b196614fb889304bf0d0"
+  }
+ },
+ "params": {
+  "phi_deg": 80.0,
+  "pixel_m": 115.089,
+  "window_px": 25,
+  "observed_share": "not available: no count grid is published for the 512 ppd polar grids",
+  "grid_extent": "about 78\u00b0 to the pole",
+  "windows_by_phi": {
+   "80": 132440,
+   "85": 32983
+  }
+ },
+ "decision": "E19",
+ "windows": {
+  "selected": 132440,
+  "valid": 132440
+ },
+ "metrics": {
+  "slope_mean": {
+   "n": 132440,
+   "p5": 0.177,
+   "p10": 0.215,
+   "p25": 0.343,
+   "p50": 0.676,
+   "p75": 1.426,
+   "p90": 2.9,
+   "p95": 4.345
+  },
+  "slope_p95": {
+   "n": 132440,
+   "p5": 0.311,
+   "p10": 0.363,
+   "p25": 0.574,
+   "p50": 1.26,
+   "p75": 2.734,
+   "p90": 5.828,
+   "p95": 9.064
+  },
+  "roughness_detrended": {
+   "n": 132440,
+   "p5": 0.084,
+   "p10": 0.341,
+   "p25": 0.822,
+   "p50": 2.107,
+   "p75": 5.135,
+   "p90": 12.016,
+   "p95": 19.823
+  }
+ }
+}
