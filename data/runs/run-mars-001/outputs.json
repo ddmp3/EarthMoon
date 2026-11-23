@@ -15,6 +15,26 @@
   "bytes": 52334251,
   "sha256": "3265cc73ac3c29ca0f7ba5b6911a79ff9d96b2787fe11d84ab215509bd7286c2"
  },
+ "run-mars-001/mars-v1/validation.json": {
+  "bytes": 20844,
+  "sha256": "be91e99c4ac0713878c29ca84201e8fa6fcce9493f767b8abfa65f947854854b"
+ },
+ "run-mars-001/mars-v1/zones-D-mars-ice-rich-midlatitudes.json": {
+  "bytes": 17619686,
+  "sha256": "f27b59cae90e4fcdd63540a4417b456ce24726cd55414d7d00abafbb75897dc9"
+ },
+ "run-mars-001/mars-v1/zones-D-mars-north-polar.json": {
+  "bytes": 20974558,
+  "sha256": "1165d277713f2aef21d213b2d85fef8e359837e82f4695f48bbd2e24151865b5"
+ },
+ "run-mars-001/mars-v1/zones-D-mars-south-polar.json": {
+  "bytes": 18103509,
+  "sha256": "bfff10e5dc5cd92d9cd3576d1e21dc3de4b58839f8bb82ecc52d765667106a4b"
+ },
+ "run-mars-001/mars-v1/zones.json": {
+  "bytes": 57720,
+  "sha256": "c524ddb9e00e0c6dd5e8c4ba987e9b048a41e76c09ae8c146d56c2948e615414"
+ },
  "run-mars-001/refs.npz": {
   "bytes": 2135226,
   "sha256": "4e65610148ac788d8752943b01f4c5f202aa8ed0ed7b95a1abb66820c03315b7"
@@ -32,20 +52,20 @@
   "sha256": "500e06a8b8660cb279cf19a2512f3b2ed0d62e64a39fe24e4ab0abd1257dbedc"
  },
  "run-mars-001/validation.json": {
-  "bytes": 20844,
-  "sha256": "be91e99c4ac0713878c29ca84201e8fa6fcce9493f767b8abfa65f947854854b"
+  "bytes": 21447,
+  "sha256": "a4fb1994489de691b42cf7e08cc4022780ec4d05b4607041cd3a1fa9f92132c2"
  },
  "run-mars-001/zones-D-mars-ice-rich-midlatitudes.json": {
-  "bytes": 17619686,
-  "sha256": "f27b59cae90e4fcdd63540a4417b456ce24726cd55414d7d00abafbb75897dc9"
+  "bytes": 17610011,
+  "sha256": "c97bca4a35c178ed4bcf84e31f7999a4816c28c7cc8ae8d0c7c55c8e27b0a155"
  },
  "run-mars-001/zones-D-mars-north-polar.json": {
-  "bytes": 20974558,
-  "sha256": "1165d277713f2aef21d213b2d85fef8e359837e82f4695f48bbd2e24151865b5"
+  "bytes": 20971287,
+  "sha256": "6f6ee9b0f7583945a28ee4ce6b6ea6b8ef7e166ef90dd02aa80f213ef68bef86"
  },
  "run-mars-001/zones-D-mars-south-polar.json": {
-  "bytes": 18103509,
-  "sha256": "bfff10e5dc5cd92d9cd3576d1e21dc3de4b58839f8bb82ecc52d765667106a4b"
+  "bytes": 18100573,
+  "sha256": "5059715443144c983eb13df561c0cc9b46d65b231e3c03be3793c0bacfe8e2c8"
  },
  "run-mars-001/zones.json": {
   "bytes": 57720,

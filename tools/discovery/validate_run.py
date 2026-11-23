@@ -35,6 +35,7 @@ PROFILE_KM_PER_DEG = 30.32                                          # Moon
 BLOCK_KM: dict = {}                                                 # held-out block side per target; 5 km when absent
 POSITIVES = {"A": "none: no verified reference names a site (protocol table)", "B": "none (same)",
              "consequence": "no positive validation for scenarios A and B"}
+SIGMA_BY_SCALE: dict = {}                                           # Monte Carlo slope noise per scale; SIGMA when absent
 REPRO = {"scale": "glo30-40m", "product": "glo30", "pixel": "40", "window_px": None}
 
 
@@ -200,6 +201,7 @@ def _mc_target(args) -> dict:
     from discovery.compare import cell_medians, percentile_typicality
     ref = np.load(refs_path)[t]
     scale = TARGET_SCALE[t]
+    sigma = SIGMA_BY_SCALE.get(scale, SIGMA)
     keys = [(sc, t) for sc, ts in SCENARIO_TARGETS.items() if t in ts]
     zones = {key: json.loads((Path(run) / f"zones-{key[0]}-{t}.json").read_text()) for key in keys}
     need = np.unique(np.array(list(sample_ids) + [c for zs in zones.values() for z in zs for c in z["cell_ids"]]).astype(np.int64))
@@ -229,7 +231,7 @@ def _mc_target(args) -> dict:
     hits = {key: np.zeros(len(zones[key])) for key in keys}
     rng = np.random.default_rng([SEED, k])                         # one stream per target, fixed order
     for r in range(RUNS):
-        _, med = cell_medians(percentile_typicality(base + rng.normal(0.0, SIGMA, base.size), ref), code)
+        _, med = cell_medians(percentile_typicality(base + rng.normal(0.0, sigma, base.size), ref), code)
         thr = np.nanpercentile(med[s_idx], 90)
         for key in keys:
             zm = np.array([np.nanmedian(med[ix]) if ix.size and np.isfinite(med[ix]).any() else -1.0 for ix in z_idx[key]])
@@ -243,7 +245,7 @@ def _mc_target(args) -> dict:
             z["mc_top_decile_share"] = round(float(sh), 3)
         (Path(run) / f"zones-{key[0]}-{t}.json").write_text(json.dumps(zones[key], indent=1) + "\n")
         out[f"{key[0]}:{t}"] = {"zones": len(shares), "stable_zones_90pct": int((shares >= 0.9).sum()), "runs": RUNS,
-                                "seed": [SEED, k], "slope_sigma_deg": SIGMA, "sample_cells": int(s_idx.size)}
+                                "seed": [SEED, k], "slope_sigma_deg": sigma, "sample_cells": int(s_idx.size)}
     return out
 
 

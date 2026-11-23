@@ -22,6 +22,7 @@ from pathlib import Path
 
 PIXEL_M = {"glo90-115m-w25": 115.77, "glo90-463m-w25": 463.08}        # the cube pixels: MOLA 512 and 128 ppd
 WINDOW_PX = 25
+MC_SIGMA_DEG = {"glo90-115m-w25": 0.25, "glo90-463m-w25": 0.04}        # protocol mars-v2, measured (slope_noise.py)
 TARGETS = {"mars-ice-rich-midlatitudes": "glo90-463m-w25", "mars-north-polar": "glo90-115m-w25",
            "mars-south-polar": "glo90-115m-w25"}
 
@@ -75,6 +76,10 @@ def configure_validation(v) -> None:
     v.POSITIVES = {"D": "none for the phase 1 targets: the verified controls of scenario D (R29) are volcanic plains, "
                         "which wait for the Mars geologic map (Tanaka et al. 2014)",
                    "consequence": "no positive validation for the polar and ice-rich targets"}
+    # protocol mars-v2 (23/11/2026): slope noise of the Monte Carlo measured from the DEM error at each scale
+    # (tools/discovery/slope_noise.py, data/runs/run-mars-001/slope-noise.json), instead of the lunar 0.5 degree
+    v.SIGMA_BY_SCALE.clear()
+    v.SIGMA_BY_SCALE.update(MC_SIGMA_DEG)
     v.REPRO = {"scale": fine, "product": "glo90", "pixel": str(PIXEL_M[fine]), "window_px": WINDOW_PX,
                "cache": "/data/copernicus-glo90"}
 
@@ -82,7 +87,7 @@ def configure_validation(v) -> None:
 def configure_release(r) -> None:
     """Settings of the release module `r` for the Mars release: scenario D, Martian profiles and sources."""
     r.BODY = "mars"
-    r.PROTOCOL = "validation-protocol-mars-v1"
+    r.PROTOCOL = "validation-protocol-mars-v2"
     r.SCENARIO_FILES = {"D": "D-mars.yaml"}
     r.PROFILE_DIR, r.PROFILE_GLOB = "data/profiles/mars", "mars-*.json"
     r.EARTH_SOURCES = ["copernicus-dem-glo90", "esa-worldcover", "add-rock-outcrop-v7-3", "natural-earth-admin0-110m"]

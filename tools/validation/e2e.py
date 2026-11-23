@@ -259,7 +259,7 @@ def run(web: str, api: str) -> None:
         code, _, b = http(f"{api}/api/v3/cells?scenario=D&env={env}&bbox={lon - 0.2},{lat - 0.2},{lon + 0.2},{lat + 0.2}&release=mars")
         assert code == 200, f"Mars cells HTTP {code}: {b[:200]!r}"
         st = json.loads(http(f"{api}/api/v3/status?release=mars")[2])
-        assert st["validity"]["protocol"] == "validation-protocol-mars-v1", "Mars status not under protocol mars-v1"
+        assert st["validity"]["protocol"].startswith("validation-protocol-mars-"), "Mars status not under a Mars protocol"
         assert json.loads(http(f"{api}/api/v3/scenarios")[2])["release"] == idx["current"], "the default release is not the lunar one"
         return f"release {mars}, {len(d['assessed_targets'])} targets, {len(json.loads(b)['features'])} cells in view"
 

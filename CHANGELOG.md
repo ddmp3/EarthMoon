@@ -2,6 +2,18 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-23 · T48b Mars protocol mars-v2 (PR #31)
+- **Decision of David (23/11):** protocol mars-v2, after the mars-v1 Monte Carlo found no stable zone. Only the Monte Carlo noise changes (tag, frozen before the rerun).
+- **Noise measured from the DEM error** (`tools/discovery/slope_noise.py`, rule written before measuring):
+  - Copernicus relative accuracy 2 m LE90, so sigma 1.216 m per pixel;
+  - 30 tiles, 3 draws each;
+  - result: 0.25° at 115.77 m, 0.04° at 463.08 m.
+- **Monte Carlo rerun** (500 runs, seed unchanged):
+  - ice-rich mid-latitudes: 1,111 of 11,768 zones stable (v1: 0), the 20 dossier zones included;
+  - north and south polar: still 0 stable, best zone 63 and 64% (v1: 29 and 30%).
+- **Mars release** `r-e58b083d` under mars-v2. The mars-v1 outputs are kept (`monte_carlo_mars_v1`, `mars-v1/` with SHA-256).
+- Report updated: `docs/wiki/runs/run-mars-001.md`.
+
 ## 2026-11-23 · T48 Mars, phase 1 (PR #30)
 - **Decisions of David (20/11):**
   - E19: windows of 25 × 25 MOLA pixels, Earth resampled to the same pixel;
