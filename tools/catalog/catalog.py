@@ -91,7 +91,19 @@ def validate_refresh(r) -> list[str]:
         errs.append("refresh cadence_status must be verified or not verified")
     elif r["cadence_status"] == "verified" and not (r.get("checked_url") and r.get("checked_on")):
         errs.append("a verified refresh cadence needs checked_url and checked_on")
+    w = r.get("watch")
+    if w is not None:
+        need = WATCH_KEYS.get(r.get("family"), ())
+        if not isinstance(w, dict) or not need:
+            errs.append(f"refresh watch is not used by family {r.get('family')}")
+        else:
+            errs += [f"refresh watch for {r['family']} needs {k}" for k in need if not w.get(k)]
     return errs
+
+
+# What the watcher of each family reads (tools/discovery/watch.py). No watch: the source is not checkable yet.
+WATCH_KEYS = {"s3": ("bucket",), "pds": ("base", "files"), "page": ("url", "pattern"), "doi": ("doi",),
+              "api": ("endpoint", "path"), "cmr": ("endpoint", "path")}
 
 
 def _cell(value) -> str:

@@ -435,6 +435,7 @@ products:
       cadence_status: "verified"
       checked_url: "https://swim.psi.edu/NorthHemisProducts.php"
       checked_on: "2026-11-23"
+      watch: {"url": "https://swim.psi.edu/NorthHemisProducts.php", "pattern": "Updated (\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})"}
 
   - id: lmd-mars-climate-database
     body: mars

@@ -35,6 +35,7 @@ products:
       cadence_status: "verified"
       checked_url: "https://pds-geosciences.wustl.edu/missions/lro/"
       checked_on: "2026-11-23"
+      watch: {"base": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/", "files": {"ldem_85s_40m.img": 115034112}}
     notes: "Downloaded and hashed by the project in v2 (SHA-256 in data/reference/moon-south-pole.json); 71,731 windows of 1 km"
 
   - id: lro-lola-gdr-global
@@ -501,13 +502,14 @@ products:
     verified_on: "2026-11-18"
     verified_url: https://pds-geosciences.wustl.edu/missions/lunarp/reduced_special.html
     refresh:
-      family: "pds"
-      signal: "per-file 'Version:' dates on the page and Last-Modified of the files used"
+      family: "page"
+      signal: "the per-file 'Version:' strings on the page"
       interval: "monthly"
       cadence: "not stated on page (data of 16 January 1998 to 31 July 1999; not a PDS peer-reviewed archive)"
       cadence_status: "not verified"
       checked_url: "https://pds-geosciences.wustl.edu/missions/lunarp/reduced_special.html"
       checked_on: "2026-11-23"
+      watch: {"url": "https://pds-geosciences.wustl.edu/missions/lunarp/reduced_special.html", "pattern": "Version:\\s*([^<\n]+)"}
 
   - id: lp-grs-elemental-abundance
     body: moon
@@ -773,13 +775,14 @@ products:
     verified_on: "2026-11-18"
     verified_url: https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020
     refresh:
-      family: "s3"
-      signal: "ETag and LastModified of the ZIP on the asc-astropedia bucket"
+      family: "pds"
+      signal: "size, ETag and Last-Modified of the ZIP on the asc-astropedia bucket (HEAD), against the ingest size"
       interval: "monthly"
       cadence: "not verified: the USGS page refuses automated reading (HTTP 403)"
       cadence_status: "not verified"
       checked_url: "https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020"
       checked_on: "2026-11-23"
+      watch: {"base": "https://asc-astropedia.s3.us-west-2.amazonaws.com/Moon/Geology/", "files": {"Unified_Geologic_Map_of_the_Moon_GIS_v2.zip": 224413040}}
 
   - id: robbins-2019-crater-database
     body: moon

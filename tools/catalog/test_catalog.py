@@ -117,3 +117,11 @@ def test_every_source_of_a_release_has_a_refresh_block():
             for s in json.loads(f.read_text(encoding="utf-8"))["sources"]}
     assert len(used) >= 16
     assert sorted(i for i in used if "refresh" not in by_id.get(i, {})) == []
+
+
+def test_watch_targets_need_the_keys_of_their_family():
+    assert validate([entry(refresh=refresh(watch={"base": "https://p.example.org/", "files": {"a.img": 1}}))]) == []
+    errs = validate([entry(refresh=refresh(family="s3", watch={"prefix": "x/"}))])
+    assert any("watch" in e and "bucket" in e for e in errs)
+    errs = validate([entry(refresh=refresh(family="page", watch={"url": "https://x.example.org"}))])
+    assert any("pattern" in e for e in errs)
