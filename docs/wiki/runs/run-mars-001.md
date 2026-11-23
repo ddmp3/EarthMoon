@@ -1,20 +1,30 @@
 # run-mars-001: first Mars discovery run (T48, 23/11/2026)
 
-Scenario D (Mars exploration and settlement), phase 1 targets, slope only, validated with `validation-protocol-mars-v1` (frozen and tagged before the run). Method and decisions: [methods/mars](../methods/mars.md).
+Scenario D (Mars exploration and settlement), phase 1 targets, slope only, validated with `validation-protocol-mars-v1` (frozen and tagged before the run). The Monte Carlo was rerun under `validation-protocol-mars-v2` (decided by David after the first results, frozen before the rerun); both results are reported. Method and decisions: [methods/mars](../methods/mars.md).
 
 - **Targets:**
   - north and south polar terrain (MOLA 512 pixels per degree, windows of 2.9 km);
   - ice-rich mid-latitudes (MOLA 128 pixels per degree inside SWIM ice consistency Ci > 0, windows of 11.6 km).
 - **Earth side:** every land tile of Copernicus GLO-90, resampled to the same pixel and window (E19).
-- **Code:** analysis code at the merge commit of T48 (tag `validation-protocol-mars-v1` for the rules).
+- **Code:** analysis code at the merge commit of T48 (tag `validation-protocol-mars-v1`), Monte Carlo of T48b (tag `validation-protocol-mars-v2`).
 - **Data:** outputs in `earthmoon-data/run-mars-001/` (not in git); summaries in `data/runs/run-mars-001/`.
 
 ## Unfavourable results first
 
 1. **No positive validation.** The only verified controls of scenario D (R29) are volcanic plains, which wait for the Mars geologic map (data improvement R5). The results say where Earth slopes resemble Martian slopes at the MOLA scale, nothing more.
-2. **The ranking is not robust: no stable zone.** In 500 Monte Carlo runs with 0.5° slope noise (the protocol value, unchanged), no zone of any target stays in the top decile in 90% of runs. The best zone stays there in 18% (ice-rich), 29% (north polar) and 30% (south polar) of runs.
-   - **Why:** at the MOLA scale Martian slopes are very low (median 0.7 to 0.8°, 5th percentile 0.1 to 0.2°). A 0.5° noise is as wide as most of the reference distribution, so the percentile of a flat Earth window jumps from run to run.
-   - **The noise is likely too large for these scales:** a few metres of DEM error over a 463 m pixel is about 0.25° per pixel, and less as a window mean. That is a reason for a protocol mars-v2 with a scale-based noise. It is a proposal for David. Nothing was changed after seeing this result.
+2. **Polar rankings are not robust; ice-rich ones are, at the measured noise.** Share of 500 Monte Carlo runs in which a zone stays in the top decile (stable: 90% or more):
+
+   | Target | mars-v1 (0.5°) | mars-v2 (measured noise) |
+   |---|---|---|
+   | Ice-rich mid-latitudes | 0 stable, best 18% | **1,111 stable** of 11,768 (0.43 M km²), noise 0.04° |
+   | North polar terrain | 0 stable, best 29% | 0 stable, best 63%, 63 zones ≥ 50%, noise 0.25° |
+   | South polar terrain | 0 stable, best 30% | 0 stable, best 64%, 55 zones ≥ 50%, noise 0.25° |
+
+   - **Why v1 found nothing:** at the MOLA scale Martian slopes are very low (median 0.7 to 0.8°, 5th percentile 0.1 to 0.2°). The lunar 0.5° noise is as wide as most of the reference distribution.
+   - **What v2 changed:** only the noise, measured from the stated Copernicus error (2 m LE90) at each scale (`data/runs/run-mars-001/slope-noise.json`, rule in `docs/VALIDATION_PROTOCOL.md`). Nothing else was retuned.
+   - **What it means:** at 463 m, the DEM error barely moves a window's mean slope, so the ice-rich ranking reflects the relief. At 115 m it still moves polar percentiles by a large share: the polar ranking stays fragile.
+   - The 20 dossier zones (below) are all stable under mars-v2 (shares 0.99 to 1.0).
+   - **Not covered:** spatially correlated DEM errors, which independent errors do not model.
 3. **Slope alone barely discriminates.** Of the high-confidence, mostly unmasked cells, a large share reaches the nominal τ 0.5:
    - 35% for ice-rich mid-latitudes;
    - 44% for north polar terrain;
@@ -45,9 +55,11 @@ Candidate cells: median typicality ≥ τ, fewer than half of their windows mask
 
 | Target | Zones τ 0.5, 3 cells | Area | τ 0.7, 3 cells | τ 0.9, 3 cells | τ 0.9, 9 cells | Stable in Monte Carlo |
 |---|---|---|---|---|---|---|
-| Ice-rich mid-latitudes | 11,768 | 18.6 M km² | 13,262 | 13,763 | 4,715 | 0 |
+| Ice-rich mid-latitudes | 11,768 | 18.6 M km² | 13,262 | 13,763 | 4,715 | 1,111 |
 | North polar terrain | 11,847 | 24.5 M km² | 12,770 | 11,149 | 2,675 | 0 |
 | South polar terrain | 12,166 | 19.1 M km² | 13,388 | 7,181 | 1,169 | 0 |
+
+Stable: mars-v2 Monte Carlo, at τ 0.5 and 3 cells (mars-v1: 0 for every target).
 
 The zone count rises from τ 0.5 to 0.7: large zones split into several.
 
@@ -78,7 +90,7 @@ Two places are named as analogs of *other* Martian environments, not of ice-rich
 
 This context is the dimension that speaks of cold and dryness. It is shown beside slope, never combined with it (E18).
 
-## Validation (protocol mars-v1)
+## Validation (protocol mars-v1; Monte Carlo above, mars-v1 and mars-v2)
 
 | Check | Rule | Result | Pass |
 |---|---|---|---|
@@ -91,7 +103,7 @@ This context is the dimension that speaks of cold and dryness. It is shown besid
 **Bias:**
 - Candidates follow the evaluated land. Africa holds the most: 35% of its evaluated cells for ice-rich ground, 46% for north polar terrain.
 - Antarctica has almost no evaluated cell (151 to 986), likely because rock outcrops rarely fill half of a window this large (not checked).
-- Tables are in `data/runs/run-mars-001/validation.json`.
+- Tables are in `data/runs/run-mars-001/validation.json` (`monte_carlo` is mars-v2, `monte_carlo_mars_v1` the first run).
 
 ## What this run cannot show
 
@@ -102,6 +114,6 @@ This context is the dimension that speaks of cold and dryness. It is shown besid
 
 ## Proposed next steps (for David)
 
-- **Protocol mars-v2:** a slope noise derived from the DEM error at each scale, decided before any rerun.
+- **Polar targets:** a finer Earth DEM or correlated-error noise would tell whether the polar ranking can become stable (protocol mars-v2 is done, T48b).
 - **Volcanic plains with the Tanaka map (R5):** the only target with positive controls.
 - **MOLA-HRSC at 200 m (R1):** windows of 5 km at mid-latitudes, closer to the lunar 1 km.

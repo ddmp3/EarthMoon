@@ -969,7 +969,33 @@
    }
   }
  },
- "monte_carlo": {
+ "reproducibility": {
+  "tiles": [
+   {
+    "tile": "-3,132",
+    "identical_sha256": true
+   },
+   {
+    "tile": "-77,93",
+    "identical_sha256": true
+   },
+   {
+    "tile": "-81,40",
+    "identical_sha256": true
+   },
+   {
+    "tile": "-82,24",
+    "identical_sha256": true
+   },
+   {
+    "tile": "21,9",
+    "identical_sha256": true
+   }
+  ],
+  "identical_cell_rows": true,
+  "pass": true
+ },
+ "monte_carlo_mars_v1": {
   "D:mars-ice-rich-midlatitudes": {
    "zones": 11768,
    "stable_zones_90pct": 0,
@@ -1004,30 +1030,39 @@
    "sample_cells": 200000
   }
  },
- "reproducibility": {
-  "tiles": [
-   {
-    "tile": "-3,132",
-    "identical_sha256": true
-   },
-   {
-    "tile": "-77,93",
-    "identical_sha256": true
-   },
-   {
-    "tile": "-81,40",
-    "identical_sha256": true
-   },
-   {
-    "tile": "-82,24",
-    "identical_sha256": true
-   },
-   {
-    "tile": "21,9",
-    "identical_sha256": true
-   }
-  ],
-  "identical_cell_rows": true,
-  "pass": true
+ "monte_carlo": {
+  "D:mars-ice-rich-midlatitudes": {
+   "zones": 11768,
+   "stable_zones_90pct": 1111,
+   "runs": 500,
+   "seed": [
+    20261119,
+    0
+   ],
+   "slope_sigma_deg": 0.04,
+   "sample_cells": 200000
+  },
+  "D:mars-north-polar": {
+   "zones": 11847,
+   "stable_zones_90pct": 0,
+   "runs": 500,
+   "seed": [
+    20261119,
+    1
+   ],
+   "slope_sigma_deg": 0.25,
+   "sample_cells": 200000
+  },
+  "D:mars-south-polar": {
+   "zones": 12166,
+   "stable_zones_90pct": 0,
+   "runs": 500,
+   "seed": [
+    20261119,
+    2
+   ],
+   "slope_sigma_deg": 0.25,
+   "sample_cells": 200000
+  }
  }
 }
