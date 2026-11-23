@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 /**
@@ -9,7 +9,15 @@ import path from "node:path";
  */
 
 export type ReleaseEntry = { id: string; run: string; methodology_version: string; protocol: string; commit: string; created: string };
-export type ReleaseIndex = { current: string; current_by_body?: Record<string, string>; releases: ReleaseEntry[] };
+export type ReleaseIndex = { current: string; current_by_body?: Record<string, string>; releases: (ReleaseEntry & { body?: string })[] };
+/** Written by the refresher (tools/discovery/refresher.py, ADR-009): live state of each watched source. */
+export type Freshness = {
+  refresher: boolean;
+  written_at?: string;
+  sources: Record<string, { state: string; last_check?: string | null; last_success?: string | null; interval_hours?: number | null; reason?: string | null; detected_on?: string | null }>;
+  progress?: unknown;
+  held?: { id: string; body?: string; reasons?: string[] }[];
+};
 export type Grid = { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } };
 export type Scenario = {
   id: string;
@@ -29,18 +37,60 @@ const MAX_CACHED = 32;
 
 export class ReleaseStore {
   private readonly cache = new Map<string, unknown>();
+  private checkedAt = Date.now();
+  private indexMtime = 0;
 
   private constructor(
     private readonly root: string,
-    readonly index: ReleaseIndex,
+    public index: ReleaseIndex,
+    private readonly reloadMs: number,
   ) {}
 
-  static async open(root: string): Promise<ReleaseStore> {
+  private static async readIndex(root: string): Promise<ReleaseIndex> {
     const index = JSON.parse(await readFile(path.join(root, "index.json"), "utf8")) as ReleaseIndex;
     if (!index.current || !Array.isArray(index.releases) || !index.releases.some((r) => r.id === index.current)) {
       throw new Error(`invalid releases index in ${root}`);
     }
-    return new ReleaseStore(path.resolve(root), index);
+    return index;
+  }
+
+  /** `reloadMs`: how often the index is looked at again, so a release switched by the refresher is served without a restart. */
+  static async open(root: string, opts: { reloadMs?: number } = {}): Promise<ReleaseStore> {
+    const store = new ReleaseStore(path.resolve(root), await ReleaseStore.readIndex(root), opts.reloadMs ?? 10_000);
+    store.indexMtime = (await stat(path.join(root, "index.json"))).mtimeMs;
+    return store;
+  }
+
+  /** Reread index.json when it changed (atomic switch by the refresher). A broken index keeps the previous one. */
+  async refresh(): Promise<void> {
+    if (Date.now() - this.checkedAt < this.reloadMs) return;
+    this.checkedAt = Date.now();
+    try {
+      const m = (await stat(path.join(this.root, "index.json"))).mtimeMs;
+      if (m !== this.indexMtime) {
+        this.index = await ReleaseStore.readIndex(this.root);
+        this.indexMtime = m;
+      }
+    } catch {
+      // keep serving the index already loaded
+    }
+  }
+
+  /** Live freshness written by the refresher, or undefined when it never ran. */
+  async freshness(): Promise<Freshness | undefined> {
+    try {
+      return JSON.parse(await readFile(path.join(this.root, "freshness.json"), "utf8")) as Freshness;
+    } catch {
+      return undefined;
+    }
+  }
+
+  /** The current release of the body of `release`, when it is not `release` itself. */
+  newerRelease(release: string): string | undefined {
+    const entry = this.index.releases.find((r) => r.id === release);
+    const body = entry?.body ?? "moon";
+    const current = (this.index.current_by_body ?? {})[body] ?? (body === "moon" ? this.index.current : undefined);
+    return current && current !== release ? current : undefined;
   }
 
   /** The release id to read: the current one, the current one of a body ("mars"), or a listed one. */

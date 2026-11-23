@@ -204,8 +204,8 @@ def status(validation: dict, sources: list[dict], release: str, created: str) ->
     """GET /api/v3/status (ADR-009): validity of the release and freshness of its sources.
 
     Validated only when every check of the protocol passes; a check that cannot run (no positive control) counts as
-    not passed. Until the refresher exists (T52), no source is checked automatically: each one is `not_checkable`,
-    with the date it was verified by hand in the catalogue."""
+    not passed. In the release file each source is `not_checkable`, with the date it was verified by hand; the API
+    replaces them with the live state of the refresher (freshness.json, T52) when it has run."""
     neg = validation.get("negatives") or {}
     top10 = neg.get("top10") or {}
     selfc = validation.get("self_consistency") or {}
@@ -226,7 +226,7 @@ def status(validation: dict, sources: list[dict], release: str, created: str) ->
     return {"validity": {"state": "validated" if ok else "not_validated", "protocol": PROTOCOL, "release": release,
                          "published": created, "checks": checks},
             "freshness": {"refresher": False,
-                          "note": "no automatic check yet (refresher planned in T52): sources were verified by hand",
+                          "note": "sources verified by hand; replaced by the refresher's live state when it runs",
                           "sources": [{"id": s["id"], "state": "not_checkable", "checked_on": s.get("verified_on")}
                                       for s in sources]}}
 

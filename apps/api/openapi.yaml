@@ -429,7 +429,7 @@ paths:
     get:
       tags: [V3]
       summary: Validity of the release and freshness of its sources (ADR-009)
-      description: Validated only when every check of the validation protocol passes. Until the refresher exists (T52), each source is `not_checkable`, with the date it was verified by hand.
+      description: Validated only when every check of the validation protocol passes. Freshness comes from the refresher (T52) when it has run; otherwise each source is `not_checkable`, with the date it was verified by hand. A source whose last check is older than twice its interval, or never checked, is `check_overdue`. An older release names the newer one in `newer_release`.
       parameters: [{ $ref: "#/components/parameters/Release" }]
       responses:
         "200":
@@ -665,8 +665,21 @@ components:
               type: object
               required: [refresher, sources]
               properties:
-                refresher: { type: boolean, description: "false until the automatic refresher exists (T52)" }
+                refresher: { type: boolean, description: "true when the freshness comes from the automatic refresher (T52)" }
                 note: { type: string }
+                written_at: { type: string, description: "when the refresher last wrote its state" }
+                newer_release: { type: string, description: "the current release of the same body, when this one is older" }
+                held:
+                  type: array
+                  description: refreshed releases waiting for review, with the reasons they were not published
+                  items:
+                    type: object
+                    required: [id]
+                    properties:
+                      id: { type: string }
+                      body: { type: string }
+                      reasons: { type: array, items: { type: string } }
+                progress: { type: object, nullable: true, additionalProperties: true, description: "step and share of a running recompute" }
                 sources:
                   type: array
                   items:
@@ -674,8 +687,14 @@ components:
                     required: [id, state, checked_on]
                     properties:
                       id: { type: string }
-                      state: { type: string, enum: [up_to_date, update_in_progress, update_held, check_failed, check_overdue, not_checkable] }
-                      checked_on: { type: string, nullable: true }
+                      state:
+                        type: string
+                        enum: [up_to_date, first_check, update_detected, update_in_progress, update_held, check_failed, check_overdue, not_checkable]
+                        description: "first_check: signal recorded, changes since ingest unknown; update_detected: a change waits for a recompute"
+                      checked_on: { type: string, nullable: true, description: "last check (refresher) or hand verification" }
+                      last_success: { type: string, nullable: true }
+                      detected_on: { type: string, nullable: true }
+                      reason: { type: string, nullable: true }
     Method:
       allOf:
         - $ref: "#/components/schemas/V3Doc"

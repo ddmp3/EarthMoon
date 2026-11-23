@@ -80,7 +80,7 @@ describe('validity and freshness (ADR-009)', () => {
   })
 
   it('has a text for every freshness state, in both languages', () => {
-    for (const s of ['up_to_date', 'update_in_progress', 'update_held', 'check_failed', 'check_overdue', 'not_checkable', 'newer_release']) {
+    for (const s of ['up_to_date', 'first_check', 'update_detected', 'update_in_progress', 'update_held', 'check_failed', 'check_overdue', 'not_checkable', 'newer_release']) {
       expect(en.freshness[s], s).toBeTruthy()
       expect(fr.freshness[s], s).toBeTruthy()
     }

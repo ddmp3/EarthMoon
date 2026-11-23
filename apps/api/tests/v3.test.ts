@@ -368,3 +368,56 @@ describe("API v3 forwarding to the discovery service", () => {
     await new Promise((r) => server.close(() => r(undefined)));
   });
 });
+
+describe("API v3 freshness from the refresher (T52, ADR-009 section 4)", () => {
+  let dir: string;
+  let api: Running;
+  const recent = new Date(Date.now() - 3600_000).toISOString();
+  beforeAll(async () => {
+    dir = await mkdtemp(path.join(tmpdir(), "releases-fresh-"));
+    await writeRelease(dir);
+    await writeFile(path.join(dir, "index.json"), JSON.stringify({ current: RID, current_by_body: { moon: RID }, releases: [
+      { id: RID, run: "run-002", methodology_version: "v3", protocol: "validation-protocol-v3", commit: "abc", created: "2026-11-19", body: "moon" },
+      { id: OLD, run: "run-001", methodology_version: "v3", protocol: "validation-protocol-v2", commit: "def", created: "2026-11-18", body: "moon" },
+    ] }));
+    await writeFile(path.join(dir, "freshness.json"), JSON.stringify({ refresher: true, written_at: recent, progress: null, held: [], sources: {
+      "copernicus-dem-glo30": { state: "up_to_date", last_check: recent, last_success: recent, interval_hours: 168 },
+      "esa-worldcover": { state: "up_to_date", last_check: "2026-01-01T00:00:00Z", last_success: "2026-01-01T00:00:00Z", interval_hours: 720 },
+    } }));
+    await writeFile(path.join(dir, `${RID}/method.json`), JSON.stringify({ release: RID, methodology_version: "v3", processing: [],
+      sources: [{ id: "copernicus-dem-glo30" }, { id: "esa-worldcover" }, { id: "natural-earth-admin0-110m" }] }));
+    api = await start(await ReleaseStore.open(dir, { reloadMs: 0 }));
+  });
+  afterAll(async () => {
+    await api.close();
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("serves the live state of each source of the release, and a missed check is overdue", async () => {
+    const { body } = await json(`${api.url}/api/v3/status`);
+    expect(body.freshness.refresher).toBe(true);
+    const by = Object.fromEntries(body.freshness.sources.map((s: { id: string }) => [s.id, s]));
+    expect(by["copernicus-dem-glo30"].state).toBe("up_to_date");
+    expect(by["copernicus-dem-glo30"].checked_on).toBe(recent);
+    expect(by["esa-worldcover"].state).toBe("check_overdue");          // last check older than twice its interval
+    expect(by["natural-earth-admin0-110m"].state).toBe("check_overdue");  // a source of the release never checked
+    expect(body.validity.state).toBe("not_validated");                  // validity still comes from the release
+  });
+
+  it("an older release says a newer one is published", async () => {
+    const { body } = await json(`${api.url}/api/v3/status?release=${OLD}`);
+    expect(body.release).toBe(OLD);
+    expect(body.freshness.newer_release).toBe(RID);
+    expect((await json(`${api.url}/api/v3/status`)).body.freshness.newer_release).toBeUndefined();
+  });
+
+  it("sees a release switched by the refresher without a restart", async () => {
+    const idx = JSON.parse(await readFile(path.join(dir, "index.json"), "utf8"));
+    idx.current = OLD;
+    idx.current_by_body.moon = OLD;
+    await writeFile(path.join(dir, "index.json"), JSON.stringify(idx));
+    await new Promise((r) => setTimeout(r, 50));
+    const { body } = await json(`${api.url}/api/v3/releases`);
+    expect(body.current).toBe(OLD);
+  });
+});

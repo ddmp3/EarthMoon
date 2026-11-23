@@ -1001,7 +1001,7 @@ export interface paths {
         };
         /**
          * Validity of the release and freshness of its sources (ADR-009)
-         * @description Validated only when every check of the validation protocol passes. Until the refresher exists (T52), each source is `not_checkable`, with the date it was verified by hand.
+         * @description Validated only when every check of the validation protocol passes. Freshness comes from the refresher (T52) when it has run; otherwise each source is `not_checkable`, with the date it was verified by hand. A source whose last check is older than twice its interval, or never checked, is `check_overdue`. An older release names the newer one in `newer_release`.
          */
         get: {
             parameters: {
@@ -1221,14 +1221,35 @@ export interface components {
                 }[];
             };
             freshness: {
-                /** @description false until the automatic refresher exists (T52) */
+                /** @description true when the freshness comes from the automatic refresher (T52) */
                 refresher: boolean;
                 note?: string;
+                /** @description when the refresher last wrote its state */
+                written_at?: string;
+                /** @description the current release of the same body, when this one is older */
+                newer_release?: string;
+                /** @description refreshed releases waiting for review, with the reasons they were not published */
+                held?: {
+                    id: string;
+                    body?: string;
+                    reasons?: string[];
+                }[];
+                /** @description step and share of a running recompute */
+                progress?: {
+                    [key: string]: unknown;
+                } | null;
                 sources: {
                     id: string;
-                    /** @enum {string} */
-                    state: "up_to_date" | "update_in_progress" | "update_held" | "check_failed" | "check_overdue" | "not_checkable";
+                    /**
+                     * @description first_check: signal recorded, changes since ingest unknown; update_detected: a change waits for a recompute
+                     * @enum {string}
+                     */
+                    state: "up_to_date" | "first_check" | "update_detected" | "update_in_progress" | "update_held" | "check_failed" | "check_overdue" | "not_checkable";
+                    /** @description last check (refresher) or hand verification */
                     checked_on: string | null;
+                    last_success?: string | null;
+                    detected_on?: string | null;
+                    reason?: string | null;
                 }[];
             };
         };
