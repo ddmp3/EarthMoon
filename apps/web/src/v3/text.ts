@@ -179,6 +179,8 @@ const en = {
   maskedLabel: 'Masked share',
   textAlternative: 'Text alternative of the map: the zone list.',
   goTo: 'Show on map',
+  bodyLabel: 'Moon',
+  demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-30 · ESA WorldCover',
   targetName: {
     'moon-psr': 'Permanently shadowed regions',
     'moon-polar-lit-highlands': 'Lit polar highlands',
@@ -188,6 +190,11 @@ const en = {
     'moon-persistently-lit': 'Persistently lit ridges',
     'moon-fresh-craters': 'Fresh craters',
     'moon-degraded-highlands': 'Degraded highlands',
+    'mars-north-polar': 'North polar terrain',
+    'mars-south-polar': 'South polar terrain',
+    'mars-ice-rich-midlatitudes': 'Ice-rich mid-latitudes',
+    'mars-aqueous-mineral-sites': 'Aqueous mineral sites',
+    'mars-hirise-terrain': 'Rover-scale terrain (HiRISE)',
   } as Record<string, string>,
 }
 
@@ -371,6 +378,8 @@ const fr: V3Texts = {
   maskedLabel: 'Part masquée',
   textAlternative: 'Équivalent textuel de la carte : la liste des zones.',
   goTo: 'Voir sur la carte',
+  bodyLabel: 'Lune',
+  demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-30 · ESA WorldCover',
   targetName: {
     'moon-psr': 'Régions en ombre permanente',
     'moon-polar-lit-highlands': 'Hauts plateaux polaires éclairés',
@@ -380,10 +389,48 @@ const fr: V3Texts = {
     'moon-persistently-lit': 'Crêtes éclairées en permanence',
     'moon-fresh-craters': 'Cratères récents',
     'moon-degraded-highlands': 'Hautes terres dégradées',
+    'mars-north-polar': 'Terrain polaire nord',
+    'mars-south-polar': 'Terrain polaire sud',
+    'mars-ice-rich-midlatitudes': 'Latitudes moyennes riches en glace',
+    'mars-aqueous-mineral-sites': 'Sites à minéraux aqueux',
+    'mars-hirise-terrain': 'Terrain à l’échelle d’un rover (HiRISE)',
   },
 }
 
 export const V3_TEXTS: Record<Lang, V3Texts> = { en, fr }
+
+/** Texts that change when the mission is about Mars (T48): the comparison is with Martian windows, at the MOLA scale. */
+const MARS: Record<Lang, Partial<V3Texts>> = {
+  en: {
+    ctxNote: 'Earth context, from a model: what an Earth place offers for a test. Not a comparison with Mars (E18).',
+    notAssessed: 'Not assessed at this place: sea, or no Earth window at the MOLA scale.',
+    navLead: 'Every Earth place compared with a Martian environment, with where our data are missing or weak.',
+    lead: 'Where Earth slopes resemble the slopes of a Martian environment, at the MOLA scale (windows of 2.9 or 11.6 km). A resemblance of slope, not a proven analog: read the coverage and the limits first.',
+    environment: 'Martian environment',
+    legendScale: 'As typical as the most central Martian windows (1) … no resemblance (0)',
+    provenanceDem: 'Earth terrain: Copernicus DEM GLO-90, resampled to the MOLA pixel, windows of 25 × 25 pixels (2.9 km at the poles, 11.6 km elsewhere)',
+    provenanceMoon: 'Martian reference: the MOLA windows of the selected environment (profiles in Data and method)',
+    bodyLabel: 'Mars',
+    demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-90 · ESA WorldCover',
+  },
+  fr: {
+    ctxNote: 'Contexte terrestre, issu d’un modèle : ce qu’un lieu terrestre offre pour un essai. Pas une comparaison avec Mars (E18).',
+    notAssessed: 'Non évalué à cet endroit : mer, ou aucune fenêtre terrestre à l’échelle MOLA.',
+    navLead: 'Chaque lieu de la Terre comparé à un environnement martien, avec les endroits où nos données manquent ou sont faibles.',
+    lead: 'Où les pentes terrestres ressemblent à celles d’un environnement martien, à l’échelle MOLA (fenêtres de 2,9 ou 11,6 km). Une ressemblance de pente, pas un analogue démontré : lisez d’abord la couverture et les limites.',
+    environment: 'Environnement martien',
+    legendScale: 'Aussi typique que les fenêtres martiennes les plus centrales (1) … aucune ressemblance (0)',
+    provenanceDem: 'Relief terrestre : Copernicus DEM GLO-90, rééchantillonné au pixel MOLA, fenêtres de 25 × 25 pixels (2,9 km aux pôles, 11,6 km ailleurs)',
+    provenanceMoon: 'Référence martienne : les fenêtres MOLA de l’environnement choisi (profils dans Données et méthode)',
+    bodyLabel: 'Mars',
+    demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-90 · ESA WorldCover',
+  },
+}
+
+/** The texts of the v3 panels for the language and the body of the open mission. */
+export function v3Texts(lang: Lang, body: 'moon' | 'mars' = 'moon'): V3Texts {
+  return body === 'mars' ? { ...V3_TEXTS[lang], ...MARS[lang] } : V3_TEXTS[lang]
+}
 
 export function targetName(t: V3Texts, id: string): string {
   return t.targetName[id] ?? id

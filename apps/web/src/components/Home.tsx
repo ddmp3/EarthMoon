@@ -3,7 +3,7 @@ import { useT } from '../i18n'
 import { MISSION_ORDER, missionImage } from '../shared'
 import type { SelectedMode } from '../store'
 
-/** Home: full-bleed Artemis II photo, then the four missions as cards. */
+/** Home: full-bleed Artemis II photo, then the five missions as cards (the fifth is Mars, T48). */
 export function Home({ onPick, siteCount }: { onPick: (mode: SelectedMode) => void; siteCount: number }) {
   const { t } = useT()
   const figures = [String(siteCount), String(parameterCatalog.length), '8', '71,731']
@@ -29,7 +29,7 @@ export function Home({ onPick, siteCount }: { onPick: (mode: SelectedMode) => vo
           </div>
           <div className="target-chips">
             <span className="chip chip-on">{t.target}</span>
-            <span className="chip">{t.marsSoon}</span>
+            <button className="chip" onClick={() => onPick('mars')} type="button">{t.marsSoon}</button>
           </div>
         </div>
 

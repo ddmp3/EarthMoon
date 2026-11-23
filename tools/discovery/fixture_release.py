@@ -4,6 +4,7 @@ It is written by the real exporter (release.py, tiles.py) from synthetic cells, 
 code path as a real release. Its run is named "synthetic-fixture" in every file, and its values are random.
 
     PYTHONPATH=tools python tools/discovery/fixture_release.py --out data/releases-fixture
+    EARTHMOON_BODY=mars PYTHONPATH=tools python tools/discovery/fixture_release.py --out data/releases-fixture --add
 """
 from __future__ import annotations
 
@@ -21,11 +22,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 SEED = 20261119
 
 
-def build(out: Path) -> str:
+def build(out: Path, add: bool = False) -> str:
+    """`add` keeps the releases already in `out` (the Mars fixture is added next to the lunar one)."""
     import pyarrow as pa
     import pyarrow.parquet as pq
     from discovery.discover import CELL_SCHEMA, SCENARIO_TARGETS, TARGET_SCALE, cell_centre, global_cell, write_rows
-    from discovery.release import export
+    from discovery.release import BODY, export
     from discovery.tiles import render_release
     rng = np.random.default_rng(SEED)
     lat, lon = np.meshgrid(np.arange(20.01, 21.0, 0.03), np.arange(10.01, 11.0, 0.03), indexing="ij")
@@ -38,9 +40,10 @@ def build(out: Path) -> str:
         r = {"cell": str(c), "tile": f"{int(np.floor(clat[k]))},{int(np.floor(clon[k]))}", "lat": float(clat[k]),
              "lon": float(clon[k]), "area_km2": 25.035, "windows": 25, "valid_unmasked": valid, "masked": masked,
              "cover_unknown": 0, "masked_share": masked / 25, "assessed_at": "glo30-40m",
-             "confidence": "high" if valid >= 20 and masked < 3 else ("medium" if valid >= 10 else "low"),
-             "suitability_A": float(rng.uniform()), "suitability_B": float(rng.uniform()),
-             "req:base_slope": "met", "req:climbing_limit_lrv": "met" if k % 3 else "failed", "req:climbing_limit_viper": "unknown"}
+             "confidence": "high" if valid >= 20 and masked < 3 else ("medium" if valid >= 10 else "low")}
+        if BODY == "moon":                                                # Mars applies no lunar requirement
+            r.update({"suitability_A": float(rng.uniform()), "suitability_B": float(rng.uniform()), "req:base_slope": "met",
+                      "req:climbing_limit_lrv": "met" if k % 3 else "failed", "req:climbing_limit_viper": "unknown"})
         for t in TARGET_SCALE:
             m = float(np.clip(0.5 + 0.4 * np.sin(clat[k] * 9) * np.cos(clon[k] * 7) + rng.normal(0, 0.05), 0, 1))
             r.update({f"{t}:windows": 25, f"{t}:valid": valid, f"{t}:median": m, f"{t}:p25": max(0.0, m - 0.15),
@@ -61,8 +64,9 @@ def build(out: Path) -> str:
             w = rng.dirichlet(np.ones(5), size=ids.size).astype(np.float32)
             for k, st in enumerate(("match", "partial", "no_match", "unresolved", "no_map")):
                 geo[f"geo:{g}:{st}"] = pa.array(w[:, k])
-        pq.write_table(pa.table(geo), run / "geology.parquet")
-        (run / "geology.json").write_text(json.dumps({"note": "synthetic fixture geology"}))
+        if BODY == "moon":                                                # Martian geology waits for the Tanaka map
+            pq.write_table(pa.table(geo), run / "geology.parquet")
+            (run / "geology.json").write_text(json.dumps({"note": "synthetic fixture geology"}))
         fz = rng.choice(["met", "partial", "failed", "not covered"], size=ids.size)        # synthetic context (T47)
         ar = rng.choice(["hyper-arid", "arid", "semi-arid", "dry sub-humid", "humid", "no data"], size=ids.size)
         pq.write_table(pa.table({"cell": pa.array([str(c) for c in ids]), "ctx:frozen_e4": pa.array(fz.tolist()),
@@ -72,7 +76,7 @@ def build(out: Path) -> str:
                                  "ctx:aridity_index": pa.array(rng.uniform(0, 1, ids.size).astype(np.float32)),
                                  "ctx:aridity_class": pa.array(ar.tolist())}), run / "context.parquet")
         (run / "context.json").write_text(json.dumps({"note": "synthetic fixture context"}))
-        if out.exists():
+        if out.exists() and not add:
             shutil.rmtree(out)
         rid = export(run, cube, out, commit="synthetic-fixture")
         render_release(run, out / rid, run / "land-cells.npy", workers=1)
@@ -83,7 +87,9 @@ def build(out: Path) -> str:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, required=True)
-    print(build(ap.parse_args(argv).out))
+    ap.add_argument("--add", action="store_true", help="keep the releases already in --out (EARTHMOON_BODY=mars)")
+    a = ap.parse_args(argv)
+    print(build(a.out, a.add))
     return 0
 
 

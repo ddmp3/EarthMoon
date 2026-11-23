@@ -135,28 +135,31 @@ async function fetchJson<T>(path: string, signal?: AbortSignal): Promise<T> {
   return (await response.json()) as T
 }
 
-const q = (params: Record<string, string | number>) => new URLSearchParams(Object.entries(params).map(([k, v]) => [k, String(v)])).toString()
+const q = (params: Record<string, string | number | undefined>) =>
+  new URLSearchParams(Object.entries(params).filter(([, v]) => v !== undefined).map(([k, v]) => [k, String(v)])).toString()
+const withRelease = (path: string, release?: string) => (release ? `${path}${path.includes('?') ? '&' : '?'}${q({ release })}` : path)
 
+/** Every document call takes the release to read (the lunar default when absent; a Mars mission passes its own). */
 export const v3 = {
   releases: () => get<ReleaseIndex>('releases'),
   release: (id: string) => get<{ release: string; run: string; geology?: unknown; context?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
-  scenarios: () => get<{ release: string; scenarios: Scenario[] }>('scenarios'),
-  coverage: (scenario: string, env: string) => get<Coverage>(`coverage?${q({ scenario, env })}`),
-  zones: (scenario: string, env: string, tau: number, minCells: number, limit = 50) =>
-    get<ZonePage>(`zones?${q({ scenario, env, tau, min_cells: minCells, limit })}`),
-  zone: (id: string) => get<ZoneDetail>(`zones/${encodeURIComponent(id)}`),
-  method: () => get<{ release: string; sources: MethodSource[]; processing: Record<string, unknown>[] }>('method'),
-  status: () => get<Status>('status'),
-  sites: (scenario: string) =>
-    get<{ release: string; scenario: string; points: { id: string; cell: string | null; values: Record<string, CellProps> | null; reason?: string }[] }>(`sites?${q({ scenario })}`),
-  query: async (body: Record<string, unknown>) => {
-    const response = await fetch(`${apiUrl()}/api/v3/query`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+  scenarios: (release?: string) => get<{ release: string; scenarios: Scenario[] }>(withRelease('scenarios', release)),
+  coverage: (scenario: string, env: string, release?: string) => get<Coverage>(`coverage?${q({ scenario, env, release })}`),
+  zones: (scenario: string, env: string, tau: number, minCells: number, limit = 50, release?: string) =>
+    get<ZonePage>(`zones?${q({ scenario, env, tau, min_cells: minCells, limit, release })}`),
+  zone: (id: string, release?: string) => get<ZoneDetail>(withRelease(`zones/${encodeURIComponent(id)}`, release)),
+  method: (release?: string) => get<{ release: string; sources: MethodSource[]; processing: Record<string, unknown>[] }>(withRelease('method', release)),
+  status: (release?: string) => get<Status>(withRelease('status', release)),
+  sites: (scenario: string, release?: string) =>
+    get<{ release: string; scenario: string; points: { id: string; cell: string | null; values: Record<string, CellProps> | null; reason?: string }[] }>(`sites?${q({ scenario, release })}`),
+  query: async (body: Record<string, unknown>, release?: string) => {
+    const response = await fetch(`${apiUrl()}/api/v3/${withRelease('query', release)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
     const data = (await response.json().catch(() => ({}))) as Record<string, unknown>
     if (!response.ok) throw new Error(typeof data.error === 'string' ? data.error : `HTTP ${response.status}`)
     return data as unknown as QueryResult
   },
-  cells: (scenario: string, env: string, bbox: [number, number, number, number], signal?: AbortSignal) =>
-    get<CellCollection>(`cells?${q({ scenario, env, bbox: bbox.map((v) => v.toFixed(4)).join(',') })}`, signal),
+  cells: (scenario: string, env: string, bbox: [number, number, number, number], signal?: AbortSignal, release?: string) =>
+    get<CellCollection>(`cells?${q({ scenario, env, bbox: bbox.map((v) => v.toFixed(4)).join(','), release })}`, signal),
 }
 
 /** Address of a raster tile layer (zoom 0 to 7), in Leaflet's {z}/{x}/{y} template form. */

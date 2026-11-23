@@ -63,8 +63,12 @@ function App() {
   const [mode, setMode] = useState<SelectedMode | null>(() => parseHash().mode)
   // v3 scenario of each mission: robotics = B, colony = A, free criteria = the one picked in its search; calibration has none yet.
   const [customScenario, setCustomScenario] = useState('B')
-  const scenarioId = mode === 'robotics' ? 'B' : mode === 'colony' ? 'A' : mode === 'custom' ? customScenario : null
-  const v3 = useV3(scenarioId)
+  // Mars (mission 5, T48) reads the current Mars release, scenario D.
+  const scenarioId = mode === 'robotics' ? 'B' : mode === 'colony' ? 'A' : mode === 'custom' ? customScenario : mode === 'mars' ? 'D' : null
+  const body = mode === 'mars' ? 'mars' : 'moon'
+  const v3 = useV3(scenarioId, body)
+  const setBody = useAppStore((s) => s.setBody)
+  useEffect(() => setBody(body), [body, setBody])
   const [siteMethod, setSiteMethod] = useState(false)
   const [sites, setSites] = useState<SiteResult[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(() => parseHash().site)
@@ -88,7 +92,7 @@ function App() {
   }, [])
 
   const run = useCallback(
-    async (target: SelectedMode) => {
+    async (target: Exclude<SelectedMode, 'mars'>) => {
       setError(null)
       setBuilderError(null)
       let request: Parameters<typeof analyzeSites>[0]
@@ -125,7 +129,8 @@ function App() {
 
   // Predefined modes re-run on their own when a setting changes; mode 4 waits for the button.
   useEffect(() => {
-    if (mode && mode !== 'custom') void run(mode)
+    if (mode === 'mars') setSites([])                       // no v2 site ranking for Mars: zones only
+    else if (mode && mode !== 'custom') void run(mode)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mode, bareSoilOnly, calibrationInstrument])
 
@@ -218,7 +223,7 @@ function App() {
             manifest={manifest}
             mode={mode}
             onBack={() => setMode(null)}
-            onRun={() => void run(mode)}
+            onRun={() => mode !== 'mars' && void run(mode)}
             onSelect={setSelectedId}
             onScenario={setCustomScenario}
             selectedId={selectedId}

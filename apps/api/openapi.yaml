@@ -501,7 +501,11 @@ components:
       type: object
       required: [current, releases]
       properties:
-        current: { type: string }
+        current: { type: string, description: The default release (lunar) }
+        current_by_body:
+          type: object
+          description: The current release of each body (moon, mars); a body name is accepted wherever a release id is
+          additionalProperties: { type: string }
         releases:
           type: array
           items:
@@ -514,6 +518,7 @@ components:
               protocol: { type: string }
               commit: { type: string }
               created: { type: string }
+              body: { type: string, description: moon or mars (absent for releases made before T48, which are lunar) }
     Spread:
       type: object
       required: [median, p25, p75]

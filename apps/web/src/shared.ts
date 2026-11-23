@@ -2,7 +2,7 @@ import { FR_SITES } from "./content-fr"
 import type { Lang } from "./i18n"
 import type { SelectedMode } from "./store"
 
-export const MISSION_ORDER: SelectedMode[] = ["robotics", "calibration", "colony", "custom"]
+export const MISSION_ORDER: SelectedMode[] = ["robotics", "calibration", "colony", "custom", "mars"]
 export const missionImage = (mode: SelectedMode) => `${import.meta.env.BASE_URL}img/${mode}.jpg`
 
 /** Site name in the interface language (the data files are in English). */

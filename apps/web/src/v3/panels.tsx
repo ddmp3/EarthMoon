@@ -283,7 +283,7 @@ export function Provenance({ zone, release, onClose, status = null, t }: {
         <dt>{t.provenanceCommit}</dt><dd><code>{release?.commit?.slice(0, 12) ?? '—'}</code></dd>
         <dt>DEM</dt><dd>{t.provenanceDem}</dd>
         <dt>masks</dt><dd>{t.provenanceMasks}</dd>
-        <dt>Moon</dt><dd>{t.provenanceMoon}</dd>
+        <dt>{t.bodyLabel}</dt><dd>{t.provenanceMoon}</dd>
         <dt>tiles</dt><dd>{(zone.tiles ?? []).join(' · ') || '—'}</dd>
       </dl>
     </Dialog>
