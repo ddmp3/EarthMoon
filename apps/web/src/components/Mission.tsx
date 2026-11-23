@@ -19,7 +19,7 @@ import { FlyToPoint, MAP_MAX_ZOOM, V3Layers, ZoneMarkers, type MapLayer } from '
 import { MapLegend, RankTabs, SiteV3Chip, V3Controls, V3Search, V3StatusLine, ZoneRows, type Tab } from '../v3/MissionV3'
 import { zoneItems } from '../v3/model'
 import { CompareZones, DataMethod, Patterns, Provenance, ZoneCard } from '../v3/panels'
-import { V3_TEXTS } from '../v3/text'
+import { v3Texts } from '../v3/text'
 import type { V3State } from '../v3/useV3'
 
 const TONE_COLOR = { good: '#6fd39a', mid: '#ffc457', low: '#ff7a6b', off: '#6b7388' } as const
@@ -144,7 +144,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
   const mission = t.missions[mode]
   const selected = sites.find((site) => site.id === selectedId) ?? null
   const ranked = sites.filter((site) => !site.excluded).length
-  const vt = V3_TEXTS[lang]
+  const vt = v3Texts(lang, mode === 'mars' ? 'mars' : 'moon')
   const [tabChoice, setTab] = useState<Tab>('sites')
   const [overlay, setOverlay] = useState(true)
   const [layerChoice, setLayer] = useState<MapLayer>('typicality')
@@ -209,12 +209,12 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
             </select>
           </label>
         )}
-        <label className="check">
+        {mode !== 'mars' && <label className="check">
           <input checked={bareSoilOnly} id="bare-soil" onChange={(event) => setBareSoilOnly(event.target.checked)} type="checkbox" />
           <span>
             {t.bareSoil} <small>{t.bareSoilHint}</small>
           </span>
-        </label>
+        </label>}
         {mode !== 'calibration' && (
           <V3Controls layer={layer} onLayer={setLayer} onMethod={() => setShowMethod(true)} onOverlay={setOverlay} overlay={overlay} v={v3} />
         )}
@@ -265,7 +265,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
         <Provenance onClose={() => setProvenance(false)} release={v3.release && { release: v3.release.release, run: v3.release.run, protocol: v3.release.protocol, commit: v3.release.commit }}
           status={v3.status} t={vt} zone={zone} />
       )}
-      {!loading && !error && (sites.length > 0 || (mode === 'custom' && hasV3)) && (
+      {!loading && !error && (sites.length > 0 || ((mode === 'custom' || mode === 'mars') && hasV3)) && (
         <>
           <section className="explore">
             <div className="ranking">

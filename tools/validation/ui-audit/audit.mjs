@@ -14,6 +14,8 @@ const defects = [];
 const notes = [];
 const defect = (where, what) => defects.push(`[${where}] ${what}`);
 
+const MISSIONS = 5;                                          // four lunar missions and Mars (T48)
+
 async function overflow(page, where) {
   const info = await page.evaluate(() => {
     const vw = document.documentElement.clientWidth;
@@ -157,6 +159,28 @@ async function discovery(page, name, shot) {
   await overflow(page, `${name} free criteria (fr)`);
   await shot("12-custom-fr");
   await page.locator(".lang-switch button", { hasText: "EN" }).click();
+  // mission 5, Mars (T48): same screens, scenario D from the Mars release, then French. A fresh rate-limit window, as
+  // a new visitor: the Mars release documents are read anew.
+  await new Promise((resolve) => setTimeout(resolve, 61_000));
+  await page.goto(`${WEB}/#mars`, { waitUntil: "networkidle" });
+  await page.locator(".zone-row").first().waitFor({ timeout: 20000 }).catch(() => defect(name, "Mars: no zone list"));
+  const envs = await page.locator("#v3-env option").allInnerTexts();
+  if (!envs.some((e) => e.includes("North polar terrain"))) defect(name, `Mars: environments are ${envs.join(", ").slice(0, 120)}`);
+  if (envs.some((e) => /lunar|Mare|shadowed/i.test(e))) defect(name, "Mars: a lunar environment is offered");
+  if (await page.locator("#bare-soil").count()) defect(name, "Mars: the v2 bare-soil filter is shown");
+  await overflow(page, `${name} Mars`);
+  await shot("13-mars");
+  await page.locator(".zone-row").first().click();
+  await page.locator(".v3-under").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: the zone card does not open"));
+  await shot("14-mars-zone");
+  await page.locator(".lang-switch button", { hasText: "FR" }).click();
+  const frMars = await page.locator("main").innerText();
+  for (const english of ["Martian environment", "North polar terrain", "Mars analogs", "Discovered zones", "Data and method", "Lunar environment"]) {
+    if (frMars.includes(english)) defect(name, `French Mars mission still shows "${english}"`);
+  }
+  await overflow(page, `${name} Mars (fr)`);
+  await shot("15-mars-fr");
+  await page.locator(".lang-switch button", { hasText: "EN" }).click();
   // the old address of the separate page opens mission 4
   await page.goto(`${WEB}/#discover`, { waitUntil: "networkidle" });
   if (!(await page.locator(".v3-search").count())) defect(name, "#discover does not open the free-criteria mission");
@@ -176,7 +200,7 @@ async function run(name, viewport, mobile) {
   // --- Home
   await page.goto(`${WEB}/`, { waitUntil: "networkidle" });
   const cards = page.locator(".mission-card");
-  if ((await cards.count()) !== 4) defect(name, `home: ${await cards.count()} mission cards instead of 4`);
+  if ((await cards.count()) !== MISSIONS) defect(name, `home: ${await cards.count()} mission cards instead of ${MISSIONS}`);
   const broken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src));
   if (broken.length) defect(name, `home: broken images ${broken.join(", ")}`);
   await overflow(page, `${name} home`);
@@ -301,7 +325,7 @@ async function run(name, viewport, mobile) {
   await page.locator(".rank-row").first().waitFor({ timeout: 60000 });
   await page.goBack();
   await page.waitForTimeout(300);
-  if ((await page.locator(".mission-card").count()) !== 4) defect(name, "browser Back button does not return to the missions");
+  if ((await page.locator(".mission-card").count()) !== MISSIONS) defect(name, "browser Back button does not return to the missions");
   await page.goForward();
   await page.locator(".rank-row").first().waitFor({ timeout: 60000 });
   await page.evaluate(() => { window.location.hash = "#colony/tunnunik"; });
@@ -309,7 +333,7 @@ async function run(name, viewport, mobile) {
 
   // --- Back to the missions, and a direct link
   await page.locator(".back").click();
-  if ((await page.locator(".mission-card").count()) !== 4) defect(name, "\"All missions\" does not return to the home page");
+  if ((await page.locator(".mission-card").count()) !== MISSIONS) defect(name, "\"All missions\" does not return to the home page");
   await page.goto(`${WEB}/#robotics/atacama`, { waitUntil: "networkidle" });
   await page.locator(".site-detail h2").waitFor({ timeout: 60000 });
   if (!(await page.locator(".site-detail h2").textContent())?.includes("Atacama")) defect(name, "direct link #robotics/atacama does not open Atacama");
@@ -320,6 +344,8 @@ async function run(name, viewport, mobile) {
   await browser.close();
 }
 
+// e2e.py runs just before on the same IP: start on a fresh window of the API rate limit.
+await new Promise((resolve) => setTimeout(resolve, 61_000));
 await run("desktop", { width: 1440, height: 900 }, false);
 // The API allows 120 requests per minute and per IP: the two passes act as two visitors, one window apart.
 await new Promise((resolve) => setTimeout(resolve, 61_000));

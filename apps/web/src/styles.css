@@ -76,8 +76,10 @@ a { color: var(--accent); }
 .target-chips { display: flex; gap: 8px; flex-wrap: wrap; }
 .chip { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; color: var(--muted); }
 .chip-on { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 600; }
+button.chip { background: transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
+button.chip:hover, button.chip:focus-visible { color: var(--text); border-color: var(--accent); }
 
-.mission-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.mission-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; }
 .mission-card { position: relative; display: grid; grid-template-rows: auto 1fr; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; padding: 0; background: var(--panel); text-align: left; transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.35s, box-shadow 0.35s; }
 .mission-photo { position: relative; display: block; aspect-ratio: 4 / 3.5; overflow: hidden; }
 .mission-photo img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1); }
@@ -86,6 +88,7 @@ a { color: var(--accent); }
 .mission-photo-calibration img { object-position: 50% 48%; }
 .mission-photo-colony img { object-position: 30% 72%; }
 .mission-photo-custom img { object-position: 50% 50%; }
+.mission-photo-mars img { object-position: 50% 30%; }
 .mission-card:hover, .mission-card:focus-visible { transform: translateY(-8px); border-color: var(--accent); box-shadow: 0 24px 60px -24px rgba(255, 196, 87, 0.45); }
 .mission-card:hover img, .mission-card:focus-visible img { transform: scale(1.06); }
 .mission-number { position: absolute; z-index: 1; top: 14px; left: 18px; font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.12em; color: #fff; text-shadow: 0 1px 6px #000; }
@@ -111,6 +114,7 @@ a { color: var(--accent); }
 .mission-banner-colony img { object-position: 50% 74%; }
 /* Zoomed in so the mosaic's own longitude labels (90°W, 90°E) stay outside the frame. */
 .mission-banner-custom img { object-position: 50% 50%; transform: scale(1.3); }
+.mission-banner-mars img { object-position: 50% 22%; }
 .mission-banner-shade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 7, 13, 0.9) 0%, rgba(5, 7, 13, 0.45) 60%, rgba(5, 7, 13, 0.1) 100%), linear-gradient(0deg, var(--bg) 0%, rgba(5, 7, 13, 0) 45%); }
 .mission-banner-copy { position: relative; display: grid; gap: 8px; padding: 0 var(--gutter) 30px; max-width: 720px; }
 .mission-banner-copy h1 { font-size: clamp(2rem, 4.6vw, 3.2rem); line-height: 1.05; }
@@ -264,14 +268,23 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .credits small { display: block; font-size: 0.76rem; opacity: 0.85; }
 .footer { padding: 18px var(--gutter) 28px; color: var(--muted); font-size: 0.78rem; border-top: 1px solid var(--line); }
 
+@media (max-width: 1360px) {
+  .mission-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .mission-card { grid-column: span 2; }
+  .mission-card:nth-child(4), .mission-card:nth-child(5) { grid-column: span 3; }
+}
 @media (max-width: 1100px) {
   .mission-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mission-card, .mission-card:nth-child(4) { grid-column: auto; }
+  .mission-card:nth-child(5) { grid-column: 1 / -1; }
+  .mission-card:nth-child(5) .mission-photo { aspect-ratio: 16 / 7; }
   .comparator, .explore, .credits { grid-template-columns: minmax(0, 1fr); }
   .ranking { height: 420px; }
   .map-wrap { height: 380px; }
 }
 @media (max-width: 640px) {
   .mission-grid { grid-template-columns: minmax(0, 1fr); }
+  .mission-card:nth-child(5) .mission-photo { aspect-ratio: 4 / 3.5; }
   .figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .figures div:nth-child(3) { padding-left: 0; border-left: 0; }
   .detail-head { grid-template-columns: minmax(0, 1fr); }

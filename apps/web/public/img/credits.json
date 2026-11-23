@@ -38,5 +38,14 @@
     "center": "JPL",
     "credit": "NASA / NASA/JPL/USGS",
     "url": "https://images.nasa.gov/details/PIA00001"
+  },
+  "mars": {
+    "nasa_id": "PIA10713",
+    "title": "Color view to Northwest of Phoenix",
+    "date": "2008-05-28",
+    "center": "JPL",
+    "credit": "NASA/JPL-Caltech/University of Arizona/Texas A&M University",
+    "url": "https://images.nasa.gov/details/PIA10713",
+    "crop": "square crop of the horizon and polygonal ground, resized to 1200 x 1200"
   }
 }

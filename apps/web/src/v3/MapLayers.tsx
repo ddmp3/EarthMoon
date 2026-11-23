@@ -5,7 +5,7 @@ import { CircleMarker, GeoJSON, TileLayer, Tooltip, useMap, useMapEvents } from 
 import { useAppStore } from '../store'
 import { layerUrl, v3, type CellCollection, type CellProps, type Zone } from './api'
 import { cellLines, cellState, cividis, geologyClass, PATTERN, type CoverageClass } from './model'
-import { V3_TEXTS } from './text'
+import { v3Texts } from './text'
 
 export const TILE_MAX_ZOOM = 7 // raster tiles exist for zoom 0 to 7 (ADR-004); 5 km cells above
 export const MAP_MAX_ZOOM = 11
@@ -19,16 +19,18 @@ export type MapLayer = 'typicality' | 'geology' | 'frozen' | 'aridity'
 const FROZEN_FILL: Record<string, string> = { met: 'rgb(0, 114, 178)', partial: 'rgb(86, 180, 233)', failed: 'rgb(230, 159, 0)' }
 const ARIDITY_FILL: Record<string, string> = { 'hyper-arid': 'rgb(166, 97, 26)', arid: 'rgb(223, 194, 125)', 'semi-arid': 'rgb(245, 245, 245)', 'dry sub-humid': 'rgb(128, 205, 193)', humid: 'rgb(1, 133, 113)' }
 
-function Cells({ scenario, env, overlay, confidence, onError, layer }: {
+function Cells({ scenario, env, overlay, confidence, onError, layer, release }: {
   layer: MapLayer
   scenario: string
   env: string
   overlay: boolean
   confidence: boolean
   onError: (message: string | null) => void
+  release: string
 }) {
   const lang = useAppStore((s) => s.lang)
-  const t = V3_TEXTS[lang]
+  const body = useAppStore((s) => s.body)
+  const t = v3Texts(lang, body)
   const [data, setData] = useState<CellCollection | null>(null)
   const ctl = useRef<AbortController | null>(null)
   const map = useMap()
@@ -42,7 +44,7 @@ function Cells({ scenario, env, overlay, confidence, onError, layer }: {
     const b = map.getBounds()
     const c = new AbortController()
     ctl.current = c
-    v3.cells(scenario, env, [Math.max(-180, b.getWest()), Math.max(-90, b.getSouth()), Math.min(180, b.getEast()), Math.min(90, b.getNorth())], c.signal)
+    v3.cells(scenario, env, [Math.max(-180, b.getWest()), Math.max(-90, b.getSouth()), Math.min(180, b.getEast()), Math.min(90, b.getNorth())], c.signal, release)
       .then((d) => {
         setData(d)
         onError(null)
@@ -53,7 +55,7 @@ function Cells({ scenario, env, overlay, confidence, onError, layer }: {
           onError(e instanceof Error ? e.message : String(e))
         }
       })
-  }, [env, map, onError, scenario])
+  }, [env, map, onError, release, scenario])
   useMapEvents({ moveend: () => { setZoom(map.getZoom()); load() } })
   useEffect(() => {
     load()
@@ -106,10 +108,11 @@ export function V3Layers({ release, scenario, env, overlay, confidence, onCellsE
   confidence: boolean
   onCellsError: (message: string | null) => void
 }) {
+  const body = useAppStore((s) => s.body)
   return (
     <>
       <TileLayer
-        attribution="EarthMoon v3 · Copernicus DEM GLO-30 · ESA WorldCover"
+        attribution={v3Texts('en', body).demAttribution}
         errorTileUrl={EMPTY_TILE}
         key={`${layer}-${scenario}-${env}`}
         maxNativeZoom={TILE_MAX_ZOOM}
@@ -118,7 +121,7 @@ export function V3Layers({ release, scenario, env, overlay, confidence, onCellsE
         url={layerUrl(scenario, env, layer, release)}
       />
       {overlay && <TileLayer errorTileUrl={EMPTY_TILE} key={`co-${scenario}-${env}`} maxNativeZoom={TILE_MAX_ZOOM} maxZoom={TILE_MAX_ZOOM} url={layerUrl(scenario, env, 'coverage', release)} />}
-      <Cells confidence={confidence} env={env} layer={layer} onError={onCellsError} overlay={overlay} scenario={scenario} />
+      <Cells confidence={confidence} env={env} layer={layer} onError={onCellsError} overlay={overlay} release={release} scenario={scenario} />
     </>
   )
 }

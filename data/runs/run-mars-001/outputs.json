@@ -1,0 +1,54 @@
+{
+ "run-mars-001/assess.json": {
+  "bytes": 104,
+  "sha256": "f2ad9795c2a3e9177d219ef4d8b552c729e2d734f88b72410f510509c87a08c0"
+ },
+ "run-mars-001/cells.parquet": {
+  "bytes": 468176648,
+  "sha256": "9257839f001ccaf4c1aa8205a389b5cbfacb1398bf0ea813fdb885be0a70a34e"
+ },
+ "run-mars-001/context.json": {
+  "bytes": 1550,
+  "sha256": "1cab1372321e039f4a12de7e3323eea818b5ad53a0bd5cb47454abce54d99bc2"
+ },
+ "run-mars-001/context.parquet": {
+  "bytes": 52334251,
+  "sha256": "3265cc73ac3c29ca0f7ba5b6911a79ff9d96b2787fe11d84ab215509bd7286c2"
+ },
+ "run-mars-001/refs.npz": {
+  "bytes": 2135226,
+  "sha256": "4e65610148ac788d8752943b01f4c5f202aa8ed0ed7b95a1abb66820c03315b7"
+ },
+ "run-mars-001/stats.json": {
+  "bytes": 1285,
+  "sha256": "3aff96f888bfb8d933ff3e4de7e5eeb0c214cc6d158789fd0f6c183d84291232"
+ },
+ "run-mars-001/tiles-refine-glo90-115m-w25.txt": {
+  "bytes": 186743,
+  "sha256": "500e06a8b8660cb279cf19a2512f3b2ed0d62e64a39fe24e4ab0abd1257dbedc"
+ },
+ "run-mars-001/tiles-refine-glo90-463m-w25.txt": {
+  "bytes": 186743,
+  "sha256": "500e06a8b8660cb279cf19a2512f3b2ed0d62e64a39fe24e4ab0abd1257dbedc"
+ },
+ "run-mars-001/validation.json": {
+  "bytes": 20844,
+  "sha256": "be91e99c4ac0713878c29ca84201e8fa6fcce9493f767b8abfa65f947854854b"
+ },
+ "run-mars-001/zones-D-mars-ice-rich-midlatitudes.json": {
+  "bytes": 17619686,
+  "sha256": "f27b59cae90e4fcdd63540a4417b456ce24726cd55414d7d00abafbb75897dc9"
+ },
+ "run-mars-001/zones-D-mars-north-polar.json": {
+  "bytes": 20974558,
+  "sha256": "1165d277713f2aef21d213b2d85fef8e359837e82f4695f48bbd2e24151865b5"
+ },
+ "run-mars-001/zones-D-mars-south-polar.json": {
+  "bytes": 18103509,
+  "sha256": "bfff10e5dc5cd92d9cd3576d1e21dc3de4b58839f8bb82ecc52d765667106a4b"
+ },
+ "run-mars-001/zones.json": {
+  "bytes": 57720,
+  "sha256": "c524ddb9e00e0c6dd5e8c4ba987e9b048a41e76c09ae8c146d56c2948e615414"
+ }
+}

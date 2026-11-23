@@ -114,6 +114,7 @@ def zone_hillshade(zone: dict, cache: Path, out_png: Path, pixel_m: float = 40.0
     from rasterio.transform import from_origin
     from rasterio.warp import Resampling, reproject
     from discovery.copernicus import tile_name
+    from discovery.discover import PRODUCT                       # glo30 for the Moon, glo90 for the Mars run (T48)
     from discovery.grid import laea
     n = int(2 * half_km * 1000 / pixel_m)
     dst = np.full((n, n), np.nan, "float32")
@@ -122,7 +123,7 @@ def zone_hillshade(zone: dict, cache: Path, out_png: Path, pixel_m: float = 40.0
     la0, lo0 = int(np.floor(zone["lat"])), int(np.floor(zone["lon"]))
     for la in (la0 - 1, la0, la0 + 1):
         for lo in (lo0 - 1, lo0, lo0 + 1):
-            f = cache / f"{tile_name(la, (lo + 180) % 360 - 180, 'glo30')}.tif"
+            f = cache / f"{tile_name(la, (lo + 180) % 360 - 180, PRODUCT)}.tif"
             if not f.exists():
                 continue
             with rasterio.open(f) as src:

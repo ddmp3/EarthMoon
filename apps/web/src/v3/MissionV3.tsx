@@ -4,7 +4,7 @@ import { v3 as v3api, type CellProps, type QueryResult, type Scenario } from './
 import { cellState, cividis, geologyText, layerList, legendRows } from './model'
 import { coverageMeaning, requirementText, scenarioText } from './content'
 import { Patterns } from './panels'
-import { targetName, V3_TEXTS } from './text'
+import { targetName, v3Texts } from './text'
 import type { MapLayer } from './MapLayers'
 import type { SiteV3, V3State } from './useV3'
 import './v3.css'
@@ -13,7 +13,8 @@ const two = (v: number | null | undefined) => (v === null || v === undefined ? '
 
 function useV3Texts() {
   const lang = useAppStore((s) => s.lang)
-  return { t: V3_TEXTS[lang], lang }
+  const body = useAppStore((s) => s.body)
+  return { t: v3Texts(lang, body), lang }
 }
 
 /** v3 settings in the mission's control bar: lunar environment, coverage overlay, Data and method. */
@@ -357,7 +358,7 @@ export function V3Search({ v, bbox, onResults, onScenario }: {
     setMessage(null)
     try {
       const r = await v3api.query({ scenario: s.id, env: v.env, min_typicality: Number.isFinite(mt) ? Math.min(1, Math.max(0, mt)) : 0.8,
-        min_confidence: minConf, requirements_met: reqs.filter((r) => usable.includes(r)), bbox: bbox.map((x) => Math.round(x * 1000) / 1000), limit: 100 })
+        min_confidence: minConf, requirements_met: reqs.filter((r) => usable.includes(r)), bbox: bbox.map((x) => Math.round(x * 1000) / 1000), limit: 100 }, v.release?.release)
       onResults(r)
       setMessage(r.matched ? t.searchMatched(r.matched, r.area_km2) : t.searchNone)
     } catch (e) {

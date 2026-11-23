@@ -1,0 +1,42 @@
+{
+ "cells": 7400488,
+ "layers": {
+  "frozen_ground": {
+   "class": "model",
+   "comparable_with_moon": false,
+   "elevation_correction": false,
+   "says": "modelled mean annual ground temperature at the top of the permafrost, 2000 to 2016, and permafrost probability",
+   "not_meaning": "not lunar ice, not ice content, not a measurement at the site; Northern Hemisphere north of 25\u00b0N only",
+   "threshold": "E4: frozen ground for drilling at -6 \u00b0C or colder; partial between -6 and 0 \u00b0C",
+   "interannual_sigma": false,
+   "sigma": "standard deviation of the model (MAGTSTD), not interannual",
+   "source": "obu-permafrost-2018"
+  },
+  "aridity": {
+   "class": "model",
+   "comparable_with_moon": false,
+   "elevation_correction": false,
+   "says": "aridity index: mean annual precipitation over reference evapotranspiration, 1970 to 2000",
+   "not_meaning": "not the water content of the ground; not lunar dryness (the Moon has no atmosphere)",
+   "threshold": "UNEP classes: hyper-arid < 0.03, arid < 0.2, semi-arid < 0.5, dry sub-humid < 0.65, humid",
+   "interannual_sigma": false,
+   "sigma": "none: a 1970 to 2000 climatology",
+   "no_data": "0 in the file (sea, or an index below 0.0001: not told apart) is treated as no data",
+   "source": "global-aridity-index-v3"
+  }
+ },
+ "frozen_e4": {
+  "met": 0.0322,
+  "partial": 0.0464,
+  "failed": 0.2788,
+  "not covered": 0.6426
+ },
+ "aridity": {
+  "hyper-arid": 0.0533,
+  "arid": 0.1259,
+  "semi-arid": 0.1204,
+  "dry sub-humid": 0.0648,
+  "humid": 0.3721,
+  "no data": 0.2634
+ }
+}

@@ -130,12 +130,22 @@ __all__ = ["candidates", "rank_zones", "locate_points", "percentile_rank", "lati
 
 # --- assessment of one tile (IO) ---------------------------------------------------------------------------
 
+# Body-specific settings. The lunar run uses these; the Mars run (tools/discovery/mars_run.py, T48) replaces them.
+PRODUCT = "glo30"                                    # DEM product of the Earth cubes the windows come from
 SCALES = {"glo30-40m": 40.0, "glo30-59m": 59.225293836}
+COVERAGE_SCALES = ("glo30-40m", "glo30-59m")         # finest first: coverage and confidence read at the finest one
 TARGET_SCALE = {"moon-south-polar-cap-v2": "glo30-40m", "moon-polar-lit-highlands": "glo30-40m",
                 "moon-psr": "glo30-40m", "moon-mare-plains": "glo30-59m", "moon-pits": "glo30-59m"}
 SCENARIO_TARGETS = {"A": ["moon-polar-lit-highlands", "moon-psr", "moon-pits"],
                     "B": ["moon-polar-lit-highlands", "moon-psr", "moon-mare-plains", "moon-south-polar-cap-v2"]}
 ELIMINATING = {"A": [], "B": ["climbing_limit_lrv"]}
+WINDOW_ASSIGN = "centre"   # centre: a window belongs to the cell holding its centre. cover (Mars, windows larger than
+                           # a cell): also to every cell whose centre it holds (protocol mars-v1)
+WINDOW_M: dict = {}        # window side per scale, in metres (cover mode)
+ROCK_RADIUS_M: dict = {}   # half-spread of the Antarctic rock sample per scale; 400 m (1 km windows) when absent
+CONFIDENCE = None          # None: compare_run.confidence (window counts); else a function with the same arguments
+RULES_IN_USE = None        # None: compare_run.RULES; {} applies no requirement
+SUITABILITY_IN_USE = None  # None: compare_run.SUITABILITY; {} computes no suitability
 WCOLS = ["i", "j", "lat", "lon", "slope_mean", "traversable_15", "traversable_20", *MASK_CLASSES, "wc_covered"]
 _CTX: dict = {}
 
@@ -152,7 +162,7 @@ def _context(refs_path: str, rock_path: str) -> dict:
     return _CTX
 
 
-def window_masks(w: dict, ctx: dict) -> tuple[np.ndarray, np.ndarray]:
+def window_masks(w: dict, ctx: dict, radius_m: float = 400.0) -> tuple[np.ndarray, np.ndarray]:
     """(masked, cover unknown) per window: WorldCover north of 60°S, rock outcrops south of it."""
     from discovery.antarctic import outcrop_share
     from discovery.compare import masked_windows
@@ -160,7 +170,8 @@ def window_masks(w: dict, ctx: dict) -> tuple[np.ndarray, np.ndarray]:
     south = np.asarray(w["lat"]) < -60
     if south.any():
         share = np.full(len(w["lat"]), np.nan)
-        share[south] = outcrop_share(np.asarray(w["lat"])[south], np.asarray(w["lon"])[south], ctx["rock"], ctx["rock_tf"])
+        share[south] = outcrop_share(np.asarray(w["lat"])[south], np.asarray(w["lon"])[south], ctx["rock"], ctx["rock_tf"],
+                                      radius_m=radius_m)
         rmask, known = rock_masked(share, w["wc_covered"])
         masked = masked | rmask
         unknown = unknown & ~known
@@ -218,9 +229,46 @@ def assessed_keys(refined: dict) -> list[str]:
     return sorted({k for t in refined for k in neighbour_keys(t)})
 
 
+def tile_cells(key: str) -> np.ndarray:
+    """Global cells whose centre lies in tile `key`, found by sampling the tile every 1.7 km (a third of a cell)."""
+    la, lo = (int(v) for v in key.split(","))
+    step = 0.015
+    lats = np.clip(np.arange(la + step / 2, la + 1, step), -89.999, 89.999)
+    pts_lat, pts_lon = [], []
+    for a in lats:
+        st = min(0.25, step / max(np.cos(np.radians(abs(a) + step)), 1e-3))
+        lons = np.arange(lo + st / 2, lo + 1, st)
+        pts_lat.append(np.full(lons.size, a))
+        pts_lon.append(lons)
+    ids = np.unique(global_cell(np.concatenate(pts_lat), np.concatenate(pts_lon)))
+    clat, clon = cell_centre(ids)
+    return ids[owner_tile(clat, clon) == key]
+
+
+def covering_windows(cells: np.ndarray, lat: np.ndarray, lon: np.ndarray, window_m: float) -> tuple[np.ndarray, np.ndarray]:
+    """(cell, window index) for each cell whose centre lies inside a square window of side `window_m` (windows
+    are square in metres; the nearest one in Chebyshev distance holds the centre)."""
+    cells = np.asarray(cells, np.int64)
+    clat, clon = cell_centre(cells)
+    km = EARTH_R_KM * np.pi / 180
+    half = window_m / 2000.0
+    out_c, out_w = [np.zeros(0, np.int64)], [np.zeros(0, np.int64)]
+    for s in range(0, clat.size, 256):
+        a, b = clat[s:s + 256, None], clon[s:s + 256, None]
+        dy = np.abs(a - lat[None, :]) * km
+        dx = np.abs((b - lon[None, :] + 180) % 360 - 180) * km * np.cos(np.radians(lat[None, :]))
+        cheb = np.maximum(dx, dy)
+        j = np.argmin(cheb, axis=1)
+        ok = cheb[np.arange(j.size), j] <= half
+        out_c.append(cells[s:s + 256][ok])
+        out_w.append(j[ok].astype(np.int64))
+    return np.concatenate(out_c), np.concatenate(out_w)
+
+
 def owned_windows(key: str, scale: str, cube: str, refined: dict, ctx: dict) -> dict | None:
     """Windows at `scale` of the cells owned by `key`, read from every refined tile next to it (protocol v3), with
-    their global cell id and masks. Files of a tile not refined at that scale are never read."""
+    their global cell id and masks. Files of a tile not refined at that scale are never read. In cover mode
+    (protocol mars-v1) a window also belongs to every owned cell whose centre it holds."""
     import pyarrow.parquet as pq
     from pathlib import Path
     from discovery.copernicus import tile_name
@@ -230,7 +278,7 @@ def owned_windows(key: str, scale: str, cube: str, refined: dict, ctx: dict) -> 
         if scale not in refined.get(nk, []):
             continue
         nla, nlo = (int(v) for v in nk.split(","))
-        f = Path(cube) / scale / f"{tile_name(nla, nlo, 'glo30')}.windows.parquet"
+        f = Path(cube) / scale / f"{tile_name(nla, nlo, PRODUCT)}.windows.parquet"
         if not f.exists():
             continue
         t = pq.read_table(f, columns=WCOLS)
@@ -240,20 +288,25 @@ def owned_windows(key: str, scale: str, cube: str, refined: dict, ctx: dict) -> 
             dlon = np.abs((w["lon"] - (lo + 0.5) + 180) % 360 - 180)
             near &= dlon <= 0.5 + _lon_margin_deg(la)
             w = {k: v[near] for k, v in w.items()}
-        if w["lat"].size == 0:
-            continue
-        cell = global_cell(w["lat"], w["lon"])
-        uniq, inv = np.unique(cell, return_inverse=True)
-        clat, clon = cell_centre(uniq)
-        mine = (owner_tile(clat, clon) == key)[inv]
-        if mine.any():
-            w = {k: v[mine] for k, v in w.items()}
-            w["cell"] = cell[mine]
+        if w["lat"].size:
             parts.append(w)
     if not parts:
         return None
     w = {k: np.concatenate([q[k] for q in parts]) for k in parts[0]}
-    w["masked"], w["unknown"] = window_masks(w, ctx)
+    cell = global_cell(w["lat"], w["lon"])
+    uniq, inv = np.unique(cell, return_inverse=True)
+    clat, clon = cell_centre(uniq)
+    idx = np.flatnonzero((owner_tile(clat, clon) == key)[inv])
+    cid = np.asarray(cell)[idx].astype(np.int64)
+    if WINDOW_ASSIGN == "cover":
+        cc, cw = covering_windows(tile_cells(key), w["lat"], w["lon"], WINDOW_M[scale])
+        pairs = np.unique(np.stack([np.concatenate([cid, cc]), np.concatenate([idx, cw])], axis=1), axis=0)
+        cid, idx = pairs[:, 0], pairs[:, 1]
+    if idx.size == 0:
+        return None
+    w = {k: v[idx] for k, v in w.items()}
+    w["cell"] = cid
+    w["masked"], w["unknown"] = window_masks(w, ctx, ROCK_RADIUS_M.get(scale, 400.0))
     return w
 
 
@@ -295,9 +348,12 @@ def _assess(key: str, cube: str, refs_path: str, rock_path: str, refined: dict) 
         for cid in set(rows) - {int(c) for c in res}:
             rows[cid][f"{t}:screened_out"] = True
     # requirements, suitability, coverage and confidence at the finest scale where the cell has windows
-    reqs = [{"id": rid, **{k: v for k, v in rule.items() if k in ("param", "at_least", "at_most")}} for rid, rule in RULES.items()]
+    rules = RULES if RULES_IN_USE is None else RULES_IN_USE
+    suit = SUITABILITY if SUITABILITY_IN_USE is None else SUITABILITY_IN_USE
+    conf = confidence if CONFIDENCE is None else CONFIDENCE
+    reqs = [{"id": rid, **{k: v for k, v in rule.items() if k in ("param", "at_least", "at_most")}} for rid, rule in rules.items()]
     done: set = set()
-    for cov_scale in ("glo30-40m", "glo30-59m"):
+    for cov_scale in COVERAGE_SCALES:
         if cov_scale not in win:
             continue
         w0 = win[cov_scale]
@@ -306,7 +362,7 @@ def _assess(key: str, cube: str, refs_path: str, rock_path: str, refined: dict) 
             continue
         w = {k: v[sel] for k, v in w0.items()}
         res = assess_cells({"cell": w["cell"], **{k: w[k] for k in ("slope_mean", "traversable_15", "traversable_20")}}, {}, reqs, None)
-        for sc, rule in SUITABILITY.items():
+        for sc, rule in suit.items():
             su = assess_cells({"cell": w["cell"], rule["param"]: w[rule["param"]]}, {}, [],
                               {k: rule[k] for k in ("id", "param", "good", "bad")})
             for cid, out in su.items():
@@ -318,11 +374,11 @@ def _assess(key: str, cube: str, refs_path: str, rock_path: str, refined: dict) 
         nu = np.bincount(inv, weights=w["unknown"].astype(float)).astype(int)
         for k, cid in enumerate(cids.tolist()):
             r = rows[cid]
-            for rid, st in res[cid]["requirements"].items():
+            for rid, st in res.get(cid, {}).get("requirements", {}).items():
                 r[f"req:{rid}"] = st["status"]
             r.update({"assessed_at": cov_scale, "windows": int(n[k]), "valid_unmasked": int(valid[k]), "masked": int(nm[k]),
                       "cover_unknown": int(nu[k]), "masked_share": float(nm[k] / n[k]),
-                      "confidence": confidence(int(valid[k]), int(n[k]), int(nm[k]), int(nu[k]))})
+                      "confidence": conf(int(valid[k]), int(n[k]), int(nm[k]), int(nu[k]))})
             done.add(cid)
     return list(rows.values()), win
 
@@ -551,6 +607,11 @@ def main(argv=None) -> int:
         (run / "assess.json").write_text(json.dumps(out, indent=1) + "\n")
         print(json.dumps({k: v for k, v in out.items() if k != "failed"}), "failed", len(out["failed"]))
     return 0
+
+
+if __import__("os").environ.get("EARTHMOON_BODY") == "mars":     # spawned workers of a Mars run import this anew
+    from discovery import mars_run as _mars_run
+    _mars_run.configure(__import__("sys").modules[__name__])
 
 
 if __name__ == "__main__":

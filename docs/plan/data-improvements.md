@@ -29,4 +29,15 @@ Status: **blocked** (waiting on an action), **ready** (can be done), **done** (w
 | M3 | NAC DTMs of lunar pits | Slopes at the pits themselves instead of a context window | Public DTMs preliminary, post spacing not stated (T41) | Wait for final DTMs, or verify the existing ones | blocked |
 
 ## Mars (T48)
-To be filled when T48 starts.
+
+| # | Source | What it would improve | Blocked by | Unblock | Status |
+|---|---|---|---|---|---|
+| R1 | MOLA-HRSC blended global DEM, 200 m (`mola-hrsc-blended-dem`) | Mid-latitude windows of 5 km instead of 11.6 km (MOLA 463 m) | Not verified: effective resolution between HRSC strips, licence | Verify the USGS product and its effective resolution | ready |
+| R2 | HRSC DTMs, 50 m (`mex-hrsc-dtm`) | Terrain at 1.25 km windows where strips exist | Strips, not global: a site-set profile, not a global one | A sampling rule for strips decided before computing (E19 follow-up) | ready |
+| R3 | HiRISE DTMs, 1 to 2 m (`mro-hirise-dtm`) | The rover-scale target (now "not comparable") and the MSL mobility limits (R43, E14) | 1,377 DTMs, large; no global Earth DEM at that scale | Regional Earth lidar for candidate zones only (as M1) | blocked |
+| R4 | A shot-count grid for the 512 ppd polar MOLA grids | The observed share of polar windows (now "not available") | Not published (404 on the PDS node) | Rebuild it from PEDR shots (`mgs-mola-pedr`), or ask the PDS node | ready |
+| R5 | Mars geologic map, Tanaka et al. 2014 (`usgs-mars-geologic-map-2014`) | Volcanic plains target and the only positive controls of scenario D (R29) | The USGS publications site blocks automated download | David downloads the ZIP in a browser into `earthmoon-data/mars-geology/` | blocked |
+| R6 | THEMIS thermal inertia (`ody-themis-mosaics-ti`) | Grain size and induration (scenario D similarity) | Not verified | Verify the product and its units | ready |
+| R7 | Mars Climate Database (`lmd-mars-climate-database`) | Wind, dust and humidity of scenario D | Free registration by email | David registers | blocked |
+| R8 | SWIM ice consistency licence (`swim-ice-consistency`) | Use of the ice-rich target is stated as allowed | Licence not stated on the download page | Ask the SWIM team, or verify on the project page | ready |
+

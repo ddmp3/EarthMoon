@@ -30,6 +30,13 @@ METHODOLOGY_VERSION = "v3"
 SCENARIO_FILES = {"A": "A-lunar-base.yaml", "B": "B-lunar-robotics.yaml"}
 EARTH_SOURCES = ["copernicus-dem-glo30", "copernicus-dem-glo90", "esa-worldcover", "add-rock-outcrop-v7-3",
                  "natural-earth-admin0-110m"]
+# Body-specific settings; the Mars release replaces them (discovery.mars_run.configure_release)
+BODY = "moon"
+PROFILE_DIR, PROFILE_GLOB = "data/profiles/moon", "moon-*.json"
+INPUT_SOURCES: dict = {}            # profile input prefix -> catalogue id, for bodies without a cube of their own
+NOT_COMPARABLE_TEXT = "no Earth cube at this target's pixel scale (for example 5 m)"
+SCREENING = True                    # the lunar runs screen tiles at 90 m first
+COVERAGE_AREA = "windows"           # windows: one 1 km window is 1 km2 of land; cells: the cell area (Mars windows overlap cells)
 # Overlay classes of the map (docs/wiki/ui/map-spec.md), in the order they are tested: a cell gets the first that applies.
 COVERAGE_CLASSES = ["screened_out", "no_data", "ground_hidden", "partial", "low_confidence", "evaluated"]
 COVERAGE_TEXT = {
@@ -71,7 +78,7 @@ def coverage_shares(cells: dict, target: str, land_km2: float) -> dict:
     """Land area per overlay class. One 1 km window on a 1 km grid is about 1 km² of land; the land outside every
     assessed cell was screened out."""
     cls = coverage_class(cells, target)
-    area = np.nan_to_num(_f(cells["windows"]))
+    area = np.nan_to_num(_f(cells["windows"] if COVERAGE_AREA == "windows" else cells["area_km2"]))
     km2 = {c: float(area[cls == c].sum()) for c in COVERAGE_CLASSES}
     km2["screened_out"] += max(0.0, land_km2 - float(area.sum()))
     total = sum(km2.values())
@@ -243,7 +250,9 @@ def profile_sources(profs: list[dict], targets: list[str]) -> list[str]:
         inputs = p.get("inputs") or {}
         for key, val in inputs.items():
             sid = key.split("/")[0]
-            if sid != "moon-cube":
+            if sid in INPUT_SOURCES:
+                add(INPUT_SOURCES[sid])
+            elif sid != "moon-cube":
                 add(sid)
             elif key == "moon-cube/inputs" and isinstance(val, dict):
                 for name in val:
@@ -267,16 +276,16 @@ def scenarios() -> list[dict]:
                 for r in y.get("requirements", [])]
         out.append({"id": sid, "name": y["name"], "objective": y["objective"], "targets": y["targets"],
                     "assessed_targets": SCENARIO_TARGETS[sid],
-                    "not_comparable": {t: "no Earth cube at this target's pixel scale (for example 5 m)"
-                                       for t in y["targets"] if t not in SCENARIO_TARGETS[sid]},
+                    "not_comparable": {t: NOT_COMPARABLE_TEXT for t in y["targets"] if t not in SCENARIO_TARGETS[sid]},
                     "similarity": y.get("similarity", []), "context": y.get("context", []), "requirements": reqs,
-                    "suitability": {k: v for k, v in SUITABILITY[sid].items()}, "cannot_assess": y.get("cannot_assess", [])})
+                    "suitability": {k: v for k, v in SUITABILITY.get(sid, {}).items()},
+                    "cannot_assess": y.get("cannot_assess", [])})
     return out
 
 
 def profiles() -> list[dict]:
     out = []
-    for f in sorted((ROOT / "data/profiles/moon").glob("moon-*.json")):
+    for f in sorted((ROOT / PROFILE_DIR).glob(PROFILE_GLOB)):
         p = json.loads(f.read_text(encoding="utf-8"))
         out.append({k: p.get(k) for k in ("id", "body", "spec", "inputs", "params", "windows", "metrics", "not_computed")})
     return out
@@ -286,21 +295,26 @@ def processing_steps(run: Path) -> list[dict]:
     """The processing chain, from the code constants and the run files (not typed by hand)."""
     from discovery.compare import MASK_CLASSES
     from discovery.compare_run import RULES
-    from discovery.discover import MIN, SCALES, TARGET_SCALE, TAU
+    from discovery.discover import MIN, RULES_IN_USE, SCALES, TARGET_SCALE, TAU
     from discovery.healpix import NSIDE, cell_area_km2
     screen = json.loads((run / "screen.json").read_text()) if (run / "screen.json").exists() else {}
     assess = json.loads((run / "assess.json").read_text()) if (run / "assess.json").exists() else {}
+    rules = RULES if RULES_IN_USE is None else RULES_IN_USE
+    first = ([{"step": "screening", "what": "90 m windows (Copernicus GLO-90) select the 1° tiles refined per target",
+               "rule": screen.get("rule"), "intervals": screen.get("intervals")},
+              {"step": "windows", "what": "1 km windows at the lunar pixel of each target (Copernicus GLO-30)",
+               "pixel_m": SCALES, "target_scale": TARGET_SCALE}] if SCREENING else
+             [{"step": "windows", "what": "windows of 25 x 25 pixels at the MOLA pixel of each target, on every Earth tile "
+                                          "(Copernicus GLO-90 resampled; decision E19)",
+               "pixel_m": SCALES, "target_scale": TARGET_SCALE}])
     return [
-        {"step": "screening", "what": "90 m windows (Copernicus GLO-90) select the 1° tiles refined per target",
-         "rule": screen.get("rule"), "intervals": screen.get("intervals")},
-        {"step": "windows", "what": "1 km windows at the lunar pixel of each target (Copernicus GLO-30)",
-         "pixel_m": SCALES, "target_scale": TARGET_SCALE},
+        *first,
         {"step": "masks", "what": "windows whose ground is hidden are excluded (WorldCover 2021; rock outcrops south of 60°S)",
          "classes": list(MASK_CLASSES)},
-        {"step": "typicality", "what": "two-sided percentile of each window's mean slope among the lunar windows"},
+        {"step": "typicality", "what": f"two-sided percentile of each window's mean slope among the {'lunar' if BODY == 'moon' else 'Martian'} windows"},
         {"step": "cells", "what": f"HEALPix cells (NSIDE {NSIDE}, {cell_area_km2():.2f} km²), one global equal-area grid",
          "assessed_tiles": assess.get("assessed_tiles"), "cells": assess.get("cells")},
-        {"step": "requirements", "rules": {k: v["why"] for k, v in RULES.items()}},
+        {"step": "requirements", "rules": {k: v["why"] for k, v in rules.items()}},
         {"step": "zones", "what": "connected high-confidence candidate cells (HEALPix neighbours)", "tau": TAU, "min_cells": MIN},
         {"step": "validation", "protocol": PROTOCOL},
     ]
@@ -454,11 +468,24 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
     idx_path = out / "index.json"
     idx = json.loads(idx_path.read_text()) if idx_path.exists() else {"releases": []}
     entry = {"id": rid, "run": run.name, "methodology_version": METHODOLOGY_VERSION, "protocol": PROTOCOL,
-             "commit": commit, "created": date.today().isoformat()}
-    idx["releases"] = [entry] + [r for r in idx["releases"] if r["id"] != rid][:3]
-    idx["current"] = rid
+             "commit": commit, "created": date.today().isoformat(), "body": BODY}
+    idx["releases"] = keep_releases(idx["releases"], entry)
+    idx.setdefault("current_by_body", {})[BODY] = rid
+    if BODY == "moon" or "current" not in idx:
+        idx["current"] = rid                                      # the default release stays lunar
     write(idx_path, idx)
     return rid
+
+
+def keep_releases(listed: list[dict], entry: dict, per_body: int = 4) -> list[dict]:
+    """The new entry first, then the latest releases of each body (entries without a body are lunar)."""
+    out, count = [entry], {entry.get("body", "moon"): 1}
+    for r in listed:
+        b = r.get("body", "moon")
+        if r["id"] != entry["id"] and count.get(b, 0) < per_body:
+            out.append(r)
+            count[b] = count.get(b, 0) + 1
+    return out
 
 
 def main(argv=None) -> int:
@@ -473,6 +500,11 @@ def main(argv=None) -> int:
         np.save(land, land_cells(a.cube))
     print(export(a.run, a.cube, a.out, os.environ.get("EARTHMOON_COMMIT", "unknown")))
     return 0
+
+
+if __import__("os").environ.get("EARTHMOON_BODY") == "mars":     # the Mars release (scenario D, protocol mars-v1)
+    from discovery import mars_run as _mars_run
+    _mars_run.configure_release(sys.modules[__name__])
 
 
 if __name__ == "__main__":

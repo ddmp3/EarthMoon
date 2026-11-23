@@ -2,6 +2,35 @@
 
 v1 was frozen with the git tag `validation-protocol-v1` before T43, v2 with `validation-protocol-v2` before run-001, v3 with `validation-protocol-v3` before run-002. Any change after a tag creates a new version, with its reason, and is reported next to the results. Results are never retuned to pass.
 
+## Mars: protocol mars-v1 (frozen before run-mars-001, 20/11/2026)
+
+Scenario D, phase 1 targets: north polar terrain, south polar terrain, ice-rich mid-latitudes ([methods/mars](wiki/methods/mars.md)). It is v3 with the changes below; code in `tools/discovery/mars_run.py`.
+
+**Why it differs.** Mars windows are 25 × 25 MOLA pixels (E19):
+- 2.9 km at the poles (Earth at 115.77 m, a quarter of the 463.08 m pixel; the polar MOLA grid is 115.09 m, 0.6% finer);
+- 11.6 km elsewhere (Earth at 463.08 m).
+
+A 5 km cell holds at most a few such windows, so the count rule of v3 (20 valid windows) could never be met.
+
+**What changes:**
+- **Every Earth tile is assessed.** There is no screening stage at these scales.
+- **Window assignment.** A window belongs to the cell that holds its centre, and also to every cell whose centre it holds. Cells under one large window share its value. A zone therefore counts more cells than independent windows, and the report gives both.
+- **Confidence** uses the v3 rule written as shares: high when at least 80% of the cell's windows are valid and unmasked, and under 10% are masked or of unknown cover; medium when at least half are valid.
+- **No requirement and no suitability.**
+  - The lunar rover limits are never reused.
+  - The MSL limits of scenario D (R43) apply at rover scale, far below these windows (E14).
+- **The masks check** reads the 2.9 km window that holds each negative point.
+- **Self-consistency** holds out checkerboard blocks of 5 windows: 14.5 km at the poles, 58 km elsewhere.
+- **Antarctic rock sample:** spread over 0.4 of a window, as for the 1 km lunar windows (400 m).
+
+**Unchanged:**
+- the 5 km HEALPix cells, the masks and τ;
+- the minimum zone size;
+- the 18 negatives and every pass threshold;
+- the Monte Carlo (500 runs, seed 20261119, 0.5° slope noise), the bias checks and the dossiers.
+
+**Positives:** none for these targets. The verified controls of scenario D (R29) are volcanic plains, which wait for the Mars geologic map (Tanaka et al. 2014). Phase 1 therefore has **no positive validation**.
+
 ## Changes from v2 to v3 (19/11/2026, decided by David when signing G4)
 
 **Why.** The dossiers of run-001 found 38 of its 40 top zones to be artefacts:

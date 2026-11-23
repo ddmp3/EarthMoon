@@ -29,6 +29,13 @@ from discovery.discover import (MIN, SCENARIO_TARGETS, TARGET_SCALE, TAU, _num, 
 ROOT = Path(__file__).resolve().parents[2]
 SEED, RUNS, SIGMA, SAMPLE = 20261119, 500, 0.5, 200_000
 MC_PARALLEL = 1                                                     # two large targets exceeded the 15 GB Docker VM
+# Body-specific settings (the Mars run replaces them: discovery.mars_run.configure_validation)
+MASK_SCALE, MASK_REACH_KM = "glo90-90m", 0.71                      # the masked unit: 1 km windows of the 90 m cube
+PROFILE_KM_PER_DEG = 30.32                                          # Moon
+BLOCK_KM: dict = {}                                                 # held-out block side per target; 5 km when absent
+POSITIVES = {"A": "none: no verified reference names a site (protocol table)", "B": "none (same)",
+             "consequence": "no positive validation for scenarios A and B"}
+REPRO = {"scale": "glo30-40m", "product": "glo30", "pixel": "40", "window_px": None}
 
 
 # --- pure part (tested) ------------------------------------------------------------------------------------
@@ -77,14 +84,14 @@ def negatives(run: Path, cells: dict, cube: Path, rock_path: str) -> dict:
     where = cell_rows(global_cell(plat, plon), cells)               # the global cell that holds each point
     rows = []
     for k, p in enumerate(pts):
-        # mask test on the 1 km window that holds the point (the unit the engine masks), global 90 m cube,
-        # which also covers screened-out tiles
+        # mask test on the window that holds the point (the unit the engine masks); the lunar runs read the global
+        # 90 m cube, which also covers screened-out tiles
         name = tile_name(int(np.floor(p["lat"])), int(np.floor(p["lon"])), "glo90")
-        f = cube / "glo90-90m" / f"{name}.windows.parquet"
+        f = cube / MASK_SCALE / f"{name}.windows.parquet"
         hidden, how = None, "no 90 m tile (sea or no DEM)"
         if f.exists():
             c = pq.read_table(f, columns=["lat", "lon", *MASK_CLASSES, "wc_covered"]).to_pydict()
-            i = int(locate_points(plat[k:k + 1], plon[k:k + 1], np.array(c["lat"]), np.array(c["lon"]), reach_km=0.71)[0])
+            i = int(locate_points(plat[k:k + 1], plon[k:k + 1], np.array(c["lat"]), np.array(c["lon"]), reach_km=MASK_REACH_KM)[0])
             if i < 0:
                 hidden, how = None, "no 90 m window within reach"
             elif (c["wc_covered"][i] or 0) > 0:
@@ -123,6 +130,7 @@ def self_consistency(profiles_windows: Path) -> dict:
     from discovery.compare import percentile_typicality
     out = {}
     for t in TARGET_SCALE:
+        block = BLOCK_KM.get(t, 5.0)
         if t == "moon-pits":
             sites = json.loads((ROOT / "data/profiles/moon/moon-pits.json").read_text(encoding="utf-8"))["sites"]
             v = np.array([s["context_slope_mean"] for s in sites if s["context_slope_mean"] is not None])
@@ -133,12 +141,12 @@ def self_consistency(profiles_windows: Path) -> dict:
             cols = tab.column_names
             v = tab.column("slope_mean").to_numpy()
             if "x_m" in cols:
-                held = block_split(tab.column("x_m").to_numpy(), tab.column("y_m").to_numpy(), 5000.0)
-                how = "5 km blocks (checkerboard)"
+                held = block_split(tab.column("x_m").to_numpy(), tab.column("y_m").to_numpy(), 1000.0 * block)
+                how = f"{block:g} km blocks (checkerboard)"
             else:
                 la, lo = tab.column("lat").to_numpy(), tab.column("lon").to_numpy()
-                held = block_split(la * 30.32, lo * 30.32 * np.cos(np.radians(la)), 5.0)   # km on the Moon
-                how = "5 km blocks (checkerboard)"
+                held = block_split(la * PROFILE_KM_PER_DEG, lo * PROFILE_KM_PER_DEG * np.cos(np.radians(la)), block)
+                how = f"{block:g} km blocks (checkerboard)"
         ok = np.isfinite(v)
         typ = percentile_typicality(v[held & ok], v[~held & ok])
         ks = ks_uniform(typ)
@@ -289,20 +297,27 @@ def reproducibility(run: Path, cube: Path, refs_path: str, rock_path: str, tiles
     scratch = run / "rebuild"
     if scratch.exists():
         shutil.rmtree(scratch)                                        # a rebuild must recompute, never skip
-    (scratch / "glo30-40m").mkdir(parents=True, exist_ok=True)
+    sc = REPRO["scale"]
+    (scratch / sc).mkdir(parents=True, exist_ok=True)
     (scratch / "tiles.txt").write_text("\n".join(pick) + "\n")
     for f in ("listing.json", "worldcover-listing.json"):              # same source listings as the run
-        shutil.copy(cube / "glo30-40m" / f, scratch / "glo30-40m" / f)
-    subprocess.run([sys.executable, str(ROOT / "tools/discovery/cube.py"), "--product", "glo30", "--pixel", "40",
-                    "--tiles", str(scratch / "tiles.txt"), "--out", str(scratch), "--workers", "5"], check=True)
+        shutil.copy(cube / sc / f, scratch / sc / f)
+    cmd = [sys.executable, str(ROOT / "tools/discovery/cube.py"), "--product", REPRO["product"], "--pixel", REPRO["pixel"],
+           "--tiles", str(scratch / "tiles.txt"), "--out", str(scratch), "--workers", "5"]
+    if REPRO["window_px"]:
+        cmd += ["--window-px", str(REPRO["window_px"])]
+        cache = REPRO.get("cache")
+        if cache:
+            cmd += ["--cache", cache]
+    subprocess.run(cmd, check=True)
     manifest = {}
-    for line in (cube / "glo30-40m" / "manifest.jsonl").read_text().splitlines():
+    for line in (cube / sc / "manifest.jsonl").read_text().splitlines():
         r = json.loads(line)
         manifest[r["tile"]] = r
-    rebuilt = {json.loads(x)["tile"]: json.loads(x) for x in (scratch / "glo30-40m" / "manifest.jsonl").read_text().splitlines()}
+    rebuilt = {json.loads(x)["tile"]: json.loads(x) for x in (scratch / sc / "manifest.jsonl").read_text().splitlines()}
     rows = []
     for k in pick:
-        name = tile_name(*(int(v) for v in k.split(",")), "glo30")
+        name = tile_name(*(int(v) for v in k.split(",")), REPRO["product"])
         a, b = manifest.get(name, {}).get("outputs"), rebuilt.get(name, {}).get("outputs")
         rows.append({"tile": k, "identical_sha256": a == b and a is not None})
     cells = load_cells(str(run / "cells.parquet"))
@@ -338,8 +353,7 @@ def main(argv=None) -> int:
     cells = load_cells(str(a.run / "cells.parquet"))
     out_path = a.run / "validation.json"
     out = json.loads(out_path.read_text()) if out_path.exists() else {}
-    out["positives"] = {"A": "none: no verified reference names a site (protocol table)", "B": "none (same)",
-                        "consequence": "no positive validation for scenarios A and B"}
+    out["positives"] = dict(POSITIVES)
     steps = ["negatives", "self", "bias", "mc", "repro"] if a.what == "all" else [a.what]
     for s in steps:
         if s == "negatives":
@@ -355,6 +369,11 @@ def main(argv=None) -> int:
         out_path.write_text(json.dumps(out, indent=1, default=str) + "\n")
         print(s, "done", flush=True)
     return 0
+
+
+if __import__("os").environ.get("EARTHMOON_BODY") == "mars":     # settings of the Mars run (protocol mars-v1)
+    from discovery import mars_run as _mars_run
+    _mars_run.configure_validation(sys.modules[__name__])
 
 
 if __name__ == "__main__":

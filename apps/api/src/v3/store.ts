@@ -9,7 +9,7 @@ import path from "node:path";
  */
 
 export type ReleaseEntry = { id: string; run: string; methodology_version: string; protocol: string; commit: string; created: string };
-export type ReleaseIndex = { current: string; releases: ReleaseEntry[] };
+export type ReleaseIndex = { current: string; current_by_body?: Record<string, string>; releases: ReleaseEntry[] };
 export type Grid = { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } };
 export type Scenario = {
   id: string;
@@ -43,10 +43,12 @@ export class ReleaseStore {
     return new ReleaseStore(path.resolve(root), index);
   }
 
-  /** The release id to read: the current one, or a listed one. */
+  /** The release id to read: the current one, the current one of a body ("mars"), or a listed one. */
   releaseId(requested?: unknown): string {
     if (requested === undefined) return this.index.current;
-    const hit = this.index.releases.find((r) => r.id === requested);
+    const byBody = this.index.current_by_body ?? {};
+    const alias = typeof requested === "string" && Object.hasOwn(byBody, requested) ? byBody[requested] : requested;
+    const hit = this.index.releases.find((r) => r.id === alias);
     if (!hit) throw new NotFound(`Unknown release: ${String(requested).slice(0, 40)}`);
     return hit.id;
   }

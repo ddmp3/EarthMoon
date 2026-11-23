@@ -2,7 +2,9 @@ import { create } from 'zustand'
 import { parameterCatalog, type CalibrationInstrument, type ModeId, type ParamId } from './api'
 import type { Lang } from './i18n'
 
-export type SelectedMode = ModeId | 'custom'
+export type SelectedMode = ModeId | 'custom' | 'mars'
+/** The body a mission compares Earth with: the four lunar missions, or Mars (mission 5, T48). */
+export type Body = 'moon' | 'mars'
 
 export interface CriterionDraft {
   param: ParamId
@@ -39,6 +41,8 @@ function initialLang(): Lang {
 interface AppStore {
   lang: Lang
   setLang: (lang: Lang) => void
+  body: Body
+  setBody: (body: Body) => void
   criteriaDraft: CriterionDraft[]
   bareSoilOnly: boolean
   calibrationInstrument: CalibrationInstrument | 'all'
@@ -51,6 +55,8 @@ interface AppStore {
 
 export const useAppStore = create<AppStore>((set) => ({
   lang: initialLang(),
+  body: 'moon',
+  setBody: (body) => set({ body }),
   setLang: (lang) => {
     try {
       localStorage.setItem('lang', lang)

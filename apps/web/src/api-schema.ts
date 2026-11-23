@@ -479,7 +479,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -520,7 +520,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -563,7 +563,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -603,7 +603,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -657,7 +657,7 @@ export interface paths {
                     min_cells?: number;
                     limit?: number;
                     offset?: number;
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -699,7 +699,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -746,7 +746,7 @@ export interface paths {
                     scenario: components["parameters"]["Scenario"];
                     /** @description Lunar target environment of the scenario */
                     env: components["parameters"]["Env"];
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -791,7 +791,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -855,7 +855,7 @@ export interface paths {
                     env: components["parameters"]["Env"];
                     /** @description west,south,east,north in degrees */
                     bbox: string;
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -902,7 +902,7 @@ export interface paths {
         post: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -963,7 +963,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -1006,7 +1006,7 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                 };
                 header?: never;
@@ -1049,7 +1049,7 @@ export interface paths {
         get: {
             parameters: {
                 query: {
-                    /** @description A release id listed by /api/v3/releases (default the current one) */
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
                     release?: components["parameters"]["Release"];
                     scenario: components["parameters"]["Scenario"];
                 };
@@ -1094,7 +1094,12 @@ export interface components {
             [key: string]: unknown;
         };
         ReleaseIndex: {
+            /** @description The default release (lunar) */
             current: string;
+            /** @description The current release of each body (moon, mars); a body name is accepted wherever a release id is */
+            current_by_body?: {
+                [key: string]: string;
+            };
             releases: {
                 id: string;
                 run: string;
@@ -1102,6 +1107,8 @@ export interface components {
                 protocol: string;
                 commit: string;
                 created: string;
+                /** @description moon or mars (absent for releases made before T48 */
+                body?: string;
             }[];
         };
         Spread: {
@@ -1489,7 +1496,7 @@ export interface components {
         };
     };
     parameters: {
-        /** @description A release id listed by /api/v3/releases (default the current one) */
+        /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
         Release: string;
         Scenario: string;
         /** @description Lunar target environment of the scenario */

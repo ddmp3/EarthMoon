@@ -102,7 +102,7 @@ export function zoneDimensions(spread: { median: number; p25: number; p75: numbe
   geology: GeologyShares | null = null, context: ZoneContext | null = null): DimensionRow[] {
   const geo = geologyText(geology, t)
   return [
-    { name: t.layer.topography, ...spread, n: windows, source: 'Copernicus DEM GLO-30', missing: null },
+    { name: t.layer.topography, ...spread, n: windows, source: t.demSource, missing: null },
     geo
       ? { name: t.layer.geology, median: null, p25: null, p75: null, n: null, source: t.geoSource, missing: null, text: geo }
       : { name: t.layer.geology, median: null, p25: null, p75: null, n: null, source: null, missing: t.geologyMissing },

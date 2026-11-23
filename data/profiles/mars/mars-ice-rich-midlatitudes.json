@@ -1,0 +1,100 @@
+{
+ "id": "mars-ice-rich-midlatitudes",
+ "body": "mars",
+ "spec": "data/profiles/spec/mars-ice-rich-midlatitudes.yaml",
+ "inputs": {
+  "swim/Northern_Ci": {
+   "file": "Northern_Ci.tif",
+   "size": 36711981,
+   "sha256": "c38eb409cf91b004204e010a5662bfb38f30e437cfda4c40287aea518becf982"
+  },
+  "mola/megt88n000hb.img": {
+   "file": "megt88n000hb.img",
+   "size": 129761280,
+   "sha256": "33e48c5e6bed072bae4ca49edee53134336aee517ebc1ce5ecf0a470d82cfd10"
+  },
+  "mola/megt88n090hb.img": {
+   "file": "megt88n090hb.img",
+   "size": 129761280,
+   "sha256": "7df40fa1655939a5088e5dd2b4ccd1d24f4e69ccd75fc9c34c4ea7f2ccd3910b"
+  },
+  "mola/megt88n180hb.img": {
+   "file": "megt88n180hb.img",
+   "size": 129761280,
+   "sha256": "0d1db101aa48eddcfa6ac7e2ff9124aa758f4157eb92df79b8483948991bfc24"
+  },
+  "mola/megt88n270hb.img": {
+   "file": "megt88n270hb.img",
+   "size": 129761280,
+   "sha256": "15a21106e752c7c6cf091d40def5ab6e0c36eec25a0fe57afe058580a2ba32d5"
+  },
+  "mola/megt44n000hb.img": {
+   "file": "megt44n000hb.img",
+   "size": 129761280,
+   "sha256": "14022166079edafc99650f354e5a634e6eb2c2ea544b444c01cd8ee55437df36"
+  },
+  "mola/megt44n090hb.img": {
+   "file": "megt44n090hb.img",
+   "size": 129761280,
+   "sha256": "a65eb54042e579dbb6274aad8256e30fbb752dd70b93b6a3ad748909f1a9f687"
+  },
+  "mola/megt44n180hb.img": {
+   "file": "megt44n180hb.img",
+   "size": 129761280,
+   "sha256": "951de9b021808027f4b96e4fa82e1f4f9e621b2ddf978bc2ef235cd3d7dbf3c5"
+  },
+  "mola/megt44n270hb.img": {
+   "file": "megt44n270hb.img",
+   "size": 129761280,
+   "sha256": "d8172f3de496958ab1e2197037d8a12decc0512cc8a8c0f84eccaa51595edccc"
+  }
+ },
+ "params": {
+  "swim_ci_above": 0.0,
+  "pixel_m": 463.08,
+  "window_px": 25,
+  "min_observed": 0.5,
+  "windows_by_ci": {
+   "0.0": 1919,
+   "0.25": 396,
+   "0.5": 27
+  }
+ },
+ "decision": "E19",
+ "windows": {
+  "selected": 1919,
+  "valid": 1919
+ },
+ "metrics": {
+  "slope_mean": {
+   "n": 1919,
+   "p5": 0.22,
+   "p10": 0.299,
+   "p25": 0.452,
+   "p50": 0.789,
+   "p75": 1.834,
+   "p90": 4.277,
+   "p95": 6.024
+  },
+  "slope_p95": {
+   "n": 1919,
+   "p5": 0.49,
+   "p10": 0.669,
+   "p25": 1.066,
+   "p50": 1.924,
+   "p75": 4.745,
+   "p90": 11.716,
+   "p95": 16.656
+  },
+  "roughness_detrended": {
+   "n": 1919,
+   "p5": 3.388,
+   "p10": 5.189,
+   "p25": 8.231,
+   "p50": 15.554,
+   "p75": 38.768,
+   "p90": 97.374,
+   "p95": 157.373
+  }
+ }
+}

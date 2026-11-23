@@ -242,6 +242,27 @@ def run(web: str, api: str) -> None:
         assert http(f"{api}/api/v3/query", "POST", {"scenario": s["id"], "env": env, "colour": "red"})[0] == 400, "unknown field accepted"
         return f"{len(fc['features'])} cells in view, query matched {q['matched']}"
 
+    def v3_mars():
+        idx = json.loads(http(f"{api}/api/v3/releases")[2])
+        mars = (idx.get("current_by_body") or {}).get("mars")
+        assert mars, "no Mars release in the index"
+        code, _, b = http(f"{api}/api/v3/scenarios?release=mars")
+        assert code == 200, f"scenarios HTTP {code}"
+        doc = json.loads(b)
+        assert doc["release"] == mars and [s["id"] for s in doc["scenarios"]] == ["D"], "release=mars does not read scenario D"
+        d = doc["scenarios"][0]
+        assert all(t.startswith("mars-") for t in d["assessed_targets"]), "a lunar target in scenario D"
+        env = d["assessed_targets"][0]
+        z = json.loads(http(f"{api}/api/v3/zones?scenario=D&env={env}&limit=1&release=mars")[2])["zones"]
+        assert z, "no Mars zone"
+        lat, lon = z[0]["lat"], z[0]["lon"]
+        code, _, b = http(f"{api}/api/v3/cells?scenario=D&env={env}&bbox={lon - 0.2},{lat - 0.2},{lon + 0.2},{lat + 0.2}&release=mars")
+        assert code == 200, f"Mars cells HTTP {code}: {b[:200]!r}"
+        st = json.loads(http(f"{api}/api/v3/status?release=mars")[2])
+        assert st["validity"]["protocol"] == "validation-protocol-mars-v1", "Mars status not under protocol mars-v1"
+        assert json.loads(http(f"{api}/api/v3/scenarios")[2])["release"] == idx["current"], "the default release is not the lunar one"
+        return f"release {mars}, {len(d['assessed_targets'])} targets, {len(json.loads(b)['features'])} cells in view"
+
     check("TF-01", "Front end loads and targets the right API", front_loads)
     check("TF-02", "API health probe", health)
     check("TF-03", "CORS: front-end origin accepted, unknown origin rejected", cors)
@@ -259,6 +280,7 @@ def run(web: str, api: str) -> None:
     check("TF-15", "Graded vegetation filter: penalized sites kept, never boosted", vegetation)
     check("TF-16", "v3: releases, zones, zone card with spread, coverage, method; grid enforced", v3_static)
     check("TF-17", "v3: layer tiles, cells in view and custom query through the internal service", v3_layers_and_service)
+    check("TF-18", "v3 Mars (T48): release=mars reads scenario D, its zones and cells; the default stays lunar", v3_mars)
 
 
 def main(argv=None) -> int:

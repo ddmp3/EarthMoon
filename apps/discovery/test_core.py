@@ -208,3 +208,19 @@ def test_a_cell_carries_its_earth_context_labelled_as_a_model(tmp_path):
 
 def test_without_context_columns_a_cell_has_no_context(release):
     assert cells_in_bbox(release, (20.2, 10.2, 20.4, 10.4), "moon-psr")["features"][0]["properties"]["context"] is None
+
+
+def test_the_service_also_loads_the_current_release_of_each_body(tmp_path, release, monkeypatch):
+    import json as _json
+    import shutil
+    import app as service
+    root = release.folder.parent
+    shutil.copytree(release.folder, root / "r-0000ma00")
+    (root / "index.json").write_text(_json.dumps({"current": "r-00000000", "current_by_body": {"moon": "r-00000000", "mars": "r-0000ma00"},
+                                                  "releases": [{"id": "r-00000000"}, {"id": "r-0000ma00", "body": "mars"}]}))
+    for d in ("r-00000000", "r-0000ma00"):
+        (root / d / "scenarios.json").write_text(_json.dumps({"scenarios": [{"assessed_targets": ["moon-psr"]}]}))
+    monkeypatch.setattr(service, "ROOT", root)
+    service._RELEASES.clear()
+    service.preload()
+    assert sorted(service._RELEASES) == ["r-00000000", "r-0000ma00"]
