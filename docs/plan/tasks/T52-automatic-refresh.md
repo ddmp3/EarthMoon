@@ -30,6 +30,17 @@ Sources are watched automatically. A change is ingested and only the affected un
    - measure its incremental cost against a full run;
    - set the 1% change threshold from what was measured, and record it in ADR-009.
 
+## Added during T52 (David, 23/11/2026)
+- **Recompute on command, not automatic:** detection stays automatic; the recompute starts with one command after its plan and estimated time are shown (no CPU load without David's go). ADR-009 is amended.
+- **Local only:** an update recomputes the changed tiles, their neighbours' cells and the zones that touch them, never the whole planet. The Monte Carlo and the release export follow the same rule. Comparison units are (tile, target), so a planetary change reruns only its target.
+- **New planetary products** (a new LOLA release, new HiRISE or HRSC DTMs over a target): detected from the release tables and logged as "detected, to verify" in `docs/plan/data-improvements.md`. They are never injected into a run: a new reference is a new protocol version.
+- **Tile versioning for researchers:**
+  - the cube manifest records `computed_at` for every tile;
+  - each release publishes the provenance of every tile: source versions and dates, computation date, code version, the release where it last changed;
+  - an API route serves it, and the cell panel shows it;
+  - each release publishes `changes.json`: previous release, source events (what, when detected), tiles recomputed, cells and zones changed, publication decision and reasons. It is served by the API and readable in the wiki.
+- **Zone rule:** with exact cell sets, a zone gaining one cell counts as one zone out and one in, so the "no zone appears or disappears" rule holds even a no-change re-release. A rule based on the share of a zone's cells that change goes to David before it is fixed.
+
 ## Done when
 - `tools/check.sh all` passes, with the e2e test extended to check that the status shows `update_in_progress`, then `up_to_date`, after a forced change on a fixture tile.
 - `docs/wiki/methods/refresh.md` gives the measured cadences and costs.
