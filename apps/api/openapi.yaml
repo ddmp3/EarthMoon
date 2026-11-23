@@ -459,7 +459,7 @@ components:
     Release:
       name: release
       in: query
-      description: A release id listed by /api/v3/releases (default the current one)
+      description: A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one)
       schema: { type: string }
     Scenario:
       name: scenario

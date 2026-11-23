@@ -42,9 +42,13 @@ def _release(rid: str | None) -> Release:
 
 
 def preload() -> None:
-    """Load the current release before the first request: reading 6 M cells takes several seconds."""
+    """Load the current release, and the current release of each body, before the first request: reading 6 M cells
+    takes several seconds."""
     if (ROOT / "index.json").exists():
         _release(None)
+        index = json.loads((ROOT / "index.json").read_text(encoding="utf-8"))
+        for rid in (index.get("current_by_body") or {}).values():
+            _release(rid)
 
 
 @app.get("/health")

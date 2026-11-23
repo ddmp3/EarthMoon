@@ -30,7 +30,7 @@ async function writeRelease(dir: string): Promise<void> {
     await mkdir(path.dirname(path.join(dir, p)), { recursive: true });
     await writeFile(path.join(dir, p), JSON.stringify(o));
   };
-  await w("index.json", { current: RID, releases: [
+  await w("index.json", { current: RID, current_by_body: { moon: RID, mars: OLD }, releases: [
     { id: RID, run: "run-002", methodology_version: "v3", protocol: "validation-protocol-v3", commit: "abc", created: "2026-11-19" },
     { id: OLD, run: "run-001", methodology_version: "v3", protocol: "validation-protocol-v2", commit: "def", created: "2026-11-18" },
   ] });
@@ -54,6 +54,7 @@ async function writeRelease(dir: string): Promise<void> {
   await writeFile(path.join(dir, RID, "layers/moon-psr/geology/3/4/3.png"), PNG);
   await mkdir(path.join(dir, RID, "layers/_earth/frozen/3/4"), { recursive: true });
   await writeFile(path.join(dir, RID, "layers/_earth/frozen/3/4/3.png"), PNG);
+  await w(`${OLD}/status.json`, { release: OLD, methodology_version: "v3", validity: { state: "not_validated" } });
   await w(`${OLD}/release.json`, { release: OLD, methodology_version: "v3", run: "run-001", grid: { tau: [0.5], min_cells: [3], nominal: { tau: 0.5, min_cells: 3 } } });
 }
 
@@ -173,6 +174,13 @@ describe("API v3 (static release)", () => {
     expect(status).toBe(200);
     expect(body.run).toBe("run-001");
     expect((await json(`${api.url}/api/v3/releases/r-deadbeef`)).status).toBe(404);
+  });
+
+  it("a body name reads that body's current release (the Mars mission asks for release=mars)", async () => {
+    const mars = await json(`${api.url}/api/v3/status?release=mars`);
+    expect(mars.status).toBe(200);
+    expect(mars.body.release).toBe(OLD);
+    expect((await json(`${api.url}/api/v3/status?release=venus`)).status).toBe(404);
   });
 
   it("layer tiles are served as PNG from the release, and a tile with no cell is empty, not an error", async () => {
