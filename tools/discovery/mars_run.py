@@ -87,7 +87,7 @@ def configure_validation(v) -> None:
 def configure_release(r) -> None:
     """Settings of the release module `r` for the Mars release: scenario D, Martian profiles and sources."""
     r.BODY = "mars"
-    r.PROTOCOL = "validation-protocol-mars-v1"
+    r.PROTOCOL = "validation-protocol-mars-v2"
     r.SCENARIO_FILES = {"D": "D-mars.yaml"}
     r.PROFILE_DIR, r.PROFILE_GLOB = "data/profiles/mars", "mars-*.json"
     r.EARTH_SOURCES = ["copernicus-dem-glo90", "esa-worldcover", "add-rock-outcrop-v7-3", "natural-earth-admin0-110m"]

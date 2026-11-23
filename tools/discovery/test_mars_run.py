@@ -141,7 +141,7 @@ def test_the_mars_release_lists_scenario_d_martian_profiles_and_their_sources(ma
     from discovery import release as rel
     r = types.SimpleNamespace(COVERAGE_TEXT=dict(rel.COVERAGE_TEXT))
     mars_run.configure_release(r)
-    assert r.BODY == "mars" and r.PROTOCOL == "validation-protocol-mars-v1" and r.SCENARIO_FILES == {"D": "D-mars.yaml"}
+    assert r.BODY == "mars" and r.PROTOCOL == "validation-protocol-mars-v2" and r.SCENARIO_FILES == {"D": "D-mars.yaml"}
     assert "copernicus-dem-glo30" not in r.EARTH_SOURCES
     assert "80%" in r.COVERAGE_TEXT["evaluated"] and set(r.COVERAGE_TEXT) == set(rel.COVERAGE_TEXT)
 
