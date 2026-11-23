@@ -117,7 +117,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T44](tasks/T44-api-layers.md) | API: layers and zones | G4 | done (PR #25; static releases, internal discovery service, coverage, method and status; run-002 release r-98f6eee4, 61 MB of tiles per layer) |
 | [T45](tasks/T45-ui-map.md) | Interface: layer map, hatching, comparison | T44 | done (PR #26; discovery map with coverage overlay, Data and method, zone cards, comparison, status; v2 gaps fixed; zone-vs-reference Q–Q plot left open: the release has no window quantiles per zone) |
 | [T45b](tasks/T45b-missions.md) | v3 inside the missions (David's review of T45) | T45 | done (PR #27; sites enriched with their v3 cell, zones tab, v3 search in mission 4, French texts; separate page removed) |
-| T45c | Interface review with David (the v3 integration does not yet match what he wants) | T45b | todo (David, when he has time: he gives the target design, then we rework) |
+| [T45c](tasks/T45c-ui-immersive.md) | Immersive interface: whole-site Moon and Mars modes, 3D Earth/planet comparison tile, figures from the release (David's review, 23/11) | T45b | todo (later, after David validates the target design; home banner still shows v2 figures) |
 | [T46](tasks/T46-geology.md) | Geology and mineralogy dimension | G4 | done (PR #28; lithology from Macrostrat, crosswalk E17 delegated to Claude; half the land without usable lithology; no top slope zone matches; mineralogy (EMIT) left open) |
 | [T47](tasks/T47-thermal-hydric.md) | Thermal, ice and hydric dimensions | G4 | done (PR #29; E18: Earth context layers, no thermal comparison with the Moon; frozen ground and aridity; thermal cycling waits for the Earthdata account, D1) |
 | [T48](tasks/T48-mars.md) | Mars profiles and discovery | T46, T47 | done (PR #30; phase 1: polar and ice-rich targets, run-mars-001 with protocol mars-v1: no stable zone, no positive control; volcanic plains wait for R5) |
@@ -126,7 +126,8 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | G5 | Gate: release | T49 | todo |
 | [T50](tasks/T50-release.md) | Docs, release notes, v2 retirement decision | G5 | todo |
 | [T51](tasks/T51-assistant.md) | AI assistant for scientists (optional) | T50 | todo |
-| [T52](tasks/T52-automatic-refresh.md) | Automatic refresh and incremental recompute | T43, T44 | todo |
+| [T52](tasks/T52-automatic-refresh.md) | Automatic refresh and incremental recompute | T43, T44 | done (PR #32; 16 sources watched, 11 with a signal; local zones; 10-tile calibration in 45 s, 1% threshold kept; tile provenance and release changes for researchers; recompute on command, in T52b) |
+| [T52b](tasks/T52b-recompute-command.md) | Incremental recompute on command (plan, local run, incremental export, e2e) | T52 | todo (zone rule to decide by David) |
 
 ## 6. Tooling
 

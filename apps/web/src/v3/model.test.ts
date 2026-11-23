@@ -5,7 +5,7 @@ import coverage from '../test/fixtures/v3/coverage.json'
 import scenarios from '../test/fixtures/v3/scenarios.json'
 import status from '../test/fixtures/v3/status.json'
 import type { CellProps, Coverage, Scenario, Status } from './api'
-import { cellState, COVERAGE_ORDER, layerList, legendRows, statusLines, zoneDimensions } from './model'
+import { cellState, COVERAGE_ORDER, layerList, legendRows, provenanceLines, statusLines, zoneDimensions } from './model'
 import { V3_TEXTS } from './text'
 
 const en = V3_TEXTS.en
@@ -80,7 +80,7 @@ describe('validity and freshness (ADR-009)', () => {
   })
 
   it('has a text for every freshness state, in both languages', () => {
-    for (const s of ['up_to_date', 'update_in_progress', 'update_held', 'check_failed', 'check_overdue', 'not_checkable', 'newer_release']) {
+    for (const s of ['up_to_date', 'first_check', 'update_detected', 'update_in_progress', 'update_held', 'check_failed', 'check_overdue', 'not_checkable', 'newer_release']) {
       expect(en.freshness[s], s).toBeTruthy()
       expect(fr.freshness[s], s).toBeTruthy()
     }
@@ -209,5 +209,33 @@ describe('Earth context of a zone (T47, E18)', () => {
     expect(rows[2].text).toBe('E4 met 50% · partial 50% · not met 0% · not covered 0% · ground -6.2 °C')
     expect(rows[3].text).toBe('arid 75% · semi-arid 25%')
     expect(rows[4].missing).toMatch(/Earthdata/)
+  })
+})
+
+describe('tile provenance for researchers (T52)', () => {
+  const prov = {
+    release: 'r-2', methodology_version: 'v3', tile: '10,20', last_changed_in: 'r-1', data_date: '2022-05-09',
+    scales: {
+      'glo90-90m': { computed_at: null, computed_at_note: 'not recorded (computed before T52)', code: 'c', inputs: [
+        { item: 'Copernicus_DSM_COG_30_N10_00_E020_00_DEM/x.tif', last_modified: '2022-05-09T14:10:02.000Z' },
+        { item: 'v200/2021/map/ESA_WorldCover_10m_2021_v200_N09E018_Map.tif', last_modified: '2022-10-01T00:00:00.000Z' }] },
+      'glo30-40m': { computed_at: '2026-12-01T10:00:00Z', code: 'c', inputs: [
+        { item: 'Copernicus_DSM_COG_10_N10_00_E020_00_DEM/x.tif', last_modified: '2022-05-09T14:10:02.000Z' }] },
+    },
+  }
+
+  it('names each source with its file date, the computation date and the release where the tile last changed', () => {
+    const l = provenanceLines(prov as never, en)
+    expect(l.tile).toBe('Tile 10,20 (1°)')
+    expect(l.sources).toEqual(['Copernicus DEM GLO-30: file dated 09/05/2022', 'Copernicus DEM GLO-90: file dated 09/05/2022',
+      'ESA WorldCover: file dated 01/10/2022'])
+    expect(l.computed).toBe('Computed on 01/12/2026; computation date not recorded for 1 scale (before automatic refresh)')
+    expect(l.since).toBe('Unchanged since release r-1')
+  })
+
+  it('says it in French too', () => {
+    const l = provenanceLines(prov as never, fr)
+    expect(l.since).toBe('Inchangée depuis la version r-1')
+    expect(l.sources[0]).toBe('Copernicus DEM GLO-30 : fichier daté du 09/05/2022')
   })
 })

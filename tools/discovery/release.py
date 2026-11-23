@@ -204,8 +204,8 @@ def status(validation: dict, sources: list[dict], release: str, created: str) ->
     """GET /api/v3/status (ADR-009): validity of the release and freshness of its sources.
 
     Validated only when every check of the protocol passes; a check that cannot run (no positive control) counts as
-    not passed. Until the refresher exists (T52), no source is checked automatically: each one is `not_checkable`,
-    with the date it was verified by hand in the catalogue."""
+    not passed. In the release file each source is `not_checkable`, with the date it was verified by hand; the API
+    replaces them with the live state of the refresher (freshness.json, T52) when it has run."""
     neg = validation.get("negatives") or {}
     top10 = neg.get("top10") or {}
     selfc = validation.get("self_consistency") or {}
@@ -226,7 +226,7 @@ def status(validation: dict, sources: list[dict], release: str, created: str) ->
     return {"validity": {"state": "validated" if ok else "not_validated", "protocol": PROTOCOL, "release": release,
                          "published": created, "checks": checks},
             "freshness": {"refresher": False,
-                          "note": "no automatic check yet (refresher planned in T52): sources were verified by hand",
+                          "note": "sources verified by hand; replaced by the refresher's live state when it runs",
                           "sources": [{"id": s["id"], "state": "not_checkable", "checked_on": s.get("verified_on")}
                                       for s in sources]}}
 
@@ -465,6 +465,8 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
                     write(d / "zones" / sc / t / f"t{tau}-m{mc}.json",
                           {**head, "scenario": sc, "target": t, "tau": tau, "min_cells": mc,
                            "zones": [zone_record(z, k + 1, tau, mc, cells, index) for k, z in enumerate(zs)]})
+    from discovery.discover import SCALES
+    write_provenance(d, cube, sorted(SCALES), out, rid, BODY)
     idx_path = out / "index.json"
     idx = json.loads(idx_path.read_text()) if idx_path.exists() else {"releases": []}
     entry = {"id": rid, "run": run.name, "methodology_version": METHODOLOGY_VERSION, "protocol": PROTOCOL,
@@ -475,6 +477,20 @@ def export(run: Path, cube: Path, out: Path, commit: str) -> str:
         idx["current"] = rid                                      # the default release stays lunar
     write(idx_path, idx)
     return rid
+
+
+def write_provenance(d: Path, cube: Path, scales: list[str], out: Path, rid: str, body: str) -> None:
+    """Provenance of every Earth tile and the changes from the current release of the body (T52, for researchers).
+    The publication decision is added to changes.json when the release is published or held (discovery.publish)."""
+    from discovery import provenance as pv
+    idx_path = out / "index.json"
+    prev_id = (json.loads(idx_path.read_text()).get("current_by_body") or {}).get(body) if idx_path.exists() else None
+    prev_file = out / prev_id / "provenance.json" if prev_id else None
+    previous = json.loads(prev_file.read_text()) if prev_file and prev_file.exists() else None
+    p = pv.build(cube, scales, rid, previous)
+    (d / "provenance.json").write_text(json.dumps(p, separators=(",", ":")) + chr(10), encoding="utf-8")
+    ch = pv.changes(previous, p, events=[], decision=None)
+    (d / "changes.json").write_text(json.dumps(ch, indent=1) + chr(10), encoding="utf-8")
 
 
 def keep_releases(listed: list[dict], entry: dict, per_body: int = 4) -> list[dict]:

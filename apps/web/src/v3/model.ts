@@ -1,4 +1,4 @@
-import type { CellProps, Coverage, GeologyShares, Status, Zone } from './api'
+import type { CellProps, Coverage, GeologyShares, Status, TileProvenance, Zone } from './api'
 import type { V3Texts } from './text'
 
 /** Overlay classes in the order release.py assigns them (the first that applies wins). */
@@ -130,6 +130,39 @@ export function statusLines(s: Status, t: V3Texts): { state: 'validated' | 'not_
     validity: fmt(v.protocol, v.release, ddmm(v.published)),
     failing: failed.length ? t.validity.failing(failed.join(', ')) : null,
     freshness,
+  }
+}
+
+/** Source product of a file read by an Earth tile (names as in the catalogue). */
+function sourceName(item: string): string {
+  if (item.includes('Copernicus_DSM_COG_10')) return 'Copernicus DEM GLO-30'
+  if (item.includes('Copernicus_DSM_COG_30')) return 'Copernicus DEM GLO-90'
+  if (item.includes('WorldCover')) return 'ESA WorldCover'
+  return item.split('/')[0]
+}
+
+/** Lines of the provenance of one Earth tile (T52): each source with its latest file date, the computation date,
+ * and the release where the tile last changed. */
+export function provenanceLines(p: TileProvenance, t: V3Texts): { tile: string; sources: string[]; computed: string; since: string } {
+  const latest = new Map<string, string>()
+  const computed: string[] = []
+  let notRecorded = 0
+  for (const s of Object.values(p.scales)) {
+    if (s.computed_at) computed.push(s.computed_at)
+    else notRecorded += 1
+    for (const i of s.inputs) {
+      const name = sourceName(i.item)
+      const d = i.last_modified ?? ''
+      if (d > (latest.get(name) ?? '')) latest.set(name, d)
+    }
+  }
+  computed.sort()
+  const parts = [computed.length ? t.provComputed(ddmm(computed[computed.length - 1])) : '', notRecorded ? t.provNotRecorded(notRecorded) : '']
+  return {
+    tile: t.provTile(p.tile),
+    sources: [...latest.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([n, d]) => t.provSource(n, d ? ddmm(d) : '—')),
+    computed: parts.filter(Boolean).join('; ').replace(/^./, (c) => c.toUpperCase()),
+    since: t.provSince(p.last_changed_in),
   }
 }
 

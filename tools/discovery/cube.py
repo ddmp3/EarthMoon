@@ -159,7 +159,10 @@ def process(lat: int, lon: int, product: str, pixel: float, out: Path, listing: 
         cell_cols[k] = [r[k] for r in cells.values()]
     sha_w = _write(out / f"{name}.windows.parquet", windows)
     sha_c = _write(out / f"{name}.cells.parquet", cell_cols)
+    from datetime import datetime, timezone
+    computed_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")   # T52: shown to researchers per tile
     return {"tile": name, "lat": lat, "lon": lon, "key": content_key(inputs, code, params), "inputs": inputs,
+            "computed_at": computed_at,
             "code": code, "commit": source, "params": params, "outputs": {"windows": sha_w, "cells": sha_c},
             "windows": int(len(windows["row"])), "valid_windows": int(np.isfinite(windows["slope_mean"]).sum()),
             "cells": coverage(cells), "seconds": {"read": round(t_read, 2), "mask": round(t_mask, 2),

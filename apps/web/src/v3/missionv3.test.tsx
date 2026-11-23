@@ -4,7 +4,7 @@ import coverage from '../test/fixtures/v3/coverage.json'
 import scenarios from '../test/fixtures/v3/scenarios.json'
 import status from '../test/fixtures/v3/status.json'
 import type { CellProps, Coverage, Scenario, Status } from './api'
-import { MapLegend, RankTabs, SiteV3Chip, SiteV3Section, V3StatusLine, ZoneRows } from './MissionV3'
+import { MapLegend, RankTabs, SiteV3Chip, SiteV3Section, TileProvenanceList, V3StatusLine, ZoneRows } from './MissionV3'
 import type { SiteV3, V3State } from './useV3'
 
 const scB = (scenarios as unknown as { scenarios: Scenario[] }).scenarios.find((s) => s.id === 'B') as Scenario
@@ -46,6 +46,29 @@ describe('v3 section of the site card', () => {
   it('says when the place was not assessed', () => {
     render(<SiteV3Section onMethod={() => undefined} release="r-1" scenario={scB} site={site(null)} />)
     expect(screen.getByText(/Not assessed at this place/)).toBeTruthy()
+  })
+})
+
+describe('tile provenance in the site panel (T52)', () => {
+  afterEach(cleanup)
+
+  it('loads the tile that holds the cell centre and lists its sources and dates', async () => {
+    const asked: string[] = []
+    const load = async (tile: string) => {
+      asked.push(tile)
+      return { release: 'r-2', tile, last_changed_in: 'r-1', data_date: '2022-05-09', scales: { 'glo90-90m': {
+        computed_at: '2026-12-01T10:00:00Z', code: 'c', inputs: [{ item: 'Copernicus_DSM_COG_30_N10_00_E020_00_DEM/x.tif', last_modified: '2022-05-09T14:10:02.000Z' }] } } }
+    }
+    render(<TileProvenanceList lat={-0.4} lon={20.7} release="r-2" load={load} />)
+    expect(await screen.findByText('Tile -1,20 (1°)')).toBeTruthy()
+    expect(asked).toEqual(['-1,20'])
+    expect(screen.getByText('Copernicus DEM GLO-90: file dated 09/05/2022')).toBeTruthy()
+    expect(screen.getByText('Unchanged since release r-1')).toBeTruthy()
+  })
+
+  it('says when the release has no provenance for the tile', async () => {
+    render(<TileProvenanceList lat={1} lon={2} release="r-2" load={() => Promise.reject(new Error('404'))} />)
+    expect(await screen.findByText('Provenance not available for this tile in this release')).toBeTruthy()
   })
 })
 

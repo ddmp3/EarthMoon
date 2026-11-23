@@ -368,3 +368,103 @@ describe("API v3 forwarding to the discovery service", () => {
     await new Promise((r) => server.close(() => r(undefined)));
   });
 });
+
+describe("API v3 freshness from the refresher (T52, ADR-009 section 4)", () => {
+  let dir: string;
+  let api: Running;
+  const recent = new Date(Date.now() - 3600_000).toISOString();
+  beforeAll(async () => {
+    dir = await mkdtemp(path.join(tmpdir(), "releases-fresh-"));
+    await writeRelease(dir);
+    await writeFile(path.join(dir, "index.json"), JSON.stringify({ current: RID, current_by_body: { moon: RID }, releases: [
+      { id: RID, run: "run-002", methodology_version: "v3", protocol: "validation-protocol-v3", commit: "abc", created: "2026-11-19", body: "moon" },
+      { id: OLD, run: "run-001", methodology_version: "v3", protocol: "validation-protocol-v2", commit: "def", created: "2026-11-18", body: "moon" },
+    ] }));
+    await writeFile(path.join(dir, "freshness.json"), JSON.stringify({ refresher: true, written_at: recent, progress: null, held: [],
+      new_products: [{ source: "lro-lola-ldem-85s-40m", found: "68", detected_on: recent, status: "detected, to verify", url: "https://example.org/lro/" }], sources: {
+      "copernicus-dem-glo30": { state: "up_to_date", last_check: recent, last_success: recent, interval_hours: 168 },
+      "esa-worldcover": { state: "up_to_date", last_check: "2026-01-01T00:00:00Z", last_success: "2026-01-01T00:00:00Z", interval_hours: 720 },
+    } }));
+    await writeFile(path.join(dir, `${RID}/method.json`), JSON.stringify({ release: RID, methodology_version: "v3", processing: [],
+      sources: [{ id: "copernicus-dem-glo30" }, { id: "esa-worldcover" }, { id: "natural-earth-admin0-110m" }] }));
+    api = await start(await ReleaseStore.open(dir, { reloadMs: 0 }));
+  });
+  afterAll(async () => {
+    await api.close();
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("serves the live state of each source of the release, and a missed check is overdue", async () => {
+    const { body } = await json(`${api.url}/api/v3/status`);
+    expect(body.freshness.refresher).toBe(true);
+    const by = Object.fromEntries(body.freshness.sources.map((s: { id: string }) => [s.id, s]));
+    expect(by["copernicus-dem-glo30"].state).toBe("up_to_date");
+    expect(by["copernicus-dem-glo30"].checked_on).toBe(recent);
+    expect(by["esa-worldcover"].state).toBe("check_overdue");          // last check older than twice its interval
+    expect(by["natural-earth-admin0-110m"].state).toBe("check_overdue");  // a source of the release never checked
+    expect(body.validity.state).toBe("not_validated");                  // validity still comes from the release
+    expect(body.freshness.new_products[0].status).toBe("detected, to verify");
+  });
+
+  it("an older release says a newer one is published", async () => {
+    const { body } = await json(`${api.url}/api/v3/status?release=${OLD}`);
+    expect(body.release).toBe(OLD);
+    expect(body.freshness.newer_release).toBe(RID);
+    expect((await json(`${api.url}/api/v3/status`)).body.freshness.newer_release).toBeUndefined();
+  });
+
+  it("sees a release switched by the refresher without a restart", async () => {
+    const idx = JSON.parse(await readFile(path.join(dir, "index.json"), "utf8"));
+    idx.current = OLD;
+    idx.current_by_body.moon = OLD;
+    await writeFile(path.join(dir, "index.json"), JSON.stringify(idx));
+    await new Promise((r) => setTimeout(r, 50));
+    const { body } = await json(`${api.url}/api/v3/releases`);
+    expect(body.current).toBe(OLD);
+  });
+});
+
+describe("API v3 tile provenance and release changes (T52)", () => {
+  let dir: string;
+  let api: Running;
+  beforeAll(async () => {
+    dir = await mkdtemp(path.join(tmpdir(), "releases-prov-"));
+    await writeRelease(dir);
+    await writeFile(path.join(dir, RID, "provenance.json"), JSON.stringify({ release: RID, scales: ["glo90-90m"],
+      items: [{ item: "Copernicus_DSM_COG_30_N10_00_E020_00_DEM/x.tif", etag: "e1", size: 10, last_modified: "2022-05-09T14:10:02.000Z", sha256: "s1" }],
+      tiles: { "10,20": { "glo90-90m": [null, "code-1", "abc", "sha-w", [0]] } }, last_changed_in: { "10,20": RID } }));
+    await writeFile(path.join(dir, RID, "changes.json"), JSON.stringify({ release: RID, previous: OLD, events: [], tiles_recomputed: ["10,20"],
+      tiles_added: [], tiles_withdrawn: [], source_items_changed: [], decision: { publish: true, reasons: [] } }));
+    api = await start(await ReleaseStore.open(dir));
+  });
+  afterAll(async () => {
+    await api.close();
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("gives the sources, dates and code of one Earth tile, and says when a date was not recorded", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/tiles/10,20/provenance`);
+    expect(status).toBe(200);
+    expect(body.release).toBe(RID);
+    expect(body.tile).toBe("10,20");
+    expect(body.data_date).toBe("2022-05-09");
+    expect(body.last_changed_in).toBe(RID);
+    const s = body.scales["glo90-90m"];
+    expect(s.computed_at).toBeNull();
+    expect(s.computed_at_note).toBe("not recorded (computed before T52)");
+    expect(s.inputs[0].etag).toBe("e1");
+  });
+
+  it("refuses a malformed tile and says when a tile is not in the release", async () => {
+    expect((await json(`${api.url}/api/v3/tiles/abc/provenance`)).status).toBe(400);
+    expect((await json(`${api.url}/api/v3/tiles/91,20/provenance`)).status).toBe(400);
+    expect((await json(`${api.url}/api/v3/tiles/-5,7/provenance`)).status).toBe(404);
+  });
+
+  it("gives the changes of the release", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/changes`);
+    expect(status).toBe(200);
+    expect(body.previous).toBe(OLD);
+    expect(body.tiles_recomputed).toEqual(["10,20"]);
+  });
+});

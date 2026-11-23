@@ -1,6 +1,6 @@
 # ADR-009 Automatic refresh, incremental recompute, freshness shown to users
 
-Status: accepted at gate G3 (signed 18/11/2026 by David). Implements David's decision of 18 November 2026: refresh is automatic, only what changed is recomputed, and every user sees how old the data are, whether they are valid, and whether a newer version is being computed.
+Status: accepted at gate G3 (signed 18/11/2026 by David); amended during T52 (23/11/2026, David), see the end. Implements David's decision of 18 November 2026: refresh is automatic, only what changed is recomputed, and every user sees how old the data are, whether they are valid, and whether a newer version is being computed.
 
 ## 1. Watching the sources
 A `refresher` checks every source used by a `keep` or `context` parameter, or by a site set, on its own schedule. It reads a machine signal; it never assumes that a source changed or did not change.
@@ -66,3 +66,13 @@ The data date is the source's own date (acquisition period and file or version d
 - **Recompute everything on every change:** 26,450 tiles, hours of CPU for a one-tile change.
 - **A refresh button for users:** it would give a public route network and write access, and let anyone start hours of downloads.
 - **Fetching live sources during a request:** it breaks reproducibility (ADR-003).
+
+## Amendments during T52 (23/11/2026, decided by David)
+- **Recompute on command.** Detection stays automatic; the recompute starts with one command after the plan and its estimated time are shown. No CPU load on the local machine without David's go.
+- **Local only.** An update recomputes the changed tiles, the cells of their neighbours, and the zones that touch changed cells (local walk, equal to a full recomputation), and the Monte Carlo of those zones. Comparison units are (tile, target): a planetary change reruns its own target only. `validate` is split into cheap global checks and a local Monte Carlo.
+- **Threshold measured.** A no-change re-release of 10 Mars tiles changed no cell state, so the 1% threshold stays. The zone rule ("no zone appears or disappears") holds even that re-release; a rule based on the share of a zone's cells waits for David.
+- **Protocol and anchor.** Section 3 named `validation-protocol-v1`; it means the protocol of the release's body (v3 for the Moon, mars-v2 for Mars). Mars has no regression anchor, so every refreshed Mars release is held for review.
+- **Approve or reject** with `python -m discovery.publish approve|reject <id>` (not `release.py`).
+- **New planetary products** seen in release tables are logged "detected, to verify", never used: a new reference is a new protocol version.
+- **Provenance for researchers.** Each release publishes the provenance of every Earth tile (source versions and dates, computation date, code, last change) and its changes from the previous release, served by the API and shown in the site panel.
+- **Containers.** The refresher runs as root inside its container so it can write the data folder, with every capability dropped, no new privileges and a read-only root file system. Certificates are checked against the Mozilla bundle (`certifi`).

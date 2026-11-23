@@ -429,7 +429,7 @@ paths:
     get:
       tags: [V3]
       summary: Validity of the release and freshness of its sources (ADR-009)
-      description: Validated only when every check of the validation protocol passes. Until the refresher exists (T52), each source is `not_checkable`, with the date it was verified by hand.
+      description: Validated only when every check of the validation protocol passes. Freshness comes from the refresher (T52) when it has run; otherwise each source is `not_checkable`, with the date it was verified by hand. A source whose last check is older than twice its interval, or never checked, is `check_overdue`. An older release names the newer one in `newer_release`.
       parameters: [{ $ref: "#/components/parameters/Release" }]
       responses:
         "200":
@@ -437,6 +437,37 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/Status" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/changes:
+    get:
+      tags: [V3]
+      summary: What changed from the previous release of the same body (T52)
+      description: Source events, Earth tiles recomputed, added or withdrawn, source files whose version changed, and the publication decision with its reasons (null until decided).
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Changes of the release
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Changes" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/tiles/{tile}/provenance:
+    get:
+      tags: [V3]
+      summary: Provenance of one 1 degree Earth tile (T52)
+      description: For each scale, the source files read (with their version and date at the source), when the tile was computed, the code version and commit, and the release where it last changed. A tile computed before T52 has computed_at null and says so.
+      parameters:
+        - { $ref: "#/components/parameters/Release" }
+        - { name: tile, in: path, required: true, schema: { type: string, pattern: '^-?\d{1,2},-?\d{1,3}$' }, description: "lat,lon of the south-west corner, for example 10,20" }
+      responses:
+        "200":
+          description: Provenance of the tile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TileProvenance" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
         "503": { $ref: "#/components/responses/NoRelease" }
   /api/v3/sites:
     get:
@@ -665,8 +696,33 @@ components:
               type: object
               required: [refresher, sources]
               properties:
-                refresher: { type: boolean, description: "false until the automatic refresher exists (T52)" }
+                refresher: { type: boolean, description: "true when the freshness comes from the automatic refresher (T52)" }
                 note: { type: string }
+                written_at: { type: string, description: "when the refresher last wrote its state" }
+                newer_release: { type: string, description: "the current release of the same body, when this one is older" }
+                held:
+                  type: array
+                  description: refreshed releases waiting for review, with the reasons they were not published
+                  items:
+                    type: object
+                    required: [id]
+                    properties:
+                      id: { type: string }
+                      body: { type: string }
+                      reasons: { type: array, items: { type: string } }
+                progress: { type: object, nullable: true, additionalProperties: true, description: "step and share of a running recompute" }
+                new_products:
+                  type: array
+                  description: new planetary products seen in a release table, logged "detected, to verify"; never used in a run before a new protocol version
+                  items:
+                    type: object
+                    required: [source, found, detected_on, status, url]
+                    properties:
+                      source: { type: string }
+                      found: { type: string }
+                      detected_on: { type: string }
+                      status: { type: string }
+                      url: { type: string }
                 sources:
                   type: array
                   items:
@@ -674,8 +730,63 @@ components:
                     required: [id, state, checked_on]
                     properties:
                       id: { type: string }
-                      state: { type: string, enum: [up_to_date, update_in_progress, update_held, check_failed, check_overdue, not_checkable] }
-                      checked_on: { type: string, nullable: true }
+                      state:
+                        type: string
+                        enum: [up_to_date, first_check, update_detected, update_in_progress, update_held, check_failed, check_overdue, not_checkable]
+                        description: "first_check: signal recorded, changes since ingest unknown; update_detected: a change waits for a recompute"
+                      checked_on: { type: string, nullable: true, description: "last check (refresher) or hand verification" }
+                      last_success: { type: string, nullable: true }
+                      detected_on: { type: string, nullable: true }
+                      reason: { type: string, nullable: true }
+    Changes:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [previous, events, tiles_recomputed, tiles_added, tiles_withdrawn, source_items_changed, decision]
+          properties:
+            previous: { type: string, nullable: true }
+            events: { type: array, items: { type: object, additionalProperties: true } }
+            tiles_recomputed: { type: array, items: { type: string } }
+            tiles_added: { type: array, items: { type: string } }
+            tiles_withdrawn: { type: array, items: { type: string } }
+            source_items_changed: { type: array, items: { type: string } }
+            decision:
+              type: object
+              nullable: true
+              properties:
+                publish: { type: boolean }
+                reasons: { type: array, items: { type: string } }
+    TileProvenance:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [tile, last_changed_in, data_date, scales]
+          properties:
+            tile: { type: string }
+            last_changed_in: { type: string }
+            data_date: { type: string, nullable: true, description: "latest source file date at the source (YYYY-MM-DD)" }
+            scales:
+              type: object
+              additionalProperties:
+                type: object
+                required: [computed_at, code, inputs]
+                properties:
+                  computed_at: { type: string, nullable: true }
+                  computed_at_note: { type: string }
+                  code: { type: string }
+                  commit: { type: string }
+                  outputs: { type: string, description: "sha256 of the tile windows file" }
+                  inputs:
+                    type: array
+                    items:
+                      type: object
+                      required: [item]
+                      properties:
+                        item: { type: string }
+                        etag: { type: string, nullable: true }
+                        size: { type: integer, nullable: true }
+                        last_modified: { type: string, nullable: true }
+                        sha256: { type: string, nullable: true }
     Method:
       allOf:
         - $ref: "#/components/schemas/V3Doc"

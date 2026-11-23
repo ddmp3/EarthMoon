@@ -75,3 +75,58 @@ def test_use_is_a_closed_list():
 
 def test_statuses():
     assert STATUSES == ("verified", "partly verified", "not verified", "not available")
+
+
+# ---- T52: refresh block (ADR-009, section 1) ----
+
+def refresh(**over):
+    r = {"family": "pds", "signal": "ETag and Last-Modified of the files used", "interval": "weekly",
+         "cadence": "Most LRO instrument teams release data every three months", "cadence_status": "verified",
+         "checked_url": "https://example.org/lro", "checked_on": "2026-11-23"}
+    r.update(over)
+    return r
+
+
+def test_a_refresh_block_is_valid():
+    assert validate([entry(refresh=refresh())]) == []
+
+
+def test_refresh_family_and_interval_are_closed_lists():
+    errs = validate([entry(refresh=refresh(family="ftp", interval="hourly"))])
+    assert any("family" in e for e in errs) and any("interval" in e for e in errs)
+
+
+def test_a_verified_cadence_needs_its_page_and_date():
+    errs = validate([entry(refresh=refresh(checked_url=None))])
+    assert any("cadence" in e for e in errs)
+    assert validate([entry(refresh=refresh(cadence="not stated on page", cadence_status="not verified",
+                                           checked_url=None, checked_on=None))]) == []
+
+
+def test_a_source_without_signal_is_not_checkable():
+    """No machine signal: interval none, and the refresher reports `not_checkable`, never `up_to_date`."""
+    assert validate([entry(refresh=refresh(family="none", signal=None, interval="none"))]) == []
+    assert any("signal" in e for e in validate([entry(refresh=refresh(signal=None))]))
+
+
+def test_every_source_of_a_release_has_a_refresh_block():
+    """Every source a release names (Earth, planetary and context layers, both bodies) is watched (ADR-009)."""
+    import json
+    by_id = {e["id"]: e for p in (ROOT / "data" / "catalog").glob("*.yaml") for e in load(p)}
+    used = {s["id"] for f in (ROOT / "data" / "releases-fixture").glob("r-*/method.json")
+            for s in json.loads(f.read_text(encoding="utf-8"))["sources"]}
+    assert len(used) >= 16
+    assert sorted(i for i in used if "refresh" not in by_id.get(i, {})) == []
+
+
+def test_watch_targets_need_the_keys_of_their_family():
+    assert validate([entry(refresh=refresh(watch={"base": "https://p.example.org/", "files": {"a.img": 1}}))]) == []
+    errs = validate([entry(refresh=refresh(family="s3", watch={"prefix": "x/"}))])
+    assert any("watch" in e and "bucket" in e for e in errs)
+    errs = validate([entry(refresh=refresh(family="page", watch={"url": "https://x.example.org"}))])
+    assert any("pattern" in e for e in errs)
+
+
+def test_new_products_need_a_page_and_a_pattern():
+    assert validate([entry(refresh=refresh(new_products={"url": "https://p.example.org/", "pattern": "Release ([0-9]+)"}))]) == []
+    assert any("new_products" in e for e in validate([entry(refresh=refresh(new_products={"url": "https://p.example.org/"}))]))

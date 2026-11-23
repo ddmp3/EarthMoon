@@ -1001,7 +1001,7 @@ export interface paths {
         };
         /**
          * Validity of the release and freshness of its sources (ADR-009)
-         * @description Validated only when every check of the validation protocol passes. Until the refresher exists (T52), each source is `not_checkable`, with the date it was verified by hand.
+         * @description Validated only when every check of the validation protocol passes. Freshness comes from the refresher (T52) when it has run; otherwise each source is `not_checkable`, with the date it was verified by hand. A source whose last check is older than twice its interval, or never checked, is `check_overdue`. An older release names the newer one in `newer_release`.
          */
         get: {
             parameters: {
@@ -1024,6 +1024,98 @@ export interface paths {
                         "application/json": components["schemas"]["Status"];
                     };
                 };
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/changes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * What changed from the previous release of the same body (T52)
+         * @description Source events, Earth tiles recomputed, added or withdrawn, source files whose version changed, and the publication decision with its reasons (null until decided).
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Changes of the release */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Changes"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/tiles/{tile}/provenance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Provenance of one 1 degree Earth tile (T52)
+         * @description For each scale, the source files read (with their version and date at the source), when the tile was computed, the code version and commit, and the release where it last changed. A tile computed before T52 has computed_at null and says so.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path: {
+                    /** @description lat,lon of the south-west corner, for example 10,20 */
+                    tile: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Provenance of the tile */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TileProvenance"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
                 503: components["responses"]["NoRelease"];
             };
         };
@@ -1221,15 +1313,81 @@ export interface components {
                 }[];
             };
             freshness: {
-                /** @description false until the automatic refresher exists (T52) */
+                /** @description true when the freshness comes from the automatic refresher (T52) */
                 refresher: boolean;
                 note?: string;
+                /** @description when the refresher last wrote its state */
+                written_at?: string;
+                /** @description the current release of the same body, when this one is older */
+                newer_release?: string;
+                /** @description refreshed releases waiting for review, with the reasons they were not published */
+                held?: {
+                    id: string;
+                    body?: string;
+                    reasons?: string[];
+                }[];
+                /** @description step and share of a running recompute */
+                progress?: {
+                    [key: string]: unknown;
+                } | null;
+                /** @description new planetary products seen in a release table, logged "detected, to verify"; never used in a run before a new protocol version */
+                new_products?: {
+                    source: string;
+                    found: string;
+                    detected_on: string;
+                    status: string;
+                    url: string;
+                }[];
                 sources: {
                     id: string;
-                    /** @enum {string} */
-                    state: "up_to_date" | "update_in_progress" | "update_held" | "check_failed" | "check_overdue" | "not_checkable";
+                    /**
+                     * @description first_check: signal recorded, changes since ingest unknown; update_detected: a change waits for a recompute
+                     * @enum {string}
+                     */
+                    state: "up_to_date" | "first_check" | "update_detected" | "update_in_progress" | "update_held" | "check_failed" | "check_overdue" | "not_checkable";
+                    /** @description last check (refresher) or hand verification */
                     checked_on: string | null;
+                    last_success?: string | null;
+                    detected_on?: string | null;
+                    reason?: string | null;
                 }[];
+            };
+        };
+        Changes: components["schemas"]["V3Doc"] & {
+            previous: string | null;
+            events: {
+                [key: string]: unknown;
+            }[];
+            tiles_recomputed: string[];
+            tiles_added: string[];
+            tiles_withdrawn: string[];
+            source_items_changed: string[];
+            decision: {
+                publish?: boolean;
+                reasons?: string[];
+            } | null;
+        };
+        TileProvenance: components["schemas"]["V3Doc"] & {
+            tile: string;
+            last_changed_in: string;
+            /** @description latest source file date at the source (YYYY-MM-DD) */
+            data_date: string | null;
+            scales: {
+                [key: string]: {
+                    computed_at: string | null;
+                    computed_at_note?: string;
+                    code: string;
+                    commit?: string;
+                    /** @description sha256 of the tile windows file */
+                    outputs?: string;
+                    inputs: {
+                        item: string;
+                        etag?: string | null;
+                        size?: number | null;
+                        last_modified?: string | null;
+                        sha256?: string | null;
+                    }[];
+                };
             };
         };
         Method: components["schemas"]["V3Doc"] & {

@@ -224,3 +224,21 @@ def test_the_service_also_loads_the_current_release_of_each_body(tmp_path, relea
     service._RELEASES.clear()
     service.preload()
     assert sorted(service._RELEASES) == ["r-00000000", "r-0000ma00"]
+
+
+def test_a_release_dropped_from_the_index_is_freed(tmp_path, release, monkeypatch):
+    """After the refresher switches releases (T52), a release no longer listed leaves memory at the next request."""
+    import json as _json
+    import shutil
+    import app as service
+    root = release.folder.parent
+    shutil.copytree(release.folder, root / "r-00000001")
+    for d in ("r-00000000", "r-00000001"):
+        (root / d / "scenarios.json").write_text(_json.dumps({"scenarios": [{"assessed_targets": ["moon-psr"]}]}))
+    (root / "index.json").write_text(_json.dumps({"current": "r-00000000", "releases": [{"id": "r-00000000"}]}))
+    monkeypatch.setattr(service, "ROOT", root)
+    service._RELEASES.clear()
+    service._release(None)
+    (root / "index.json").write_text(_json.dumps({"current": "r-00000001", "releases": [{"id": "r-00000001"}]}))
+    service._release(None)
+    assert list(service._RELEASES) == ["r-00000001"]

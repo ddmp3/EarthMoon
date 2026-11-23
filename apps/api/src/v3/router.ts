@@ -23,6 +23,7 @@ export function v3Router(
         return;
       }
       try {
+        await store.refresh();
         const release = store.releaseId(req.query.release);
         res.json(await fn(req, release));
       } catch (error) {
@@ -42,11 +43,12 @@ export function v3Router(
     return { release: doc.release, methodology_version: doc.methodology_version };
   };
 
-  r.get("/releases", (_req, res) => {
+  r.get("/releases", async (_req, res) => {
     if (!store) {
       res.status(503).json({ error: "No v3 release is installed on this server (run tools/discovery/release.py)" });
       return;
     }
+    await store.refresh();
     res.json(store.index);
   });
 
@@ -70,7 +72,16 @@ export function v3Router(
   );
 
   r.get("/method", handle(async (_req, release) => store!.doc(release, "method")));
-  r.get("/status", handle(async (_req, release) => store!.doc(release, "status")));
+  r.get("/status", handle(async (_req, release) => liveStatus(store!, release)));
+  r.get("/changes", handle(async (_req, release) => ({ ...(await head(release)), ...(await store!.doc(release, "changes")) })));
+  r.get(
+    "/tiles/:tile/provenance",
+    handle(async (req, release) => {
+      const m = /^(-?\d{1,2}),(-?\d{1,3})$/.exec(req.params.tile);
+      if (!m || Number(m[1]) < -90 || Number(m[1]) > 89 || Number(m[2]) < -180 || Number(m[2]) > 179) throw new BadRequest("tile must be 'lat,lon' of a 1 degree tile");
+      return store!.tileProvenance(release, `${Number(m[1])},${Number(m[2])}`);
+    }),
+  );
 
   r.get(
     "/coverage",
@@ -242,4 +253,38 @@ export function v3LayersRouter(store: ReleaseStore | undefined, log: (message: s
     }
   });
   return r;
+}
+
+/**
+ * Status of a release (ADR-009 section 4): validity from the release, freshness from the refresher when it ran.
+ * A source of the release whose last check is older than twice its interval, or that was never checked, is
+ * `check_overdue`, so a stopped refresher shows.
+ */
+export async function liveStatus(store: ReleaseStore, release: string, now = Date.now()): Promise<Record<string, unknown>> {
+  const doc = (await store.doc(release, "status")) as Record<string, any>;
+  const live = await store.freshness();
+  const newer = store.newerRelease(release);
+  const base = (doc.freshness ?? { refresher: false, sources: [] }) as Record<string, any>;
+  let freshness: Record<string, any> = { ...base };
+  if (live?.refresher) {
+    const method = (await store.doc(release, "method").catch(() => ({ sources: [] }))) as { sources?: { id: string }[] };
+    const ids = (method.sources ?? []).map((s) => s.id);
+    freshness = {
+      refresher: true,
+      written_at: live.written_at,
+      sources: ids.map((id) => {
+        const s = live.sources[id];
+        if (!s) return { id, state: "check_overdue", checked_on: null, reason: "not checked by the refresher" };
+        const last = s.last_check ? Date.parse(s.last_check) : NaN;
+        const overdue = s.interval_hours != null && (Number.isNaN(last) || now - last > 2 * s.interval_hours * 3600_000);
+        return { id, state: overdue ? "check_overdue" : s.state, checked_on: s.last_check ?? null, last_success: s.last_success ?? null,
+          detected_on: s.detected_on ?? null, reason: s.reason ?? null };
+      }),
+      ...(live.held?.length ? { held: live.held } : {}),
+      ...(live.progress ? { progress: live.progress } : {}),
+      ...(live.new_products?.length ? { new_products: live.new_products } : {}),
+    };
+  }
+  if (newer) freshness.newer_release = newer;
+  return { ...doc, freshness };
 }

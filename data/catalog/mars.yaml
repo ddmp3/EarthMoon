@@ -23,6 +23,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://pds-geosciences.wustl.edu/missions/mgs/megdr.html
+    refresh:
+      family: "pds"
+      signal: "labels of the PDS4 bundle mgs_mola_topography_derived and Last-Modified of the files used"
+      interval: "monthly"
+      cadence: "The final version of the MEGDRs was released May 7, 2003 (archived in PDS4 on August 25, 2026)"
+      cadence_status: "verified"
+      checked_url: "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html"
+      checked_on: "2026-11-23"
 
   - id: mgs-mola-pedr
     body: mars
@@ -419,6 +427,15 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://swim.psi.edu/NorthHemisProducts.php
+    refresh:
+      family: "page"
+      signal: "per-product 'Updated' timestamps on the page"
+      interval: "monthly"
+      cadence: "Archived results (2019 Northern Hemisphere phase), superseded by the SWIM 2.0 products"
+      cadence_status: "verified"
+      checked_url: "https://swim.psi.edu/NorthHemisProducts.php"
+      checked_on: "2026-11-23"
+      watch: {"url": "https://swim.psi.edu/NorthHemisProducts.php", "pattern": "Updated (\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})"}
 
   - id: lmd-mars-climate-database
     body: mars

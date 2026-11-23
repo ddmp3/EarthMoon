@@ -1,4 +1,4 @@
-import { access, readFile } from "node:fs/promises";
+import { access, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 /**
@@ -9,7 +9,16 @@ import path from "node:path";
  */
 
 export type ReleaseEntry = { id: string; run: string; methodology_version: string; protocol: string; commit: string; created: string };
-export type ReleaseIndex = { current: string; current_by_body?: Record<string, string>; releases: ReleaseEntry[] };
+export type ReleaseIndex = { current: string; current_by_body?: Record<string, string>; releases: (ReleaseEntry & { body?: string })[] };
+/** Written by the refresher (tools/discovery/refresher.py, ADR-009): live state of each watched source. */
+export type Freshness = {
+  refresher: boolean;
+  written_at?: string;
+  sources: Record<string, { state: string; last_check?: string | null; last_success?: string | null; interval_hours?: number | null; reason?: string | null; detected_on?: string | null }>;
+  progress?: unknown;
+  held?: { id: string; body?: string; reasons?: string[] }[];
+  new_products?: { source: string; found: string; detected_on: string; status: string; url: string }[];
+};
 export type Grid = { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } };
 export type Scenario = {
   id: string;
@@ -29,18 +38,60 @@ const MAX_CACHED = 32;
 
 export class ReleaseStore {
   private readonly cache = new Map<string, unknown>();
+  private checkedAt = Date.now();
+  private indexMtime = 0;
 
   private constructor(
     private readonly root: string,
-    readonly index: ReleaseIndex,
+    public index: ReleaseIndex,
+    private readonly reloadMs: number,
   ) {}
 
-  static async open(root: string): Promise<ReleaseStore> {
+  private static async readIndex(root: string): Promise<ReleaseIndex> {
     const index = JSON.parse(await readFile(path.join(root, "index.json"), "utf8")) as ReleaseIndex;
     if (!index.current || !Array.isArray(index.releases) || !index.releases.some((r) => r.id === index.current)) {
       throw new Error(`invalid releases index in ${root}`);
     }
-    return new ReleaseStore(path.resolve(root), index);
+    return index;
+  }
+
+  /** `reloadMs`: how often the index is looked at again, so a release switched by the refresher is served without a restart. */
+  static async open(root: string, opts: { reloadMs?: number } = {}): Promise<ReleaseStore> {
+    const store = new ReleaseStore(path.resolve(root), await ReleaseStore.readIndex(root), opts.reloadMs ?? 10_000);
+    store.indexMtime = (await stat(path.join(root, "index.json"))).mtimeMs;
+    return store;
+  }
+
+  /** Reread index.json when it changed (atomic switch by the refresher). A broken index keeps the previous one. */
+  async refresh(): Promise<void> {
+    if (Date.now() - this.checkedAt < this.reloadMs) return;
+    this.checkedAt = Date.now();
+    try {
+      const m = (await stat(path.join(this.root, "index.json"))).mtimeMs;
+      if (m !== this.indexMtime) {
+        this.index = await ReleaseStore.readIndex(this.root);
+        this.indexMtime = m;
+      }
+    } catch {
+      // keep serving the index already loaded
+    }
+  }
+
+  /** Live freshness written by the refresher, or undefined when it never ran. */
+  async freshness(): Promise<Freshness | undefined> {
+    try {
+      return JSON.parse(await readFile(path.join(this.root, "freshness.json"), "utf8")) as Freshness;
+    } catch {
+      return undefined;
+    }
+  }
+
+  /** The current release of the body of `release`, when it is not `release` itself. */
+  newerRelease(release: string): string | undefined {
+    const entry = this.index.releases.find((r) => r.id === release);
+    const body = entry?.body ?? "moon";
+    const current = (this.index.current_by_body ?? {})[body] ?? (body === "moon" ? this.index.current : undefined);
+    return current && current !== release ? current : undefined;
   }
 
   /** The release id to read: the current one, the current one of a body ("mars"), or a listed one. */
@@ -73,7 +124,7 @@ export class ReleaseStore {
     return this.read(id, "release.json");
   }
 
-  doc(release: string, name: "profiles" | "scenarios" | "method" | "coverage" | "status"): Promise<Doc> {
+  doc(release: string, name: "profiles" | "scenarios" | "method" | "coverage" | "status" | "changes"): Promise<Doc> {
     return this.read(release, `${name}.json`);
   }
 
@@ -103,6 +154,24 @@ export class ReleaseStore {
     if (!grid.tau.includes(t)) throw new BadRequest(`tau must be one of ${grid.tau.join(", ")}`);
     if (!grid.min_cells.includes(m)) throw new BadRequest(`min_cells must be one of ${grid.min_cells.join(", ")}`);
     return { scenario: sc, target, tau: grid.tau[grid.tau.indexOf(t)], minCells: grid.min_cells[grid.min_cells.indexOf(m)] };
+  }
+
+  /** Provenance of one Earth tile "lat,lon" (T52): its source files with version and date, computation date, code. */
+  async tileProvenance(release: string, key: string): Promise<Doc> {
+    type Prov = { release: string; items: Record<string, unknown>[]; tiles: Record<string, Record<string, [string | null, string, string, string, number[]]>>; last_changed_in: Record<string, string> };
+    const p = await this.read<Prov>(release, "provenance.json");
+    const sc = Object.hasOwn(p.tiles, key) ? p.tiles[key] : undefined;
+    if (!sc) throw new NotFound(`No Earth tile ${key} in release ${release}`);
+    const dates: string[] = [];
+    const scales: Record<string, unknown> = {};
+    for (const [scale, [computed, code, commit, outputs, ids]] of Object.entries(sc)) {
+      const inputs = ids.map((i) => p.items[i]);
+      for (const i of inputs) if (typeof i.last_modified === "string") dates.push(i.last_modified);
+      scales[scale] = { computed_at: computed, ...(computed ? {} : { computed_at_note: "not recorded (computed before T52)" }), code, commit, outputs, inputs };
+    }
+    dates.sort();
+    const { methodology_version } = await this.release(release);
+    return { release, methodology_version, tile: key, last_changed_in: p.last_changed_in[key], data_date: dates.length ? dates[dates.length - 1].slice(0, 10) : null, scales };
   }
 
   /** Path of one layer tile, or undefined when the release has no tile there (no cell in it). */

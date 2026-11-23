@@ -1,0 +1,79 @@
+{
+ "rule": "Simulated update: 10 land tiles of run-mars-001 (seed 20261119) are recomputed with their elevation perturbed by an independent Gaussian error within the stated Copernicus accuracy (sigma 1.216 m, 2 m LE90): a re-release that changes nothing real. Mars is used because its cube reads the local GLO-90 copy (no download); the lunar 30 m cube streams GLO-30. The steps rerun as the planner says (tools/discovery/refresh_plan.py): - features: the 10 tiles at both Mars scales; - assess: the cells of these tiles and of their neighbours (their neighbours' windows are read from the real cube); - zones: only the zones that touch a cell whose candidacy changed (tools/discovery/zones_local.py; David, 23/11:   recompute the neighbours and nothing else). The candidate list of the run is read once as the starting state. Measured: seconds per step and per unit; among the reassessed cells, the share whose coverage state changes and the share whose candidacy at tau 0.5 changes, per target; zones that appear or disappear. Threshold rule: the 1% of ADR-009 stays if the state-change share is under 1% for every target; otherwise it becomes the smallest whole percent above the largest measured share. The zone rule is reported, not changed here.",
+ "tiles": [
+  "-3,132",
+  "-77,91",
+  "-78,-90",
+  "-80,70",
+  "-81,39",
+  "-82,172",
+  "-82,23",
+  "21,87",
+  "33,97",
+  "64,81"
+ ],
+ "seconds": {
+  "copy": 18.8,
+  "features": {
+   "glo90-115m-w25": 12.2,
+   "glo90-463m-w25": 5.6
+  },
+  "assess": 4.9,
+  "read_candidates": 2.0,
+  "zones_local": 2.3
+ },
+ "assess": {
+  "tiles": 89,
+  "cells": 18636
+ },
+ "change": {
+  "mars-ice-rich-midlatitudes": {
+   "cells": 18636,
+   "state_changed": 0.0,
+   "candidate_changed": 0.0
+  },
+  "mars-north-polar": {
+   "cells": 18636,
+   "state_changed": 0.0,
+   "candidate_changed": 0.000107
+  },
+  "mars-south-polar": {
+   "cells": 18636,
+   "state_changed": 0.0,
+   "candidate_changed": 0.000107
+  }
+ },
+ "zones": {
+  "mars-ice-rich-midlatitudes": {
+   "before": 11768,
+   "changed_cells": 0,
+   "appear": 0,
+   "disappear": 0,
+   "seconds": 0.3,
+   "visited": 0,
+   "recomputed_zones": 0,
+   "new_zones": 0
+  },
+  "mars-north-polar": {
+   "before": 11847,
+   "changed_cells": 2,
+   "appear": 1,
+   "disappear": 1,
+   "seconds": 0.43,
+   "visited": 5,
+   "recomputed_zones": 1,
+   "new_zones": 1
+  },
+  "mars-south-polar": {
+   "before": 12166,
+   "changed_cells": 2,
+   "appear": 1,
+   "disappear": 1,
+   "seconds": 0.31,
+   "visited": 5,
+   "recomputed_zones": 1,
+   "new_zones": 1
+  }
+ },
+ "threshold": 0.01
+}
