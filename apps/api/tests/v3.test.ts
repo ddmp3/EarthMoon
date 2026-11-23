@@ -421,3 +421,48 @@ describe("API v3 freshness from the refresher (T52, ADR-009 section 4)", () => {
     expect(body.current).toBe(OLD);
   });
 });
+
+describe("API v3 tile provenance and release changes (T52)", () => {
+  let dir: string;
+  let api: Running;
+  beforeAll(async () => {
+    dir = await mkdtemp(path.join(tmpdir(), "releases-prov-"));
+    await writeRelease(dir);
+    await writeFile(path.join(dir, RID, "provenance.json"), JSON.stringify({ release: RID, scales: ["glo90-90m"],
+      items: [{ item: "Copernicus_DSM_COG_30_N10_00_E020_00_DEM/x.tif", etag: "e1", size: 10, last_modified: "2022-05-09T14:10:02.000Z", sha256: "s1" }],
+      tiles: { "10,20": { "glo90-90m": [null, "code-1", "abc", "sha-w", [0]] } }, last_changed_in: { "10,20": RID } }));
+    await writeFile(path.join(dir, RID, "changes.json"), JSON.stringify({ release: RID, previous: OLD, events: [], tiles_recomputed: ["10,20"],
+      tiles_added: [], tiles_withdrawn: [], source_items_changed: [], decision: { publish: true, reasons: [] } }));
+    api = await start(await ReleaseStore.open(dir));
+  });
+  afterAll(async () => {
+    await api.close();
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("gives the sources, dates and code of one Earth tile, and says when a date was not recorded", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/tiles/10,20/provenance`);
+    expect(status).toBe(200);
+    expect(body.release).toBe(RID);
+    expect(body.tile).toBe("10,20");
+    expect(body.data_date).toBe("2022-05-09");
+    expect(body.last_changed_in).toBe(RID);
+    const s = body.scales["glo90-90m"];
+    expect(s.computed_at).toBeNull();
+    expect(s.computed_at_note).toBe("not recorded (computed before T52)");
+    expect(s.inputs[0].etag).toBe("e1");
+  });
+
+  it("refuses a malformed tile and says when a tile is not in the release", async () => {
+    expect((await json(`${api.url}/api/v3/tiles/abc/provenance`)).status).toBe(400);
+    expect((await json(`${api.url}/api/v3/tiles/91,20/provenance`)).status).toBe(400);
+    expect((await json(`${api.url}/api/v3/tiles/-5,7/provenance`)).status).toBe(404);
+  });
+
+  it("gives the changes of the release", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/changes`);
+    expect(status).toBe(200);
+    expect(body.previous).toBe(OLD);
+    expect(body.tiles_recomputed).toEqual(["10,20"]);
+  });
+});

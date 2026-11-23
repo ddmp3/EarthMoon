@@ -123,7 +123,7 @@ export class ReleaseStore {
     return this.read(id, "release.json");
   }
 
-  doc(release: string, name: "profiles" | "scenarios" | "method" | "coverage" | "status"): Promise<Doc> {
+  doc(release: string, name: "profiles" | "scenarios" | "method" | "coverage" | "status" | "changes"): Promise<Doc> {
     return this.read(release, `${name}.json`);
   }
 
@@ -153,6 +153,24 @@ export class ReleaseStore {
     if (!grid.tau.includes(t)) throw new BadRequest(`tau must be one of ${grid.tau.join(", ")}`);
     if (!grid.min_cells.includes(m)) throw new BadRequest(`min_cells must be one of ${grid.min_cells.join(", ")}`);
     return { scenario: sc, target, tau: grid.tau[grid.tau.indexOf(t)], minCells: grid.min_cells[grid.min_cells.indexOf(m)] };
+  }
+
+  /** Provenance of one Earth tile "lat,lon" (T52): its source files with version and date, computation date, code. */
+  async tileProvenance(release: string, key: string): Promise<Doc> {
+    type Prov = { release: string; items: Record<string, unknown>[]; tiles: Record<string, Record<string, [string | null, string, string, string, number[]]>>; last_changed_in: Record<string, string> };
+    const p = await this.read<Prov>(release, "provenance.json");
+    const sc = Object.hasOwn(p.tiles, key) ? p.tiles[key] : undefined;
+    if (!sc) throw new NotFound(`No Earth tile ${key} in release ${release}`);
+    const dates: string[] = [];
+    const scales: Record<string, unknown> = {};
+    for (const [scale, [computed, code, commit, outputs, ids]] of Object.entries(sc)) {
+      const inputs = ids.map((i) => p.items[i]);
+      for (const i of inputs) if (typeof i.last_modified === "string") dates.push(i.last_modified);
+      scales[scale] = { computed_at: computed, ...(computed ? {} : { computed_at_note: "not recorded (computed before T52)" }), code, commit, outputs, inputs };
+    }
+    dates.sort();
+    const { methodology_version } = await this.release(release);
+    return { release, methodology_version, tile: key, last_changed_in: p.last_changed_in[key], data_date: dates.length ? dates[dates.length - 1].slice(0, 10) : null, scales };
   }
 
   /** Path of one layer tile, or undefined when the release has no tile there (no cell in it). */

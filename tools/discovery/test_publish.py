@@ -112,3 +112,11 @@ def test_unchanged_files_are_shared_by_hash(tmp_path):
     shared = pub.share_unchanged(new, old)
     assert shared == 1 and (new / "b.json").read_bytes() == b"new"
     assert os.path.samefile(new / "layers" / "a.png", old / "layers" / "a.png")
+
+
+def test_the_decision_is_written_in_the_changes_of_the_release(tmp_path):
+    p = index(tmp_path)
+    (tmp_path / "r-m2").mkdir()
+    (tmp_path / "r-m2" / "changes.json").write_text(json.dumps({"release": "r-m2", "decision": None}))
+    pub.register(p, {"id": "r-m2", "body": "moon"}, {"publish": False, "reasons": ["no regression anchor"]})
+    assert json.loads((tmp_path / "r-m2" / "changes.json").read_text())["decision"]["reasons"] == ["no regression anchor"]

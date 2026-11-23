@@ -1035,6 +1035,98 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/changes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * What changed from the previous release of the same body (T52)
+         * @description Source events, Earth tiles recomputed, added or withdrawn, source files whose version changed, and the publication decision with its reasons (null until decided).
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Changes of the release */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Changes"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/tiles/{tile}/provenance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Provenance of one 1 degree Earth tile (T52)
+         * @description For each scale, the source files read (with their version and date at the source), when the tile was computed, the code version and commit, and the release where it last changed. A tile computed before T52 has computed_at null and says so.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path: {
+                    /** @description lat,lon of the south-west corner, for example 10,20 */
+                    tile: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Provenance of the tile */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["TileProvenance"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v3/sites": {
         parameters: {
             query?: never;
@@ -1251,6 +1343,43 @@ export interface components {
                     detected_on?: string | null;
                     reason?: string | null;
                 }[];
+            };
+        };
+        Changes: components["schemas"]["V3Doc"] & {
+            previous: string | null;
+            events: {
+                [key: string]: unknown;
+            }[];
+            tiles_recomputed: string[];
+            tiles_added: string[];
+            tiles_withdrawn: string[];
+            source_items_changed: string[];
+            decision: {
+                publish?: boolean;
+                reasons?: string[];
+            } | null;
+        };
+        TileProvenance: components["schemas"]["V3Doc"] & {
+            tile: string;
+            last_changed_in: string;
+            /** @description latest source file date at the source (YYYY-MM-DD) */
+            data_date: string | null;
+            scales: {
+                [key: string]: {
+                    computed_at: string | null;
+                    computed_at_note?: string;
+                    code: string;
+                    commit?: string;
+                    /** @description sha256 of the tile windows file */
+                    outputs?: string;
+                    inputs: {
+                        item: string;
+                        etag?: string | null;
+                        size?: number | null;
+                        last_modified?: string | null;
+                        sha256?: string | null;
+                    }[];
+                };
             };
         };
         Method: components["schemas"]["V3Doc"] & {

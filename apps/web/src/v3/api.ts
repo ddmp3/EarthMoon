@@ -140,6 +140,15 @@ const q = (params: Record<string, string | number | undefined>) =>
 const withRelease = (path: string, release?: string) => (release ? `${path}${path.includes('?') ? '&' : '?'}${q({ release })}` : path)
 
 /** Every document call takes the release to read (the lunar default when absent; a Mars mission passes its own). */
+/** T52: provenance of one 1° Earth tile (sources with version and date, computation date, code). */
+export interface TileProvenance {
+  release: string
+  tile: string
+  last_changed_in: string
+  data_date: string | null
+  scales: Record<string, { computed_at: string | null; computed_at_note?: string; code: string; inputs: { item: string; etag?: string | null; last_modified?: string | null }[] }>
+}
+
 export const v3 = {
   releases: () => get<ReleaseIndex>('releases'),
   release: (id: string) => get<{ release: string; run: string; geology?: unknown; context?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
@@ -150,6 +159,7 @@ export const v3 = {
   zone: (id: string, release?: string) => get<ZoneDetail>(withRelease(`zones/${encodeURIComponent(id)}`, release)),
   method: (release?: string) => get<{ release: string; sources: MethodSource[]; processing: Record<string, unknown>[] }>(withRelease('method', release)),
   status: (release?: string) => get<Status>(withRelease('status', release)),
+  tileProvenance: (tile: string, release?: string) => get<TileProvenance>(withRelease(`tiles/${encodeURIComponent(tile)}/provenance`, release)),
   sites: (scenario: string, release?: string) =>
     get<{ release: string; scenario: string; points: { id: string; cell: string | null; values: Record<string, CellProps> | null; reason?: string }[] }>(`sites?${q({ scenario, release })}`),
   query: async (body: Record<string, unknown>, release?: string) => {

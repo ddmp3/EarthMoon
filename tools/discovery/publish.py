@@ -94,6 +94,11 @@ def _switch(idx: dict, entry: dict) -> None:
 def register(index_path: Path, entry: dict, decision: dict) -> None:
     """Publish the release (atomic switch of the index) or hold it with its reasons."""
     idx = json.loads(Path(index_path).read_text())
+    ch = Path(index_path).parent / entry["id"] / "changes.json"        # the decision, for researchers (T52)
+    if ch.exists():
+        doc = json.loads(ch.read_text())
+        doc["decision"] = decision
+        _write_atomic(ch, doc)
     if decision["publish"]:
         _switch(idx, entry)
     else:

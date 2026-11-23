@@ -73,6 +73,15 @@ export function v3Router(
 
   r.get("/method", handle(async (_req, release) => store!.doc(release, "method")));
   r.get("/status", handle(async (_req, release) => liveStatus(store!, release)));
+  r.get("/changes", handle(async (_req, release) => ({ ...(await head(release)), ...(await store!.doc(release, "changes")) })));
+  r.get(
+    "/tiles/:tile/provenance",
+    handle(async (req, release) => {
+      const m = /^(-?\d{1,2}),(-?\d{1,3})$/.exec(req.params.tile);
+      if (!m || Number(m[1]) < -90 || Number(m[1]) > 89 || Number(m[2]) < -180 || Number(m[2]) > 179) throw new BadRequest("tile must be 'lat,lon' of a 1 degree tile");
+      return store!.tileProvenance(release, `${Number(m[1])},${Number(m[2])}`);
+    }),
+  );
 
   r.get(
     "/coverage",

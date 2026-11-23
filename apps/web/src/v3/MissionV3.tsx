@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAppStore } from '../store'
-import { v3 as v3api, type CellProps, type QueryResult, type Scenario } from './api'
-import { cellState, cividis, geologyText, layerList, legendRows } from './model'
+import { v3 as v3api, type CellProps, type QueryResult, type Scenario, type TileProvenance } from './api'
+import { cellState, cividis, geologyText, layerList, legendRows, provenanceLines } from './model'
 import { coverageMeaning, requirementText, scenarioText } from './content'
 import { Patterns } from './panels'
 import { targetName, v3Texts } from './text'
@@ -201,8 +201,44 @@ export function SiteV3Section({ site, scenario, release, onMethod }: {
           </dl>
         )
       })()}
+      {site.cell && (() => {
+        const c = site.values?.[scenario.assessed_targets[0]]
+        return c ? <TileProvenanceList lat={c.lat} lon={c.lon} release={release} /> : null
+      })()}
       <button className="ghost" onClick={onMethod} type="button">{t.dataMethod}</button>
     </section>
+  )
+}
+
+/** T52: the Earth data behind the cell, for researchers: sources with their file dates, computation date, and the
+ * release where the tile last changed. The cell belongs to the 1° tile that holds its centre. */
+export function TileProvenanceList({ lat, lon, release, load = v3api.tileProvenance }: {
+  lat: number
+  lon: number
+  release: string | null
+  load?: (tile: string, release?: string) => Promise<TileProvenance>
+}) {
+  const { t } = useV3Texts()
+  const key = `${Math.floor(lat)},${Math.floor(lon)}`
+  const [state, setState] = useState<{ key: string; p: TileProvenance | null } | null>(null)
+  useEffect(() => {
+    let live = true
+    load(key, release ?? undefined).then((p) => live && setState({ key, p }), () => live && setState({ key, p: null }))
+    return () => {
+      live = false
+    }
+  }, [key, release, load])
+  if (!state || state.key !== key) return null
+  if (!state.p) return <p className="note">{t.provMissing}</p>
+  const l = provenanceLines(state.p, t)
+  return (
+    <dl className="v3-ctx v3-prov">
+      <dt>{t.provTitle}</dt>
+      <dd>{l.tile}</dd>
+      {l.sources.map((s) => <dd key={s}>{s}</dd>)}
+      <dd>{l.computed}</dd>
+      <dd>{l.since}</dd>
+    </dl>
   )
 }
 

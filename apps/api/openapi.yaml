@@ -438,6 +438,37 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/Status" }
         "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/changes:
+    get:
+      tags: [V3]
+      summary: What changed from the previous release of the same body (T52)
+      description: Source events, Earth tiles recomputed, added or withdrawn, source files whose version changed, and the publication decision with its reasons (null until decided).
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Changes of the release
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Changes" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/tiles/{tile}/provenance:
+    get:
+      tags: [V3]
+      summary: Provenance of one 1 degree Earth tile (T52)
+      description: For each scale, the source files read (with their version and date at the source), when the tile was computed, the code version and commit, and the release where it last changed. A tile computed before T52 has computed_at null and says so.
+      parameters:
+        - { $ref: "#/components/parameters/Release" }
+        - { name: tile, in: path, required: true, schema: { type: string, pattern: '^-?\d{1,2},-?\d{1,3}$' }, description: "lat,lon of the south-west corner, for example 10,20" }
+      responses:
+        "200":
+          description: Provenance of the tile
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TileProvenance" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "503": { $ref: "#/components/responses/NoRelease" }
   /api/v3/sites:
     get:
       tags: [V3]
@@ -695,6 +726,55 @@ components:
                       last_success: { type: string, nullable: true }
                       detected_on: { type: string, nullable: true }
                       reason: { type: string, nullable: true }
+    Changes:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [previous, events, tiles_recomputed, tiles_added, tiles_withdrawn, source_items_changed, decision]
+          properties:
+            previous: { type: string, nullable: true }
+            events: { type: array, items: { type: object, additionalProperties: true } }
+            tiles_recomputed: { type: array, items: { type: string } }
+            tiles_added: { type: array, items: { type: string } }
+            tiles_withdrawn: { type: array, items: { type: string } }
+            source_items_changed: { type: array, items: { type: string } }
+            decision:
+              type: object
+              nullable: true
+              properties:
+                publish: { type: boolean }
+                reasons: { type: array, items: { type: string } }
+    TileProvenance:
+      allOf:
+        - $ref: "#/components/schemas/V3Doc"
+        - type: object
+          required: [tile, last_changed_in, data_date, scales]
+          properties:
+            tile: { type: string }
+            last_changed_in: { type: string }
+            data_date: { type: string, nullable: true, description: "latest source file date at the source (YYYY-MM-DD)" }
+            scales:
+              type: object
+              additionalProperties:
+                type: object
+                required: [computed_at, code, inputs]
+                properties:
+                  computed_at: { type: string, nullable: true }
+                  computed_at_note: { type: string }
+                  code: { type: string }
+                  commit: { type: string }
+                  outputs: { type: string, description: "sha256 of the tile windows file" }
+                  inputs:
+                    type: array
+                    items:
+                      type: object
+                      required: [item]
+                      properties:
+                        item: { type: string }
+                        etag: { type: string, nullable: true }
+                        size: { type: integer, nullable: true }
+                        last_modified: { type: string, nullable: true }
+                        sha256: { type: string, nullable: true }
     Method:
       allOf:
         - $ref: "#/components/schemas/V3Doc"
