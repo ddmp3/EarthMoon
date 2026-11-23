@@ -134,6 +134,23 @@ def test_validation_reads_the_martian_masked_unit_and_blocks_of_five_windows():
     assert "D" in v.POSITIVES and v.REPRO["window_px"] == 25
 
 
+def test_the_mars_release_lists_scenario_d_martian_profiles_and_their_sources(mars):
+    import types
+    from discovery import release as rel
+    r = types.SimpleNamespace(COVERAGE_TEXT=dict(rel.COVERAGE_TEXT))
+    mars_run.configure_release(r)
+    assert r.BODY == "mars" and r.PROTOCOL == "validation-protocol-mars-v1" and r.SCENARIO_FILES == {"D": "D-mars.yaml"}
+    assert "copernicus-dem-glo30" not in r.EARTH_SOURCES
+    assert "80%" in r.COVERAGE_TEXT["evaluated"] and set(r.COVERAGE_TEXT) == set(rel.COVERAGE_TEXT)
+
+
+def test_release_index_keeps_the_lunar_default_and_a_current_release_per_body():
+    from discovery.release import keep_releases
+    listed = [{"id": f"r-m{k}"} for k in range(4)] + [{"id": "r-x1", "body": "mars"}]
+    out = keep_releases(listed, {"id": "r-x2", "body": "mars"})
+    assert [r["id"] for r in out] == ["r-x2", "r-m0", "r-m1", "r-m2", "r-m3", "r-x1"]   # no lunar release evicted
+
+
 def test_tile_lists_name_every_tile_of_the_cube_at_each_scale(tmp_path):
     from discovery.copernicus import tile_name
     for sc in ("glo90-115m-w25", "glo90-463m-w25"):

@@ -79,6 +79,25 @@ def configure_validation(v) -> None:
                "cache": "/data/copernicus-glo90"}
 
 
+def configure_release(r) -> None:
+    """Settings of the release module `r` for the Mars release: scenario D, Martian profiles and sources."""
+    r.BODY = "mars"
+    r.PROTOCOL = "validation-protocol-mars-v1"
+    r.SCENARIO_FILES = {"D": "D-mars.yaml"}
+    r.PROFILE_DIR, r.PROFILE_GLOB = "data/profiles/mars", "mars-*.json"
+    r.EARTH_SOURCES = ["copernicus-dem-glo90", "esa-worldcover", "add-rock-outcrop-v7-3", "natural-earth-admin0-110m"]
+    r.INPUT_SOURCES = {"mola": "mgs-mola-megdr", "swim": "swim-ice-consistency"}
+    r.NOT_COMPARABLE_TEXT = "later phase: site sets or rover-scale terrain (HiRISE), not in phase 1"
+    r.SCREENING = False
+    r.COVERAGE_AREA = "cells"
+    r.COVERAGE_TEXT = {**r.COVERAGE_TEXT,
+                       "screened_out": "no Earth window at this target's MOLA scale (sea or no DEM)",
+                       "low_confidence": "not high confidence: under 80% of the cell's windows valid, or 10% or more "
+                                         "masked or of unknown cover",
+                       "evaluated": "high confidence: at least 80% of the cell's windows valid and under 10% masked or "
+                                    "of unknown cover"}
+
+
 def tile_lists(cube: Path, run: Path) -> list[Path]:
     """One list per scale of every tile the cube holds (all Earth land tiles: no screening at these scales)."""
     import re
