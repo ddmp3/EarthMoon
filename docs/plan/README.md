@@ -126,7 +126,8 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | G5 | Gate: release | T49 | todo |
 | [T50](tasks/T50-release.md) | Docs, release notes, v2 retirement decision | G5 | todo |
 | [T51](tasks/T51-assistant.md) | AI assistant for scientists (optional) | T50 | todo |
-| [T52](tasks/T52-automatic-refresh.md) | Automatic refresh and incremental recompute | T43, T44 | todo |
+| [T52](tasks/T52-automatic-refresh.md) | Automatic refresh and incremental recompute | T43, T44 | done (PR #32; 16 sources watched, 11 with a signal; local zones; 10-tile calibration in 45 s, 1% threshold kept; tile provenance and release changes for researchers; recompute on command, in T52b) |
+| [T52b](tasks/T52b-recompute-command.md) | Incremental recompute on command (plan, local run, incremental export, e2e) | T52 | todo (zone rule to decide by David) |
 
 ## 6. Tooling
 

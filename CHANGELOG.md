@@ -2,6 +2,30 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-24 · T52 Refresh, local recompute and provenance (PR #32)
+- **Watched sources:** every source a release names (16) has a `refresh` block in the catalogue: signal, check interval, and cadence quoted from its page or "not verified".
+  - Watchers cover S3 listings, PDS files against their ingest size, page versions, DataCite DOIs and JSON APIs. They are tested on recorded responses.
+  - First real check: 11 sources watched, 5 not checkable (no target recorded at ingest).
+  - Fixes found by that check: TLS verified with the Mozilla bundle (the PDS Geosciences root is missing from Debian), and the ingest kept as the comparison base.
+- **Refresher container:** compose profile `refresh`, no port, every capability dropped, the only writer of the data folder.
+- **Status:** `GET /api/v3/status` serves the live state of each source, `check_overdue` after twice the interval, and `newer_release`. The API rereads a switched index without restart. New states `first_check` and `update_detected`, in both languages.
+- **Planner:** units per (tile, target); a one-tile change reruns that tile, its neighbours' cells and the zones that touch them. A planetary change reruns its own target only.
+- **Local zones:** a walk from the changed cells. Tests show it equals a full recomputation.
+- **Publication:** gate (validation, anchor, under 1% change, zones), held releases with reasons, `publish approve|reject`, atomic index switch, unchanged files shared by hard link.
+- **Calibration** (David: 10 tiles, no download):
+  - a no-change re-release of 10 Mars tiles ran in 45 s, with zones walked over 9 to 17 cells;
+  - 0 cell states changed and 2 candidacies changed, so the 1% threshold is kept;
+  - the zone rule needs David's decision.
+- **New planetary products:** the LRO release table is read, and new releases are logged "detected, to verify", never used.
+- **Provenance for researchers:**
+  - the cube records `computed_at` per tile;
+  - each release publishes `provenance.json` and `changes.json`;
+  - `GET /api/v3/tiles/{tile}/provenance` and `/api/v3/changes`;
+  - the site panel lists each tile's sources with their file dates.
+- **Decided by David:** recompute on command, not automatic (ADR-009 amended). The command itself is T52b.
+- **Data improvement R9:** SWIM 2.0 supersedes the 2019 products used for the ice-rich target.
+- Docs: `docs/wiki/methods/refresh.md`.
+
 ## 2026-11-23 · T48b Mars protocol mars-v2 (PR #31)
 - **Decision of David (23/11):** protocol mars-v2, after the mars-v1 Monte Carlo found no stable zone. Only the Monte Carlo noise changes (tag, frozen before the rerun).
 - **Noise measured from the DEM error** (`tools/discovery/slope_noise.py`, rule written before measuring):
