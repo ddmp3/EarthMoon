@@ -7,7 +7,7 @@ TILES = [f"{la},{lo}" for la in range(10, 14) for lo in range(20, 24)]
 WORLD = World(tiles=TILES, targets={"moon-a": ["lola"], "moon-b": ["sldem"]},
               tile_sources=["copernicus-dem-glo90", "esa-worldcover"], global_sources=["add-rock-outcrop-v7-3"],
               context_sources=["obu-permafrost-2018"])
-CODE = {s: f"code-{s}" for s in ("features", "profiles", "assess", "zones", "context", "validate", "export")}
+CODE = {s: f"code-{s}" for s in ("features", "profiles", "assess", "zones", "monte_carlo", "checks", "context", "export")}
 PARAMS = {"tau": 0.5}
 
 
@@ -39,8 +39,10 @@ def test_one_tile_change_reruns_that_tile_its_neighbour_cells_and_the_global_ste
     p = plan(WORLD, signals(copernicus_dem_glo90={dem(11, 21): {"etag": "new"}}), CODE, PARAMS, previous=baseline())
     r = p["rerun"]
     assert r["features"] == ["11,21"]
-    assert sorted(r["assess"]) == sorted(f"{la},{lo}" for la in (10, 11, 12) for lo in (20, 21, 22))  # one cell margin
-    assert r["zones"] == ["moon-a", "moon-b"] and r["validate"] == ["global"] and r["export"] == ["moon-a", "moon-b"]
+    near = [f"{la},{lo}" for la in (10, 11, 12) for lo in (20, 21, 22)]                    # one cell margin
+    assert sorted(r["assess"]) == sorted(f"{t}|{tg}" for t in near for tg in ("moon-a", "moon-b"))
+    assert r["zones"] == ["moon-a", "moon-b"] and r["monte_carlo"] == ["moon-a", "moon-b"]
+    assert r["checks"] == ["global"] and r["export"] == ["moon-a", "moon-b"]
     assert "profiles" not in r and "context" not in r
 
 
@@ -48,7 +50,8 @@ def test_a_planetary_change_reruns_compare_but_no_earth_feature():
     p = plan(WORLD, signals(lola={"ldem.img": {"size": 9}}), CODE, PARAMS, previous=baseline())
     r = p["rerun"]
     assert r["profiles"] == ["moon-a"] and "features" not in r
-    assert sorted(r["assess"]) == sorted(TILES)
+    assert sorted(r["assess"]) == sorted(f"{t}|moon-a" for t in TILES)      # only the target that changed
+    assert r["zones"] == ["moon-a"] and r["export"] == ["moon-a"]
 
 
 def test_a_worldcover_tile_covers_three_by_three_degrees():
@@ -59,9 +62,9 @@ def test_a_worldcover_tile_covers_three_by_three_degrees():
 
 def test_a_changed_parameter_or_step_code_reruns_everything_downstream():
     p = plan(WORLD, signals(), {**CODE, "assess": "code-new"}, PARAMS, previous=baseline())
-    assert "features" not in p["rerun"] and sorted(p["rerun"]["assess"]) == sorted(TILES)
+    assert "features" not in p["rerun"] and len(p["rerun"]["assess"]) == 2 * len(TILES)
     q = plan(WORLD, signals(), CODE, {"tau": 0.7}, previous=baseline())
-    assert set(q["rerun"]) == {"features", "profiles", "assess", "zones", "context", "validate", "export"}
+    assert set(q["rerun"]) == {"features", "profiles", "assess", "zones", "monte_carlo", "checks", "context", "export"}
 
 
 def test_a_context_source_reruns_the_context_layer_only():
@@ -73,14 +76,15 @@ def test_a_withdrawn_tile_is_reported_so_its_cells_become_not_evaluated():
     s = signals()
     del s["copernicus-dem-glo90"][dem(12, 22)]
     p = plan(WORLD, s, CODE, PARAMS, previous=baseline())
-    assert p["withdrawn_tiles"] == ["12,22"] and "12,22" in p["rerun"]["assess"]
+    assert p["withdrawn_tiles"] == ["12,22"] and "12,22|moon-a" in p["rerun"]["assess"]
 
 
 def test_the_dry_run_estimates_time_from_measured_step_times():
     p = plan(WORLD, signals(copernicus_dem_glo90={dem(11, 21): {"etag": "new"}}), CODE, PARAMS, previous=baseline())
-    text = describe(p, seconds_per_unit={"features": 60, "assess": 10, "zones": 100, "validate": 600, "export": 50})
-    assert "features: 1 unit" in text and "assess: 9 units" in text
-    assert "about 0.3 h" in text                                   # 60 + 90 + 200 + 600 + 100 s = 1050 s
+    text = describe(p, seconds_per_unit={"features": 60, "assess": 5, "zones": 10, "monte_carlo": 30, "checks": 60,
+                                         "export": 50})
+    assert "features: 1 unit" in text and "assess: 18 units" in text
+    assert "about 0.1 h" in text                                   # 60 + 90 + 20 + 60 + 60 + 100 s = 390 s
 
 
 def test_code_version_ignores_tests_and_docs(tmp_path):

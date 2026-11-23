@@ -4,10 +4,12 @@ Every unit of every step gets a key, sha256(input keys + step code version + par
 key differs from the one of the current release. The inputs:
 - features (one per 1° Earth tile): the source items that cover the tile (Copernicus tile, WorldCover 3° tiles);
 - profiles (one per planetary target): the items of its planetary sources;
-- assess (one per tile): features of the tile and of its 8 neighbours (cells near a tile edge read both), every
-  profile, and the Earth sources used everywhere (Antarctic rock outcrop);
-- zones (one per target), validate (global, ADR-009: always whole), context (the Earth context layers, global),
-  export (one per target: its zones and the context).
+- assess (one per tile and target): features of the tile and of its 8 neighbours (cells near a tile edge read both),
+  the target's profile, and the Earth sources used everywhere (Antarctic rock outcrop), so a planetary change reruns
+  its own target only;
+- zones and monte_carlo (one per target): run locally, on the zones that touch changed cells (discovery.zones_local);
+- checks (global but cheap: the 18 negatives, masks, self-consistency), context (the Earth context layers),
+  export (one per target: its zones, Monte Carlo and the context).
 """
 from __future__ import annotations
 
@@ -17,7 +19,7 @@ import re
 from dataclasses import dataclass, field
 from pathlib import Path
 
-STEPS = ("features", "profiles", "assess", "zones", "context", "validate", "export")
+STEPS = ("features", "profiles", "assess", "zones", "monte_carlo", "checks", "context", "export")
 
 
 @dataclass(frozen=True)
@@ -87,14 +89,16 @@ def keys(world: World, signals: dict, code: dict, params: dict) -> tuple[dict, l
     have = set(world.tiles)
     for t in world.tiles:
         feats = [out["features"][n] for n in _neighbours(t, have)]
-        out["assess"][t] = _h(feats, sorted(out["profiles"].items()), glob, code["assess"], params)
-    all_assess = sorted(out["assess"].items())
+        for tg in world.targets:
+            out["assess"][f"{t}|{tg}"] = _h(feats, out["profiles"][tg], glob, code["assess"], params)
     for tg in world.targets:
-        out["zones"][tg] = _h(tg, all_assess, code["zones"], params)
+        mine = sorted((u, k) for u, k in out["assess"].items() if u.endswith(f"|{tg}"))
+        out["zones"][tg] = _h(tg, mine, code["zones"], params)
+        out["monte_carlo"][tg] = _h(out["zones"][tg], code["monte_carlo"], params)
     out["context"]["global"] = _h([sorted(item.get(s, {}).items()) for s in world.context_sources], code["context"], params)
-    out["validate"]["global"] = _h(sorted(out["zones"].items()), code["validate"], params)
+    out["checks"]["global"] = _h(sorted(out["zones"].items()), code["checks"], params)
     for tg in world.targets:
-        out["export"][tg] = _h(out["zones"][tg], out["context"]["global"], code["export"], params)
+        out["export"][tg] = _h(out["zones"][tg], out["monte_carlo"][tg], out["context"]["global"], code["export"], params)
     return out, withdrawn
 
 
