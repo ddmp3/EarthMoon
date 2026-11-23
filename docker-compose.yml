@@ -43,6 +43,22 @@ services:
       - "8080:80"
     depends_on:
       - api
+  # T52 (ADR-009 section 5): watches the sources and writes freshness.json next to the releases. Off by default; start it
+  # with the real data folder:  EARTHMOON_DATA=C:\Users\<you>\earthmoon-data docker compose --profile refresh up -d refresher
+  # Credentials (CDS key, Earthdata login), when a watched source needs them: .env.refresher, never committed.
+  refresher:
+    profiles: [refresh]
+    build:
+      context: .
+      dockerfile: apps/refresher/Dockerfile
+    volumes:
+      - ${EARTHMOON_DATA:-./.refresher-data-not-set}:/data
+    env_file:
+      - path: .env.refresher
+        required: false
+    read_only: true
+    networks: [default]
+    restart: unless-stopped
 networks:
   backend:
     internal: true

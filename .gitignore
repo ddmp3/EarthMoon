@@ -28,3 +28,6 @@ __pycache__/
 
 # Quality gate output (tools/check.sh)
 .check/
+
+# Refresher state when EARTHMOON_DATA is not set (docker-compose.yml)
+.refresher-data-not-set/

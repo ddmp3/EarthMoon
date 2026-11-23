@@ -78,3 +78,9 @@ def test_run_checks_only_due_sources_and_writes_the_file_atomically(tmp_path):
     assert set(doc["entries"]) == {"a", "b"} and doc["entries"]["a"]["state"] == "first_check"
     assert doc["entries"]["b"]["state"] == "not_checkable"
     assert not list(tmp_path.glob("*.tmp"))
+
+
+def test_the_refresher_refuses_a_folder_without_releases(tmp_path, capsys):
+    """Started without EARTHMOON_DATA, the container mounts an empty folder: it says so and checks nothing."""
+    assert rf.main(["check", "--state", str(tmp_path / "s.json"), "--releases", str(tmp_path / "releases")]) == 2
+    assert "no releases" in capsys.readouterr().err and not (tmp_path / "s.json").exists()

@@ -11,6 +11,7 @@ check, last success and check interval. The API derives `check_overdue` (last ch
 and `newer_release`, so a stopped refresher shows as overdue.
 
     PYTHONPATH=tools python -m discovery.refresher check --state /data/refresh/state.json --releases /data/releases
+    (loop: the same every --every-min minutes; each source is still checked only when its interval is due)
 """
 from __future__ import annotations
 
@@ -112,23 +113,35 @@ def load_catalog(root: Path) -> list[dict]:
 
 
 def main(argv=None) -> int:
-    from discovery.watch import catalogue_hosts, make_fetch
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["check"])
+    ap.add_argument("what", choices=["check", "loop"])
     ap.add_argument("--state", type=Path, default=Path("/data/refresh/state.json"))
     ap.add_argument("--releases", type=Path, default=Path("/data/releases"))
+    ap.add_argument("--every-min", type=float, default=60.0)
     a = ap.parse_args(argv)
+    if not (a.releases / "index.json").exists():
+        print(f"no releases in {a.releases}: set EARTHMOON_DATA to the data folder", file=sys.stderr)
+        return 2
+    while True:
+        once(a.state, a.releases)
+        if a.what == "check":
+            return 0
+        import time
+        time.sleep(a.every_min * 60)
+
+
+def once(state_path: Path, releases: Path) -> None:
+    from discovery.watch import catalogue_hosts, make_fetch
     root = Path(__file__).resolve().parents[2]
     catalog = [e for e in load_catalog(root) if e.get("refresh")]
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-    state = run_checks(catalog, a.state, make_fetch(catalogue_hosts(catalog)), now)
-    idx_path = a.releases / "index.json"
+    state = run_checks(catalog, state_path, make_fetch(catalogue_hosts(catalog)), now)
+    idx_path = releases / "index.json"
     held = json.loads(idx_path.read_text()).get("held", []) if idx_path.exists() else []
     intervals = {e["id"]: e["refresh"].get("interval", "none") for e in catalog}
-    _write_atomic(a.releases / "freshness.json", freshness(state["entries"], intervals, state.get("progress"), held, now))
+    _write_atomic(releases / "freshness.json", freshness(state["entries"], intervals, state.get("progress"), held, now))
     for sid, e in sorted(state["entries"].items()):
-        print(f"{sid}: {e['state']}{' (' + e['reason'] + ')' if e.get('reason') else ''}")
-    return 0
+        print(f"{now} {sid}: {e['state']}{' (' + e['reason'] + ')' if e.get('reason') else ''}")
 
 
 if __name__ == "__main__":
