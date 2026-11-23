@@ -125,3 +125,8 @@ def test_watch_targets_need_the_keys_of_their_family():
     assert any("watch" in e and "bucket" in e for e in errs)
     errs = validate([entry(refresh=refresh(family="page", watch={"url": "https://x.example.org"}))])
     assert any("pattern" in e for e in errs)
+
+
+def test_new_products_need_a_page_and_a_pattern():
+    assert validate([entry(refresh=refresh(new_products={"url": "https://p.example.org/", "pattern": "Release ([0-9]+)"}))]) == []
+    assert any("new_products" in e for e in validate([entry(refresh=refresh(new_products={"url": "https://p.example.org/"}))]))

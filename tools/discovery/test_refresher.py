@@ -92,3 +92,27 @@ def test_a_first_check_against_the_ingest_keeps_the_ingest_as_the_base():
     assert same["state"] == "up_to_date" and same["release_signal"] == {"a.img": {"size": 1, "etag": "x"}}
     moved = rf.update_entry(None, result("changed", {"a.img": {"size": 2}}, base={"a.img": {"size": 1}}, changed=["a.img"]))
     assert moved["state"] == "update_detected" and moved["release_signal"] == {"a.img": {"size": 1}}
+
+
+def test_new_planetary_products_are_logged_as_detected_never_used():
+    """A release table that lists a new release: logged 'detected, to verify' with its date (T52, David 23/11)."""
+    catalog = [{"id": "lro-lola-ldem-85s-40m", "refresh": {"family": "none", "interval": "none", "new_products": {
+        "url": "https://pds.example.org/lro/", "pattern": r"Release (\d+) of LRO data is now online", "interval": "weekly"}}}]
+    page = {"v": b"Release 66 of LRO data is now online. Release 67 of LRO data is now online."}
+
+    def fetch(url, method="GET"):
+        return Response(200, {}, page["v"])
+
+    import tempfile
+    from pathlib import Path
+    store = Path(tempfile.mkdtemp()) / "state.json"
+    first = rf.run_checks(catalog, store, fetch, now=T0)
+    assert first["new_products"] == []                                    # the first reading is the baseline
+    page["v"] += b" Release 68 of LRO data is now online."
+    second = rf.run_checks(catalog, store, fetch, now=T1)
+    assert second["new_products"] == [{"source": "lro-lola-ldem-85s-40m", "found": "68", "detected_on": T1,
+                                       "status": "detected, to verify", "url": "https://pds.example.org/lro/"}]
+    third = rf.run_checks(catalog, store, fetch, now=T2)
+    assert len(third["new_products"]) == 1                                # logged once
+    doc = rf.freshness(third["entries"], {}, None, [], T2, new_products=third["new_products"])
+    assert doc["new_products"][0]["found"] == "68"

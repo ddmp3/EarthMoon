@@ -36,6 +36,7 @@ products:
       checked_url: "https://pds-geosciences.wustl.edu/missions/lro/"
       checked_on: "2026-11-23"
       watch: {"base": "https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/", "files": {"ldem_85s_40m.img": 115034112}}
+      new_products: {"url": "https://pds-geosciences.wustl.edu/missions/lro/", "pattern": "Release ([0-9]+) of LRO data is now online", "interval": "weekly"}
     notes: "Downloaded and hashed by the project in v2 (SHA-256 in data/reference/moon-south-pole.json); 71,731 windows of 1 km"
 
   - id: lro-lola-gdr-global

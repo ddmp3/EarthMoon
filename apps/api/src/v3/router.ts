@@ -282,6 +282,7 @@ export async function liveStatus(store: ReleaseStore, release: string, now = Dat
       }),
       ...(live.held?.length ? { held: live.held } : {}),
       ...(live.progress ? { progress: live.progress } : {}),
+      ...(live.new_products?.length ? { new_products: live.new_products } : {}),
     };
   }
   if (newer) freshness.newer_release = newer;

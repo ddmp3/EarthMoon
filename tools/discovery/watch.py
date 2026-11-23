@@ -76,6 +76,9 @@ def catalogue_hosts(entries: list[dict]) -> set[str]:
     """Hosts the refresher may reach: those of the watch targets of every catalogue entry."""
     hosts = set()
     for e in entries:
+        np_cfg = (e.get("refresh") or {}).get("new_products") or {}
+        if np_cfg.get("url"):
+            hosts.add(urllib.parse.urlsplit(np_cfg["url"]).hostname)
         w = (e.get("refresh") or {}).get("watch") or {}
         if "doi" in w:
             hosts.add(urllib.parse.urlsplit(DATACITE).hostname)

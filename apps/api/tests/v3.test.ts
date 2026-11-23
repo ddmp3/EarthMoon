@@ -380,7 +380,8 @@ describe("API v3 freshness from the refresher (T52, ADR-009 section 4)", () => {
       { id: RID, run: "run-002", methodology_version: "v3", protocol: "validation-protocol-v3", commit: "abc", created: "2026-11-19", body: "moon" },
       { id: OLD, run: "run-001", methodology_version: "v3", protocol: "validation-protocol-v2", commit: "def", created: "2026-11-18", body: "moon" },
     ] }));
-    await writeFile(path.join(dir, "freshness.json"), JSON.stringify({ refresher: true, written_at: recent, progress: null, held: [], sources: {
+    await writeFile(path.join(dir, "freshness.json"), JSON.stringify({ refresher: true, written_at: recent, progress: null, held: [],
+      new_products: [{ source: "lro-lola-ldem-85s-40m", found: "68", detected_on: recent, status: "detected, to verify", url: "https://example.org/lro/" }], sources: {
       "copernicus-dem-glo30": { state: "up_to_date", last_check: recent, last_success: recent, interval_hours: 168 },
       "esa-worldcover": { state: "up_to_date", last_check: "2026-01-01T00:00:00Z", last_success: "2026-01-01T00:00:00Z", interval_hours: 720 },
     } }));
@@ -402,6 +403,7 @@ describe("API v3 freshness from the refresher (T52, ADR-009 section 4)", () => {
     expect(by["esa-worldcover"].state).toBe("check_overdue");          // last check older than twice its interval
     expect(by["natural-earth-admin0-110m"].state).toBe("check_overdue");  // a source of the release never checked
     expect(body.validity.state).toBe("not_validated");                  // validity still comes from the release
+    expect(body.freshness.new_products[0].status).toBe("detected, to verify");
   });
 
   it("an older release says a newer one is published", async () => {

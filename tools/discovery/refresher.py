@@ -68,7 +68,8 @@ def due(entry: dict | None, interval: str, now: str) -> bool:
     return (_t(now) - _t(entry["last_check"])).total_seconds() >= hours * 3600
 
 
-def freshness(entries: dict, intervals: dict, progress: dict | None, held: list, now: str) -> dict:
+def freshness(entries: dict, intervals: dict, progress: dict | None, held: list, now: str,
+              new_products: list | None = None) -> dict:
     running = set((progress or {}).get("sources", []))
     waiting = {s for h in held for s in h.get("sources", [])}
     out = {}
@@ -81,7 +82,8 @@ def freshness(entries: dict, intervals: dict, progress: dict | None, held: list,
         out[sid] = {"state": state, "last_check": e.get("last_check"), "last_success": e.get("last_success"),
                     "detected_on": e.get("detected_on"), "reason": e.get("reason"),
                     "interval_hours": INTERVAL_HOURS.get(intervals.get(sid, "none"))}
-    return {"refresher": True, "written_at": now, "sources": out, "progress": progress, "held": held}
+    return {"refresher": True, "written_at": now, "sources": out, "progress": progress, "held": held,
+            "new_products": new_products or []}
 
 
 def _write_atomic(path: Path, obj: dict) -> None:
@@ -94,10 +96,13 @@ def _write_atomic(path: Path, obj: dict) -> None:
 def run_checks(catalog: list[dict], store: Path, fetch, now: str) -> dict:
     """Check every watched source that is due; store the new state. Returns the state."""
     state = json.loads(store.read_text()) if store.exists() else {"entries": {}}
+    state.setdefault("new_products", [])
+    state.setdefault("release_tables", {})
     for e in catalog:
         r = e.get("refresh")
         if not r:
             continue
+        _new_products(e["id"], r.get("new_products"), state, fetch, now)
         cur = state["entries"].get(e["id"])
         if not due(cur, r.get("interval", "none"), now) and cur is not None:
             continue
@@ -106,6 +111,26 @@ def run_checks(catalog: list[dict], store: Path, fetch, now: str) -> dict:
     state["checked_at"] = now
     _write_atomic(store, state)
     return state
+
+
+def _new_products(sid: str, np_cfg: dict | None, state: dict, fetch, now: str) -> None:
+    """New planetary products (T52, David 23/11): a release table read with its pattern. New entries are logged
+    "detected, to verify", never used: a new reference is a new protocol version, decided before any run."""
+    if not np_cfg:
+        return
+    seen = state["release_tables"].get(sid)
+    if seen is not None and not due({"last_check": seen["checked_at"]}, np_cfg.get("interval", "weekly"), now):
+        return
+    res = check(sid, {"family": "page", "watch": {"url": np_cfg["url"], "pattern": np_cfg["pattern"]}}, None, fetch, now)
+    if res["state"] != "baseline":
+        return                                                # unreachable or pattern lost: retried next time
+    found = sorted({v["value"] for v in res["signal"].values()})
+    if seen is not None:
+        for f in found:
+            if f not in seen["found"]:
+                state["new_products"].append({"source": sid, "found": f, "detected_on": now,
+                                              "status": "detected, to verify", "url": np_cfg["url"]})
+    state["release_tables"][sid] = {"found": sorted(set(found) | set((seen or {}).get("found", []))), "checked_at": now}
 
 
 def load_catalog(root: Path) -> list[dict]:
@@ -143,7 +168,8 @@ def once(state_path: Path, releases: Path) -> None:
     idx_path = releases / "index.json"
     held = json.loads(idx_path.read_text()).get("held", []) if idx_path.exists() else []
     intervals = {e["id"]: e["refresh"].get("interval", "none") for e in catalog}
-    _write_atomic(releases / "freshness.json", freshness(state["entries"], intervals, state.get("progress"), held, now))
+    _write_atomic(releases / "freshness.json", freshness(state["entries"], intervals, state.get("progress"), held, now,
+                                                        new_products=state.get("new_products")))
     for sid, e in sorted(state["entries"].items()):
         print(f"{now} {sid}: {e['state']}{' (' + e['reason'] + ')' if e.get('reason') else ''}")
 

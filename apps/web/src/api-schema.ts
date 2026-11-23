@@ -1330,6 +1330,14 @@ export interface components {
                 progress?: {
                     [key: string]: unknown;
                 } | null;
+                /** @description new planetary products seen in a release table, logged "detected, to verify"; never used in a run before a new protocol version */
+                new_products?: {
+                    source: string;
+                    found: string;
+                    detected_on: string;
+                    status: string;
+                    url: string;
+                }[];
                 sources: {
                     id: string;
                     /**

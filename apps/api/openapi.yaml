@@ -711,6 +711,18 @@ components:
                       body: { type: string }
                       reasons: { type: array, items: { type: string } }
                 progress: { type: object, nullable: true, additionalProperties: true, description: "step and share of a running recompute" }
+                new_products:
+                  type: array
+                  description: new planetary products seen in a release table, logged "detected, to verify"; never used in a run before a new protocol version
+                  items:
+                    type: object
+                    required: [source, found, detected_on, status, url]
+                    properties:
+                      source: { type: string }
+                      found: { type: string }
+                      detected_on: { type: string }
+                      status: { type: string }
+                      url: { type: string }
                 sources:
                   type: array
                   items:

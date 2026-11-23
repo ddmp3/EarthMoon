@@ -91,6 +91,9 @@ def validate_refresh(r) -> list[str]:
         errs.append("refresh cadence_status must be verified or not verified")
     elif r["cadence_status"] == "verified" and not (r.get("checked_url") and r.get("checked_on")):
         errs.append("a verified refresh cadence needs checked_url and checked_on")
+    np_cfg = r.get("new_products")
+    if np_cfg is not None and not (isinstance(np_cfg, dict) and np_cfg.get("url") and np_cfg.get("pattern")):
+        errs.append("refresh new_products needs url and pattern (a release table read for new products)")
     w = r.get("watch")
     if w is not None:
         need = WATCH_KEYS.get(r.get("family"), ())

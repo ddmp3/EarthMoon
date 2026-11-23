@@ -17,6 +17,7 @@ export type Freshness = {
   sources: Record<string, { state: string; last_check?: string | null; last_success?: string | null; interval_hours?: number | null; reason?: string | null; detected_on?: string | null }>;
   progress?: unknown;
   held?: { id: string; body?: string; reasons?: string[] }[];
+  new_products?: { source: string; found: string; detected_on: string; status: string; url: string }[];
 };
 export type Grid = { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } };
 export type Scenario = {
