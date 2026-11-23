@@ -43,7 +43,11 @@ def update_entry(entry: dict | None, res: dict) -> dict:
         e.update(state="first_check", release_signal=res["signal"])
     elif st == "unchanged":
         e.update(state="up_to_date", detected_on=None)
+        if e.get("release_signal") is None:                   # first check, equal to the ingest: keep the full signal
+            e["release_signal"] = res["signal"]
     else:                                                     # changed or withdrawn
+        if e.get("release_signal") is None:                   # first check, against the ingest: the ingest stays the base
+            e["release_signal"] = res.get("base")
         e.update(state="update_detected", detected_on=e.get("detected_on") or res["checked_at"],
                  changed=res.get("changed", []), withdrawn=res.get("withdrawn", []), added=res.get("added", []))
     return e

@@ -84,3 +84,11 @@ def test_the_refresher_refuses_a_folder_without_releases(tmp_path, capsys):
     """Started without EARTHMOON_DATA, the container mounts an empty folder: it says so and checks nothing."""
     assert rf.main(["check", "--state", str(tmp_path / "s.json"), "--releases", str(tmp_path / "releases")]) == 2
     assert "no releases" in capsys.readouterr().err and not (tmp_path / "s.json").exists()
+
+
+def test_a_first_check_against_the_ingest_keeps_the_ingest_as_the_base():
+    """PDS files: the first check compares with the ingest size; that base must stay for the next checks."""
+    same = rf.update_entry(None, result("unchanged", {"a.img": {"size": 1, "etag": "x"}}, base={"a.img": {"size": 1}}))
+    assert same["state"] == "up_to_date" and same["release_signal"] == {"a.img": {"size": 1, "etag": "x"}}
+    moved = rf.update_entry(None, result("changed", {"a.img": {"size": 2}}, base={"a.img": {"size": 1}}, changed=["a.img"]))
+    assert moved["state"] == "update_detected" and moved["release_signal"] == {"a.img": {"size": 1}}

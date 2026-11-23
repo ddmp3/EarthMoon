@@ -141,3 +141,10 @@ def test_catalogue_hosts_are_read_from_the_watch_targets():
     hosts = watch.catalogue_hosts([{"refresh": S3}, {"refresh": {"family": "doi", "watch": {"doi": "10.1/x"}}},
                                    {"refresh": {"family": "pds", "watch": {"base": "https://p.example.org/img/"}}}])
     assert hosts == {"b.example.org", "api.datacite.org", "p.example.org"}
+
+
+def test_a_check_returns_the_base_it_compared_with():
+    pds = {"family": "pds", "interval": "weekly", "watch": {"base": "https://p.example.org/img/", "files": {"a.img": 100}}}
+    ok = {("HEAD", "https://p.example.org/img/a.img"): Response(200, {"Content-Length": "100"}, b"")}
+    assert check("lola", pds, None, fake(ok), NOW)["base"] == {"a.img": {"size": 100}}
+    assert check("lola", pds, {"a.img": {"size": 100, "etag": "e"}}, fake(ok), NOW)["base"] == {"a.img": {"size": 100, "etag": "e"}}

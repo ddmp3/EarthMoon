@@ -23,6 +23,7 @@ def test_api_and_discovery_read_the_data_only():
 def test_the_refresher_is_the_only_writer_and_publishes_no_port():
     r = S["refresher"]
     assert "ports" not in r and "expose" not in r
+    assert r["read_only"] is True and r["cap_drop"] == ["ALL"] and "no-new-privileges:true" in r["security_opt"]
     assert any(not m.endswith(":ro") for m in _data_mounts(r))
     assert [n for n, s in S.items() if any(not m.endswith(":ro") for m in _data_mounts(s))] == ["refresher"]
 

@@ -57,6 +57,8 @@ services:
       - path: .env.refresher
         required: false
     read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
     networks: [default]
     restart: unless-stopped
 networks:

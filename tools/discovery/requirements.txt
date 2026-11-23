@@ -8,3 +8,4 @@ pyyaml==6.0.3
 pillow==13.0.0
 mapbox-vector-tile==2.1.0
 shapely==2.1.2
+certifi==2026.10.23

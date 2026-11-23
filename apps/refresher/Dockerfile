@@ -8,5 +8,6 @@ COPY tools/discovery/requirements.txt tools-requirements.txt
 RUN pip install --no-cache-dir -r tools-requirements.txt
 COPY data/catalog /srv/data/catalog
 COPY tools/discovery /srv/tools/discovery
-USER nobody
+# Runs as root inside the container so it can write the release folders the earlier root runs created; compose drops
+# every capability, forbids new privileges and keeps the root file system read-only.
 CMD ["python", "-m", "discovery.refresher", "loop", "--state", "/data/refresh/state.json", "--releases", "/data/releases"]

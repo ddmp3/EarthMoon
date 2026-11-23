@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import json
 import re
+import ssl
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -50,14 +51,19 @@ Fetch = Callable[..., Response]
 
 
 def make_fetch(allowed_hosts: set[str], timeout: float = 60.0) -> Fetch:
-    """The only way the refresher reaches the network: catalogue hosts only, generic User-Agent, no credentials."""
+    """The only way the refresher reaches the network: catalogue hosts only, generic User-Agent, no credentials.
+    Certificates are verified against the Mozilla bundle (certifi): the Debian one lacks the SSL.com 2022 root of
+    pds-geosciences.wustl.edu (found by the first real check, 23/11/2026)."""
+    import certifi
+    ctx = ssl.create_default_context(cafile=certifi.where())
+
     def fetch(url: str, method: str = "GET") -> Response:
         host = urllib.parse.urlsplit(url).hostname or ""
         if host not in allowed_hosts:
             raise FetchError(f"not a catalogue host: {host}")
         req = urllib.request.Request(url, method=method, headers={"User-Agent": USER_AGENT})
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as r:  # noqa: S310 (host checked above)
+            with urllib.request.urlopen(req, timeout=timeout, context=ctx) as r:  # noqa: S310 (host checked above)
                 return Response(r.status, {k: v for k, v in r.headers.items()}, r.read() if method != "HEAD" else b"")
         except urllib.error.HTTPError as e:
             return Response(e.code, dict(e.headers or {}), b"")
@@ -194,4 +200,4 @@ def check(source: str, refresh: dict, previous: dict | None, fetch: Fetch, now: 
     base = previous if previous is not None else ingest
     if base is None:
         return {**out, "state": "baseline"}
-    return {**out, **compare(base, signal, listing=fam == "s3")}
+    return {**out, "base": base, **compare(base, signal, listing=fam == "s3")}
