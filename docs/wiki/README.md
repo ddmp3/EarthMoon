@@ -6,7 +6,7 @@ Long-form material that the short docs in `docs/` summarize: data inventories, m
 |---|---|---|
 | `data/` | Lunar ([moon.md](data/moon.md)), Martian ([mars.md](data/mars.md)) and Earth ([earth.md](data/earth.md)) data inventories; [coverage review](data/coverage-review.md) | T10, T11, T12, T14 |
 | `methods/` | Environment profiles ([profiles.md](methods/profiles.md)), [parameters](methods/parameters.md), [sampling](methods/sampling.md), [comparison](methods/comparison.md), [mapping](methods/mapping.md), sampling, comparison, mapping | T20 to T26 |
-| `runs/` | Reports of computation runs, with hashes and numbers: [earth cube](runs/earth-cube.md), [lunar profiles](runs/moon-profiles.md), [comparison pilot](runs/compare-pilot.md), [run-001](runs/run-001.md), [run-002](runs/run-002.md), [run-002 geology](runs/run-002-geology.md), [run-002 context](runs/run-002-context.md) | T40 onwards |
+| `runs/` | Reports of computation runs, with hashes and numbers: [earth cube](runs/earth-cube.md), [lunar profiles](runs/moon-profiles.md), [comparison pilot](runs/compare-pilot.md), [run-001](runs/run-001.md), [run-002](runs/run-002.md), [run-002 geology](runs/run-002-geology.md), [run-002 context](runs/run-002-context.md), [run-mars-001](runs/run-mars-001.md) | T40 onwards |
 | `ui/` | Interface specifications ([map-spec.md](ui/map-spec.md)) | T26 |
 | `v2/` | Full v2 scientific documents, unchanged | T02 |
 | `baseline.md` | Quality baseline before v3 | T01 |

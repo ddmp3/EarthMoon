@@ -2,6 +2,8 @@
 
 **Status: accepted by David on 20/11/2026 ("go!"): E19 windows of 25 x 25 planetary pixels, E20 volcanic units against Earth basalt, interface option A (a fifth mission).**
 
+**Run:** [run-mars-001](../runs/run-mars-001.md) (23/11/2026, protocol mars-v1) for the polar and ice-rich targets. The volcanic plains wait for the Tanaka map (data improvement R5).
+
 Mars is analysed on its own terms (mission rule): no lunar criterion is reused with new weights.
 
 ## Phase 1: what reaches the website first

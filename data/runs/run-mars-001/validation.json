@@ -1,0 +1,1033 @@
+{
+ "positives": {
+  "D": "none for the phase 1 targets: the verified controls of scenario D (R29) are volcanic plains, which wait for the Mars geologic map (Tanaka et al. 2014)",
+  "consequence": "no positive validation for the polar and ice-rich targets"
+ },
+ "negatives": {
+  "points": [
+   {
+    "lat": -24.74451,
+    "lon": -59.80577,
+    "class": 10,
+    "class_name": "Tree cover",
+    "ground_hidden": false,
+    "mask_evidence": "WorldCover hidden share 0.37",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "14452010",
+      "median": null,
+      "percentile": null,
+      "masked_share": 0.667,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "14452010",
+      "median": 0.1375,
+      "percentile": 32.52,
+      "masked_share": 0.667,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "14452010",
+      "median": 0.0156,
+      "percentile": 17.98,
+      "masked_share": 0.667,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -14.27833,
+    "lon": 27.62983,
+    "class": 90,
+    "class_name": "Herbaceous wetland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.99",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "12696832",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "12696832",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "12696832",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 60.2508,
+    "lon": 126.42008,
+    "class": 10,
+    "class_name": "Tree cover",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.96",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "1341034",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "1341034",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "1341034",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -2.03268,
+    "lon": 102.86246,
+    "class": 10,
+    "class_name": "Tree cover",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.99",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "10545365",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "10545365",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "10545365",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 47.65239,
+    "lon": -4.49236,
+    "class": 80,
+    "class_name": "Permanent water bodies",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "2661066",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "2661066",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "2661066",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 40.41076,
+    "lon": 114.81135,
+    "class": 40,
+    "class_name": "Cropland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.78",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "3582306",
+      "median": 0.2105,
+      "percentile": 40.92,
+      "masked_share": 0.75,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "3582306",
+      "median": 0.0406,
+      "percentile": 22.23,
+      "masked_share": 0.75,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "3582306",
+      "median": 0.0539,
+      "percentile": 26.17,
+      "masked_share": 0.75,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 25.31917,
+    "lon": 36.47288,
+    "class": 80,
+    "class_name": "Permanent water bodies",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "5827544",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "5827544",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "5827544",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -6.46227,
+    "lon": 131.60289,
+    "class": 80,
+    "class_name": "Permanent water bodies",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "11332793",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "11332793",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "11332793",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 62.95809,
+    "lon": 69.60863,
+    "class": 90,
+    "class_name": "Herbaceous wetland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.89",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "1115101",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "1115101",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "1115101",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 55.18539,
+    "lon": 30.95912,
+    "class": 40,
+    "class_name": "Cropland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.81",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "1822468",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "1822468",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "1822468",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": -35.86273,
+    "lon": -60.25775,
+    "class": 40,
+    "class_name": "Cropland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.62",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "16156327",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "16156327",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "16156327",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 43.40703,
+    "lon": 13.20335,
+    "class": 50,
+    "class_name": "Built-up",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.72",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "3187997",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "3187997",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "3187997",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 68.81483,
+    "lon": -82.14648,
+    "class": 90,
+    "class_name": "Herbaceous wetland",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.92",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "689776",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "689776",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "689776",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 15.03911,
+    "lon": 75.40412,
+    "class": 50,
+    "class_name": "Built-up",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.99",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "7542855",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "7542855",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "7542855",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 25.9822,
+    "lon": -81.64236,
+    "class": 95,
+    "class_name": "Mangroves",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "5726806",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "5726806",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "5726806",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 46.96149,
+    "lon": 32.01609,
+    "class": 50,
+    "class_name": "Built-up",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 1.00",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "2740556",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "2740556",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "2740556",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 12.37286,
+    "lon": -15.57398,
+    "class": 95,
+    "class_name": "Mangroves",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.86",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "8005406",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "8005406",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "8005406",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   },
+   {
+    "lat": 16.0458,
+    "lon": 81.11548,
+    "class": 95,
+    "class_name": "Mangroves",
+    "ground_hidden": true,
+    "mask_evidence": "WorldCover hidden share 0.91",
+    "flagged": false,
+    "targets": {
+     "mars-ice-rich-midlatitudes": {
+      "cell": "7370942",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-north-polar": {
+      "cell": "7370942",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     },
+     "mars-south-polar": {
+      "cell": "7370942",
+      "median": null,
+      "percentile": null,
+      "masked_share": 1.0,
+      "top10": false
+     }
+    }
+   }
+  ],
+  "top10": {
+   "D:mars-ice-rich-midlatitudes": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "D:mars-north-polar": {
+    "in_top10": 0,
+    "pass": true
+   },
+   "D:mars-south-polar": {
+    "in_top10": 0,
+    "pass": true
+   }
+  },
+  "masks": {
+   "masked_or_flagged": 17,
+   "of": 18,
+   "pass": false
+  }
+ },
+ "self_consistency": {
+  "mars-ice-rich-midlatitudes": {
+   "held_out": 1009,
+   "split": "57.885 km blocks (checkerboard)",
+   "mean": 0.4925,
+   "ks": 0.0259,
+   "pass": true
+  },
+  "mars-north-polar": {
+   "held_out": 66224,
+   "split": "14.4712 km blocks (checkerboard)",
+   "mean": 0.5,
+   "ks": 0.0035,
+   "pass": true
+  },
+  "mars-south-polar": {
+   "held_out": 66156,
+   "split": "14.4712 km blocks (checkerboard)",
+   "mean": 0.5035,
+   "ks": 0.0079,
+   "pass": true
+  }
+ },
+ "bias": {
+  "D:mars-ice-rich-midlatitudes": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 0,
+     "selected": 0
+    },
+    "-80..-70": {
+     "cells": 153,
+     "selected": 0
+    },
+    "-70..-60": {
+     "cells": 0,
+     "selected": 0
+    },
+    "-60..-50": {
+     "cells": 4100,
+     "selected": 1944
+    },
+    "-50..-40": {
+     "cells": 24320,
+     "selected": 8597
+    },
+    "-40..-30": {
+     "cells": 97068,
+     "selected": 27727
+    },
+    "-30..-20": {
+     "cells": 253453,
+     "selected": 68332
+    },
+    "-20..-10": {
+     "cells": 191282,
+     "selected": 49327
+    },
+    "-10..0": {
+     "cells": 102025,
+     "selected": 42502
+    },
+    "0..10": {
+     "cells": 129439,
+     "selected": 43926
+    },
+    "10..20": {
+     "cells": 278561,
+     "selected": 82031
+    },
+    "20..30": {
+     "cells": 355448,
+     "selected": 127519
+    },
+    "30..40": {
+     "cells": 377062,
+     "selected": 94874
+    },
+    "40..50": {
+     "cells": 284419,
+     "selected": 107987
+    },
+    "50..60": {
+     "cells": 96484,
+     "selected": 20685
+    },
+    "60..70": {
+     "cells": 177171,
+     "selected": 49174
+    },
+    "70..80": {
+     "cells": 49928,
+     "selected": 23694
+    },
+    "80..90": {
+     "cells": 5097,
+     "selected": 192
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 816176,
+     "candidates": 286188
+    },
+    "Antarctica": {
+     "evaluated": 151,
+     "candidates": 0
+    },
+    "Asia": {
+     "evaluated": 635603,
+     "candidates": 182944
+    },
+    "Europe": {
+     "evaluated": 172692,
+     "candidates": 34112
+    },
+    "North America": {
+     "evaluated": 321007,
+     "candidates": 114938
+    },
+    "Oceania": {
+     "evaluated": 220754,
+     "candidates": 58554
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 59,
+     "candidates": 4
+    },
+    "South America": {
+     "evaluated": 253851,
+     "candidates": 70096
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 5717,
+     "candidates": 1675
+    }
+   }
+  },
+  "D:mars-north-polar": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 395,
+     "selected": 1
+    },
+    "-80..-70": {
+     "cells": 606,
+     "selected": 1
+    },
+    "-70..-60": {
+     "cells": 73,
+     "selected": 0
+    },
+    "-60..-50": {
+     "cells": 6565,
+     "selected": 1865
+    },
+    "-50..-40": {
+     "cells": 30209,
+     "selected": 8103
+    },
+    "-40..-30": {
+     "cells": 114440,
+     "selected": 39026
+    },
+    "-30..-20": {
+     "cells": 296452,
+     "selected": 140815
+    },
+    "-20..-10": {
+     "cells": 234934,
+     "selected": 54246
+    },
+    "-10..0": {
+     "cells": 132778,
+     "selected": 30340
+    },
+    "0..10": {
+     "cells": 157170,
+     "selected": 58295
+    },
+    "10..20": {
+     "cells": 306890,
+     "selected": 146443
+    },
+    "20..30": {
+     "cells": 405792,
+     "selected": 192316
+    },
+    "30..40": {
+     "cells": 414225,
+     "selected": 112433
+    },
+    "40..50": {
+     "cells": 336668,
+     "selected": 124887
+    },
+    "50..60": {
+     "cells": 172583,
+     "selected": 29636
+    },
+    "60..70": {
+     "cells": 229968,
+     "selected": 48676
+    },
+    "70..80": {
+     "cells": 72771,
+     "selected": 22265
+    },
+    "80..90": {
+     "cells": 7780,
+     "selected": 219
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 917280,
+     "candidates": 417542
+    },
+    "Antarctica": {
+     "evaluated": 986,
+     "candidates": 2
+    },
+    "Asia": {
+     "evaluated": 709063,
+     "candidates": 239615
+    },
+    "Europe": {
+     "evaluated": 264549,
+     "candidates": 36460
+    },
+    "North America": {
+     "evaluated": 431634,
+     "candidates": 108592
+    },
+    "Oceania": {
+     "evaluated": 255514,
+     "candidates": 133173
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 224,
+     "candidates": 15
+    },
+    "South America": {
+     "evaluated": 318330,
+     "candidates": 71304
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 22719,
+     "candidates": 2864
+    }
+   }
+  },
+  "D:mars-south-polar": {
+   "latitude": {
+    "-90..-80": {
+     "cells": 395,
+     "selected": 1
+    },
+    "-80..-70": {
+     "cells": 606,
+     "selected": 1
+    },
+    "-70..-60": {
+     "cells": 73,
+     "selected": 0
+    },
+    "-60..-50": {
+     "cells": 6565,
+     "selected": 1422
+    },
+    "-50..-40": {
+     "cells": 30209,
+     "selected": 5717
+    },
+    "-40..-30": {
+     "cells": 114440,
+     "selected": 31839
+    },
+    "-30..-20": {
+     "cells": 296452,
+     "selected": 118911
+    },
+    "-20..-10": {
+     "cells": 234934,
+     "selected": 39784
+    },
+    "-10..0": {
+     "cells": 132778,
+     "selected": 20095
+    },
+    "0..10": {
+     "cells": 157170,
+     "selected": 44321
+    },
+    "10..20": {
+     "cells": 306890,
+     "selected": 120287
+    },
+    "20..30": {
+     "cells": 405792,
+     "selected": 155835
+    },
+    "30..40": {
+     "cells": 414225,
+     "selected": 87371
+    },
+    "40..50": {
+     "cells": 336668,
+     "selected": 97209
+    },
+    "50..60": {
+     "cells": 172583,
+     "selected": 23240
+    },
+    "60..70": {
+     "cells": 229968,
+     "selected": 35006
+    },
+    "70..80": {
+     "cells": 72771,
+     "selected": 14063
+    },
+    "80..90": {
+     "cells": 7780,
+     "selected": 143
+    }
+   },
+   "continent": {
+    "Africa": {
+     "evaluated": 917280,
+     "candidates": 335240
+    },
+    "Antarctica": {
+     "evaluated": 986,
+     "candidates": 2
+    },
+    "Asia": {
+     "evaluated": 709063,
+     "candidates": 189157
+    },
+    "Europe": {
+     "evaluated": 264549,
+     "candidates": 24297
+    },
+    "North America": {
+     "evaluated": 431634,
+     "candidates": 79157
+    },
+    "Oceania": {
+     "evaluated": 255514,
+     "candidates": 114382
+    },
+    "Seven seas (open ocean)": {
+     "evaluated": 224,
+     "candidates": 13
+    },
+    "South America": {
+     "evaluated": 318330,
+     "candidates": 50939
+    },
+    "unassigned (coast at 1:110m)": {
+     "evaluated": 22719,
+     "candidates": 2058
+    }
+   }
+  }
+ },
+ "monte_carlo": {
+  "D:mars-ice-rich-midlatitudes": {
+   "zones": 11768,
+   "stable_zones_90pct": 0,
+   "runs": 500,
+   "seed": [
+    20261119,
+    0
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  },
+  "D:mars-north-polar": {
+   "zones": 11847,
+   "stable_zones_90pct": 0,
+   "runs": 500,
+   "seed": [
+    20261119,
+    1
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  },
+  "D:mars-south-polar": {
+   "zones": 12166,
+   "stable_zones_90pct": 0,
+   "runs": 500,
+   "seed": [
+    20261119,
+    2
+   ],
+   "slope_sigma_deg": 0.5,
+   "sample_cells": 200000
+  }
+ },
+ "reproducibility": {
+  "tiles": [
+   {
+    "tile": "-3,132",
+    "identical_sha256": true
+   },
+   {
+    "tile": "-77,93",
+    "identical_sha256": true
+   },
+   {
+    "tile": "-81,40",
+    "identical_sha256": true
+   },
+   {
+    "tile": "-82,24",
+    "identical_sha256": true
+   },
+   {
+    "tile": "21,9",
+    "identical_sha256": true
+   }
+  ],
+  "identical_cell_rows": true,
+  "pass": true
+ }
+}
