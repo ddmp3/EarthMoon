@@ -200,7 +200,7 @@ function App() {
           </span>
         </button>
         <div className="topbar-right">
-          <span className="topbar-target">{t.target}</span>
+          <span className="topbar-target">{mode === 'mars' ? t.targetMars : t.target}</span>
           <div aria-label={t.languageSwitch} className="lang-switch" role="group">
             {(['en', 'fr'] as Lang[]).map((code) => (
               <button aria-pressed={lang === code} key={code} lang={code} onClick={() => setLang(code)} type="button">

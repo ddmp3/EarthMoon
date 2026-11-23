@@ -16,6 +16,7 @@ const en = {
   chooseMissionLead: 'Each mission compares Earth with a different set of lunar conditions; the fifth compares it with Mars.',
   target: 'Earth ↔ Moon',
   marsSoon: 'Earth ↔ Mars',
+  targetMars: 'Earth ↔ Mars',
   launch: 'Launch mission',
   stats: ['Earth sites compared', 'parameters per site', 'open data sources', 'lunar terrain windows measured (LRO LOLA)'],
   backToMissions: 'All missions',
@@ -62,7 +63,7 @@ const en = {
   sourcesTitle: 'Data sources',
   imagesTitle: 'Image credits',
   imagesText:
-    'Mission photographs: NASA (Apollo 14, 15 and 17; Artemis II; Clementine mosaic NASA/JPL/USGS). Site imagery: Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0; Landsat WELD, NASA GIBS. Relief: Copernicus DEM GLO-30 and LRO LOLA. Base map: NASA Blue Marble, NASA GIBS.',
+    'Mission photographs: NASA (Apollo 14, 15 and 17; Artemis II; Clementine mosaic NASA/JPL/USGS; Phoenix lander NASA/JPL-Caltech/University of Arizona/Texas A&M University). Site imagery: Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0; Landsat WELD, NASA GIBS. Relief: Copernicus DEM GLO-30 and GLO-90, LRO LOLA and MGS MOLA. Base map: NASA Blue Marble, NASA GIBS.',
   footer: 'A NASA Space Apps Challenge 2026 project · Parts of this project were built with AI assistance (Claude, Microsoft Copilot).',
   bareSoil: 'Penalize vegetated sites',
   bareSoilHint: 'NDVI above 0.2 lowers the score; dense vegetation (0.6+) is excluded',
@@ -134,7 +135,7 @@ const en = {
       title: 'Mars analogs',
       text: 'Where Earth terrain resembles Martian polar and ice-rich ground, at the scale of the MOLA altimeter, with its limits.',
       tags: ['Polar terrain', 'Ground ice', 'Slope', 'Earth context'],
-      credit: 'Phoenix lander, polygonal ground at 68°N, 2008 · NASA/JPL-Caltech/University of Arizona/Texas A&M University',
+      credit: 'Phoenix lander, 68°N, 2008 · NASA/JPL-Caltech/UA/Texas A&M',
     },
   },
 }
@@ -156,6 +157,7 @@ const fr: Texts = {
   chooseMissionLead: 'Chaque mission compare la Terre à un jeu différent de conditions lunaires ; la cinquième la compare à Mars.',
   target: 'Terre ↔ Lune',
   marsSoon: 'Terre ↔ Mars',
+  targetMars: 'Terre ↔ Mars',
   launch: 'Lancer la mission',
   stats: ['sites terrestres comparés', 'paramètres par site', 'sources de données ouvertes', 'fenêtres de terrain lunaire mesurées (LRO LOLA)'],
   backToMissions: 'Toutes les missions',
@@ -202,7 +204,7 @@ const fr: Texts = {
   sourcesTitle: 'Sources des données',
   imagesTitle: 'Crédits des images',
   imagesText:
-    'Photographies des missions : NASA (Apollo 14, 15 et 17 ; Artemis II ; mosaïque Clementine NASA/JPL/USGS). Images des sites : Sentinel-2 cloudless 2016 par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées 2016), CC BY 4.0 ; Landsat WELD, NASA GIBS. Relief : Copernicus DEM GLO-30 et LRO LOLA. Fond de carte : NASA Blue Marble, NASA GIBS.',
+    'Photographies des missions : NASA (Apollo 14, 15 et 17 ; Artemis II ; mosaïque Clementine NASA/JPL/USGS ; atterrisseur Phoenix NASA/JPL-Caltech/University of Arizona/Texas A&M University). Images des sites : Sentinel-2 cloudless 2016 par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées 2016), CC BY 4.0 ; Landsat WELD, NASA GIBS. Relief : Copernicus DEM GLO-30 et GLO-90, LRO LOLA et MGS MOLA. Fond de carte : NASA Blue Marble, NASA GIBS.',
   footer: 'Un projet du NASA Space Apps Challenge 2026 · Une partie de ce projet a été réalisée avec l’aide d’IA (Claude, Microsoft Copilot).',
   bareSoil: 'Pénaliser les sites végétalisés',
   bareSoilHint: 'Un NDVI supérieur à 0,2 abaisse le score ; la végétation dense (0,6 et plus) est écartée',
@@ -277,7 +279,7 @@ const fr: Texts = {
       title: 'Analogues de Mars',
       text: 'Où le relief terrestre ressemble aux sols polaires et riches en glace de Mars, à l’échelle de l’altimètre MOLA, avec ses limites.',
       tags: ['Terrain polaire', 'Glace du sol', 'Pente', 'Contexte terrestre'],
-      credit: 'Atterrisseur Phoenix, sol polygonal à 68° N, 2008 · NASA/JPL-Caltech/University of Arizona/Texas A&M University',
+      credit: 'Atterrisseur Phoenix, 68° N, 2008 · NASA/JPL-Caltech/UA/Texas A&M',
     },
   },
 }

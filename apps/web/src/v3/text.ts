@@ -181,6 +181,7 @@ const en = {
   goTo: 'Show on map',
   bodyLabel: 'Moon',
   demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-30 · ESA WorldCover',
+  demSource: 'Copernicus DEM GLO-30',
   targetName: {
     'moon-psr': 'Permanently shadowed regions',
     'moon-polar-lit-highlands': 'Lit polar highlands',
@@ -380,6 +381,7 @@ const fr: V3Texts = {
   goTo: 'Voir sur la carte',
   bodyLabel: 'Lune',
   demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-30 · ESA WorldCover',
+  demSource: 'Copernicus DEM GLO-30',
   targetName: {
     'moon-psr': 'Régions en ombre permanente',
     'moon-polar-lit-highlands': 'Hauts plateaux polaires éclairés',
@@ -412,6 +414,9 @@ const MARS: Record<Lang, Partial<V3Texts>> = {
     provenanceMoon: 'Martian reference: the MOLA windows of the selected environment (profiles in Data and method)',
     bodyLabel: 'Mars',
     demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-90 · ESA WorldCover',
+    demSource: 'Copernicus DEM GLO-90',
+    layerWait: { ...en.layerWait, geology: 'waits for the Mars geologic map (Tanaka et al. 2014, data improvement R5)' },
+    geologyMissing: 'not evaluated: waits for the Mars geologic map (R5)',
   },
   fr: {
     ctxNote: 'Contexte terrestre, issu d’un modèle : ce qu’un lieu terrestre offre pour un essai. Pas une comparaison avec Mars (E18).',
@@ -424,6 +429,9 @@ const MARS: Record<Lang, Partial<V3Texts>> = {
     provenanceMoon: 'Référence martienne : les fenêtres MOLA de l’environnement choisi (profils dans Données et méthode)',
     bodyLabel: 'Mars',
     demAttribution: 'EarthMoon v3 · Copernicus DEM GLO-90 · ESA WorldCover',
+    demSource: 'Copernicus DEM GLO-90',
+    layerWait: { ...fr.layerWait, geology: 'attend la carte géologique de Mars (Tanaka et al. 2014, amélioration R5)' },
+    geologyMissing: 'non évaluée : attend la carte géologique de Mars (R5)',
   },
 }
 
