@@ -61,7 +61,37 @@ def validate(entries: list[dict]) -> list[str]:
         for field in ("dimensions", "environments"):
             if field in e and not isinstance(e[field], list):
                 errors.append(f"{name}: {field} must be a list")
+        if "refresh" in e:
+            errors += [f"{name}: {err}" for err in validate_refresh(e["refresh"])]
     return errors
+
+
+# T52 (ADR-009, section 1): how the refresher watches a source. `family` is the kind of machine signal; `none` means
+# no signal exists, so the source is reported `not_checkable` and never `up_to_date`. The cadence is the one stated at
+# its source page (`checked_url`, `checked_on`), or "not verified".
+REFRESH_FAMILIES = ("s3", "cmr", "cds", "pds", "doi", "page", "api", "none")
+REFRESH_INTERVALS = ("daily", "weekly", "monthly", "none")
+
+
+def validate_refresh(r) -> list[str]:
+    if not isinstance(r, dict):
+        return ["refresh must be a mapping"]
+    errs = []
+    if r.get("family") not in REFRESH_FAMILIES:
+        errs.append(f"refresh family must be one of {REFRESH_FAMILIES}")
+    if r.get("interval") not in REFRESH_INTERVALS:
+        errs.append(f"refresh interval must be one of {REFRESH_INTERVALS}")
+    if (r.get("family") == "none") != (r.get("interval") == "none"):
+        errs.append("refresh family none and interval none go together (no signal, not checkable)")
+    if r.get("family") != "none" and not r.get("signal"):
+        errs.append("refresh signal is required when the source is checked")
+    if not r.get("cadence"):
+        errs.append("refresh cadence is required (quote the page, or write 'not stated on page')")
+    if r.get("cadence_status") not in ("verified", "not verified"):
+        errs.append("refresh cadence_status must be verified or not verified")
+    elif r["cadence_status"] == "verified" and not (r.get("checked_url") and r.get("checked_on")):
+        errs.append("a verified refresh cadence needs checked_url and checked_on")
+    return errs
 
 
 def _cell(value) -> str:

@@ -26,6 +26,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM
+    refresh:
+      family: "s3"
+      signal: "S3 listing (ETag, size, LastModified) of the tiles used, and tileList.txt"
+      interval: "weekly"
+      cadence: "Update Frequency: None, except GLO-30 Public can be updated if the public tile list changes."
+      cadence_status: "verified"
+      checked_url: "https://registry.opendata.aws/copernicus-dem/"
+      checked_on: "2026-11-23"
 
   - id: copernicus-dem-glo90
     body: earth
@@ -50,6 +58,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://registry.opendata.aws/copernicus-dem/
+    refresh:
+      family: "s3"
+      signal: "S3 listing (ETag, size, LastModified) of the tiles used, and tileList.txt"
+      interval: "weekly"
+      cadence: "Update Frequency: None, except GLO-30 Public can be updated if the public tile list changes."
+      cadence_status: "verified"
+      checked_url: "https://registry.opendata.aws/copernicus-dem/"
+      checked_on: "2026-11-23"
 
   - id: nasadem
     body: earth
@@ -581,6 +597,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://figshare.com/articles/dataset/Global_Aridity_Index_and_Potential_Evapotranspiration_ET0_Climate_Database_v2/7504448
+    refresh:
+      family: "api"
+      signal: "version list of figshare article 7504448 (public figshare API)"
+      interval: "monthly"
+      cadence: "not verified: the figshare page refuses automated reading (HTTP 403)"
+      cadence_status: "not verified"
+      checked_url: "https://figshare.com/articles/dataset/Global_Aridity_Index_and_Potential_Evapotranspiration_ET0_Climate_Database_v2/7504448"
+      checked_on: "2026-11-23"
 
   # ---------------- Ice, water, land cover, soil ----------------
   - id: obu-permafrost-2018
@@ -606,6 +630,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://doi.pangaea.de/10.1594/PANGAEA.888600
+    refresh:
+      family: "doi"
+      signal: "'Dataset update' date of DOI 10.1594/PANGAEA.888600"
+      interval: "monthly"
+      cadence: "not stated on page (last 'Dataset update: 2019-04-01')"
+      cadence_status: "not verified"
+      checked_url: "https://doi.pangaea.de/10.1594/PANGAEA.888600"
+      checked_on: "2026-11-23"
 
   - id: esa-cci-permafrost-v5
     body: earth
@@ -702,6 +734,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://esa-worldcover.org/en/data-access
+    refresh:
+      family: "s3"
+      signal: "S3 listing (ETag, size, LastModified) of the v200/2021 map tiles used"
+      interval: "monthly"
+      cadence: "not stated on page (two versions: 2020 v100 and 2021 v200)"
+      cadence_status: "not verified"
+      checked_url: "https://esa-worldcover.org/en/data-access"
+      checked_on: "2026-11-23"
 
   - id: soilgrids
     body: earth
@@ -775,6 +815,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://macrostrat.org/docs/data-services
+    refresh:
+      family: "api"
+      signal: "API version (macrostrat.org/api, version 2) and ETag of the carto tiles used"
+      interval: "weekly"
+      cadence: "not stated on page (the data services page is labelled Beta)"
+      cadence_status: "not verified"
+      checked_url: "https://macrostrat.org/docs/data-services"
+      checked_on: "2026-11-23"
 
   - id: onegeology
     body: earth
@@ -1016,6 +1064,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01426
+    refresh:
+      family: "page"
+      signal: "version in the record title (VERSION 7.3) and its DOI"
+      interval: "monthly"
+      cadence: "not stated on page (record: 'Dataset Progress: Complete', created 2020-10-22)"
+      cadence_status: "not verified"
+      checked_url: "https://data.bas.ac.uk/full-record.php?id=GB/NERC/BAS/PDC/01426"
+      checked_on: "2026-11-23"
 
   - id: scar-geomap-v2022-08
     body: earth
@@ -1088,3 +1144,11 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://www.naturalearthdata.com/about/terms-of-use/
+    refresh:
+      family: "api"
+      signal: "last commit of the GeoJSON file in the natural-earth-vector repository"
+      interval: "monthly"
+      cadence: "not stated on page (new versions are announced on a mailing list)"
+      cadence_status: "not verified"
+      checked_url: "https://www.naturalearthdata.com/downloads/"
+      checked_on: "2026-11-23"

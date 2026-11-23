@@ -40,4 +40,5 @@ Status: **blocked** (waiting on an action), **ready** (can be done), **done** (w
 | R6 | THEMIS thermal inertia (`ody-themis-mosaics-ti`) | Grain size and induration (scenario D similarity) | Not verified | Verify the product and its units | ready |
 | R7 | Mars Climate Database (`lmd-mars-climate-database`) | Wind, dust and humidity of scenario D | Free registration by email | David registers | blocked |
 | R8 | SWIM ice consistency licence (`swim-ice-consistency`) | Use of the ice-rich target is stated as allowed | Licence not stated on the download page | Ask the SWIM team, or verify on the project page | ready |
+| R9 | SWIM 2.0 products (`swim.psi.edu/SWIM2Products.php`) | The ice-rich target is built on the 2019 Northern Hemisphere SWIM products, which the page calls "superseded by the SWIM 2.0 products" (read 23/11, T52) | Not verified: coverage, format, licence and changes from 2019 | Verify the SWIM 2.0 page and products, then a protocol mars-v3 decided before any rerun | ready |
 

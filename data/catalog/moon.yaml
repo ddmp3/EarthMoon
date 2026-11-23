@@ -27,6 +27,14 @@ products:
     status: verified
     verified_on: "2026-11-17"
     verified_url: https://pds-geosciences.wustl.edu/lro/lro-l-lola-3-rdr-v1/lrolol_1xxx/data/lola_gdr/polar/img/
+    refresh:
+      family: "pds"
+      signal: "ETag and Last-Modified of the files used, and the LRO release table"
+      interval: "weekly"
+      cadence: "Most LRO instrument teams release data every three months; LROC releases data monthly."
+      cadence_status: "verified"
+      checked_url: "https://pds-geosciences.wustl.edu/missions/lro/"
+      checked_on: "2026-11-23"
     notes: "Downloaded and hashed by the project in v2 (SHA-256 in data/reference/moon-south-pole.json); 71,731 windows of 1 km"
 
   - id: lro-lola-gdr-global
@@ -94,6 +102,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://pgda.gsfc.nasa.gov/products/67
+    refresh:
+      family: "page"
+      signal: "Last-Modified and size of the files used (imbrium.mit.edu)"
+      interval: "monthly"
+      cadence: "not stated on page"
+      cadence_status: "not verified"
+      checked_url: "https://pgda.gsfc.nasa.gov/products/67"
+      checked_on: "2026-11-23"
 
   - id: sldem2015-slope
     body: moon
@@ -138,6 +154,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://pgda.gsfc.nasa.gov/products/69
+    refresh:
+      family: "page"
+      signal: "Last-Modified and size of the files used"
+      interval: "monthly"
+      cadence: "not stated on page (the page read on 23/11 showed the SLDEM2015 slope product, as product 67: to check in a browser)"
+      cadence_status: "not verified"
+      checked_url: "https://pgda.gsfc.nasa.gov/products/69"
+      checked_on: "2026-11-23"
 
   - id: lola-roughness
     body: moon
@@ -446,6 +470,14 @@ products:
     status: partly verified
     verified_on: "2026-11-18"
     verified_url: https://lroc.im-ldi.com/atlases/pits
+    refresh:
+      family: "page"
+      signal: "Last-Modified and size of the atlas download"
+      interval: "monthly"
+      cadence: "not stated on page"
+      cadence_status: "not verified"
+      checked_url: "https://lroc.im-ldi.com/atlases/pits"
+      checked_on: "2026-11-23"
 
   - id: lp-grs-ns-special-products
     body: moon
@@ -468,6 +500,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://pds-geosciences.wustl.edu/missions/lunarp/reduced_special.html
+    refresh:
+      family: "pds"
+      signal: "per-file 'Version:' dates on the page and Last-Modified of the files used"
+      interval: "monthly"
+      cadence: "not stated on page (data of 16 January 1998 to 31 July 1999; not a PDS peer-reviewed archive)"
+      cadence_status: "not verified"
+      checked_url: "https://pds-geosciences.wustl.edu/missions/lunarp/reduced_special.html"
+      checked_on: "2026-11-23"
 
   - id: lp-grs-elemental-abundance
     body: moon
@@ -732,6 +772,14 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020
+    refresh:
+      family: "s3"
+      signal: "ETag and LastModified of the ZIP on the asc-astropedia bucket"
+      interval: "monthly"
+      cadence: "not verified: the USGS page refuses automated reading (HTTP 403)"
+      cadence_status: "not verified"
+      checked_url: "https://astrogeology.usgs.gov/search/map/unified_geologic_map_of_the_moon_1_5m_2020"
+      checked_on: "2026-11-23"
 
   - id: robbins-2019-crater-database
     body: moon
