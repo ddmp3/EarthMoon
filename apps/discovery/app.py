@@ -32,7 +32,10 @@ def _release(rid: str | None) -> Release:
     """The current release, or one listed in index.json. Ids come from the index, never from the path given."""
     index = json.loads((ROOT / "index.json").read_text(encoding="utf-8"))
     rid = rid or index["current"]
-    if rid not in {r["id"] for r in index["releases"]}:
+    listed = {r["id"] for r in index["releases"]}
+    for old in [k for k in _RELEASES if k not in listed]:      # dropped after a switch by the refresher (T52)
+        del _RELEASES[old]
+    if rid not in listed:
         raise HTTPException(404, f"Unknown release: {rid[:40]}")
     if rid not in _RELEASES:
         scen = json.loads((ROOT / rid / "scenarios.json").read_text(encoding="utf-8"))["scenarios"]
