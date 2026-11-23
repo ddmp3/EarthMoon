@@ -1,6 +1,32 @@
-﻿# Changelog
+# Changelog
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
+
+## 2026-11-23 · T48 Mars, phase 1 (PR #30)
+- **Decisions of David (20/11):**
+  - E19: windows of 25 × 25 MOLA pixels, Earth resampled to the same pixel;
+  - E20: Martian volcanic units against Earth basalt, waiting for the Tanaka map;
+  - a fifth mission "Mars".
+- **Protocol mars-v1** (tag, frozen before the run):
+  - a window also belongs to every cell whose centre it holds;
+  - confidence uses the v3 rule as shares;
+  - no lunar requirement is applied.
+- **Martian profiles:**
+  - north and south polar terrain at 512 ppd (132,440 windows each, slope median 0.69° and 0.68°);
+  - ice-rich mid-latitudes inside SWIM Ci > 0 (1,919 windows, 0.79°).
+- **Earth cubes:** 26,475 GLO-90 tiles at 115.77 m and 463.08 m.
+- **run-mars-001:** 7.4 M cells, 0 failures. Results:
+  - no stable zone in the Monte Carlo (the 0.5° noise is as wide as the Martian reference; a scale-based noise is proposed for a mars-v2);
+  - 35 to 44% of high-confidence cells reach τ 0.5;
+  - Earth's polar regions resemble Martian polar terrain less than the tropics do;
+  - 20 dossiers, all unknown.
+- **Checks:** negatives 0 of 18 in the top 10%, masks 17 of 18, self-consistency passed, reproducibility 5 of 5.
+- **In the product:**
+  - releases per body (`current_by_body`; the API accepts `release=mars`; the service preloads both);
+  - the fifth mission "Mars" with the same screens, French texts and a NASA Phoenix photo;
+  - e2e TF-18 and a Mars browser audit.
+- **Data improvement backlog:** Mars entries R1 to R8.
+- Report: `docs/wiki/runs/run-mars-001.md`.
 
 ## 2026-11-20 · T47 Earth context: frozen ground and aridity (PR #29)
 - **E18, accepted by David:** no thermal "match" with the Moon. The within-planet quantile match was rejected: equal rank is not equal behaviour. Thermal, ice and aridity are Earth-side context layers, each labelled with its class (here, model) and what it does not mean.
