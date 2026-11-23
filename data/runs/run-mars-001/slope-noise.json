@@ -1,0 +1,53 @@
+{
+ "rule": "Rule fixed before measuring: at each comparison pixel, the elevation gets an independent Gaussian error with the stated relative vertical accuracy of Copernicus DEM (2 m LE90 for slopes up to 20%, catalogue `copernicus-dem-glo30`, the same for GLO-90), that is sigma 1.216 m. The window slope noise is the root mean square of the change of the window mean slope (bias included), over the windows of 30 land tiles drawn with seed 20261119, 3 draws per tile, rounded up to 0.01 degree. Independent errors at the comparison pixel are conservative: the 90 m errors of the source are averaged when resampled to 115 or 463 m.",
+ "le90_m": 2.0,
+ "sigma_z_m": 1.2159,
+ "tiles": [
+  "-16,17",
+  "-17,-65",
+  "-29,167",
+  "-3,130",
+  "-42,-73",
+  "-77,88",
+  "-78,-86",
+  "-80,66",
+  "-81,34",
+  "-82,167",
+  "-82,18",
+  "-85,128",
+  "-86,94",
+  "-88,-141",
+  "21,79",
+  "25,-9",
+  "25,48",
+  "33,87",
+  "43,-85",
+  "44,-98",
+  "48,34",
+  "52,-130",
+  "54,-120",
+  "55,102",
+  "64,150",
+  "64,65",
+  "72,70",
+  "80,-38",
+  "81,-78",
+  "82,-38"
+ ],
+ "scales": {
+  "glo90-115m-w25": {
+   "windows": 70797,
+   "rms_deg": 0.2405,
+   "mean_deg": 0.1936,
+   "p95_abs_deg": 0.4431,
+   "sigma_deg": 0.25
+  },
+  "glo90-463m-w25": {
+   "windows": 6792,
+   "rms_deg": 0.0381,
+   "mean_deg": 0.0287,
+   "p95_abs_deg": 0.0767,
+   "sigma_deg": 0.04
+  }
+ }
+}

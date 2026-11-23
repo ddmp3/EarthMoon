@@ -125,13 +125,15 @@ def test_cells_under_one_window_share_its_value(tmp_path, mars):
 
 def test_validation_reads_the_martian_masked_unit_and_blocks_of_five_windows():
     import types
-    v = types.SimpleNamespace(BLOCK_KM={})
+    v = types.SimpleNamespace(BLOCK_KM={}, SIGMA_BY_SCALE={})
     mars_run.configure_validation(v)
     assert v.MASK_SCALE == "glo90-115m-w25"
     assert v.MASK_REACH_KM == pytest.approx(25 * 115.77 / 1000 / math.sqrt(2))
     assert v.BLOCK_KM["mars-ice-rich-midlatitudes"] == pytest.approx(5 * 25 * 463.08 / 1000)
     assert v.PROFILE_KM_PER_DEG == pytest.approx(59.27, abs=0.01)
     assert "D" in v.POSITIVES and v.REPRO["window_px"] == 25
+    # protocol mars-v2: Monte Carlo slope noise measured from the DEM error at each scale (slope-noise.json)
+    assert v.SIGMA_BY_SCALE == {"glo90-115m-w25": 0.25, "glo90-463m-w25": 0.04}
 
 
 def test_the_mars_release_lists_scenario_d_martian_profiles_and_their_sources(mars):

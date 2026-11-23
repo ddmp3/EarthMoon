@@ -2,6 +2,21 @@
 
 v1 was frozen with the git tag `validation-protocol-v1` before T43, v2 with `validation-protocol-v2` before run-001, v3 with `validation-protocol-v3` before run-002. Any change after a tag creates a new version, with its reason, and is reported next to the results. Results are never retuned to pass.
 
+## Mars: protocol mars-v2 (decided by David on 23/11/2026, frozen before its Monte Carlo)
+
+**Why.** The run-mars-001 Monte Carlo (mars-v1) kept the lunar slope noise of 0.5°, and no zone stayed stable. At the MOLA scale, Martian slopes are very low (median 0.7 to 0.8°), so a 0.5° noise is as wide as most of the reference. That value was set for 1 km lunar windows, not derived for these scales.
+
+**What changes: only the Monte Carlo noise.** At each scale, the noise is measured from the stated DEM error (`tools/discovery/slope_noise.py`, rule written before measuring):
+- **Elevation error:** independent Gaussian at the comparison pixel, with sigma 1.216 m (Copernicus DEM relative vertical accuracy, 2 m LE90 for slopes up to 20%).
+- **Noise value:** the root mean square of the change of the window mean slope, bias included.
+- **Sample:** 30 land tiles (seed 20261119), 3 draws each, rounded up to 0.01°.
+- **Result** (`data/runs/run-mars-001/slope-noise.json`):
+  - **0.25°** at 115.77 m (polar targets), over 70,797 windows;
+  - **0.04°** at 463.08 m (ice-rich target), over 6,792 windows.
+- **Why independent errors are conservative:** the 90 m source errors are averaged when resampled to these pixels.
+
+**Unchanged:** everything else in mars-v1, the cells, zones and every other check of run-mars-001. The mars-v1 Monte Carlo results are kept and reported next to the mars-v2 ones.
+
 ## Mars: protocol mars-v1 (frozen before run-mars-001, 20/11/2026)
 
 Scenario D, phase 1 targets: north polar terrain, south polar terrain, ice-rich mid-latitudes ([methods/mars](wiki/methods/mars.md)). It is v3 with the changes below; code in `tools/discovery/mars_run.py`.
