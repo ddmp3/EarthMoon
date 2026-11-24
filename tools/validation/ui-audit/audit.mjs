@@ -182,6 +182,11 @@ async function discovery(page, name, shot) {
   if (await page.locator("#bare-soil").count()) defect(name, "Mars: the v2 bare-soil filter is shown");
   await overflow(page, `${name} Mars`);
   if (((await page.locator("#v3-env").inputValue().catch(() => "")) || "") !== "mars-north-polar") defect(name, "Mars: the terrain picked on the home is not selected");
+  if (!((await page.locator(".mission-banner h1").textContent()) || "").includes("North polar terrain")) defect(name, "Mars: the banner does not show the terrain picked");
+  if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars.jpg")) defect(name, "Mars: the banner photo is not the terrain's");
+  await page.locator("#v3-env").selectOption("mars-south-polar");
+  if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars-south.jpg")) defect(name, "Mars: the banner does not follow a terrain changed in the mission");
+  await page.locator("#v3-env").selectOption("mars-north-polar");
   await shot("13-mars");
   await page.locator(".zone-row").first().click();
   await page.locator(".v3-under").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: the zone card does not open"));

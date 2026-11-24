@@ -13,7 +13,7 @@ import {
 import { StabilityDots } from './Stability'
 import { useT } from '../i18n'
 import { useAppStore, type SelectedMode } from '../store'
-import { missionImage, scoreTone, siteName } from '../shared'
+import { MARS_MISSIONS, missionImage, scoreTone, siteName } from '../shared'
 import type { QueryResult, Zone } from '../v3/api'
 import { FlyToPoint, MAP_MAX_ZOOM, V3Layers, ZoneMarkers, type MapLayer } from '../v3/MapLayers'
 import { MapLegend, RankTabs, SiteV3Chip, V3Controls, V3Search, V3StatusLine, ZoneRows, type Tab } from '../v3/MissionV3'
@@ -141,7 +141,11 @@ interface Props {
 export function Mission({ mode, sites, selectedId, loading, error, builderError, manifest, onBack, onSelect, onRun, children, v3, onScenario }: Props) {
   const { t, lang } = useT()
   const { bareSoilOnly, setBareSoilOnly, calibrationInstrument, setCalibrationInstrument } = useAppStore()
-  const mission = t.missions[mode]
+  // Mars: the banner follows the terrain picked (its photo, title and text), as each lunar mission has its own (T45c)
+  const terrain = mode === 'mars' ? MARS_MISSIONS.find((m) => m.id === v3.env) : undefined
+  const mission = terrain ? t.marsMissions[terrain.id] : t.missions[mode]
+  const bannerImage = terrain ? `${import.meta.env.BASE_URL}img/${terrain.image}.jpg` : missionImage(mode)
+  const bannerClass = terrain ? `mission-photo-${terrain.image}` : `mission-banner-${mode}`
   const selected = sites.find((site) => site.id === selectedId) ?? null
   const ranked = sites.filter((site) => !site.excluded).length
   const vt = v3Texts(lang, mode === 'mars' ? 'mars' : 'moon')
@@ -178,8 +182,8 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
 
   return (
     <>
-      <section className={`mission-banner mission-banner-${mode}`}>
-        <img alt="" src={missionImage(mode)} />
+      <section className={`mission-banner ${bannerClass}`}>
+        <img alt="" src={bannerImage} />
         <div className="mission-banner-shade" />
         <div className="mission-banner-copy">
           <button className="back" onClick={onBack} type="button">
