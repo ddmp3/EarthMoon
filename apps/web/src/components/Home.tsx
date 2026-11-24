@@ -7,11 +7,12 @@ export type Figure = { value: string; label: string }
 
 /**
  * Home of one body. The Moon: the Artemis II photo and the four lunar missions. Mars: the north polar cap and one
- * card per Martian terrain of scenario D. The body switch in the top bar changes the whole site (T45c, David 24/11).
+ * card per Martian terrain of scenario D. The Earth ↔ Moon / Earth ↔ Mars chips change the whole site (T45c, David 24/11).
  */
-export function Home({ body, figures, onPick, onPickMars }: {
+export function Home({ body, figures, onBody, onPick, onPickMars }: {
   body: Body
   figures: Figure[] | null
+  onBody: (body: Body) => void
   onPick: (mode: SelectedMode) => void
   onPickMars: (target: string) => void
 }) {
@@ -37,8 +38,12 @@ export function Home({ body, figures, onPick, onPickMars }: {
             <h2 id="missions-title">{mars ? t.chooseMissionMars : t.chooseMission}</h2>
             <p>{mars ? t.chooseMissionMarsLead : t.chooseMissionLead}</p>
           </div>
-          <div className="target-chips">
-            <span className="chip chip-on">{mars ? t.targetMars : t.target}</span>
+          <div aria-label={t.bodySwitch} className="target-chips" role="group">
+            {(['moon', 'mars'] as Body[]).map((b) => (
+              <button aria-pressed={body === b} className={`chip${body === b ? ' chip-on' : ''}`} key={b} onClick={() => onBody(b)} type="button">
+                {b === 'mars' ? t.targetMars : t.target}
+              </button>
+            ))}
           </div>
         </div>
 

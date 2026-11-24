@@ -2,6 +2,23 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-24 · T45c part 1: whole-site Moon and Mars modes (PR #36)
+- **Decided by David after the first mock-up (23 to 24/11):**
+  - keep the original site as the Moon experience;
+  - give Mars the same experience;
+  - switch with the Earth ↔ Moon / Earth ↔ Mars chips, as before;
+  - keep the north polar cap as the Mars banner.
+- **Mars mode of the whole site:**
+  - its own banner photo (north polar cap, PIA13163) and rust colours;
+  - texts in English and French;
+  - one card per Martian terrain (ice-rich mid-latitudes, north and south polar terrain). The volcanic plains card is shown waiting for the geologic map.
+  - A card opens the Mars mission on its terrain. The address `#mars-home` opens it.
+  - The data sources of the Mars release are listed.
+  - The Moon keeps its four missions; the fifth "Mars" card is gone.
+- **Banner figures:** read from the current release of each body (cells, targets, sources, validated scenarios), replacing the v2 figures (37 sites, 26 parameters, 8 sources, 71,731 windows). Tested.
+- **NASA images, with credits on the page and in `credits.json`:** PIA13163, PIA02393, PIA22077, PIA26557. Three other banner candidates are kept for later in `docs/design/mars-hero-candidates/`.
+- **Browser audit** of both modes, desktop and phone (0 defects). The synthetic test release now carries its cell count.
+
 ## v3.0.0 · 2026-11-24 · Release notes (T50, PR #35)
 
 **From ranking 37 known sites to discovering analogs everywhere on Earth,** for the Moon and Mars. Not deployed: the Azure deployment waits for David's decision after the NASA evaluation ([deployment checklist](docs/plan/deployment-checklist.md)).

@@ -163,8 +163,8 @@ async function discovery(page, name, shot) {
   // Mars mission, scenario D from the Mars release, then French. A fresh rate-limit window, as a new visitor.
   await new Promise((resolve) => setTimeout(resolve, 61_000));
   await page.goto(`${WEB}/`, { waitUntil: "networkidle" });
-  await page.locator(".body-switch button", { hasText: "Mars" }).click();
-  if ((await page.locator("html").getAttribute("data-body")) !== "mars") defect(name, "body switch: the site is not in its Mars mode");
+  await page.locator(".target-chips button", { hasText: "Mars" }).click();
+  if ((await page.locator("html").getAttribute("data-body")) !== "mars") defect(name, "Earth-Mars chip: the site is not in its Mars mode");
   if (!(await page.locator(".hero-copy h1").textContent())?.includes("Find Mars")) defect(name, "Mars home: the title is not the Mars one");
   if ((await page.locator(".mission-card").count()) !== MISSIONS) defect(name, `Mars home: ${await page.locator(".mission-card").count()} cards instead of ${MISSIONS}`);
   const marsBroken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src));
@@ -194,8 +194,9 @@ async function discovery(page, name, shot) {
   await shot("15-mars-fr");
   await page.locator(".lang-switch button", { hasText: "EN" }).click();
   // back to the Moon: the whole site returns to its lunar mode
-  await page.locator(".body-switch button", { hasText: "Moon" }).click();
-  if ((await page.locator("html").getAttribute("data-body")) !== "moon") defect(name, "body switch: the site does not return to its Moon mode");
+  await page.locator(".brand").click();
+  await page.locator(".target-chips button", { hasText: "Moon" }).click();
+  if ((await page.locator("html").getAttribute("data-body")) !== "moon") defect(name, "Earth-Moon chip: the site does not return to its Moon mode");
   if (!(await page.locator(".hero-copy h1").textContent())?.includes("Find the Moon")) defect(name, "Moon home: the title is not the lunar one");
   // the old address of the separate page opens mission 4
   await page.goto(`${WEB}/#discover`, { waitUntil: "networkidle" });

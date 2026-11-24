@@ -227,13 +227,7 @@ function App() {
           </span>
         </button>
         <div className="topbar-right">
-          <div aria-label={t.bodySwitch} className="body-switch" role="group">
-            {(['moon', 'mars'] as Body[]).map((b) => (
-              <button aria-pressed={body === b} key={b} onClick={() => switchBody(b)} type="button">
-                {b === 'mars' ? t.bodyMars : t.bodyMoon}
-              </button>
-            ))}
-          </div>
+          <span className="topbar-target">{body === 'mars' ? t.targetMars : t.target}</span>
           <div aria-label={t.languageSwitch} className="lang-switch" role="group">
             {(['en', 'fr'] as Lang[]).map((code) => (
               <button aria-pressed={lang === code} key={code} lang={code} onClick={() => setLang(code)} type="button">
@@ -246,7 +240,7 @@ function App() {
 
       <main>
         {mode === null ? (
-          <Home body={body} figures={homeFigures(v3, body, lang, t.figureLabels)} onPick={pick} onPickMars={pickMars} />
+          <Home body={body} figures={homeFigures(v3, body, lang, t.figureLabels)} onBody={switchBody} onPick={pick} onPickMars={pickMars} />
         ) : (
           <Mission
             key={mode}

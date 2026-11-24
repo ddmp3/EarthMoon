@@ -97,6 +97,7 @@ a { color: var(--accent); }
 .chip-on { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); font-weight: 600; }
 button.chip { background: transparent; cursor: pointer; transition: color 0.2s, border-color 0.2s; }
 button.chip:hover, button.chip:focus-visible { color: var(--text); border-color: var(--accent); }
+button.chip.chip-on, button.chip.chip-on:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); cursor: default; }
 
 .mission-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 .mission-card { position: relative; display: grid; grid-template-rows: auto 1fr; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; padding: 0; background: var(--panel); text-align: left; transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.35s, box-shadow 0.35s; }
