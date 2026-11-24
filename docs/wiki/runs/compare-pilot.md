@@ -1,6 +1,6 @@
 # Comparison engine on the pilot tiles (T42 run, 18/11/2026)
 
-Scenarios A (lunar base) and B (lunar robotics) on the 13 T22 pilot tiles. Summaries: `data/runs/compare-pilot-A.json` and `-B.json` (commit `e5350bc`). The full cell tables are Parquet files outside git, and their SHA-256 are in the summaries. Method: `docs/METHOD.md`, section "v3 comparison engine".
+Scenarios A (lunar base) and B (lunar robotics) on the 13 T22 pilot tiles. Summaries: `data/runs/compare-pilot-A.json` and `-B.json` (commit `e5350bc`). The full cell tables are Parquet files outside git, and their SHA-256 are in the summaries. Method: `docs/METHOD.md` and [methods/comparison.md](../methods/comparison.md).
 
 ## What each cell gets
 

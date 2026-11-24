@@ -1,46 +1,45 @@
-# Data sources
+# Data (v3)
 
-The exact catalog, with the attribution to reproduce for each source, is served by `GET /api/sources` (`apps/api/src/sources/catalog.ts`). No account is required for any source.
+**Every source is a catalogue entry,** with its resolution, uncertainty, licence and verification status: `data/catalog/earth.yaml`, `moon.yaml` and `mars.yaml`. The inventories are [wiki/data/](wiki/README.md), and `GET /api/v3/method` serves the sources of a release.
+- **A fact is written only if it was read at its source.** Otherwise it says "not verified".
+- **Large data** lives outside git (`earthmoon-data/`). Only small derived products and manifests with SHA-256 are committed.
 
-## Used in the app
+## Used by the current releases (16 sources)
 
-Since methodology v2 (17 November 2026) the API reads no source at request time: it scores the frozen data set `data/dataset-v2.json`, rebuilt by `tools/precompute/build_dataset.py` from `data/candidates-precomputed.json`, `data/snapshots/live-sources.json` (POWER, USGS and GVP frozen by `tools/precompute/live_snapshot.py`) and `data/evidence/lava-tubes.json`. If the data set file is absent the API falls back to the v1 live connectors and says so. Full documentation of every source, its resolution, limits and processing: [REFERENCES.md](REFERENCES.md), section 7, and [wiki/v2/SCIENTIFIC_METHODOLOGY.md](wiki/v2/SCIENTIFIC_METHODOLOGY.md), section 4.
-
-| Source | Parameters | Access |
+| Role | Source | Licence (catalogue) |
 |---|---|---|
-| [NASA POWER](https://power.larc.nasa.gov/) (NASA Langley) | `t2m_*` (corrected to site elevation), `wind`, `humidity`, `specific_humidity`, `precipitation`, `solar` | Frozen snapshot of the point climatology |
-| [USGS Earthquake Catalog](https://earthquake.usgs.gov/fdsnws/event/1/) | `quake_m45_count`, `quake_count` (deprecated) | Frozen counts within 300 km, 2000-01-01 to 2026-11-01 |
-| [Smithsonian Global Volcanism Program](https://volcano.si.edu/) | `lava_tube_evidence` (level 1), `volcano_distance` (deprecated) | Frozen nearest volcano with its rock type |
-| [Copernicus DEM GLO-30](https://registry.opendata.aws/copernicus-dem/) (ESA / EU, via AWS Open Data) | `elevation`, `slope_*`, `roughness*`, `traversable_*` | Precomputed on the 40 m lunar grid (`tools/precompute/site_terrain.py`), 1 km windows |
-| NASA MODIS MOD11A2/MYD11A2 (land surface temperature) and MOD13A1/MYD13A1 (NDVI), v6.1, via Microsoft Planetary Computer | `lst_*`, `ndvi` | Precomputed (`tools/precompute/modis_values.py`): 2024 means on the tile containing the site, at least 6 valid composites |
-| NASA LRO LOLA LDEM_85S_40M (PDS Geosciences Node) | lunar slope, roughness, traversable share | Precomputed (`tools/precompute/lunar_reference_v2.py`): distribution of 71,731 windows of 1 km south of 85°S, same function as Earth |
-| LRO Diviner, NASA Moon Fact Sheet, NASA Artemis III candidate regions | cold of shadowed regions, gravity, pressure, latitude | Published values cited in `data/reference/moon-south-pole.json` |
+| Earth terrain | Copernicus DEM GLO-30 and GLO-90 (DLR and Airbus for ESA / EU, AWS Open Data) | Copernicus DEM licence, free |
+| Hidden ground (masks) | ESA WorldCover 2021 v200 (7 classes: tree, cropland, built-up, snow and ice, water, wetland, mangroves) | CC BY 4.0 |
+| Antarctic ground | Rock outcrop of Antarctica v7.3 (UK Polar Data Centre) | CC BY 4.0 |
+| Countries (place names, bias by continent) | Natural Earth Admin 0, 1:110m | public domain |
+| Geology (context, T46) | Macrostrat map tiles, crosswalk E17 | CC BY 4.0 |
+| Frozen ground (context, model) | Ground temperature map 2000 to 2016 (Obu et al., PANGAEA) | CC BY 3.0 |
+| Aridity (context, model) | Global Aridity Index v3 (Zomer and Trabucco) | CC BY 4.0 |
+| Moon terrain | LOLA LDEM_85S_40M (PDS), SLDEM2015 (NASA GSFC) | PDS, open |
+| Moon illumination and shadow | LOLA polar illumination (PGDA) | open |
+| Moon environments | LROC pits atlas; Lunar Prospector special products; USGS Unified Geologic Map of the Moon | not stated on page (pits, LP); CC0, cite authors (USGS) |
+| Mars terrain | MOLA MEGDR v2.0 (PDS) | PDS |
+| Mars ice | SWIM 1.0 ice consistency (2019; superseded by SWIM 2.0, data improvement R9) | not stated on page |
 
-Planetary Computer sometimes answers 502 on the first call; the API and scripts retry automatically.
+15 of 16 are "verified" in the catalogue; the LROC pits atlas is "partly verified". Each source also has a `refresh` block: the signal that is watched, its check interval, and the publication cadence quoted from its page or "not verified" (T52).
+
+## Provenance
+- **Each Earth tile** of a release lists the source files it read, with their version (ETag, size, SHA-256) and their date at the source, plus when it was computed and with which code. It is served by `GET /api/v3/tiles/{lat,lon}/provenance` and shown in the site panel.
+- **Each release** lists what changed from the previous one: `GET /api/v3/changes`.
+
+## Catalogued, not used yet
+- **The catalogues hold 45 Earth, 36 lunar and 29 Martian products.** The ones not used yet wait for a check, an account or a decision: [plan/data-improvements.md](plan/data-improvements.md).
+- **Examples:**
+  - the Mars geologic map (R5);
+  - SWIM 2.0 (R9);
+  - MOLA-HRSC at 200 m (R1);
+  - MODIS and EMIT, which need an Earthdata account (D1).
 
 ## Interface images (none generated by AI)
+- **Credits:** `apps/web/public/img/credits.json`.
+- **NASA images:** Artemis II, Apollo 14, 15 and 17, the Clementine south pole mosaic, and Phoenix (Mars).
+- **Map:** NASA GIBS Blue Marble.
+- **Satellite views:** Sentinel-2 cloudless (EOX, CC BY 4.0).
 
-| Image | Source | Credit |
-|---|---|---|
-| Home banner | NASA, Artemis II, `art002e021278` (6 April 2026) | NASA |
-| Mission cards | NASA Apollo 15 `AS15-86-11603`, Apollo 14 `AS14-67-9362`, Apollo 17 `AS17-134-20382`; Clementine south pole mosaic `PIA00001` | NASA, NASA/JPL/USGS |
-| Satellite view of each site | Sentinel-2 cloudless 2016, EOX IT Services GmbH (modified Copernicus Sentinel data 2016); else Landsat WELD (NASA GIBS) | CC BY 4.0 |
-| Site relief | Copernicus DEM GLO-30, resampled to 40 m | ESA / European Union |
-| Lunar twin of each site | LRO LOLA LDEM_85S_40M | NASA PDS |
-| Base map | Blue Marble Shaded Relief and Bathymetry, NASA GIBS | NASA |
-
-Details: `apps/web/public/img/credits.json`, `apps/web/public/sites/manifest.json`.
-
-## Canadian resources used to select sites
-
-Canadian Space Agency analog network (Haughton-Mars Project station, McGill Arctic Research Station), Mistastin Lake analog missions since 2010 (anorthosite, like the lunar highlands) and Tunnunik Crater research (SOAR program).
-
-## Not used yet
-
-Lunar, Martian and Earth data for v3 are being inventoried and verified at their source (plan tasks [T10](plan/tasks/T10-moon-data.md), [T11](plan/tasks/T11-mars-data.md), [T12](plan/tasks/T12-earth-data.md)); results will be in `docs/wiki/data/`. A first list of candidate sources is in [wiki/v2/SCIENTIFIC_ROADMAP.md](wiki/v2/SCIENTIFIC_ROADMAP.md), section 4.
-
-## Limits
-
-- No Earth site reaches the temperatures of permanently shadowed regions (about 25 to 110 K): temperature criteria compare trends (extreme cold, large swing), not absolute values.
-- Biology and habitability are out of scope.
-- The USGS catalog is complete at M 2.5 only near dense networks (measured in [wiki/v2/SCIENTIFIC_AUDIT.md](wiki/v2/SCIENTIFIC_AUDIT.md), finding S1); v2 uses M ≥ 4.5.
+## v2 data
+The v2 data set (37 sites, NASA POWER, USGS, GVP and MODIS snapshots) is still served to the v2 routes. Its page: [history/v2-data.md](history/v2-data.md).
