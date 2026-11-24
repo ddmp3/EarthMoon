@@ -151,7 +151,7 @@ export interface TileProvenance {
 
 export const v3 = {
   releases: () => get<ReleaseIndex>('releases'),
-  release: (id: string) => get<{ release: string; run: string; geology?: unknown; context?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
+  release: (id: string) => get<{ release: string; run: string; processing?: { step: string; cells?: number }[]; geology?: unknown; context?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
   scenarios: (release?: string) => get<{ release: string; scenarios: Scenario[] }>(withRelease('scenarios', release)),
   coverage: (scenario: string, env: string, release?: string) => get<Coverage>(`coverage?${q({ scenario, env, release })}`),
   zones: (scenario: string, env: string, tau: number, minCells: number, limit = 50, release?: string) =>

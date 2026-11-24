@@ -5,7 +5,7 @@ import coverage from '../test/fixtures/v3/coverage.json'
 import scenarios from '../test/fixtures/v3/scenarios.json'
 import status from '../test/fixtures/v3/status.json'
 import type { CellProps, Coverage, Scenario, Status } from './api'
-import { cellState, COVERAGE_ORDER, layerList, legendRows, provenanceLines, statusLines, zoneDimensions } from './model'
+import { cellState, COVERAGE_ORDER, homeFigures, layerList, legendRows, provenanceLines, statusLines, zoneDimensions } from './model'
 import { V3_TEXTS } from './text'
 
 const en = V3_TEXTS.en
@@ -258,5 +258,25 @@ describe('pre-analysis without a measured time', () => {
     s.freshness = { ...s.freshness, impact: [{ source: 'obu-permafrost-2018', kind: 'earth_context', tiles_changed: [], tiles_reassessed: 0,
       releases: [], cpu_hours_estimate: null, basis: 'not measured', recompute_started: false }] } as never
     expect(statusLines(s, en).impact).toBe('1 update detected, not recomputed: 0 tile to reassess, CPU time not measured')
+  })
+})
+
+describe('home figures of each body, read from its release (T45c)', () => {
+  const labels = { cells: 'cells', targetsMoon: 'lunar', targetsMars: 'martian', sources: 'sources', positive: 'positive' }
+  const v = {
+    release: { processing: [{ step: 'windows' }, { step: 'cells', cells: 7400488 }] },
+    scenarios: [{ assessed_targets: ['mars-a', 'mars-b', 'mars-c'] }],
+    method: { sources: new Array(8).fill({}) },
+    status: status as unknown as Status,
+  }
+
+  it('gives cells, targets, sources and validated scenarios, never typed figures', () => {
+    expect(homeFigures(v, 'mars', 'fr', labels)).toEqual([
+      { value: '7,4 M', label: 'cells' }, { value: '3', label: 'martian' }, { value: '8', label: 'sources' }, { value: '0', label: 'positive' }])
+    expect(homeFigures(v, 'moon', 'en', labels)?.[0].value).toBe('7.4 M')
+  })
+
+  it('shows nothing until the release is loaded', () => {
+    expect(homeFigures({ ...v, release: null }, 'mars', 'en', labels)).toBeNull()
   })
 })

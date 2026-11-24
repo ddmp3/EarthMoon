@@ -23,8 +23,9 @@ import { MISSION_ORDER } from './shared'
 import { SiteV3Section } from './v3/MissionV3'
 import { DataMethod } from './v3/panels'
 import { V3_TEXTS } from './v3/text'
+import { homeFigures } from './v3/model'
 import { useV3 } from './v3/useV3'
-import { useAppStore, type CriterionDraft, type SelectedMode } from './store'
+import { useAppStore, type Body, type CriterionDraft, type SelectedMode } from './store'
 
 /** Mode 4 criteria entered in the form; throws a readable error if the input is invalid. */
 function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
@@ -47,10 +48,15 @@ function buildCustomCriteria(drafts: CriterionDraft[], t: Texts): Criterion[] {
 }
 
 /** Shareable address: #mission or #mission/site (for example #colony/tunnunik). */
-function parseHash(): { mode: SelectedMode | null; site: string | null } {
-  if (window.location.hash === '#discover') return { mode: 'custom', site: null } // the v3 map now lives in mission 4
+/** Home of Mars: the whole site in its Mars mode (T45c). */
+const MARS_HOME = '#mars-home'
+
+function parseHash(): { mode: SelectedMode | null; site: string | null; body: Body | null } {
+  if (window.location.hash === '#discover') return { mode: 'custom', site: null, body: 'moon' } // the v3 map now lives in mission 4
+  if (window.location.hash === MARS_HOME) return { mode: null, site: null, body: 'mars' }
   const [mode, site] = window.location.hash.replace(/^#/, '').split('/')
-  return MISSION_ORDER.includes(mode as SelectedMode) ? { mode: mode as SelectedMode, site: site || null } : { mode: null, site: null }
+  if (mode === 'mars') return { mode: 'mars', site: site || null, body: 'mars' }
+  return MISSION_ORDER.includes(mode as SelectedMode) ? { mode: mode as SelectedMode, site: site || null, body: 'moon' } : { mode: null, site: null, body: null }
 }
 
 function App() {
@@ -63,12 +69,16 @@ function App() {
   const [mode, setMode] = useState<SelectedMode | null>(() => parseHash().mode)
   // v3 scenario of each mission: robotics = B, colony = A, free criteria = the one picked in its search; calibration has none yet.
   const [customScenario, setCustomScenario] = useState('B')
-  // Mars (mission 5, T48) reads the current Mars release, scenario D.
+  // Mars reads the current Mars release, scenario D. The body switch changes the whole site (T45c).
   const scenarioId = mode === 'robotics' ? 'B' : mode === 'colony' ? 'A' : mode === 'custom' ? customScenario : mode === 'mars' ? 'D' : null
-  const body = mode === 'mars' ? 'mars' : 'moon'
-  const v3 = useV3(scenarioId, body)
+  const storeBody = useAppStore((s) => s.body)
   const setBody = useAppStore((s) => s.setBody)
+  const body: Body = mode === 'mars' ? 'mars' : mode ? 'moon' : (parseHash().body ?? storeBody)
   useEffect(() => setBody(body), [body, setBody])
+  useEffect(() => {
+    document.documentElement.dataset.body = body
+  }, [body])
+  const v3 = useV3(scenarioId, body)
   const [siteMethod, setSiteMethod] = useState(false)
   const [sites, setSites] = useState<SiteResult[]>([])
   const [selectedId, setSelectedId] = useState<string | null>(() => parseHash().site)
@@ -148,12 +158,12 @@ function App() {
   // State -> address. Changing screen (home <-> mission) adds a history entry, so the browser Back button
   // returns to the missions; selecting another site only replaces the current entry.
   useEffect(() => {
-    const hash = mode ? `#${mode}${selectedId ? `/${selectedId}` : ''}` : ''
+    const hash = mode ? `#${mode}${selectedId ? `/${selectedId}` : ''}` : body === 'mars' ? MARS_HOME : ''
     if (window.location.hash === hash) return
     const url = hash || window.location.pathname + window.location.search
     if (parseHash().mode !== mode) window.history.pushState(null, '', url)
     else window.history.replaceState(null, '', url)
-  }, [mode, selectedId])
+  }, [mode, selectedId, body])
 
   // Address -> state: Back and Forward buttons, a pasted link, a bookmark opened in the same tab.
   useEffect(() => {
@@ -168,6 +178,7 @@ function App() {
         return next.mode
       })
       setSelectedId(next.site)
+      useAppStore.getState().setBody(next.body ?? 'moon')
     }
     window.addEventListener('hashchange', onAddressChange)
     window.addEventListener('popstate', onAddressChange)
@@ -186,6 +197,22 @@ function App() {
     window.scrollTo({ top: 0 })
   }
 
+  /** A Martian terrain of the Mars home: the Mars mission, on that target. */
+  const pickMars = (target: string) => {
+    pick('mars')
+    v3.setEnv(target)
+  }
+
+  /** The body switch: the home of the other body, the whole site in its mode. */
+  const switchBody = (next: Body) => {
+    setBody(next)
+    setSites([])
+    setSelectedId(null)
+    setMode(null)
+    window.history.pushState(null, '', next === 'mars' ? MARS_HOME : window.location.pathname + window.location.search)
+    window.scrollTo({ top: 0 })
+  }
+
   const selected = sites.find((site) => site.id === selectedId) ?? null
   const current = detail && detail.id === selectedId ? detail : null
 
@@ -200,7 +227,13 @@ function App() {
           </span>
         </button>
         <div className="topbar-right">
-          <span className="topbar-target">{mode === 'mars' ? t.targetMars : t.target}</span>
+          <div aria-label={t.bodySwitch} className="body-switch" role="group">
+            {(['moon', 'mars'] as Body[]).map((b) => (
+              <button aria-pressed={body === b} key={b} onClick={() => switchBody(b)} type="button">
+                {b === 'mars' ? t.bodyMars : t.bodyMoon}
+              </button>
+            ))}
+          </div>
           <div aria-label={t.languageSwitch} className="lang-switch" role="group">
             {(['en', 'fr'] as Lang[]).map((code) => (
               <button aria-pressed={lang === code} key={code} lang={code} onClick={() => setLang(code)} type="button">
@@ -213,7 +246,7 @@ function App() {
 
       <main>
         {mode === null ? (
-          <Home onPick={pick} siteCount={manifest ? Object.keys(manifest.sites).length : 37} />
+          <Home body={body} figures={homeFigures(v3, body, lang, t.figureLabels)} onPick={pick} onPickMars={pickMars} />
         ) : (
           <Mission
             key={mode}
@@ -248,7 +281,21 @@ function App() {
         )}
 
         <section className="credits">
-          {sources.length > 0 && (
+          {body === 'mars' && v3.method && (
+            <div>
+              <h3>{t.sourcesTitle}</h3>
+              <ul>
+                {v3.method.sources.map((source) => (
+                  <li key={source.id}>
+                    <a href={source.url} rel="noopener noreferrer" target="_blank">{source.product ?? source.id}</a>
+                    {source.producer ? ` · ${source.producer}` : ''}.{' '}
+                    {source.licence && <small>{source.licence}</small>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {body === 'moon' && sources.length > 0 && (
             <div>
               <h3>{t.sourcesTitle}</h3>
               <ul>
