@@ -2,6 +2,42 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## v3.0.0 · 2026-11-24 · Release notes (T50, PR #35)
+
+**From ranking 37 known sites to discovering analogs everywhere on Earth,** for the Moon and Mars. Not deployed: the Azure deployment waits for David's decision after the NASA evaluation ([deployment checklist](docs/plan/deployment-checklist.md)).
+
+**What v3 is:**
+- **Discovery:** every Earth land cell (5 km, equal-area HEALPix) is compared with planetary distributions at the same pixel. That is 6.3 M lunar and 7.4 M Mars cells, with 4 map states and nothing invented.
+- **Targets:**
+  - Moon (scenarios A and B): polar lit highlands, PSR, pits, mare plains, south polar cap;
+  - Mars (scenario D): ice-rich mid-latitudes, north and south polar terrain.
+- **Context beside slope, never combined with it:** geology (lithology, crosswalk E17), frozen ground and aridity (models, E18).
+- **Releases:** frozen, reproducible (identical SHA-256 on rebuild), with the provenance of every Earth tile. Sources are watched, and each detected change gets a pre-analysis. Nothing is recomputed without David's decision.
+- **Validation:** G5 signed by David on 24/11/2026.
+  - The grid scores 30/39 (v2 28/39), plus 13/15 on the five v3 criteria.
+  - **No scenario has a positive validation** ([docs/VALIDATION.md](docs/VALIDATION.md)).
+
+**Docs:**
+- rewritten for v3: readme, METHOD, DATA, ARCHITECTURE, VALIDATION and LIMITS;
+- v2 pages moved to `docs/history/`;
+- a figure check (`tools/docs/test_figures.py`) recomputes every number quoted in these pages from the run summaries.
+
+**v2 routes, proposal for David.** The v2 routes are `/api/analyze`, `/api/sites/{id}`, `/api/modes`, `/api/parameters`, `/api/sources` and `/api/reference/moon`.
+- **Evidence:**
+  - No traffic data exists: the stack runs locally only, and the live sites serve v1.
+  - The v3 interface still calls five of them for the site lists of missions 1 to 4: analyze, sites, modes, sources and reference.
+  - `/api/parameters` is not called by the interface.
+- **Proposal:**
+  - **keep** the five until the interface reads v3 only (T45c);
+  - **mark all six deprecated** in the contract now;
+  - **remove** them in the release after T45c.
+- David decides.
+
+**Next:**
+1. the interface (T45c);
+2. the correspondence studies;
+3. the method revisions ([docs/plan/revisions.md](docs/plan/revisions.md)).
+
 ## 2026-11-24 · T49 v3 validation report and limits (PR #34)
 - **`docs/VALIDATION.md` rewritten for v3** (3 pages). Unfavourable results first:
   - 0 of 4 scenarios with a positive validation;

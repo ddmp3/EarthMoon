@@ -1,123 +1,64 @@
-# Architecture
+# Architecture (v3)
 
-Static front end, containerized API, Terraform infrastructure on Azure. No database: the API scores a frozen, versioned data set built offline (see [METHOD.md](METHOD.md)). Without that file it falls back to reading the sources live.
+**What runs:**
+- **Offline:** a pipeline writes frozen releases.
+- **Local Docker stack:** serves them. Nothing is deployed: Azure is frozen during the NASA evaluation, and deployment is David's decision.
 
-```
-Browser ──► Azure Static Web App (React)
-                │  HTTPS (VITE_API_URL)
-                ▼
-           Azure Container App (Node/TypeScript API, OpenAPI)
-                │  no database, no network call when scoring
-                ▼
-   data/dataset-v2.json  (frozen, versioned; built offline by tools/precompute/build_dataset.py from
-                          Copernicus DEM, MODIS, and NASA POWER / USGS / Smithsonian GVP snapshots)
-```
-
-## Target architecture (v3, accepted at gate G3 on 18/11/2026)
-
-Decisions: [adr/](adr/README.md). Only the local Docker stack runs v3; nothing is deployed.
+Decisions: [adr/](adr/README.md). The v2 page is kept in [history/v2-architecture.md](history/v2-architecture.md).
 
 ```
-OFFLINE (tools/discovery, Python; data under C:\Users\david\earthmoon-data, never in git)
-  ingest ──► features ──► compare ──► zones ──► validate ──► export
-  (manifest,   (Parquet per    ▲   (T23        (T26 rule)   (tag validation-   (PNG tiles z0-7,
-   SHA-256)     tile & scale)  │    percentile)              protocol-v1)       zone JSON, release id)
-                    profiles ──┘  (data/profiles/spec → computed planetary distributions)
-                                           │
-                                           ▼  releases/<release-id>/ (static files + Parquet)
-ONLINE (docker compose, local)
-  Browser (React + Leaflet) ──► Node API /api/v2 (unchanged) and /api/v3 (OpenAPI)
-                                   │ static: releases, profiles, scenarios, tiles, zones
-                                   └──► apps/discovery (Python, internal only): cells in view, custom query
-                                        over the Parquet cube; no outbound network, read-only data
-
-REFRESHER (docker compose, local, ADR-009; the only container with outbound network and write access)
-  watch sources on schedule ──► ingest changed objects ──► plan (keys changed?) ──► rerun only those units
-  ──► validate (full) ──► publish if checks pass, else hold for David ──► status.json (GET /api/v3/status)
+OFFLINE (tools/discovery, Python; data in earthmoon-data/, never in git)
+  profiles (planetary windows) ─┐
+  Earth cube (Parquet per 1° tile and scale) ─► compare ─► cells (HEALPix 5 km) ─► zones ─► validate ─► release
+                                                                                   (JSON, Parquet, PNG tiles,
+                                                                                    provenance, changes)
+LOCAL STACK (docker compose)
+  web (React, Leaflet) ──► api (Node, Express, OpenAPI): /api/v3 from the releases, /api (v2) from the v2 data set
+                             └──► discovery (Python, internal network only, read-only): cells in view, queries
+  refresher (profile "refresh", on request): watches the sources, writes freshness and the pre-analysis of
+             each change; never recomputes (David, 24/11/2026)
 ```
 
-**New dependencies** (Python, for `tools/discovery` and `apps/discovery`). Each is the newest release at least 14 days old on 18 November 2026; `pip-audit` is clean on the full set.
+## Isolation (tested in `tools/validation/test_compose.py`)
 
-| Package | Version | Licence | Use |
-|---|---|---|---|
-| pyarrow | 26.0.1 | Apache-2.0 | Parquet feature cube |
-| pillow | 13.0.0 | MIT-CMU | Raster tiles |
-| h3 | 4.5.0 | Apache | Zoom-out aggregation (area-weighted) |
-| fastapi | 0.162.0 | MIT | Internal on-demand service |
-| pydantic | 2.14.2 | MIT | Strict request validation |
-| uvicorn | 0.54.0 | BSD-3-Clause | Server of the internal service |
-| pyshp | 3.1.6 | MIT | Reading the lunar geologic map shapefile (T41; 3.1.7 to 3.1.9 were under 14 days old) |
+| Container | Network | Data |
+|---|---|---|
+| api | published port 3001 | releases read-only |
+| discovery | internal network only, no published port | releases read-only, read-only root file system |
+| web | published port 8080 | none |
+| refresher | outbound to catalogue hosts only (checked in code), no port | the only writer of the data folder; every capability dropped, read-only root |
 
-No new JavaScript dependency.
-
-## Repository layout
-
-```
-apps/api/         API (Express, ES modules), scoring engine, source connectors, openapi.yaml
-apps/web/         React + TypeScript + Vite + Tailwind + Leaflet
-apps/discovery/   internal Python service (cells in view, custom queries), ADR-005
-data/             candidates.json, candidates-precomputed.json, reference/moon-south-pole.json, fixtures/
-docs/             short pages; plan/ (v3 plan and tasks); wiki/ (long material, mirrored to the GitHub wiki); history/
-infra/terraform/  Azure infrastructure + deploy.sh
-tools/            precompute (offline data), validation (e2e, rankings, ui-audit), scoring (Python reference scorer),
-                  security (dependency audit gate), docs (link checker, wiki mirror), check.sh (quality gate)
-```
-
-## Design rules
-
-- **The scoring engine only knows the parameter catalog, never the sources.** Each source is an adapter (`apps/api/src/sources/`) returning catalog values, so Mars can be added without touching the engine.
-- **A failing source never breaks a response:** its parameters are `null`, the criterion is `missing` and excluded from the total.
-- **Nothing is invented:** a value that cannot be measured stays `null`; every value on a site card shows its source.
-- A Python scorer (`tools/scoring/score_sites.py`) gives results identical to the TypeScript engine; a test checks it on every site and mode of the real data set.
+## Releases
+- **Writers:** `tools/discovery/release.py` (JSON, cells, provenance, changes) and `tools/discovery/tiles.py` (PNG tiles, zoom 0 to 7).
+- **`index.json`** names the current release of each body (`current_by_body`) and keeps up to 4 releases per body. The API rereads it when it changes.
+- **A refreshed release** is published only through the gate of `tools/discovery/publish.py` (validation, regression anchor, change share). Otherwise it is held for David.
+- **Without `EARTHMOON_RELEASES`,** compose serves `data/releases-fixture` (synthetic test data).
 
 ## API
-
-Contract: [`apps/api/openapi.yaml`](../apps/api/openapi.yaml), live docs on `/api/docs`. Guide: [`apps/api/README.md`](../apps/api/README.md).
-
-v3 routes (T44, ADR-004). Every answer carries `release` and `methodology_version`; `?release=` reads a listed older release.
-
-| Route | Served from |
-|---|---|
-| `GET /api/v3/releases`, `/releases/{id}` | `index.json`, `release.json` (run, protocol, commit, processing, validation, grid) |
-| `GET /api/v3/profiles`, `/profiles/{id}`, `/scenarios`, `/scenarios/{id}`, `/method` | static JSON of the release |
-| `GET /api/v3/zones?scenario&env&tau&min_cells&limit&offset`, `/zones/{id}` | static JSON, one file per grid value |
-| `GET /api/v3/coverage?scenario&env` | land share per overlay class |
-| `GET /api/v3/status` | validity of the release (every protocol check) and freshness of each source; `not_checkable` until the refresher (T52) |
-| `GET /api/v3/layers/{scenario}/{env}/{typicality or coverage}/{z}/{x}/{y}.png` | PNG tiles, zoom 0 to 7 (own rate limit) |
-| `GET /api/v3/cells?scenario&env&bbox`, `POST /api/v3/query`, `GET /api/v3/sites?scenario` | forwarded to `apps/discovery` (503 if it is down); `sites` places the known sites of the missions in their cells |
-
-A release is written by `tools/discovery/release.py` (JSON and cells) and `tools/discovery/tiles.py` (tiles). Compose serves `data/releases-fixture` (synthetic test data) unless `EARTHMOON_RELEASES` points to a real releases folder.
-
-## Data files
-
-- `data/candidates.json`: `{ id, name, lat, lon, terrain, role, note?, known_for? }`. `role` is `validation` (known analog), `negative` (control) or `candidate` (site to validate).
-- `data/reference/moon-south-pole.json`: lunar reference values with sources, plus `earth_limits` (what Earth cannot reproduce).
-- `data/candidates-precomputed.json`: candidates with a `precomputed` block (terrain geometry and MODIS values). Regenerate with `tools/precompute/` after changing `candidates.json`, then run `tools/validation/rankings.py` and `tools/validation/e2e.py`.
+- **Contract:** [`apps/api/openapi.yaml`](../apps/api/openapi.yaml), with live docs on `/api/docs`.
+- **v3 routes:**
+  - `releases`, `profiles`, `scenarios`, `method`, `status`, `changes`, `coverage`, `zones`, `layers`;
+  - `tiles/{tile}/provenance`;
+  - `cells`, `query` and `sites` (forwarded to the discovery service).
+- **Every answer** carries `release` and `methodology_version`. `?release=` reads an older release, or the current one of a body (`release=mars`).
+- **The v2 routes** (`/api/analyze`, `/api/sites`, `/api/modes`, `/api/parameters`, `/api/sources`, `/api/reference/moon`) score the frozen v2 data set. Their future is proposed in the release notes.
 
 ## Quality gate
+`tools/check.sh [api|web|python|discovery|e2e|all]`, in pinned Docker images:
+- **Static checks:** strict types, lint and unit tests.
+- **Drift checks:** API contract drift, Markdown links, and the figures quoted in the docs against the run summaries.
+- **Dependency audit.**
+- **End-to-end:** Docker end-to-end tests and the browser audit (desktop and phone).
 
-`tools/check.sh [api|web|python|discovery|e2e|all]` runs, in pinned Docker images:
-- types (strict), lint and unit tests;
-- the API contract drift check, the Markdown link check and the dependency audit;
-- `docker compose up --build`, the end-to-end tests and the browser audit (desktop and phone).
+It must pass before every merge. GitHub Actions runs it on every pull request (`.github/workflows/check.yml`).
 
-It must pass before every merge, and GitHub Actions runs it on every pull request (`.github/workflows/check.yml`, test only). The baseline is in [wiki/baseline.md](wiki/baseline.md).
+## Security (review of 15/11/2026, still valid)
+- **Repository:** no secret in git history. Production dependencies have no known vulnerability (allowlist policy in `tools/security/`).
+- **Containers:** non-root API image. The refresher reads credentials, when a source needs them, from an uncommitted `.env.refresher`.
+- **API:** CORS allows the front-end origin only. Rate limit of 120 requests per minute per IP. Strict input validation, with a 16 KB query body limit.
+- **Data exposed:** open data only. No personal data, no accounts.
 
-## Azure infrastructure
-
-Resource group, Log Analytics (30-day retention), Container Registry (Basic), Container Apps environment and API app (0.5 vCPU, 1 Gi, 1 to 5 replicas, port 3001), Static Web App (Free), region `canadacentral`. **Frozen during the NASA evaluation: do not deploy.** Deployment, when David decides it, uses `infra/terraform/deploy.sh` (see [its README](../infra/terraform/README.md)).
-
-## Security review (15 November 2026)
-
-| Check | Result |
-|---|---|
-| Secrets in git history | None found (AWS keys, GitHub tokens, private keys, Azure connection strings, passwords) |
-| Dependencies (`npm audit`, API and front end) | 0 vulnerabilities |
-| API image | Non-root user, production dependencies only |
-| CORS | Front-end origin only |
-| Rate limit | 120 requests per minute per IP on `/api` (health probe excluded) |
-| Input validation | Strict: 50 KB body limit, criteria checked one by one, 400 with a message |
-| Headers | API: `nosniff`, `no-referrer`, no `X-Powered-By`. Front end: CSP, `X-Frame-Options: DENY`, `Referrer-Policy`, `Permissions-Policy` |
-| Data exposed | Open data only; no personal data, no accounts |
-
-Known and accepted for the hackathon: Container Registry admin access is enabled (a managed identity would be cleaner), and the Terraform state stays local and out of git.
+## Azure (frozen)
+- **What exists:** resource group, Log Analytics, Container Registry, Container Apps (API), Static Web App, region `canadacentral` ([infra/terraform/README.md](../infra/terraform/README.md)).
+- **Do not deploy during the NASA evaluation.**
+- **The v3 stack adds** the discovery service and the refresher. Their Azure resources are not written yet: see the deployment checklist in the release notes.

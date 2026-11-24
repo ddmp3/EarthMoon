@@ -123,8 +123,8 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T48](tasks/T48-mars.md) | Mars profiles and discovery | T46, T47 | done (PR #30; phase 1: polar and ice-rich targets, run-mars-001 with protocol mars-v1: no stable zone, no positive control; volcanic plains wait for R5) |
 | [T48b](tasks/T48b-mars-v2.md) | Mars protocol mars-v2: measured Monte Carlo noise | T48 | done (PR #31; noise 0.25° at 115 m, 0.04° at 463 m: 1,111 stable ice-rich zones, polar still 0) |
 | [T49](tasks/T49-validation-report.md) | v3 validation report and limits | T45-T48, T52 | done (PR #34; grid 30/39 against 28/39 for v2, new criteria 13/15; 0 of 4 scenarios with a positive validation; G5 for David) |
-| G5 | Gate: release | T49 | todo |
-| [T50](tasks/T50-release.md) | Docs, release notes, v2 retirement decision | G5 | todo |
+| G5 | Gate: release | T49 | G5 signed 24/11 by David (grid 30/39 and 13/15; no positive validation). Revisions after the delivery: [revisions.md](revisions.md) |
+| [T50](tasks/T50-release.md) | Docs, release notes, v2 retirement decision | G5 | done (PR #35; tag v3.0.0; docs rewritten for v3 with a figure check; v2 routes: proposal keep then remove after T45c, David decides; deployment checklist not executed) |
 | [T51](tasks/T51-assistant.md) | AI assistant for scientists (optional) | T50 | todo |
 | [T52](tasks/T52-automatic-refresh.md) | Automatic refresh and incremental recompute | T43, T44 | done (PR #32; 16 sources watched, 11 with a signal; local zones; 10-tile calibration in 45 s, 1% threshold kept; tile provenance and release changes for researchers; recompute on command, in T52b) |
 | [T52b](tasks/T52b-recompute-command.md) | Pre-analysis of updates, no recompute (David, 24/11) | T52 | done (PR #33; volume and CPU estimate of each detected change in the status; recompute later, only on David's decision) |
