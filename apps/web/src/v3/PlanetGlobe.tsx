@@ -12,7 +12,7 @@ export function PlanetGlobe({ body, windows, highlight, focus, onPick, label, no
   body: 'moon' | 'mars'
   windows: GlobePoint[]
   highlight: GlobePoint[]
-  focus: { lat: number; lon: number } | null
+  focus: { lat: number; lon: number; zoom?: number } | null
   onPick: (lat: number, lon: number) => void
   label: string
   noWebgl: string
@@ -128,7 +128,7 @@ export function PlanetGlobe({ body, windows, highlight, focus, onPick, label, no
 
   useEffect(() => {
     if (!focus) return
-    view.current = { ...view.current, lat0: focus.lat, lon0: focus.lon }
+    view.current = { lat0: focus.lat, lon0: focus.lon, zoom: focus.zoom ?? view.current.zoom }
     draw()
   }, [focus, draw])
 

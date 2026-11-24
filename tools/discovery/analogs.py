@@ -139,6 +139,39 @@ def place_label(address: dict) -> str | None:
     return ", ".join(out) or None
 
 
+def _latin(text: str) -> bool:
+    import unicodedata
+    letters = [c for c in text if c.isalpha()]
+    return bool(letters) and all("LATIN" in unicodedata.name(c, "") for c in letters)
+
+
+def latin_label(label: str | None) -> str | None:
+    """Keep the parts of a place name written in Latin script (OpenStreetMap gives some localities only in their local
+    script). A part "Latin - local" keeps its Latin side; a label with no Latin part at all is kept as it is."""
+    if not label:
+        return label
+    parts = []
+    for p in label.split(", "):
+        sides = [x for x in p.split(" - ") if _latin(x)]
+        if sides:
+            parts.append(sides[0])
+    return ", ".join(parts) if parts else label
+
+
+def relabel(path: Path) -> int:
+    """Apply latin_label to the place names of an annotations file, without any new query; returns how many changed."""
+    doc = json.loads(Path(path).read_text(encoding="utf-8"))
+    n = 0
+    for z in doc["zones"].values():
+        for lang, v in (z.get("place") or {}).items():
+            w = latin_label(v)
+            if w != v:
+                z["place"][lang] = w
+                n += 1
+    Path(path).write_text(json.dumps(doc, ensure_ascii=False, separators=(",", ":")) + chr(10), encoding="utf-8")
+    return n
+
+
 class GeoCache:
     """Reverse geocoding with a persistent cache keyed on 0.01° (about 1 km): a place is never queried twice."""
 
@@ -266,7 +299,7 @@ def build(releases: Path, rid: str, body: str, run: Path, cube: Path, profiles: 
                 rec = {"slope_median": slopes[z["id"]], "target": t, "lat": z["lat"], "lon": z["lon"],
                        "typicality": (z.get("typicality") or {}).get("median")}
                 if geo:
-                    rec["place"] = {lang: geo.label(z["lat"], z["lon"], lang) for lang in ("en", "fr")}
+                    rec["place"] = {lang: latin_label(geo.label(z["lat"], z["lon"], lang)) for lang in ("en", "fr")}
                 out["zones"][z["id"]] = rec
             if geo:
                 geo.save()

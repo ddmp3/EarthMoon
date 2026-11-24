@@ -27,6 +27,17 @@ export function unproject(x: number, y: number, lat0: number, lon0: number): { l
   return { lat, lon }
 }
 
+/** Zoom that fits points spread around a centre: 1 for half a globe or more, up to `max` for a small cluster. */
+export function fitZoom(points: { lat: number; lon: number }[], lat0: number, lon0: number, max = 6): number {
+  let spread = 0
+  for (const p of points) {
+    const c = Math.sin(lat0 * D) * Math.sin(p.lat * D) + Math.cos(lat0 * D) * Math.cos(p.lat * D) * Math.cos((p.lon - lon0) * D)
+    spread = Math.max(spread, Math.acos(Math.max(-1, Math.min(1, c))))
+  }
+  if (spread >= Math.PI / 2 || spread === 0) return 1
+  return Math.max(1, Math.min(max, 0.85 / Math.sin(spread)))
+}
+
 /** Texture column and row (0 to 1) of a point, for an equirectangular texture whose left edge is `lon0Tex`. */
 export function texel(lat: number, lon: number, lon0Tex: number): { u: number; v: number } {
   return { u: ((((lon - lon0Tex) % 360) + 360) % 360) / 360, v: Math.min(0.999999, Math.max(0, (90 - lat) / 180)) }

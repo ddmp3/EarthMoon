@@ -89,3 +89,11 @@ def test_zone_slope_is_the_median_of_its_unmasked_windows():
 def test_a_zone_without_window_has_no_slope():
     out = an.zone_slopes({"z": {"cells": [1], "tiles": ["10,20"]}}, lambda tile: None)
     assert out == {"z": None}
+
+
+def test_labels_keep_latin_script_parts_for_scientists():
+    assert an.latin_label("Halfa - حلفا, Northern State, Sudan") == "Halfa, Northern State, Sudan"
+    assert an.latin_label("Артёмовское городское поселение, Irkutsk Oblast, Russia") == "Irkutsk Oblast, Russia"
+    assert an.latin_label("Boyacá, Manabí, Ecuador") == "Boyacá, Manabí, Ecuador"
+    assert an.latin_label("東京, 日本") == "東京, 日本"                    # nothing Latin at all: kept as it is
+    assert an.latin_label(None) is None

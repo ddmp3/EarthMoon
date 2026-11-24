@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { TEXTURE_LON0, project, texel, unproject } from './globeMath'
+import { TEXTURE_LON0, fitZoom, project, texel, unproject } from './globeMath'
 
 describe('orthographic globe (T45c part 2)', () => {
   it('projects a visible point and reads it back', () => {
@@ -18,6 +18,12 @@ describe('orthographic globe (T45c part 2)', () => {
     expect(project(0, 180, 0, 0)).toBeNull()
     expect(project(0, 0, 0, 0)).toEqual({ x: 0, y: 0 })
     expect(unproject(0.8, 0.8, 0, 0)).toBeNull()
+  })
+
+  it('zooms on a polar cluster and not on points spread over the globe', () => {
+    const polar = [{ lat: -86, lon: 0 }, { lat: -87, lon: 120 }, { lat: -89.5, lon: 240 }]
+    expect(fitZoom(polar, -90, 0)).toBeGreaterThan(5)
+    expect(fitZoom([{ lat: 40, lon: 0 }, { lat: -40, lon: 120 }], 0, 0)).toBe(1)
   })
 
   it('maps longitudes onto each texture convention', () => {
