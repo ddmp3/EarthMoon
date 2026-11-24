@@ -201,6 +201,13 @@ async function discovery(page, name, shot) {
     await page.locator(".planet-point").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: a click on the globe lists no Earth zone"));
   }
   await shot("13b-mars-globe");
+  // zooming past the tiles with the layer on: a view of more than 5,000 cells says "zoom in", never an error
+  for (let k = 0; k < 6; k++) {
+    await page.locator(".map-wrap .leaflet-control-zoom-in").click().catch(() => undefined);
+    await page.waitForTimeout(350);
+  }
+  await page.waitForTimeout(2500);
+  if (await page.locator(".map-wrap .map-note-error").count()) defect(name, `Mars: zooming shows an error: ${(await page.locator(".map-wrap .map-note-error").innerText()).slice(0, 120)}`);
   await page.locator(".v3-under").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: the zone card does not open"));
   await shot("14-mars-zone");
   await page.locator(".lang-switch button", { hasText: "FR" }).click();

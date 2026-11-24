@@ -5,7 +5,7 @@ import coverage from '../test/fixtures/v3/coverage.json'
 import scenarios from '../test/fixtures/v3/scenarios.json'
 import status from '../test/fixtures/v3/status.json'
 import type { CellProps, Coverage, Scenario, Status } from './api'
-import { cellState, COVERAGE_ORDER, homeFigures, layerList, legendRows, provenanceLines, statusLines, zoneDimensions } from './model'
+import { CELL_CAP, cellState, cellsInView, COVERAGE_ORDER, homeFigures, layerList, legendRows, provenanceLines, statusLines, zoneDimensions } from './model'
 import { V3_TEXTS } from './text'
 
 const en = V3_TEXTS.en
@@ -278,5 +278,13 @@ describe('home figures of each body, read from its release (T45c)', () => {
 
   it('shows nothing until the release is loaded', () => {
     expect(homeFigures({ ...v, release: null }, 'mars', 'en', labels)).toBeNull()
+  })
+})
+
+describe('cells in a view (the 5,000-cell cap of the discovery service)', () => {
+  it('estimates the cells of a view from its area', () => {
+    expect(cellsInView([20, 10, 21, 11])).toBeGreaterThan(470)          // about 12,100 km2 at 10 degrees north
+    expect(cellsInView([20, 10, 21, 11])).toBeLessThan(500)
+    expect(cellsInView([0, 0, 8, 6])).toBeGreaterThan(CELL_CAP)          // a wide screen at zoom 8 can exceed the cap
   })
 })

@@ -161,6 +161,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
   const [results, setResults] = useState<QueryResult | null>(null)
   const [bbox, setBbox] = useState<[number, number, number, number] | null>(null)
   const [cellsError, setCellsError] = useState<string | null>(null)
+  const [cellsTooMany, setCellsTooMany] = useState(false)
   const hasV3 = Boolean(v3.release && v3.scenario && v3.env)
   const layer: MapLayer = layerChoice !== 'typicality' && v3.available.includes(layerChoice) ? layerChoice : 'typicality'
   // free criteria opens on the discovered zones until the v2 criteria are run
@@ -357,7 +358,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
               <MapContainer center={[25, 10]} maxZoom={hasV3 ? MAP_MAX_ZOOM : 8} minZoom={1} scrollWheelZoom={false} worldCopyJump zoom={2}>
                 <TileLayer attribution="NASA Blue Marble · NASA GIBS" maxNativeZoom={8} url={GIBS_TILES} />
                 {hasV3 && v3.release && v3.scenario && (
-                  <V3Layers confidence env={v3.env} layer={layer} onCellsError={setCellsError} overlay={overlay} release={v3.release.release} scenario={v3.scenario.id} />
+                  <V3Layers confidence env={v3.env} layer={layer} onCellsError={setCellsError} onCellsInfo={setCellsTooMany} overlay={overlay} release={v3.release.release} scenario={v3.scenario.id} />
                 )}
                 <Bounds onBounds={setBbox} />
                 {tab === 'sites' && <FlyTo site={selected} />}
@@ -394,6 +395,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                 })}
               </MapContainer>
               {cellsError && <div className="map-note map-note-error" role="alert">{vt.cellsError}: {cellsError}</div>}
+              {!cellsError && cellsTooMany && <div className="map-note" role="status">{vt.cellsTooMany}</div>}
             </div>
             {hasV3 && <MapLegend available={v3.available} coverage={v3.coverage} layer={layer} overlay={overlay} />}
             </div>
