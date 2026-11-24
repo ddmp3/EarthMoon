@@ -1330,6 +1330,29 @@ export interface components {
                 progress?: {
                     [key: string]: unknown;
                 } | null;
+                /** @description pre-analysis of each detected update (T52b) - what it would recompute and the estimated CPU time; no recompute is started */
+                impact?: {
+                    source: string;
+                    /** @enum {string} */
+                    kind: "earth_tiles" | "earth_global" | "earth_context" | "planetary";
+                    items?: number;
+                    tiles_changed: string[];
+                    tiles_reassessed?: number;
+                    releases: {
+                        release?: string;
+                        body?: string;
+                        targets?: string[];
+                        tiles_reassessed?: number;
+                        cells_estimate?: number;
+                        earth_features?: boolean;
+                        context?: boolean;
+                        cpu_seconds_estimate?: number | null;
+                    }[];
+                    /** @description null when a step was never calibrated */
+                    cpu_hours_estimate: number | null;
+                    basis: string;
+                    recompute_started: boolean;
+                }[];
                 /** @description new planetary products seen in a release table, logged "detected, to verify"; never used in a run before a new protocol version */
                 new_products?: {
                     source: string;

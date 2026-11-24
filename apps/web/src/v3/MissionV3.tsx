@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppStore } from '../store'
 import { v3 as v3api, type CellProps, type QueryResult, type Scenario, type TileProvenance } from './api'
-import { cellState, cividis, geologyText, layerList, legendRows, provenanceLines } from './model'
+import { cellState, cividis, geologyText, layerList, legendRows, provenanceLines, statusLines } from './model'
 import { coverageMeaning, requirementText, scenarioText } from './content'
 import { Patterns } from './panels'
 import { targetName, v3Texts } from './text'
@@ -92,6 +92,10 @@ export function V3StatusLine({ v }: { v: V3State }) {
     <p className={`v3-statusline v3-status-${v.status.validity.state}`} role="status">
       <strong>{fmt(v.status.validity.protocol, v.status.validity.release, d ? `${d[3]}/${d[2]}/${d[1]}` : v.status.validity.published)}</strong>
       {failed.length > 0 && <span> · {t.validity.failing(failed.join(', '))}</span>}
+      {(() => {
+        const impact = statusLines(v.status, t).impact
+        return impact ? <span> · {impact}</span> : null
+      })()}
     </p>
   )
 }

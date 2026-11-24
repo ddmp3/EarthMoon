@@ -116,3 +116,25 @@ def test_new_planetary_products_are_logged_as_detected_never_used():
     assert len(third["new_products"]) == 1                                # logged once
     doc = rf.freshness(third["entries"], {}, None, [], T2, new_products=third["new_products"])
     assert doc["new_products"][0]["found"] == "68"
+
+
+def test_freshness_carries_the_pre_analysis_of_detected_updates():
+    imp = [{"source": "copernicus-dem-glo90", "kind": "earth_tiles", "recompute_started": False}]
+    doc = rf.freshness({}, {}, None, [], T0, impact=imp)
+    assert doc["impact"] == imp
+
+
+def test_detected_updates_get_their_impact_and_nothing_is_recomputed(tmp_path):
+    from discovery.test_impact import world
+    e = rf.update_entry(rf.update_entry(None, result("baseline", {"a": 1})),
+                        result("changed", {"a": 2}, at=T1, changed=[
+                            "Copernicus_DSM_COG_30_N10_00_E020_00_DEM/Copernicus_DSM_COG_30_N10_00_E020_00_DEM.tif"]))
+    out = rf.impacts({"copernicus-dem-glo90": e, "x": rf.update_entry(None, result("baseline", {"a": 1}))}, world(tmp_path))
+    assert [i["source"] for i in out] == ["copernicus-dem-glo90"] and out[0]["tiles_changed"] == ["10,20"]
+    assert out[0]["recompute_started"] is False
+
+
+def test_served_releases_include_the_lunar_default_of_an_index_older_than_bodies():
+    idx = {"current": "r-moon", "current_by_body": {"mars": "r-mars"}, "releases": []}
+    assert rf.served_releases(idx) == [{"id": "r-mars", "body": "mars"}, {"id": "r-moon", "body": "moon"}]
+    assert rf.served_releases({"current": "r-m", "current_by_body": {"moon": "r-m"}}) == [{"id": "r-m", "body": "moon"}]

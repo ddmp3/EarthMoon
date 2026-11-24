@@ -1,6 +1,6 @@
 # Refresh: sources watched, local recompute, provenance (T52, ADR-009)
 
-**Status:** detection, planning, publication rules, freshness, provenance and local zones are done (T52). The recompute runs on command, as David decided on 23/11/2026; the command itself is T52b.
+**Status:** detection, planning, publication rules, freshness, provenance and local zones are done (T52). The refresher checks and identifies but **never starts a recompute** (David, 24/11/2026): every detected change gets a pre-analysis of its volume (T52b), and a recompute is decided from it. On Azure each recompute will have a cost.
 
 ## What is watched
 Every source a release names (16 on 23/11/2026) has a `refresh` block in `data/catalog/*.yaml`:
@@ -26,6 +26,23 @@ Rules:
 The refresher also reads release tables. It starts with LRO: "Release N of LRO data is now online".
 - **A new entry** is logged "detected, to verify", with its date, in the status.
 - **It is never used in a run.** A new reference (a new region or a finer product) is a new protocol version, decided before any run.
+
+## Pre-analysis of an update (no compute)
+For each detected change the refresher estimates, from the served releases and without any heavy step (`tools/discovery/impact.py`):
+- what changed: the source, its files, and the 1° tiles they cover;
+- what would be recomputed: tiles reassessed with their neighbours, targets, estimated cells;
+- the estimated CPU time, from the calibration below. A step that was never calibrated (the Earth context) says "not measured", never 0.
+
+Examples on the served releases (24/11/2026):
+
+| Change | Would recompute | Estimated CPU |
+|---|---|---|
+| One Copernicus GLO-90 tile | 9 tiles for Moon and Mars (about 4,400 cells) | 12 s |
+| LOLA 85°S file | 3 lunar targets on 24,436 tiles (6.3 M cells), no Earth feature | 0.38 h |
+| MOLA MEGDR files | 3 Martian targets on 32,138 tiles (7.4 M cells) | 0.50 h |
+| Permafrost model | Earth context layer only | not measured |
+
+It is shown in the status of the website ("1 update detected, not recomputed: …"). The pre-analysis is built so a cost can be added from machine prices.
 
 ## Recompute: only what changed
 Each unit has a key: its inputs, its code version and its parameters (`tools/discovery/refresh_plan.py`).

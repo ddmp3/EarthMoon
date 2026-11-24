@@ -2,6 +2,21 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-24 · T52b Pre-analysis of updates (PR #33)
+- **Decision of David (24/11):** the refresher checks and identifies but never starts a recompute. Before any compute, the volume of an update is analysed: the app will run on Azure later, where each recompute has a cost.
+- **`tools/discovery/impact.py`:** for each detected change, it gives:
+  - the source, its files and the 1° tiles they cover;
+  - the tiles reassessed with their neighbours;
+  - the targets and releases concerned;
+  - the estimated cells;
+  - the estimated CPU time from the calibration of 23/11. A step never calibrated (Earth context) says "not measured", never 0.
+- **Shown** in `GET /api/v3/status` (`impact`) and in the status lines of the website, in both languages.
+- **Fix found on the real index:** the lunar release, written before `current_by_body`, was missed; the served releases now include it.
+- **Examples:**
+  - one GLO-90 tile would reassess 9 tiles in 12 s of CPU;
+  - a LOLA 85°S change would rerun 3 lunar targets in about 0.38 h;
+  - a MOLA change would rerun 3 Martian targets in about 0.50 h.
+
 ## 2026-11-24 · T52 Refresh, local recompute and provenance (PR #32)
 - **Watched sources:** every source a release names (16) has a `refresh` block in the catalogue: signal, check interval, and cadence quoted from its page or "not verified".
   - Watchers cover S3 listings, PDS files against their ingest size, page versions, DataCite DOIs and JSON APIs. They are tested on recorded responses.

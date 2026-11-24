@@ -239,3 +239,24 @@ describe('tile provenance for researchers (T52)', () => {
     expect(l.sources[0]).toBe('Copernicus DEM GLO-30 : fichier daté du 09/05/2022')
   })
 })
+
+describe('pre-analysis of detected updates (T52b)', () => {
+  it('says what an update would recompute, that it was not started, in both languages', () => {
+    const s = structuredClone(status) as unknown as Status
+    s.freshness = { ...s.freshness, refresher: true, impact: [
+      { source: 'copernicus-dem-glo90', kind: 'earth_tiles', tiles_changed: ['10,20'], tiles_reassessed: 9, releases: [],
+        cpu_hours_estimate: 0.0123, basis: 'calibration', recompute_started: false }] } as never
+    expect(statusLines(s, en).impact).toBe('1 update detected, not recomputed: 9 tiles to reassess, about 0.01 CPU hours (estimate)')
+    expect(statusLines(s, fr).impact).toBe('1 mise à jour détectée, non recalculée : 9 tuiles à réévaluer, environ 0,01 heure CPU (estimation)')
+    expect(statusLines(status as unknown as Status, en).impact).toBeNull()
+  })
+})
+
+describe('pre-analysis without a measured time', () => {
+  it('says the CPU time was not measured instead of a made-up figure', () => {
+    const s = structuredClone(status) as unknown as Status
+    s.freshness = { ...s.freshness, impact: [{ source: 'obu-permafrost-2018', kind: 'earth_context', tiles_changed: [], tiles_reassessed: 0,
+      releases: [], cpu_hours_estimate: null, basis: 'not measured', recompute_started: false }] } as never
+    expect(statusLines(s, en).impact).toBe('1 update detected, not recomputed: 0 tile to reassess, CPU time not measured')
+  })
+})
