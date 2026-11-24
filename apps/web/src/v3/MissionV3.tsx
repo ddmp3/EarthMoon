@@ -248,7 +248,7 @@ export function TileProvenanceList({ lat, lon, release, load = v3api.tileProvena
 
 /** Zones (or search results) in the ranking panel, in the same rows as the known sites. */
 export function ZoneRows({ items, selectedId, onSelect, picked, onPick }: {
-  items: { id: string; lat: number; lon: number; value: number; sub: string }[]
+  items: { id: string; lat: number; lon: number; value: number; sub: string; name?: string | null }[]
   selectedId: string | null
   onSelect: (id: string) => void
   picked?: string[]
@@ -274,8 +274,8 @@ export function ZoneRows({ items, selectedId, onSelect, picked, onPick }: {
             <span className="rank-number">{String(i + 1).padStart(2, '0')}</span>
             <span className="zone-swatch" style={{ background: cividis(z.value) }} />
             <span className="rank-copy">
-              <strong>{t.resultCell(z.lat, z.lon)}</strong>
-              <small>{z.sub}</small>
+              <strong>{z.name ?? t.resultCell(z.lat, z.lon)}</strong>
+              <small>{z.name ? `${t.resultCell(z.lat, z.lon)} · ${z.sub}` : z.sub}</small>
             </span>
             <span className="rank-score">{two(z.value)}</span>
           </button>

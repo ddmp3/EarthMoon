@@ -188,7 +188,19 @@ async function discovery(page, name, shot) {
   if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars-south.jpg")) defect(name, "Mars: the banner does not follow a terrain changed in the mission");
   await page.locator("#v3-env").selectOption("mars-north-polar");
   await shot("13-mars");
+  // T45c part 2: the Mars globe beside the map, linked both ways with the Earth zones
+  await page.locator("canvas.planet-globe-canvas").waitFor({ timeout: 20000 }).catch(() => defect(name, "Mars: no 3D globe beside the map"));
+  if (/^\d/.test(((await page.locator(".zone-row strong").first().textContent()) || "").trim())) defect(name, "Mars: the zone list shows coordinates, not a place name");
   await page.locator(".zone-row").first().click();
+  await page.locator(".planet-caption").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: selecting a zone does not light the same-slope windows"));
+  const globe = page.locator("canvas.planet-globe-canvas");
+  await globe.scrollIntoViewIfNeeded();
+  const box = await globe.boundingBox();
+  if (box) {
+    await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+    await page.locator(".planet-point").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: a click on the globe lists no Earth zone"));
+  }
+  await shot("13b-mars-globe");
   await page.locator(".v3-under").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: the zone card does not open"));
   await shot("14-mars-zone");
   await page.locator(".lang-switch button", { hasText: "FR" }).click();

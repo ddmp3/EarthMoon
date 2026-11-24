@@ -81,8 +81,43 @@ def build(out: Path, add: bool = False) -> str:
             shutil.rmtree(out)
         rid = export(run, cube, out, commit="synthetic-fixture")
         render_release(run, out / rid, run / "land-cells.npy", workers=1)
+        fixture_annotations(out, rid, BODY)
     assert SCENARIO_TARGETS
     return rid
+
+
+def fixture_annotations(out: Path, rid: str, body: str) -> Path:
+    """Synthetic names and same-slope links (T45c), in the shape tools/discovery/analogs.py writes. TEST DATA: every
+    name says "synthetic"; no geocoding and no gazetteer are used."""
+    from discovery.analogs import BAND, RULE
+    rng = np.random.default_rng(SEED + 1)
+    rel = out / rid
+    scen = json.loads((rel / "scenarios.json").read_text(encoding="utf-8"))["scenarios"]
+    nominal = json.loads((rel / "release.json").read_text(encoding="utf-8"))["grid"]["nominal"]
+    targets, zones = {}, {}
+    for t in sorted({t for s in scen for t in s["assessed_targets"]}):
+        slope = np.sort(rng.gamma(2.0, 2.5 if body == "moon" else 0.4, 400))
+        lat = rng.uniform(-89.5, -80.0, 400) if body == "moon" else rng.uniform(20.0, 60.0, 400)
+        lon = rng.uniform(0.0, 360.0, 400)
+        targets[t] = {"ref_quantiles": np.quantile(slope, np.linspace(0, 1, 1001)).round(4).tolist(), "n_windows": 400,
+                      "windows": {"lat": lat.round(4).tolist(), "lon": lon.round(4).tolist(), "slope": slope.round(3).tolist(),
+                                  "name": [f"synthetic feature {k}" for k in range(400)]}}
+    for s in scen:
+        for t in s["assessed_targets"]:
+            f = rel / "zones" / s["id"] / t / f"t{nominal['tau']}-m{nominal['min_cells']}.json"
+            if not f.exists():
+                continue
+            q = targets[t]["ref_quantiles"]
+            for k, z in enumerate(json.loads(f.read_text(encoding="utf-8"))["zones"][:60]):
+                zones[z["id"]] = {"target": t, "lat": z["lat"], "lon": z["lon"], "typicality": z["typicality"]["median"],
+                                  "slope_median": float(q[int(rng.integers(100, 900))]),
+                                  "place": {"en": f"Synthetic place {k + 1}", "fr": f"Lieu synthétique {k + 1}"}}
+    doc = {"release": rid, "body": body, "rule": RULE, "band": BAND, "targets": targets, "zones": zones,
+           "sources": {"planet_names": "synthetic fixture", "earth_names": "synthetic fixture (no OpenStreetMap data)"}}
+    dest = out / "annotations" / f"{rid}.json"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(json.dumps(doc, separators=(",", ":")) + "\n", encoding="utf-8")
+    return dest
 
 
 def main(argv=None) -> int:

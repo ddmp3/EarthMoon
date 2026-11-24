@@ -2,6 +2,29 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-24 · T45c part 2: planet globe, same-slope link, place names (PR #37)
+- **Asked by David (24/11):**
+  - the Moon or Mars visible beside the Earth map;
+  - selection in both directions;
+  - names of places instead of coordinates, coordinates kept in the details.
+- **Globe:** an orthographic globe on a 2D canvas, beside the Earth map in every v3 mission, stacked on phones. It has no 3D library: three.js was tried and added 215 KB gzip, over the 60 KB budget of ADR-006.
+  - Moon: the LROC WAC colour mosaic (NASA SVS).
+  - Mars: MOLA relief shaded by EarthMoon, not true colours.
+- **Same-slope link** (David's choice), because our method compares a zone with an environment, never with one planetary place:
+  - **Earth zone → planet:** the windows whose slope percentile is within 2.5 points of the zone's;
+  - **planet point → Earth:** the Earth zones of the same percentile, and picking one selects it on the map.
+- **Names:**
+  - **Earth:** OpenStreetMap Nominatim, within its usage policy (1 request per second, cached, best zones only): 420 lunar and 180 Martian zones named, © OpenStreetMap contributors, ODbL.
+  - **Planets:** the IAU Gazetteer (USGS, public domain); lunar pits keep the LROC atlas names.
+  - **Display:** names lead in the zone list and card, with coordinates and median slope underneath.
+- **API:** `/api/v3/analogs/target`, `/analogs/zone/{id}` and `/analogs/point`; zones carry `place` and `slope_median`. Documented in OpenAPI and tested.
+- **Catalogue:** `osm-nominatim`, `usgs-planetary-nomenclature-moon` and `usgs-planetary-nomenclature-mars` (verified 24/11).
+- **Checks:**
+  - the LOLA polar longitudes were checked against Shackleton and Shoemaker;
+  - end-to-end test TF-19 covers the link both ways;
+  - the browser audit checks the globe, the link and the names.
+- **Docs:** `docs/wiki/methods/analog-links.md`.
+
 ## 2026-11-24 · T45c part 1: whole-site Moon and Mars modes (PR #36)
 - **Decided by David after the first mock-up (23 to 24/11):**
   - keep the original site as the Moon experience;

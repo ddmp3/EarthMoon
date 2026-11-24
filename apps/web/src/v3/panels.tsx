@@ -74,10 +74,10 @@ export function ZoneCard({ zone, scenario, cannotAssess, onClose, onProvenance, 
   return (
     <section aria-label={`${t.zone} ${zone.rank}`} className="v3-card" role="region">
       <header>
-        <h3>{t.zone} {zone.rank} <small>{t.cellsArea(zone.cells, zone.area_km2)}</small></h3>
+        <h3>{zone.place?.[lang] ? <>{zone.place[lang]} <small>{t.zone} {zone.rank}</small></> : <>{t.zone} {zone.rank}</>} <small>{t.cellsArea(zone.cells, zone.area_km2)}</small></h3>
         <button aria-label={t.close} className="v3-close" onClick={onClose} type="button">×</button>
       </header>
-      <p className="note">{zone.lat.toFixed(4)}, {zone.lon.toFixed(4)}</p>
+      <p className="note">{zone.lat.toFixed(4)}, {zone.lon.toFixed(4)}{zone.slope_median != null ? ` · ${t.slopeMedian(zone.slope_median)}` : ''}</p>
       <StatusBar status={status} t={t} />
       <div className="v3-scroll">
       <table className="v3-dims">

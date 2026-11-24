@@ -1,6 +1,7 @@
 import express from "express";
 import type { Request, Response } from "express";
-import { BadRequest, NotFound, parseZoneId } from "./store.js";
+import { BadRequest, NotFound, parseZoneId, percentileOf } from "./store.js";
+import type { Annotations, TargetWindows } from "./store.js";
 import type { ReleaseStore } from "./store.js";
 
 const DEFAULT_LIMIT = 50;
@@ -104,11 +105,13 @@ export function v3Router(
       if (!Number.isInteger(limit) || limit < 1 || limit > MAX_LIMIT) throw new BadRequest(`limit must be an integer from 1 to ${MAX_LIMIT}`);
       if (!Number.isInteger(offset) || offset < 0) throw new BadRequest("offset must be a non-negative integer");
       const doc = await store!.zones(release, s);
+      const ann = await store!.annotations(release);
       return {
         ...(await head(release)),
         scenario: s.scenario.id, env: s.target, tau: s.tau, min_cells: s.minCells,
         total: doc.zones.length, offset, limit,
-        zones: doc.zones.slice(offset, offset + limit),
+        zones: doc.zones.slice(offset, offset + limit).map((z) => annotate(z, ann)),
+        ...(ann ? { attribution: ann.sources.earth_names } : {}),
       };
     }),
   );
@@ -124,7 +127,84 @@ export function v3Router(
       const doc = await store!.zones(release, s);
       const zone = doc.zones[p.rank - 1];
       if (!zone || zone.id !== req.params.id) throw new NotFound(`Unknown zone: ${req.params.id.slice(0, 80)}`);
-      return { ...(await head(release)), zone, cannot_assess: s.scenario.cannot_assess };
+      const ann = await store!.annotations(release);
+      return { ...(await head(release)), zone: annotate(zone, ann), cannot_assess: s.scenario.cannot_assess,
+        ...(ann ? { attribution: ann.sources.earth_names } : {}) };
+    }),
+  );
+
+  // --- analog links between the two globes (T45c part 2): the same slope percentile, never one planetary place ---
+
+  const annotationsOf = async (release: string): Promise<Annotations> => {
+    const ann = await store!.annotations(release);
+    if (!ann) throw new NotFound(`No names or analog links are built for release ${release}`);
+    return ann;
+  };
+  const targetOf = (ann: Annotations, env: string): { ref_quantiles: number[]; n_windows: number; windows: TargetWindows } => {
+    const t = Object.hasOwn(ann.targets, env) ? ann.targets[env] : undefined;
+    if (!t || !t.windows || !t.ref_quantiles) throw new NotFound(`No planetary windows stored for ${env}${t?.why ? `: ${t.why}` : ""}`);
+    return { ref_quantiles: t.ref_quantiles, n_windows: t.n_windows ?? t.windows.slope.length, windows: t.windows };
+  };
+
+  r.get(
+    "/analogs/target",
+    handle(async (req, release) => {
+      const s = await store!.selection(release, req.query.scenario, req.query.env, undefined, undefined);
+      const ann = await annotationsOf(release);
+      const t = targetOf(ann, s.target);
+      return { ...(await head(release)), env: s.target, body: ann.body, n_windows: t.n_windows, windows: t.windows,
+        rule: ann.rule, sources: ann.sources };
+    }),
+  );
+
+  r.get(
+    "/analogs/zone/:id",
+    handle(async (req, release) => {
+      const ann = await annotationsOf(release);
+      const z = Object.hasOwn(ann.zones, req.params.id) ? ann.zones[req.params.id] : undefined;
+      if (!z) throw new NotFound(`No analog link for zone ${req.params.id.slice(0, 80)} (only the best zones of each target are linked)`);
+      if (z.slope_median == null) throw new NotFound(`Zone ${req.params.id.slice(0, 80)} has no unmasked window to compare`);
+      const t = targetOf(ann, z.target);
+      const p = percentileOf(t.ref_quantiles, z.slope_median);
+      const w = t.windows;
+      const windows = w.slope.flatMap((sl, k) => (Math.abs(percentileOf(t.ref_quantiles, sl) - p) <= ann.band
+        ? [{ lat: w.lat[k], lon: w.lon[k], slope: sl, name: w.name[k] }] : []));
+      return { ...(await head(release)), zone: { id: req.params.id, ...z }, env: z.target, percentile: Math.round(p * 1e4) / 1e4,
+        windows, n_windows: t.n_windows, rule: ann.rule, sources: ann.sources };
+    }),
+  );
+
+  r.get(
+    "/analogs/point",
+    handle(async (req, release) => {
+      const s = await store!.selection(release, req.query.scenario, req.query.env, undefined, undefined);
+      const lat = Number(req.query.lat);
+      const lon = Number(req.query.lon);
+      if (!Number.isFinite(lat) || !Number.isFinite(lon) || Math.abs(lat) > 90 || Math.abs(lon) > 360) throw new BadRequest("lat must be within ±90 and lon within ±360");
+      const ann = await annotationsOf(release);
+      const t = targetOf(ann, s.target);
+      const rad = Math.PI / 180;
+      let best = 0;
+      let bestD = Infinity;
+      t.windows.lat.forEach((la, k) => {
+        const c = Math.sin(lat * rad) * Math.sin(la * rad) + Math.cos(lat * rad) * Math.cos(la * rad) * Math.cos((lon - t.windows.lon[k]) * rad);
+        const dist = Math.acos(Math.min(1, Math.max(-1, c)));
+        if (dist < bestD) {
+          bestD = dist;
+          best = k;
+        }
+      });
+      const slope = t.windows.slope[best];
+      const p = percentileOf(t.ref_quantiles, slope);
+      const zones = Object.entries(ann.zones)
+        .filter(([id, z]) => z.target === s.target && id.startsWith(`${s.scenario.id}.`) && z.slope_median != null
+          && Math.abs(percentileOf(t.ref_quantiles, z.slope_median) - p) <= ann.band)
+        .sort((a, b) => (b[1].typicality ?? 0) - (a[1].typicality ?? 0))
+        .slice(0, 20)
+        .map(([id, z]) => ({ id, ...z }));
+      return { ...(await head(release)), env: s.target, percentile: Math.round(p * 1e4) / 1e4,
+        window: { lat: t.windows.lat[best], lon: t.windows.lon[best], slope, name: t.windows.name[best] },
+        zones, rule: ann.rule, sources: ann.sources };
     }),
   );
 
@@ -288,4 +368,10 @@ export async function liveStatus(store: ReleaseStore, release: string, now = Dat
   }
   if (newer) freshness.newer_release = newer;
   return { ...doc, freshness };
+}
+
+/** A zone with its place name and median slope when the release has annotations (coordinates stay). */
+function annotate<Z extends { id: string }>(z: Z, ann: Annotations | undefined): Z & { place?: unknown; slope_median?: number | null } {
+  const a = ann && Object.hasOwn(ann.zones, z.id) ? ann.zones[z.id] : undefined;
+  return a ? { ...z, place: a.place ?? null, slope_median: a.slope_median } : z;
 }

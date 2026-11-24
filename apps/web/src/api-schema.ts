@@ -1127,6 +1127,145 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/analogs/target": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Planetary windows of a target with their IAU names, for the globe (T45c)
+         * @description A seeded sample of the target's windows (at most 4,000), each with its centre, slope and the name of the IAU feature that holds it (or the nearest one). Built by tools/discovery/analogs.py; 404 when the release has none.
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                    scenario: string;
+                    env: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Windows of the target */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/analogs/zone/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Planetary windows of the same slope as an Earth zone (T45c)
+         * @description Windows of the zone's target whose slope percentile is within 2.5 points of the zone's median slope percentile. Our method compares a zone with an environment, never with one planetary place: this is the link shown between the two globes. Only the best zones of each target are linked.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Same-slope windows */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v3/analogs/point": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Earth zones of the same slope as a planetary point (T45c)
+         * @description The nearest stored window of the target to the point, then the linked Earth zones whose median slope percentile is within 2.5 points of it, best typicality first (at most 20).
+         */
+        get: {
+            parameters: {
+                query: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                    scenario: string;
+                    env: string;
+                    lat: number;
+                    lon: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Same-slope Earth zones */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                404: components["responses"]["NotFound"];
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v3/sites": {
         parameters: {
             query?: never;
@@ -1215,6 +1354,13 @@ export interface components {
             target: string;
             lat: number;
             lon: number;
+            /** @description place name of the zone centre (OpenStreetMap Nominatim, ODbL), in English and French; only the best zones of each target have one (T45c) */
+            place?: {
+                en?: string | null;
+                fr?: string | null;
+            } | null;
+            /** @description median slope (degrees) of the zone's unmasked windows, for the same-slope link (T45c) */
+            slope_median?: number | null;
             cells: number;
             area_km2: number;
             typicality: components["schemas"]["Spread"];

@@ -1159,3 +1159,27 @@ products:
       checked_url: "https://www.naturalearthdata.com/downloads/"
       checked_on: "2026-11-23"
       watch: {"endpoint": "https://api.github.com/repos/nvkelso/natural-earth-vector/commits?path=geojson/ne_110m_admin_0_countries.geojson&per_page=1", "path": "0.sha"}
+
+  - id: osm-nominatim
+    body: earth
+    mission: compilation
+    instrument: reverse geocoding of OpenStreetMap data
+    product: "Nominatim reverse geocoding (OpenStreetMap Foundation server), zoom 10, English and French names"
+    producer: OpenStreetMap contributors; Nominatim service by the OpenStreetMap Foundation
+    url: https://nominatim.openstreetmap.org/
+    access: {format: JSON over HTTPS, size: "one request per place; at most 1 per second", licence: "ODbL (share alike); results cached and shared under the ODbL", account: false}
+    attribution: "© OpenStreetMap contributors, ODbL (https://www.openstreetmap.org/copyright)"
+    use: [qualification]
+    coverage: "global"
+    resolution_spatial: "place names at zoom 10 (about city level)"
+    resolution_effective: "not stated on page"
+    resolution_temporal: "names of the day of the query (cached in earthmoon-data/names)"
+    units: "names (locality, region, country)"
+    nature: interpretation
+    uncertainty: "not stated on page; a zone centre takes the name of the place that holds it, not of the whole zone"
+    limitations: "Usage policy: at most 1 request per second, one thread, an application User-Agent, results cached and never queried twice, bulk geocoding discouraged. Only the best zones of each target are named (T45c); the others keep their coordinates"
+    dimensions: [geography]
+    environments: [global-land]
+    status: verified
+    verified_on: "2026-11-24"
+    verified_url: https://operations.osmfoundation.org/policies/nominatim/

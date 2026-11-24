@@ -27,8 +27,13 @@
 - **Each Earth tile** of a release lists the source files it read, with their version (ETag, size, SHA-256) and their date at the source, plus when it was computed and with which code. It is served by `GET /api/v3/tiles/{lat,lon}/provenance` and shown in the site panel.
 - **Each release** lists what changed from the previous one: `GET /api/v3/changes`.
 
+## Place names (T45c)
+- **Earth:** OpenStreetMap Nominatim, queried once per place when a release is annotated (`tools/discovery/analogs.py`), within its usage policy: at most 1 request per second, cached, never queried twice. Only the best zones of each target are named; the others keep their coordinates. © OpenStreetMap contributors, ODbL.
+- **Moon and Mars:** the IAU Gazetteer of Planetary Nomenclature (USGS, public domain).
+- **Coordinates** stay in every record and every panel.
+
 ## Catalogued, not used yet
-- **The catalogues hold 45 Earth, 36 lunar and 29 Martian products.** The ones not used yet wait for a check, an account or a decision: [plan/data-improvements.md](plan/data-improvements.md).
+- **The catalogues hold 46 Earth, 37 lunar and 30 Martian products.** The ones not used yet wait for a check, an account or a decision: [plan/data-improvements.md](plan/data-improvements.md).
 - **Examples:**
   - the Mars geologic map (R5);
   - SWIM 2.0 (R9);
@@ -39,6 +44,9 @@
 - **Credits:** `apps/web/public/img/credits.json`.
 - **NASA images:** Artemis II, Apollo 14, 15 and 17, the Clementine south pole mosaic, and Phoenix (Mars).
 - **Map:** NASA GIBS Blue Marble.
+- **Globes:**
+  - Moon: the LROC WAC colour mosaic of NASA's Scientific Visualization Studio (CGI Moon Kit, 2048 x 1024).
+  - Mars: MOLA elevation shaded by EarthMoon (`tools/discovery/globe_texture.py`), not true colours.
 - **Satellite views:** Sentinel-2 cloudless (EOX, CC BY 4.0).
 
 ## v2 data

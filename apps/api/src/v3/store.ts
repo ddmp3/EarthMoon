@@ -32,6 +32,29 @@ export type Scenario = {
 export type Zone = { id: string; rank: number; [key: string]: unknown };
 export type Doc = { release: string; methodology_version: string; [key: string]: unknown };
 
+export type AnnotatedZone = { target: string; slope_median: number | null; lat: number; lon: number; typicality: number | null; place?: { en: string | null; fr: string | null } };
+export type TargetWindows = { lat: number[]; lon: number[]; slope: number[]; name: string[] };
+export type Annotations = {
+  release: string; body: string; band: number; rule: string; sources: Record<string, string>;
+  targets: Record<string, { ref_quantiles?: number[]; n_windows?: number; windows: TargetWindows | null; why?: string }>;
+  zones: Record<string, AnnotatedZone>;
+};
+
+/** Percentile of a slope in a target's distribution, from its 1,001 quantiles (linear between them). */
+export function percentileOf(q: number[], slope: number): number {
+  if (slope <= q[0]) return 0;
+  if (slope >= q[q.length - 1]) return 1;
+  let lo = 0;
+  let hi = q.length - 1;
+  while (hi - lo > 1) {
+    const mid = (lo + hi) >> 1;
+    if (q[mid] <= slope) lo = mid;
+    else hi = mid;
+  }
+  const f = q[hi] > q[lo] ? (slope - q[lo]) / (q[hi] - q[lo]) : 0;
+  return (lo + f) / (q.length - 1);
+}
+
 export class NotFound extends Error {}
 export class BadRequest extends Error {}
 
@@ -173,6 +196,21 @@ export class ReleaseStore {
     dates.sort();
     const { methodology_version } = await this.release(release);
     return { release, methodology_version, tile: key, last_changed_in: p.last_changed_in[key], data_date: dates.length ? dates[dates.length - 1].slice(0, 10) : null, scales };
+  }
+
+  /** Names and same-slope links of a release (tools/discovery/analogs.py, T45c), or undefined when not built. */
+  async annotations(release: string): Promise<Annotations | undefined> {
+    const file = path.join(this.root, "annotations", `${release}.json`);
+    const cached = this.cache.get(file);
+    if (cached !== undefined) return cached as Annotations;
+    try {
+      const a = JSON.parse(await readFile(file, "utf8")) as Annotations;
+      if (this.cache.size >= MAX_CACHED) this.cache.delete(this.cache.keys().next().value as string);
+      this.cache.set(file, a);
+      return a;
+    } catch {
+      return undefined;
+    }
   }
 
   /** Path of one layer tile, or undefined when the release has no tile there (no cell in it). */

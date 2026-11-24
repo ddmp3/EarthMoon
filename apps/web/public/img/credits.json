@@ -75,5 +75,16 @@
     "credit": "NASA/JPL-Caltech/ASU",
     "url": "https://science.nasa.gov/photojournal/themis-views-mars-arsia-mons-volcano/",
     "crop": "1280 x 1280 square around the volcano, resized to 1200 x 1200"
+  },
+  "planet-moon": {
+    "title": "CGI Moon Kit, LROC color 2k",
+    "credit": "NASA's Scientific Visualization Studio",
+    "url": "https://svs.gsfc.nasa.gov/4720/",
+    "file": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_2k.jpg"
+  },
+  "planet-mars": {
+    "title": "Mars relief from MOLA MEGDR (128 ppd tiles and 512 ppd polar grids)",
+    "credit": "MOLA Science Team, NASA PDS; shaded by EarthMoon (tools/discovery/globe_texture.py), not true colours",
+    "url": "https://pds-geosciences.wustl.edu/missions/mgs/megdr.html"
   }
 }
