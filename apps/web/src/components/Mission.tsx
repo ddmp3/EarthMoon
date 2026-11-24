@@ -19,6 +19,7 @@ import { FlyToPoint, MAP_MAX_ZOOM, V3Layers, ZoneMarkers, type MapLayer } from '
 import { MapLegend, RankTabs, SiteV3Chip, V3Controls, V3Search, V3StatusLine, ZoneRows, type Tab } from '../v3/MissionV3'
 import { zoneItems } from '../v3/model'
 import { CompareZones, DataMethod, Patterns, Provenance, ZoneCard } from '../v3/panels'
+import { PlanetPanel } from '../v3/PlanetPanel'
 import { v3Texts } from '../v3/text'
 import type { V3State } from '../v3/useV3'
 
@@ -301,7 +302,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                   </div>
                   <p className="screening-note">{vt.zonesLead}</p>
                   <ZoneRows
-                    items={zoneItems(zones, vt)}
+                    items={zoneItems(zones, vt, lang)}
                     onPick={(id) => setPicked(picked.includes(id) ? picked.filter((x) => x !== id) : picked.length < 4 ? [...picked, id] : picked)}
                     onSelect={(id) => { setZoneId(id); setCompare(false) }}
                     picked={picked}
@@ -350,6 +351,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
               )}
             </div>
 
+            <div className={hasV3 ? 'map-pair' : undefined}>
             <div className="map-wrap">
               <MapContainer center={[25, 10]} maxZoom={hasV3 ? MAP_MAX_ZOOM : 8} minZoom={1} scrollWheelZoom={false} worldCopyJump zoom={2}>
                 <TileLayer attribution="NASA Blue Marble · NASA GIBS" maxNativeZoom={8} url={GIBS_TILES} />
@@ -392,6 +394,12 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
               </MapContainer>
               {hasV3 && <MapLegend available={v3.available} coverage={v3.coverage} layer={layer} overlay={overlay} />}
               {cellsError && <div className="map-note map-note-error" role="alert">{vt.cellsError}: {cellsError}</div>}
+            </div>
+            {hasV3 && v3.release && v3.scenario && (
+              <PlanetPanel body={mode === 'mars' ? 'mars' : 'moon'} env={v3.env} lang={lang}
+                onZone={(id) => { setTab('zones'); setZoneId(id) }} release={v3.release.release} scenario={v3.scenario.id}
+                t={vt} zoneId={tab === 'zones' ? zoneId : null} zoneName={zone?.place?.[lang] ?? null} />
+            )}
             </div>
           </section>
           {tab === 'sites' && children}

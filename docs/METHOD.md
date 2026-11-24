@@ -33,6 +33,7 @@ Detail of each step: [wiki/methods/](wiki/README.md). Decisions: [adr/](adr/READ
 | Validation | Negative and positive controls, masks, self-consistency, reproducibility, Monte Carlo, bias checks, dossiers of the top 20 zones | [VALIDATION_PROTOCOL.md](VALIDATION_PROTOCOL.md) |
 | Context | Geology (lithology class, crosswalk E17), frozen ground and aridity (models, E18): shown beside slope, never combined with it | [methods/geology-crosswalk.md](wiki/methods/geology-crosswalk.md), [methods/thermal-hydric.md](wiki/methods/thermal-hydric.md) |
 | Refresh | Sources watched, impact of a change analysed, no recompute without David's decision | [methods/refresh.md](wiki/methods/refresh.md) |
+| Analog links and names | The planet globe beside the Earth map, linked by the same slope percentile (never one planetary place); Earth names from OpenStreetMap, planetary names from the IAU | [methods/analog-links.md](wiki/methods/analog-links.md) |
 
 ## What is compared
 - **Slope.** The eight terrain metrics carry one independent property, slope, so slope is compared and the rest is shown as context (T21, [methods/parameters.md](wiki/methods/parameters.md)).

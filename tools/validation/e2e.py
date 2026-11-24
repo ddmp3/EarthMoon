@@ -263,6 +263,24 @@ def run(web: str, api: str) -> None:
         assert json.loads(http(f"{api}/api/v3/scenarios")[2])["release"] == idx["current"], "the default release is not the lunar one"
         return f"release {mars}, {len(d['assessed_targets'])} targets, {len(json.loads(b)['features'])} cells in view"
 
+    def v3_analogs():
+        out = []
+        for rel, sc in (("", "B"), ("&release=mars", "D")):
+            env = json.loads(http(f"{api}/api/v3/scenarios?x=1{rel}")[2])["scenarios"][0]["assessed_targets"][0]
+            sc = json.loads(http(f"{api}/api/v3/scenarios?x=1{rel}")[2])["scenarios"][0]["id"]
+            z = json.loads(http(f"{api}/api/v3/zones?scenario={sc}&env={env}&limit=1{rel}")[2])["zones"][0]
+            assert z.get("place") and z["place"].get("en") and z["place"].get("fr"), "a zone has no place name"
+            assert "lat" in z and "lon" in z, "the coordinates of a zone are gone"
+            code, _, b = http(f"{api}/api/v3/analogs/zone/{z['id']}?x=1{rel}")
+            assert code == 200, f"analogs/zone HTTP {code}"
+            link = json.loads(b)
+            assert link["windows"] and all(w["name"] for w in link["windows"]), "no named window of the same slope"
+            w = link["windows"][0]
+            code, _, b = http(f"{api}/api/v3/analogs/point?scenario={sc}&env={env}&lat={w['lat']}&lon={w['lon']}{rel}")
+            assert code == 200 and json.loads(b)["window"]["name"], f"analogs/point HTTP {code}"
+            out.append(f"{sc}: {len(link['windows'])} windows")
+        return ", ".join(out)
+
     check("TF-01", "Front end loads and targets the right API", front_loads)
     check("TF-02", "API health probe", health)
     check("TF-03", "CORS: front-end origin accepted, unknown origin rejected", cors)
@@ -281,6 +299,7 @@ def run(web: str, api: str) -> None:
     check("TF-16", "v3: releases, zones, zone card with spread, coverage, method; grid enforced", v3_static)
     check("TF-17", "v3: layer tiles, cells in view and custom query through the internal service", v3_layers_and_service)
     check("TF-18", "v3 Mars (T48): release=mars reads scenario D, its zones and cells; the default stays lunar", v3_mars)
+    check("TF-19", "T45c: zones carry a place name; same-slope planetary windows and Earth zones, both ways", v3_analogs)
 
 
 def main(argv=None) -> int:

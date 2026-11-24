@@ -149,6 +149,20 @@ export interface TileProvenance {
   scales: Record<string, { computed_at: string | null; computed_at_note?: string; code: string; inputs: { item: string; etag?: string | null; last_modified?: string | null }[] }>
 }
 
+/** T45c: same-slope links between an Earth zone and the planetary windows of its target. */
+export type AnalogWindows = { lat: number[]; lon: number[]; slope: number[]; name: string[] }
+export interface AnalogTarget { release: string; env: string; body: string; n_windows: number; windows: AnalogWindows; rule: string; sources: Record<string, string> }
+export interface AnalogZone {
+  release: string; env: string; percentile: number; n_windows: number; rule: string; sources: Record<string, string>
+  zone: { id: string; slope_median: number | null; place?: { en: string | null; fr: string | null } }
+  windows: { lat: number; lon: number; slope: number; name: string }[]
+}
+export interface AnalogPoint {
+  release: string; env: string; percentile: number; rule: string
+  window: { lat: number; lon: number; slope: number; name: string }
+  zones: { id: string; lat: number; lon: number; typicality: number | null; slope_median: number | null; place?: { en: string | null; fr: string | null } }[]
+}
+
 export const v3 = {
   releases: () => get<ReleaseIndex>('releases'),
   release: (id: string) => get<{ release: string; run: string; processing?: { step: string; cells?: number }[]; geology?: unknown; context?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
@@ -159,6 +173,10 @@ export const v3 = {
   zone: (id: string, release?: string) => get<ZoneDetail>(withRelease(`zones/${encodeURIComponent(id)}`, release)),
   method: (release?: string) => get<{ release: string; sources: MethodSource[]; processing: Record<string, unknown>[] }>(withRelease('method', release)),
   status: (release?: string) => get<Status>(withRelease('status', release)),
+  analogTarget: (scenario: string, env: string, release?: string) => get<AnalogTarget>(`analogs/target?${q({ scenario, env, release })}`),
+  analogZone: (id: string, release?: string) => get<AnalogZone>(withRelease(`analogs/zone/${encodeURIComponent(id)}`, release)),
+  analogPoint: (scenario: string, env: string, lat: number, lon: number, release?: string) =>
+    get<AnalogPoint>(`analogs/point?${q({ scenario, env, lat: lat.toFixed(3), lon: lon.toFixed(3), release })}`),
   tileProvenance: (tile: string, release?: string) => get<TileProvenance>(withRelease(`tiles/${encodeURIComponent(tile)}/provenance`, release)),
   sites: (scenario: string, release?: string) =>
     get<{ release: string; scenario: string; points: { id: string; cell: string | null; values: Record<string, CellProps> | null; reason?: string }[] }>(`sites?${q({ scenario, release })}`),

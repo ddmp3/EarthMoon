@@ -240,8 +240,12 @@ export function cellLines(c: CellProps, t: V3Texts): string[] {
 }
 
 /** Rows of the zone list (same rows as the ranked sites). */
-export function zoneItems(zones: Zone[], t: V3Texts) {
-  return zones.map((z) => ({ id: z.id, lat: z.lat, lon: z.lon, value: z.typicality.median, sub: t.cellsArea(z.cells, z.area_km2) }))
+/** Rows of the zone list: the place name when the release has one (T45c), the coordinates in the details. */
+export function zoneItems(zones: Zone[], t: V3Texts, lang: 'en' | 'fr' = 'en') {
+  return zones.map((z) => ({
+    id: z.id, lat: z.lat, lon: z.lon, value: z.typicality.median, name: z.place?.[lang] ?? null,
+    sub: t.cellsArea(z.cells, z.area_km2),
+  }))
 }
 
 /** Geology class of a cell for the map, as the tiles draw it (tools/discovery/tiles.geology_class). */

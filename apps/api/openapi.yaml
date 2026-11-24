@@ -469,6 +469,45 @@ paths:
         "400": { $ref: "#/components/responses/BadRequest" }
         "404": { $ref: "#/components/responses/NotFound" }
         "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/analogs/target:
+    get:
+      tags: [V3]
+      summary: Planetary windows of a target with their IAU names, for the globe (T45c)
+      description: A seeded sample of the target's windows (at most 4,000), each with its centre, slope and the name of the IAU feature that holds it (or the nearest one). Built by tools/discovery/analogs.py; 404 when the release has none.
+      parameters:
+        - { $ref: "#/components/parameters/Release" }
+        - { name: scenario, in: query, required: true, schema: { type: string } }
+        - { name: env, in: query, required: true, schema: { type: string } }
+      responses:
+        "200": { description: Windows of the target, content: { application/json: { schema: { $ref: "#/components/schemas/V3Doc" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /api/v3/analogs/zone/{id}:
+    get:
+      tags: [V3]
+      summary: Planetary windows of the same slope as an Earth zone (T45c)
+      description: "Windows of the zone's target whose slope percentile is within 2.5 points of the zone's median slope percentile. Our method compares a zone with an environment, never with one planetary place: this is the link shown between the two globes. Only the best zones of each target are linked."
+      parameters:
+        - { $ref: "#/components/parameters/Release" }
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200": { description: Same-slope windows, content: { application/json: { schema: { $ref: "#/components/schemas/V3Doc" } } } }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /api/v3/analogs/point:
+    get:
+      tags: [V3]
+      summary: Earth zones of the same slope as a planetary point (T45c)
+      description: The nearest stored window of the target to the point, then the linked Earth zones whose median slope percentile is within 2.5 points of it, best typicality first (at most 20).
+      parameters:
+        - { $ref: "#/components/parameters/Release" }
+        - { name: scenario, in: query, required: true, schema: { type: string } }
+        - { name: env, in: query, required: true, schema: { type: string } }
+        - { name: lat, in: query, required: true, schema: { type: number, minimum: -90, maximum: 90 } }
+        - { name: lon, in: query, required: true, schema: { type: number, minimum: -360, maximum: 360 } }
+      responses:
+        "200": { description: Same-slope Earth zones, content: { application/json: { schema: { $ref: "#/components/schemas/V3Doc" } } } }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
   /api/v3/sites:
     get:
       tags: [V3]
@@ -567,6 +606,14 @@ components:
         target: { type: string }
         lat: { type: number }
         lon: { type: number }
+        place:
+          type: object
+          nullable: true
+          description: "place name of the zone centre (OpenStreetMap Nominatim, ODbL), in English and French; only the best zones of each target have one (T45c)"
+          properties:
+            en: { type: string, nullable: true }
+            fr: { type: string, nullable: true }
+        slope_median: { type: number, nullable: true, description: "median slope (degrees) of the zone's unmasked windows, for the same-slope link (T45c)" }
         cells: { type: integer }
         area_km2: { type: number }
         typicality: { $ref: "#/components/schemas/Spread" }

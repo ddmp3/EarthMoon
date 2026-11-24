@@ -471,3 +471,60 @@ describe("API v3 tile provenance and release changes (T52)", () => {
     expect(body.tiles_recomputed).toEqual(["10,20"]);
   });
 });
+
+describe("API v3 analog links and place names (T45c part 2)", () => {
+  let dir: string;
+  let api: Running;
+  const q = Array.from({ length: 1001 }, (_, k) => k / 50);                // slope quantiles 0 to 20 degrees
+  beforeAll(async () => {
+    dir = await mkdtemp(path.join(tmpdir(), "releases-analogs-"));
+    await writeRelease(dir);
+    await mkdir(path.join(dir, "annotations"), { recursive: true });
+    await writeFile(path.join(dir, "annotations", `${RID}.json`), JSON.stringify({
+      release: RID, body: "moon", band: 0.025, rule: "windows whose slope percentile is within 2.5 points of the zone's",
+      sources: { planet_names: "IAU", earth_names: "© OpenStreetMap contributors, ODbL" },
+      targets: { "moon-psr": { ref_quantiles: q, n_windows: 6162, windows: {
+        lat: [-89.6, -88.0, -86.0], lon: [129.8, 10.0, 200.0], slope: [10.0, 2.0, 10.2], name: ["Shackleton", "near Faustini (12 km)", "Haworth"] } } },
+      zones: {
+        "B.moon-psr.t0.5.m3.1": { target: "moon-psr", slope_median: 10.1, lat: 11, lon: 20, typicality: 0.89, place: { en: "Itabirito, Minas Gerais, Brazil", fr: "Itabirito, Minas Gerais, Brésil" } },
+        "B.moon-psr.t0.5.m3.2": { target: "moon-psr", slope_median: 3.0, lat: 12, lon: 20, typicality: 0.88, place: { en: "Somewhere, Sudan", fr: "Quelque part, Soudan" } },
+      },
+    }));
+    api = await start(await ReleaseStore.open(dir));
+  });
+  afterAll(async () => {
+    await api.close();
+    await rm(dir, { recursive: true, force: true });
+  });
+
+  it("zones carry their place name and median slope, coordinates stay", async () => {
+    const { body } = await json(`${api.url}/api/v3/zones?scenario=B&env=moon-psr&limit=2`);
+    expect(body.zones[0].place).toEqual({ en: "Itabirito, Minas Gerais, Brazil", fr: "Itabirito, Minas Gerais, Brésil" });
+    expect(body.zones[0].slope_median).toBe(10.1);
+    expect(body.zones[0].lat).toBe(11);
+    expect(body.attribution).toMatch(/OpenStreetMap/);
+  });
+
+  it("an Earth zone lights the planetary windows of the same slope, with their names", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/analogs/zone/B.moon-psr.t0.5.m3.1`);
+    expect(status).toBe(200);
+    expect(body.percentile).toBeCloseTo(0.505, 2);
+    expect(body.windows.map((w: { name: string }) => w.name)).toEqual(["Shackleton", "Haworth"]);
+    expect(body.rule).toMatch(/2.5 points/);
+  });
+
+  it("a planetary point lights the Earth zones of the same slope", async () => {
+    const { status, body } = await json(`${api.url}/api/v3/analogs/point?scenario=B&env=moon-psr&lat=-89.5&lon=130`);
+    expect(status).toBe(200);
+    expect(body.window.name).toBe("Shackleton");
+    expect(body.zones.map((z: { id: string }) => z.id)).toEqual(["B.moon-psr.t0.5.m3.1"]);
+    expect(body.zones[0].place.en).toMatch(/Minas Gerais/);
+  });
+
+  it("the windows of a target are served for the globe, and bad input is refused", async () => {
+    const t = await json(`${api.url}/api/v3/analogs/target?scenario=B&env=moon-psr`);
+    expect(t.body.windows.lat).toHaveLength(3);
+    expect((await json(`${api.url}/api/v3/analogs/point?scenario=B&env=moon-psr&lat=95&lon=0`)).status).toBe(400);
+    expect((await json(`${api.url}/api/v3/analogs/zone/B.moon-psr.t0.5.m3.99`)).status).toBe(404);
+  });
+});

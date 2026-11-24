@@ -656,3 +656,25 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://doi.org/10.1038/s41597-024-03685-3
+
+  - id: usgs-planetary-nomenclature-mars
+    body: mars
+    mission: IAU Working Group for Planetary System Nomenclature
+    instrument: gazetteer
+    product: "MARS_nomenclature_center_pts (shapefile, generated nightly; downloaded 24/11/2026, 2,055 features)"
+    producer: USGS Astrogeology Science Center for the IAU, supported by NASA
+    url: https://asc-planetarynames-data.s3.us-west-2.amazonaws.com/MARS_nomenclature_center_pts.zip
+    access: {format: "ESRI shapefile (points with name, centre, diameter, extent)", size: "not stated on page", licence: "public domain (use constraints in the file's metadata)", account: false}
+    coverage: "global, named features adopted by the IAU"
+    resolution_spatial: "feature centres and extents; control network MDIM 2.1"
+    resolution_effective: "not applicable"
+    resolution_temporal: "not applicable"
+    units: "names, degrees, km"
+    nature: interpretation
+    uncertainty: "not stated on page"
+    limitations: "A window takes the smallest named feature whose extent holds it, else the nearest one with its distance (T45c); a name locates, it does not describe the terrain"
+    dimensions: [geography]
+    environments: [global]
+    status: verified
+    verified_on: "2026-11-24"
+    verified_url: https://planetarynames.wr.usgs.gov/GIS_Downloads
