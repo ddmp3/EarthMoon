@@ -2,6 +2,14 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-24 · Fix: zooming with the layer on (PR #39)
+- **Reported by David:** at zoom 8 with the layer active, a view of more than 5,000 cells (the cap of the discovery service, ADR-004) showed a red error.
+- **The page now:**
+  - estimates the cells of the view (area / 25.04 km²) and, above the cap, says "zoom in once more" without asking;
+  - reads a refusal of the service as information, not as an error;
+  - keeps the layer tiles shown, enlarged, above zoom 7.
+- **Tested:** in `model.test.ts`, and in the browser audit (zoom with the layer on, no error allowed).
+
 ## 2026-11-24 · T45c part 3: layout, contextual credits, slope colours (PR #38)
 - **David's review of part 2 (24/11):**
   - **Three blocks of one height:** ranking, Earth map and planet. The map legend moved into the Earth map block, below the map; the ranking and the planet stretch to that block and scroll inside.
