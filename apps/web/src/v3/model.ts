@@ -116,7 +116,7 @@ const ddmm = (iso: string) => {
 }
 
 /** Text of the validity and freshness indicators (ADR-009). */
-export function statusLines(s: Status, t: V3Texts): { state: 'validated' | 'not_validated'; validity: string; failing: string | null; freshness: string } {
+export function statusLines(s: Status, t: V3Texts): { state: 'validated' | 'not_validated'; validity: string; failing: string | null; freshness: string; impact: string | null } {
   const v = s.validity
   const fmt = v.state === 'validated' ? t.validity.validated : t.validity.not_validated
   const failed = v.checks.filter((c) => c.pass !== true).map((c) => t.checkName[c.check] ?? c.check)
@@ -130,7 +130,18 @@ export function statusLines(s: Status, t: V3Texts): { state: 'validated' | 'not_
     validity: fmt(v.protocol, v.release, ddmm(v.published)),
     failing: failed.length ? t.validity.failing(failed.join(', ')) : null,
     freshness,
+    impact: impactLine(s, t),
   }
+}
+
+/** T52b: what the detected updates would recompute; the refresher never starts it. */
+function impactLine(s: Status, t: V3Texts): string | null {
+  const imp = (s.freshness as { impact?: { tiles_reassessed?: number; cpu_hours_estimate?: number | null }[] }).impact ?? []
+  if (!imp.length) return null
+  const tiles = imp.reduce((a, i) => a + (i.tiles_reassessed ?? 0), 0)
+  if (imp.some((i) => i.cpu_hours_estimate == null)) return t.impactLineUnmeasured(imp.length, tiles)
+  const hours = imp.reduce((a, i) => a + (i.cpu_hours_estimate ?? 0), 0)
+  return t.impactLine(imp.length, tiles, hours)
 }
 
 /** Source product of a file read by an Earth tile (names as in the catalogue). */

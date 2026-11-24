@@ -381,7 +381,9 @@ describe("API v3 freshness from the refresher (T52, ADR-009 section 4)", () => {
       { id: OLD, run: "run-001", methodology_version: "v3", protocol: "validation-protocol-v2", commit: "def", created: "2026-11-18", body: "moon" },
     ] }));
     await writeFile(path.join(dir, "freshness.json"), JSON.stringify({ refresher: true, written_at: recent, progress: null, held: [],
-      new_products: [{ source: "lro-lola-ldem-85s-40m", found: "68", detected_on: recent, status: "detected, to verify", url: "https://example.org/lro/" }], sources: {
+      new_products: [{ source: "lro-lola-ldem-85s-40m", found: "68", detected_on: recent, status: "detected, to verify", url: "https://example.org/lro/" }],
+      impact: [{ source: "copernicus-dem-glo30", kind: "earth_tiles", items: 1, tiles_changed: ["10,20"], tiles_reassessed: 9, releases: [],
+        cpu_hours_estimate: 0.001, basis: "calibration", recompute_started: false }], sources: {
       "copernicus-dem-glo30": { state: "up_to_date", last_check: recent, last_success: recent, interval_hours: 168 },
       "esa-worldcover": { state: "up_to_date", last_check: "2026-01-01T00:00:00Z", last_success: "2026-01-01T00:00:00Z", interval_hours: 720 },
     } }));
@@ -404,6 +406,7 @@ describe("API v3 freshness from the refresher (T52, ADR-009 section 4)", () => {
     expect(by["natural-earth-admin0-110m"].state).toBe("check_overdue");  // a source of the release never checked
     expect(body.validity.state).toBe("not_validated");                  // validity still comes from the release
     expect(body.freshness.new_products[0].status).toBe("detected, to verify");
+    expect(body.freshness.impact[0].recompute_started).toBe(false);
   });
 
   it("an older release says a newer one is published", async () => {

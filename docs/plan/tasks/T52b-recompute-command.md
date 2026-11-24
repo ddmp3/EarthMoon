@@ -1,25 +1,22 @@
-# T52b Incremental recompute on command
+# T52b Pre-analysis of updates (no recompute)
 
-Read first: `CLAUDE.md`, `docs/adr/ADR-009-automatic-refresh.md` (with its T52 amendments), `docs/wiki/methods/refresh.md`. Branch: `feat/T52b-recompute`. Depends on T52.
+Read first: `CLAUDE.md`, `docs/adr/ADR-009-automatic-refresh.md` (with its T52 amendments), `docs/wiki/methods/refresh.md`. Branch: `feat/T52b-impact`. Depends on T52.
 
-## Goal
-One command recomputes what the refresher detected, and only that. It shows the plan and the estimated time first.
+## David's decision (24/11/2026)
+- **The refresher checks and identifies; it never starts a recompute.**
+- **Before any compute**, the volume of an update is analysed: what changed, what it would recompute, and how long it would take.
+- **The app will later run on Azure**, where every recompute has a cost. Nothing is deployed now (hard rule while the NASA evaluation runs), but the pre-analysis is built so a cost can be added from machine prices.
 
 ## Steps (TDD)
-1. **`plan`**: build the planner world from the run (tile lists, targets and their sources) and the refresher state, then print the dry run.
-2. **`run`**, local at every step:
-   - features of the changed tiles;
-   - assessment of the (tile, target) units;
-   - local zones (`zones_local.py`) and the Monte Carlo of the zones touched;
-   - cheap checks.
-3. **Incremental export:**
-   - a new release that shares unchanged files by hard link;
-   - only the zones and map tiles that changed are rewritten;
-   - `provenance.json` and `changes.json` with the source events;
-   - the publication gate, then `refresher.consumed` for the sources used.
-4. **Progress:** written to the refresher state, so the status shows `update_in_progress`.
-5. **Zone rule:** David decides the replacement for "no zone appears or disappears" (calibration: a one-cell change counts as one zone out and one in).
-6. **e2e:** a forced change on a fixture tile shows `update_detected`, then `update_in_progress`, then `up_to_date` once published.
+1. **Impact of each detected change**, computed by the refresher without any heavy step. It gives:
+   - the source and the items changed, withdrawn or added;
+   - the 1° Earth tiles they cover, and the tiles reassessed with their neighbours;
+   - the targets and releases concerned;
+   - the estimated number of cells;
+   - the estimated CPU time, from the measured calibration;
+   - a planetary change: its targets only, every tile, no Earth feature.
+2. **Shown to users** in `GET /api/v3/status` (`impact`), with its basis ("estimated from the calibration of 23/11/2026").
+3. **Recompute command:** later, only on David's decision, from the pre-analysis. The zone rule for publication is fixed then.
 
 ## Done when
-`tools/check.sh all` passes with the e2e step, and a forced 10-tile update runs end to end on Mars in minutes, never the whole planet.
+`tools/check.sh all` passes, and a detected change shows its impact in the status without any compute being started.

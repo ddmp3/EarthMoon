@@ -18,6 +18,7 @@ export type Freshness = {
   progress?: unknown;
   held?: { id: string; body?: string; reasons?: string[] }[];
   new_products?: { source: string; found: string; detected_on: string; status: string; url: string }[];
+  impact?: Record<string, unknown>[];
 };
 export type Grid = { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } };
 export type Scenario = {

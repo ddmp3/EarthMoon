@@ -69,7 +69,7 @@ def due(entry: dict | None, interval: str, now: str) -> bool:
 
 
 def freshness(entries: dict, intervals: dict, progress: dict | None, held: list, now: str,
-              new_products: list | None = None) -> dict:
+              new_products: list | None = None, impact: list | None = None) -> dict:
     running = set((progress or {}).get("sources", []))
     waiting = {s for h in held for s in h.get("sources", [])}
     out = {}
@@ -83,7 +83,21 @@ def freshness(entries: dict, intervals: dict, progress: dict | None, held: list,
                     "detected_on": e.get("detected_on"), "reason": e.get("reason"),
                     "interval_hours": INTERVAL_HOURS.get(intervals.get(sid, "none"))}
     return {"refresher": True, "written_at": now, "sources": out, "progress": progress, "held": held,
-            "new_products": new_products or []}
+            "new_products": new_products or [], "impact": impact or []}
+
+
+def served_releases(idx: dict) -> list[dict]:
+    """The current release of each body; an index written before bodies existed has the lunar one as `current`."""
+    by = dict(idx.get("current_by_body") or {})
+    if idx.get("current") and "moon" not in by:
+        by["moon"] = idx["current"]
+    return [{"id": rid, "body": body} for body, rid in sorted(by.items())]
+
+
+def impacts(entries: dict, rels: list[dict]) -> list[dict]:
+    """Pre-analysis of every detected update (T52b): never starts a recompute."""
+    from discovery.impact import impact
+    return [impact(sid, e, rels) for sid, e in sorted(entries.items()) if e.get("state") == "update_detected"]
 
 
 def _write_atomic(path: Path, obj: dict) -> None:
@@ -166,10 +180,14 @@ def once(state_path: Path, releases: Path) -> None:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     state = run_checks(catalog, state_path, make_fetch(catalogue_hosts(catalog)), now)
     idx_path = releases / "index.json"
-    held = json.loads(idx_path.read_text()).get("held", []) if idx_path.exists() else []
+    idx = json.loads(idx_path.read_text()) if idx_path.exists() else {}
+    held = idx.get("held", [])
     intervals = {e["id"]: e["refresh"].get("interval", "none") for e in catalog}
+    from discovery.impact import releases as release_views
+    served = served_releases(idx)
+    imp = impacts(state["entries"], release_views(releases, served)) if served else []
     _write_atomic(releases / "freshness.json", freshness(state["entries"], intervals, state.get("progress"), held, now,
-                                                        new_products=state.get("new_products")))
+                                                        new_products=state.get("new_products"), impact=imp))
     for sid, e in sorted(state["entries"].items()):
         print(f"{now} {sid}: {e['state']}{' (' + e['reason'] + ')' if e.get('reason') else ''}")
 

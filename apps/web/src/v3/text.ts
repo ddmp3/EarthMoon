@@ -174,6 +174,10 @@ const en = {
     newer_release: 'A newer release is published',
   } as Record<string, string>,
   freshnessManual: (n: number) => `${n} sources, no automatic check yet: verified by hand`,
+  impactLine: (n: number, tiles: number, hours: number) =>
+    `${n} update${n > 1 ? 's' : ''} detected, not recomputed: ${tiles} tile${tiles > 1 ? 's' : ''} to reassess, about ${hours.toFixed(2)} CPU hours (estimate)`,
+  impactLineUnmeasured: (n: number, tiles: number) =>
+    `${n} update${n > 1 ? 's' : ''} detected, not recomputed: ${tiles} tile${tiles > 1 ? 's' : ''} to reassess, CPU time not measured`,
   viewingOld: (id: string) => `You are viewing release ${id}.`,
   showNewer: 'Show it',
   loading: 'Loading…',
@@ -383,6 +387,10 @@ const fr: V3Texts = {
     newer_release: 'Une version plus récente est publiée',
   },
   freshnessManual: (n: number) => `${n} sources, pas encore de vérification automatique : vérifiées à la main`,
+  impactLine: (n: number, tiles: number, hours: number) =>
+    `${n} mise${n > 1 ? 's' : ''} à jour détectée${n > 1 ? 's' : ''}, non recalculée${n > 1 ? 's' : ''} : ${tiles} tuile${tiles > 1 ? 's' : ''} à réévaluer, environ ${hours.toFixed(2).replace('.', ',')} heure${hours >= 2 ? 's' : ''} CPU (estimation)`,
+  impactLineUnmeasured: (n: number, tiles: number) =>
+    `${n} mise${n > 1 ? 's' : ''} à jour détectée${n > 1 ? 's' : ''}, non recalculée${n > 1 ? 's' : ''} : ${tiles} tuile${tiles > 1 ? 's' : ''} à réévaluer, temps CPU non mesuré`,
   viewingOld: (id: string) => `Vous consultez la version ${id}.`,
   showNewer: 'L’afficher',
   loading: 'Chargement…',

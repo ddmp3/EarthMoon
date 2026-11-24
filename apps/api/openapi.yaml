@@ -711,6 +711,34 @@ components:
                       body: { type: string }
                       reasons: { type: array, items: { type: string } }
                 progress: { type: object, nullable: true, additionalProperties: true, description: "step and share of a running recompute" }
+                impact:
+                  type: array
+                  description: pre-analysis of each detected update (T52b) - what it would recompute and the estimated CPU time; no recompute is started
+                  items:
+                    type: object
+                    required: [source, kind, tiles_changed, releases, cpu_hours_estimate, basis, recompute_started]
+                    properties:
+                      source: { type: string }
+                      kind: { type: string, enum: [earth_tiles, earth_global, earth_context, planetary] }
+                      items: { type: integer }
+                      tiles_changed: { type: array, items: { type: string } }
+                      tiles_reassessed: { type: integer }
+                      releases:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            release: { type: string }
+                            body: { type: string }
+                            targets: { type: array, items: { type: string } }
+                            tiles_reassessed: { type: integer }
+                            cells_estimate: { type: integer }
+                            earth_features: { type: boolean }
+                            context: { type: boolean }
+                            cpu_seconds_estimate: { type: number, nullable: true }
+                      cpu_hours_estimate: { type: number, nullable: true, description: "null when a step was never calibrated" }
+                      basis: { type: string }
+                      recompute_started: { type: boolean }
                 new_products:
                   type: array
                   description: new planetary products seen in a release table, logged "detected, to verify"; never used in a run before a new protocol version

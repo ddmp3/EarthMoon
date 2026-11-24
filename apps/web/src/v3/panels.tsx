@@ -298,6 +298,7 @@ export function StatusBar({ status, t }: { status: Status | null; t: V3Texts }) 
       <strong>{l.validity}</strong>
       {l.failing && <span>{l.failing}</span>}
       <span>{l.freshness}</span>
+      {l.impact && <span>{l.impact}</span>}
     </div>
   )
 }
