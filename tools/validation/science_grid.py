@@ -5,7 +5,8 @@ This script computes every indicator that can be counted from the repository, so
 comparison does not depend on anyone's opinion. Indicators that need a human judgement are listed in the
 document and are not computed here.
 
-    python tools/validation/science_grid.py        # prints the Markdown table
+    python tools/validation/science_grid.py        # prints the Markdown table (v1 and v2)
+    python tools/validation/science_grid.py --v3   # counted indicators of v3 (T49), from the run summaries
 
 Standard library only.
 """
@@ -102,6 +103,99 @@ def to_markdown() -> str:
     return "\n".join(lines) + "\n"
 
 
+# ---- v3 (T49): counted from the run summaries and catalogues in the repository ----
+ROOT = os.path.join(HERE, "..", "..")
+V3_RUNS = ("run-002", "run-mars-001")                       # the runs served by the current releases
+
+
+def _json(*parts):
+    with open(os.path.join(ROOT, *parts), encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def _release_sources() -> set:
+    out = set()
+    base = os.path.join(DATA, "releases-fixture")
+    for d in sorted(os.listdir(base)):
+        f = os.path.join(base, d, "method.json")
+        if os.path.exists(f):
+            out |= {s["id"] for s in _json("data", "releases-fixture", d, "method.json")["sources"]}
+    return out
+
+
+def v3_indicators() -> dict:
+    import collections
+    out: dict = {"runs": list(V3_RUNS), "masks": {}, "negatives_top10": {}, "self_consistency": {}, "monte_carlo": {},
+                 "reproducibility": {}, "dossiers": {}, "cells": {}}
+    scenarios_with_positives = 0
+    for run in V3_RUNS:
+        v = _json("data", "runs", run, "validation.json")
+        m = v["negatives"]["masks"]
+        out["masks"][run] = f"{m['masked_or_flagged']}/{m['of']}"
+        top = v["negatives"]["top10"]
+        out["negatives_top10"][run] = f"{sum(x['pass'] for x in top.values())}/{len(top)} targets"
+        sc = v["self_consistency"]
+        bad = sorted((t, x["ks"]) for t, x in sc.items() if not x.get("pass"))
+        out["self_consistency"][run] = f"{len(sc) - len(bad)}/{len(sc)} targets" + (
+            " (fails: " + ", ".join(f"{t} {k:.3f}" for t, k in bad) + ")" if bad else "")
+        out["monte_carlo"][run] = {t: f"{x['stable_zones_90pct']}/{x['zones']}" for t, x in v["monte_carlo"].items()}
+        rp = v["reproducibility"]["tiles"]
+        out["reproducibility"][run] = f"{sum(t['identical_sha256'] for t in rp)}/{len(rp)} tiles"
+        pos = v["positives"]
+        for k, val in pos.items():
+            if k in ("consequence",):
+                continue
+            scenarios_with_positives += isinstance(val, dict) and val.get("pass") is True
+        out["dossiers"][run] = dict(collections.Counter(o["outcome"] for o in _json("docs", "wiki", "runs", run, "outcomes.json")))
+        out["cells"][run] = _json("data", "runs", run, "assess.json")["cells"]
+    n_scen = len([f for f in os.listdir(os.path.join(DATA, "scenarios")) if f.endswith(".yaml")])   # C has no run yet
+    out["positive_validation"] = f"{scenarios_with_positives} of {n_scen} scenarios"
+    checks = _json("data", "runs", "run-002", "checks.json")
+    out["nasadem"] = {sc: checks[sc]["nasadem"] for sc in ("A", "B")}
+    out["resolution_30m"] = {sc: checks[sc]["resolution_30m"] for sc in ("A", "B")}
+    cov = _json("data", "runs", "run-002", "coverage-summary.json")
+    out["hidden_share"] = {"run-002": cov["half_or_more_masked"]}
+    geo = _json("data", "runs", "run-002", "geology-report.json")
+    out["geology_top_zones"] = {k: geo[k] for k in ("dossiers_A", "dossiers_B")}
+    import yaml
+    cat = {}
+    for name in ("earth", "moon", "mars"):
+        with open(os.path.join(DATA, "catalog", f"{name}.yaml"), encoding="utf-8") as fh:
+            cat.update({p["id"]: p for p in (yaml.safe_load(fh) or {}).get("products", [])})
+    used = _release_sources()
+    out["sources"] = {"used": len(used), "verified": sum(cat.get(i, {}).get("status") == "verified" for i in used),
+                      "with_refresh": sum("refresh" in cat.get(i, {}) for i in used),
+                      "watched": sum(bool((cat.get(i, {}).get("refresh") or {}).get("watch")) for i in used)}
+    return out
+
+
+def v3_markdown() -> str:
+    v = v3_indicators()
+    rows = [
+        ("Cells assessed (5 km, equal-area)", {r: f"{n:,}" for r, n in v["cells"].items()}),
+        ("Negatives in the top 10% (pass: at most 1 of 18)", v["negatives_top10"]),
+        ("Masks check (pass: 18/18)", v["masks"]),
+        ("Self-consistency (KS <= 0.05)", v["self_consistency"]),
+        ("Reproducibility (identical SHA-256)", v["reproducibility"]),
+        ("Monte Carlo: zones stable in 90% of runs", {r: ", ".join(f"{t} {x}" for t, x in m.items()) for r, m in v["monte_carlo"].items()}),
+        ("Dossiers of the top zones", {r: ", ".join(f"{k} {n}" for k, n in sorted(d.items())) for r, d in v["dossiers"].items()}),
+    ]
+    lines = ["| Indicator | " + " | ".join(v["runs"]) + " |", "|---|" + "---|" * len(v["runs"])]
+    for name, by in rows:
+        lines.append(f"| {name} | " + " | ".join(str(by.get(r, "—")) for r in v["runs"]) + " |")
+    n = v["nasadem"]
+    lines.append("| NASADEM instead of Copernicus, top 20 kept (A, B) | " +
+                 f"{n['A']['top_overlap']:.0%}, {n['B']['top_overlap']:.0%} | — |")
+    r30 = v["resolution_30m"]
+    lines.append("| 30 m instead of the planetary pixel, top 20 kept (A, B) | " +
+                 f"{r30['A']['top_overlap']:.0%}, {r30['B']['top_overlap']:.0%} | — |")
+    s = v["sources"]
+    lines.append(f"| Sources of the releases: verified, with a refresh block, watched | {s['verified']}/{s['used']}, "
+                 f"{s['with_refresh']}/{s['used']}, {s['watched']}/{s['used']} | (same) |")
+    lines.append(f"| Scenarios with a positive validation (3 or more verified controls that pass) | {v['positive_validation']} | |")
+    return chr(10).join(lines) + chr(10)
+
+
 if __name__ == "__main__":
     sys.stdout.reconfigure(encoding="utf-8")
-    print(to_markdown())
+    print(v3_markdown() if "--v3" in sys.argv else to_markdown())
