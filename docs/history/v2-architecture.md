@@ -74,7 +74,7 @@ tools/            precompute (offline data), validation (e2e, rankings, ui-audit
 
 ## API
 
-Contract: [`apps/api/openapi.yaml`](../apps/api/openapi.yaml), live docs on `/api/docs`. Guide: [`apps/api/README.md`](../apps/api/README.md).
+Contract: [`apps/api/openapi.yaml`](../../apps/api/openapi.yaml), live docs on `/api/docs`. Guide: [`apps/api/README.md`](../../apps/api/README.md).
 
 v3 routes (T44, ADR-004). Every answer carries `release` and `methodology_version`; `?release=` reads a listed older release.
 
@@ -107,7 +107,7 @@ It must pass before every merge, and GitHub Actions runs it on every pull reques
 
 ## Azure infrastructure
 
-Resource group, Log Analytics (30-day retention), Container Registry (Basic), Container Apps environment and API app (0.5 vCPU, 1 Gi, 1 to 5 replicas, port 3001), Static Web App (Free), region `canadacentral`. **Frozen during the NASA evaluation: do not deploy.** Deployment, when David decides it, uses `infra/terraform/deploy.sh` (see [its README](../infra/terraform/README.md)).
+Resource group, Log Analytics (30-day retention), Container Registry (Basic), Container Apps environment and API app (0.5 vCPU, 1 Gi, 1 to 5 replicas, port 3001), Static Web App (Free), region `canadacentral`. **Frozen during the NASA evaluation: do not deploy.** Deployment, when David decides it, uses `infra/terraform/deploy.sh` (see [its README](../../infra/terraform/README.md)).
 
 ## Security review (15 November 2026)
 
