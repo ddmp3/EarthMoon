@@ -27,3 +27,13 @@ The home banner (`apps/web/src/components/Home.tsx`, `i18n.ts` `stats`) shows v2
 
 ## Done when
 David accepts the interface on both bodies, and no figure on the site is typed by hand.
+
+## Part 2 (David, 24/11/2026)
+- **3D planet globe next to the Earth map** in a mission, with a real NASA mosaic of the Moon or Mars.
+- **Selection both ways:**
+  - Selecting an Earth zone lights the windows of the target environment whose slope is nearest to the zone's (David's choice: "windows of the same slope"; our method compares a zone with the distribution of an environment, not with one planetary place).
+  - Clicking a planetary point lights the Earth zones of the same slope.
+- **Place names instead of coordinates.** Coordinates stay in the details, to ease the dialogue between scientists.
+  - **Earth:** OpenStreetMap Nominatim (David's choice), queried once at release time, at most 1 request per second, cached and versioned. Only the top zones of each target and the known sites are queried; the others show their country (Natural Earth). No call from visitors' browsers.
+  - **Moon and Mars:** the IAU Gazetteer of Planetary Nomenclature (USGS), verified and catalogued first. Nominatim does not cover other bodies.
+- **Order:** names, then same-slope windows (zone slope median computed at export), then the globe.
