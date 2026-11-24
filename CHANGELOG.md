@@ -2,6 +2,16 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-24 · T45c part 3: layout, contextual credits, slope colours (PR #38)
+- **David's review of part 2 (24/11):**
+  - **Three blocks of one height:** ranking, Earth map and planet. The map legend moved into the Earth map block, below the map; the ranking and the planet stretch to that block and scroll inside.
+  - **Credits by context:** the bottom of the page lists only the credits of the images shown on the page (home of each body, or the banner, map, relief, globe and names of a mission).
+  - **Data sources no longer repeated there:** they are in "Data and method" and on each site card.
+  - **The globe opens on the whole planet,** centred on the target (the pole for polar targets). Zooming is the user's.
+  - **"See the match":** the amber mask of lunar-like slopes becomes a continuous, soft slope ramp (deep blue, teal, sage, sand, terracotta; 0 to 30° and more), the same scale on Earth and on the Moon, with the typical lunar range marked on a scale bar. The overlays of the 37 sites were regenerated (photos kept); `tools/precompute/test_precompute.py` covers the ramp.
+  - **Volcanic plains card:** a sharp image, Olympus Mons from Viking (PIA00300, NASA/JPL/USGS), instead of a THEMIS limb view. The target itself still needs the Mars geologic map (R5): the USGS sites refuse automated download (HTTP 403), so David downloads it.
+  - **Ice-rich mid-latitudes card:** it now says it covers the northern hemisphere only, the extent of the SWIM ice map used.
+
 ## 2026-11-24 · T45c part 2: planet globe, same-slope link, place names (PR #37)
 - **Asked by David (24/11):**
   - the Moon or Mars visible beside the Earth map;

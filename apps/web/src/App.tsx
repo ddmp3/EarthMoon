@@ -14,10 +14,10 @@ import {
   type SiteResult,
   type VisualManifest,
 } from './api'
+import { Credits } from './components/Credits'
 import { Home } from './components/Home'
 import { Mission } from './components/Mission'
 import { SiteDetail } from './components/SiteDetail'
-import { FR_SOURCES } from './content-fr'
 import { useT, type Lang, type Texts } from './i18n'
 import { MISSION_ORDER } from './shared'
 import { SiteV3Section } from './v3/MissionV3'
@@ -274,40 +274,7 @@ function App() {
         )}
 
         <section className="credits">
-          {body === 'mars' && v3.method && (
-            <div>
-              <h3>{t.sourcesTitle}</h3>
-              <ul>
-                {v3.method.sources.map((source) => (
-                  <li key={source.id}>
-                    <a href={source.url} rel="noopener noreferrer" target="_blank">{source.product ?? source.id}</a>
-                    {source.producer ? ` · ${source.producer}` : ''}.{' '}
-                    {source.licence && <small>{source.licence}</small>}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {body === 'moon' && sources.length > 0 && (
-            <div>
-              <h3>{t.sourcesTitle}</h3>
-              <ul>
-                {sources.map((source) => (
-                  <li key={source.id}>
-                    <a href={source.url} rel="noopener noreferrer" target="_blank">
-                      {(lang === 'fr' ? FR_SOURCES[source.id]?.name : undefined) ?? source.name}
-                    </a>{' '}
-                    · {source.provider} · {source.body === 'moon' ? t.moon : t.earth}.{' '}
-                    <small>{(lang === 'fr' ? FR_SOURCES[source.id]?.terms : undefined) ?? source.terms}</small>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          <div>
-            <h3>{t.imagesTitle}</h3>
-            <p>{t.imagesText}</p>
-          </div>
+          <Credits body={body} env={mode ? v3.env : null} mode={mode} />
         </section>
       </main>
 

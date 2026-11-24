@@ -259,3 +259,17 @@ def test_the_match_panel_shows_the_same_relief_values_as_the_scorecard():
         assert entry["earth"]["basis"] == "terrain_v2", sid
         for k in ("slope_mean", "roughness"):
             assert entry["earth"][k] == pytest.approx(v2[k]["value"]), (sid, k)
+
+
+def test_slope_overlay_is_a_continuous_soft_gradient_with_the_same_scale_on_both_bodies():
+    """T45c (David, 24/11): the overlay shows every slope with a precise, non-aggressive ramp, not one amber band."""
+    import site_visuals as sv
+    s = np.array([[0.0, 5.0, 10.0], [20.0, 30.0, 45.0]])
+    rgba = sv.slope_rgba(s)
+    assert rgba.shape == (2, 3, 4) and rgba.dtype == np.uint8
+    assert tuple(rgba[0, 0, :3]) == sv.SLOPE_RAMP[0][1] and tuple(rgba[1, 1, :3]) == sv.SLOPE_RAMP[-1][1]
+    assert (rgba[1, 2, :3] == rgba[1, 1, :3]).all()                 # 30 degrees and more share the last colour
+    assert len({tuple(p[:3]) for row in rgba for p in row}) >= 5    # a gradient, not a two-colour mask
+    assert (rgba[..., 3] > 0).all() and (rgba[..., 3] < 255).all()  # translucent: the photo stays readable
+    lum = [0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2] for _, c in sv.SLOPE_RAMP]
+    assert lum[:4] == sorted(lum[:4])                               # lighter as slopes grow, up to sand

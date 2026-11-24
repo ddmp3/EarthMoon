@@ -352,6 +352,7 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
             </div>
 
             <div className={hasV3 ? 'map-pair' : undefined}>
+            <div className="map-block">
             <div className="map-wrap">
               <MapContainer center={[25, 10]} maxZoom={hasV3 ? MAP_MAX_ZOOM : 8} minZoom={1} scrollWheelZoom={false} worldCopyJump zoom={2}>
                 <TileLayer attribution="NASA Blue Marble · NASA GIBS" maxNativeZoom={8} url={GIBS_TILES} />
@@ -392,8 +393,9 @@ export function Mission({ mode, sites, selectedId, loading, error, builderError,
                   )
                 })}
               </MapContainer>
-              {hasV3 && <MapLegend available={v3.available} coverage={v3.coverage} layer={layer} overlay={overlay} />}
               {cellsError && <div className="map-note map-note-error" role="alert">{vt.cellsError}: {cellsError}</div>}
+            </div>
+            {hasV3 && <MapLegend available={v3.available} coverage={v3.coverage} layer={layer} overlay={overlay} />}
             </div>
             {hasV3 && v3.release && v3.scenario && (
               <PlanetPanel body={mode === 'mars' ? 'mars' : 'moon'} env={v3.env} lang={lang}

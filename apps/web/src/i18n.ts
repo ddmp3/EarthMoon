@@ -35,7 +35,7 @@ const en = {
   marsMissions: {
     'mars-ice-rich-midlatitudes': {
       title: 'Ice-rich mid-latitudes',
-      text: 'Where Earth plains are as smooth as the Martian ground that holds ice, compared in windows of 11.6 km.',
+      text: 'Where Earth plains are as smooth as the Martian ground that holds ice, compared in windows of 11.6 km. Northern hemisphere only: the SWIM ice map used covers it alone.',
       tags: ['MOLA 463 m', 'SWIM ice', 'Slope'],
       credit: 'Ice scarp, HiRISE, PIA22077 · NASA/JPL-Caltech/UA/USGS',
     },
@@ -55,7 +55,7 @@ const en = {
       title: 'Volcanic plains',
       text: 'The only Martian terrain with verified analog sites on Earth, in Hawaii and Idaho. It needs the Mars geologic map first.',
       tags: ['Geology', 'Positive controls'],
-      credit: 'Arsia Mons, THEMIS, PIA26557 · NASA/JPL-Caltech/ASU',
+      credit: 'Olympus Mons, Viking 1 orbiter mosaic, PIA00300 · NASA/JPL/USGS',
     },
   } as Record<string, { title: string; text: string; tags: string[]; credit: string }>,
   target: 'Earth ↔ Moon',
@@ -82,8 +82,10 @@ const en = {
   moon: 'Moon',
   satellite: 'Satellite',
   relief: 'Relief',
-  highlight: 'Highlight lunar-like slopes',
-  highlightHint: (lo: number, hi: number) => `Slopes between ${lo}° and ${hi}°, the typical range at the lunar south pole`,
+  highlight: 'Slope colours',
+  highlightHint: (lo: number, hi: number) => `Same slope scale on Earth and on the Moon; the typical range at the lunar south pole is ${lo}° to ${hi}° (marked on the scale)`,
+  slopeScale: 'Slope of each 40 m pixel',
+  lunarRange: 'typical lunar range',
   lunarTwin: 'Lunar twin',
   twinAt: (lat: number, lon: number) => `${Math.abs(lat).toFixed(2)}°S, ${Math.abs(lon).toFixed(1)}°${lon < 0 ? 'W' : 'E'}`,
   terrainShare: 'Terrain in the lunar slope range',
@@ -105,6 +107,11 @@ const en = {
   radarLead: 'Each axis is one criterion. The outer ring is a perfect match with the lunar target.',
   sourcesTitle: 'Data sources',
   imagesTitle: 'Image credits',
+  creditBaseMap: 'Base map: NASA Blue Marble, NASA GIBS. Relief layers: Copernicus DEM GLO-30 and GLO-90 (ESA, EU).',
+  creditSiteImagery: 'Site imagery: Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0; Landsat WELD, NASA GIBS. Lunar twins: LRO LOLA.',
+  creditRelief: (body: string): string => body === 'mars' ? 'Martian relief: MGS MOLA (NASA PDS).' : 'Lunar relief: LRO LOLA and SLDEM2015 (NASA).',
+  creditGlobe: (body: string): string => body === 'mars' ? 'Mars globe: MOLA elevation shaded by EarthMoon, not true colours.' : 'Moon globe: LROC WAC colour mosaic, NASA’s Scientific Visualization Studio.',
+  creditNames: 'Place names: © OpenStreetMap contributors (ODbL); IAU Gazetteer of Planetary Nomenclature (USGS).',
   imagesText:
     'Mission photographs: NASA (Apollo 14, 15 and 17; Artemis II; Clementine mosaic NASA/JPL/USGS; Phoenix lander NASA/JPL-Caltech/University of Arizona/Texas A&M University; Mars: north polar cap PIA13163 NASA/JPL-Caltech/MSSS, south polar cap PIA02393 NASA/JPL/MSSS, ice scarp PIA22077 NASA/JPL-Caltech/UA/USGS, Arsia Mons PIA26557 NASA/JPL-Caltech/ASU). Site imagery: Sentinel-2 cloudless 2016 by EOX IT Services GmbH (contains modified Copernicus Sentinel data 2016), CC BY 4.0; Landsat WELD, NASA GIBS. Relief: Copernicus DEM GLO-30 and GLO-90, LRO LOLA and MGS MOLA. Globes: Moon, LROC WAC colour mosaic by NASA’s Scientific Visualization Studio; Mars, MOLA relief shaded by EarthMoon. Place names: © OpenStreetMap contributors (ODbL); IAU Gazetteer of Planetary Nomenclature (USGS). Base map: NASA Blue Marble, NASA GIBS.',
   footer: 'A NASA Space Apps Challenge 2026 project · Parts of this project were built with AI assistance (Claude, Microsoft Copilot).',
@@ -219,7 +226,7 @@ const fr: Texts = {
   marsMissions: {
     'mars-ice-rich-midlatitudes': {
       title: 'Latitudes moyennes riches en glace',
-      text: 'Où les plaines terrestres sont aussi lisses que le sol martien qui contient de la glace, comparées par fenêtres de 11,6 km.',
+      text: 'Où les plaines terrestres sont aussi lisses que le sol martien qui contient de la glace, comparées par fenêtres de 11,6 km. Hémisphère nord seulement : la carte de glace SWIM utilisée ne couvre que lui.',
       tags: ['MOLA 463 m', 'Glace SWIM', 'Pente'],
       credit: 'Escarpement de glace, HiRISE, PIA22077 · NASA/JPL-Caltech/UA/USGS',
     },
@@ -239,7 +246,7 @@ const fr: Texts = {
       title: 'Plaines volcaniques',
       text: 'Le seul terrain martien avec des sites analogues vérifiés sur Terre, à Hawaï et dans l’Idaho. Il attend d’abord la carte géologique de Mars.',
       tags: ['Géologie', 'Contrôles positifs'],
-      credit: 'Arsia Mons, THEMIS, PIA26557 · NASA/JPL-Caltech/ASU',
+      credit: 'Olympus Mons, Viking 1 orbiter mosaic, PIA00300 · NASA/JPL/USGS',
     },
   },
   target: 'Terre ↔ Lune',
@@ -266,8 +273,10 @@ const fr: Texts = {
   moon: 'Lune',
   satellite: 'Satellite',
   relief: 'Relief',
-  highlight: 'Surligner les pentes de type lunaire',
-  highlightHint: (lo: number, hi: number) => `Pentes entre ${comma(lo, 1)}° et ${comma(hi, 1)}°, l’intervalle typique du pôle Sud lunaire`,
+  highlight: 'Couleurs des pentes',
+  highlightHint: (lo: number, hi: number) => `Même échelle de pente sur Terre et sur la Lune ; l’intervalle typique du pôle Sud lunaire va de ${comma(lo, 1)}° à ${comma(hi, 1)}° (marqué sur l’échelle)`,
+  slopeScale: 'Pente de chaque pixel de 40 m',
+  lunarRange: 'intervalle lunaire typique',
   lunarTwin: 'Jumeau lunaire',
   twinAt: (lat: number, lon: number) => `${comma(Math.abs(lat), 2)}°S, ${comma(Math.abs(lon), 1)}°${lon < 0 ? 'O' : 'E'}`,
   terrainShare: 'Terrain dans l’intervalle de pente lunaire',
@@ -289,6 +298,11 @@ const fr: Texts = {
   radarLead: 'Chaque axe est un critère. L’anneau extérieur est une concordance parfaite avec la cible lunaire.',
   sourcesTitle: 'Sources des données',
   imagesTitle: 'Crédits des images',
+  creditBaseMap: 'Fond de carte : NASA Blue Marble, NASA GIBS. Couches de relief : Copernicus DEM GLO-30 et GLO-90 (ESA, UE).',
+  creditSiteImagery: 'Images des sites : Sentinel-2 cloudless 2016 par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées 2016), CC BY 4.0 ; Landsat WELD, NASA GIBS. Jumeaux lunaires : LRO LOLA.',
+  creditRelief: (body: string): string => body === 'mars' ? 'Relief martien : MGS MOLA (NASA PDS).' : 'Relief lunaire : LRO LOLA et SLDEM2015 (NASA).',
+  creditGlobe: (body: string): string => body === 'mars' ? 'Globe de Mars : altitude MOLA ombrée par EarthMoon, pas les vraies couleurs.' : 'Globe de la Lune : mosaïque couleur LROC WAC, NASA Scientific Visualization Studio.',
+  creditNames: 'Noms de lieux : © contributeurs OpenStreetMap (ODbL) ; registre des noms planétaires de l’UAI (USGS).',
   imagesText:
     'Photographies des missions : NASA (Apollo 14, 15 et 17 ; Artemis II ; mosaïque Clementine NASA/JPL/USGS ; atterrisseur Phoenix NASA/JPL-Caltech/University of Arizona/Texas A&M University ; Mars : calotte polaire nord PIA13163 NASA/JPL-Caltech/MSSS, calotte polaire sud PIA02393 NASA/JPL/MSSS, escarpement de glace PIA22077 NASA/JPL-Caltech/UA/USGS, Arsia Mons PIA26557 NASA/JPL-Caltech/ASU). Images des sites : Sentinel-2 cloudless 2016 par EOX IT Services GmbH (contient des données Copernicus Sentinel modifiées 2016), CC BY 4.0 ; Landsat WELD, NASA GIBS. Relief : Copernicus DEM GLO-30 et GLO-90, LRO LOLA et MGS MOLA. Globes : Lune, mosaïque couleur LROC WAC du NASA Scientific Visualization Studio ; Mars, relief MOLA ombré par EarthMoon. Noms de lieux : © contributeurs OpenStreetMap (ODbL) ; registre des noms de l’UAI (USGS). Fond de carte : NASA Blue Marble, NASA GIBS.',
   footer: 'Un projet du NASA Space Apps Challenge 2026 · Une partie de ce projet a été réalisée avec l’aide d’IA (Claude, Microsoft Copilot).',
@@ -370,7 +384,7 @@ const fr: Texts = {
   },
 }
 
-const TEXTS: Record<Lang, Texts> = { en, fr }
+export const TEXTS: Record<Lang, Texts> = { en, fr }
 
 export function useT(): { t: Texts; lang: Lang } {
   const lang = useAppStore((state) => state.lang)
