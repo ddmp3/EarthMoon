@@ -1,10 +1,11 @@
 # Limits and decisions that need experts
 
-Full version (uncertainty table, data weaknesses, biases): [wiki/v2/SCIENTIFIC_LIMITATIONS.md](wiki/v2/SCIENTIFIC_LIMITATIONS.md). References `[Rn]`: [REFERENCES.md](REFERENCES.md).
+v3 results are measured in [VALIDATION.md](VALIDATION.md). The v2 limits page stays as history: [wiki/v2/SCIENTIFIC_LIMITATIONS.md](wiki/v2/SCIENTIFIC_LIMITATIONS.md). References `[Rn]`: [REFERENCES.md](REFERENCES.md).
 
 ## What a result does not mean
 
-- That a site is equivalent to the Moon, or "X% similar".
+- That a site is equivalent to the Moon or Mars, or "X% similar". A high typicality means the place's slopes are typical of the target's slopes at the same pixel, nothing more.
+- That a zone is an analog: no scenario has a positive validation yet, and no top zone is confirmed ([VALIDATION.md](VALIDATION.md)).
 - That it is a validated test site: only a field campaign by the team that will test can say so.
 - Anything thermal about the Moon. Frozen ground and aridity are Earth context from models (E18); surface thermal cycling is not computed yet.
 - Much about the ground material. v3 compares the **lithology class** of geological maps (T46). A lithology class is not a mineralogy, and a mineralogy is not regolith mechanics: grain size, cohesion, bearing capacity and dust are not measured. Where the map has no unit or only a generic class, geology is "no map" or "unresolved", never "no match".
@@ -13,21 +14,34 @@ Full version (uncertainty table, data weaknesses, biases): [wiki/v2/SCIENTIFIC_L
 - That few earthquakes means a quiet site for a seismometer, or that a high latitude reproduces lunar polar lighting.
 
 **Earth cannot reproduce:**
-- lunar gravity (one sixth);
-- vacuum and the absence of weather;
-- the radiation environment [R46];
+- lunar gravity (one sixth), and Martian gravity;
+- vacuum and the absence of weather on the Moon;
+- the Martian atmosphere: CO2, at about 1% of Earth's surface pressure (scenario D);
+- the radiation environment [R46], on both bodies;
 - the cold of shadowed regions (below 110 K [R1]);
-- dust behaviour in vacuum [R11].
+- dust behaviour in vacuum [R11], and the space weathering of regolith.
+
+## Comparability classes
+Every release states, per scenario, what each target is:
+- **Compared:** Earth is resampled to the target's planetary pixel and compared with it. Moon: polar lit highlands, PSR, pits, mare plains, south polar cap. Mars: ice-rich mid-latitudes, north and south polar terrain.
+- **Not comparable:** no Earth data at that scale. Moon: the persistently lit target (5 m mosaic). Mars: aqueous mineral sites and rover-scale terrain (HiRISE).
+- **Cannot assess:** properties no Earth layer reproduces or measures. The list is in each scenario of [SCENARIOS.md](SCENARIOS.md) and in every release, for example regolith mechanics, traction under lunar gravity, or ice content and depth on Mars.
 
 ## Main uncertainties
 
-- Sites are single points, and several coordinates are approximate.
-- Wind, humidity, precipitation and MODIS values have no sigma, so the intervals are lower bounds.
-- Correlated errors are ignored, and the choice of criteria is not varied.
-- The 37 sites were hand-picked: rankings compare these sites, not the whole Earth.
-- The eight v2 terrain metrics carry one independent property, slope (Spearman 0.87 to 0.99 on 71,731 lunar and 1,410 random Earth windows); detrended roughness behaves differently on the two bodies. See [wiki/methods/parameters.md](wiki/methods/parameters.md).
+- **The ranking depends on the Earth DEM:** with NASADEM instead of Copernicus, 35 to 45% of the top 20 lunar zones stay.
+- **Several rankings are not robust** in the Monte Carlo: lunar pits and PSR, and the Mars polar targets.
+- **Spatially correlated DEM errors are not modelled.** The Monte Carlo noise is independent per pixel. On Mars it is measured from the DEM error; the lunar 0.5° is not derived per scale.
+- **Hidden ground is not assessed:** 53% of lunar cells are half or more masked.
+- **Slope is the only compared terrain property.** The eight terrain metrics carry one independent property, slope (Spearman 0.87 to 0.99 on 71,731 lunar and 1,410 random Earth windows), and detrended roughness behaves differently on the two bodies. See [wiki/methods/parameters.md](wiki/methods/parameters.md).
+- **The missions still show the 37 v2 sites** as known places, with the values of their v3 cell. The v3 results themselves come from every land cell, not from that list.
 
 ## Decisions that need human expertise
+
+Open before G5:
+- E10: an independent list of expected analogs. It is the only way to score external validation above 1.
+- E17 and E20: review the geology crosswalks.
+- E1: the VIPER limit.
 
 Provisional choices, labelled `expert_judgement` in the API, until a named expert or a documented requirement settles them.
 

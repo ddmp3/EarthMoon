@@ -1,112 +1,85 @@
-# Validation
+# Validation of v3 (T49, 24/11/2026)
 
-## v3, run-002 Earth context (20 November 2026)
+**What v3 achieves, measured with the v2 grid plus five new criteria.**
+- **Counted figures** are computed from the run summaries in the repository.
+- **Scores** were judged by Claude and are a proposal for gate G5, signed by David.
+- No outside expert has reviewed them.
 
-Frozen ground and aridity, as context layers rather than comparisons with the Moon (E18). Report: [wiki/runs/run-002-context.md](wiki/runs/run-002-context.md).
+Details: [wiki/validation/v3-grid.md](wiki/validation/v3-grid.md). Checks of every run: [wiki/validation/checks-by-run.md](wiki/validation/checks-by-run.md). Protocol: [VALIDATION_PROTOCOL.md](VALIDATION_PROTOCOL.md).
 
-| T47 check | Result |
-|---|---|
-| A modelled value is flagged as a model | yes: both layers say "model" in the release, the API and the interface |
-| Multi-year statistics carry an interannual sigma | no: the ground temperature sigma is the model spread, and aridity has none; both say so. MODIS, the source with an interannual sigma, waits for an account (D1) |
-| Inversion-prone valleys are flagged when an elevation correction is used | no elevation correction is used on any temperature |
+## Unfavourable results first
 
-## v3, run-002 geology (20 November 2026)
+1. **No scenario has a positive validation (0 of 4).**
+   - **A and B (Moon):** no verified reference names an analog site.
+   - **C (instruments):** has no run yet.
+   - **D (Mars):** its only verified controls are volcanic plains, which wait for the Mars geologic map (R5).
+   - **What results show:** where Earth slopes resemble the target's slopes, and nothing more.
+2. **The masks check fails in both releases.** 17 of 18 negatives are masked or flagged; the same tree-cover point is not (hidden share 0.41 in the lunar 1 km window, 0.37 in the Mars 2.9 km window, under the 0.5 rule).
+3. **Rankings depend on the DEM.** Recomputed with NASADEM instead of Copernicus, only 35% (A) and 45% (B) of the top 20 lunar zones stay in the top 20. At 30 m instead of the planetary pixel, 60% and 65% stay.
+4. **Several rankings are not robust.** Zones stable in 90% of the Monte Carlo runs:
+   - lunar pits 16%, permanently shadowed regions 23%;
+   - Mars polar terrain 0 of 24,013 zones;
+   - lunar mare plains 85%, Mars ice-rich mid-latitudes 1,111 of 11,768.
+5. **Self-consistency fails for lunar pits** (KS 0.056, threshold 0.05).
+6. **The top zones are not shown to be analogs.** Of 60 dossiers (lunar and Mars), 4 are plausible, none is confirmed, and 56 are unknown.
+7. **Geology and slope do not meet:** 0 of the 40 top lunar slope zones match the target's lithology.
+8. **More than half of the land is hidden.** 53% of lunar cells are half or more masked: what is under forest, ice, water or towns is not assessed.
 
-The lithology of geological maps (Macrostrat), compared with the lunar surface material by crosswalk E17. Full report: [wiki/runs/run-002-geology.md](wiki/runs/run-002-geology.md).
+## Results per scenario
 
-| Check | Result |
-|---|---|
-| A known anorthosite body is recognized | yes: Lac-Saint-Jean (1:5M); not Mistastin (below the map's scale) |
-| Known basalt fields are recognized | yes: Holuhraun, Craters of the Moon, Payunia, the Paraná |
-| Unknown lithology stays missing, never "no match" | yes: 29.2% no map, 21.5 to 21.8% unresolved, shown hatched |
-| Top slope zones that match by geology | 0 of 40 |
+| Scenario | Targets compared | Positive validation | Negatives in top 10% | Masks | Self-consistency | Robust ranking |
+|---|---|---|---|---|---|---|
+| A Lunar base | polar lit highlands, PSR, pits | none (no verified site) | 0 of 18 | 17/18 | pits fail | partly (PSR and pits weak) |
+| B Lunar robotics | polar lit highlands, PSR, mare plains, south polar cap | none | 0 of 18 | 17/18 | pass | mare plains yes, PSR weak |
+| C Instruments | none yet | none | — | — | — | — |
+| D Mars | ice-rich mid-latitudes, north and south polar terrain | none for these targets | 0 of 18 | 17/18 | pass | ice-rich yes, polar no |
 
-## v3, run-002 (19 November 2026)
+Not comparable (no Earth data at that scale), stated in every release:
+- the lunar persistently lit target (5 m mosaic);
+- the Mars aqueous mineral sites and rover-scale terrain (HiRISE).
 
-run-001 again with the two rules of protocol `validation-protocol-v3`: one global equal-area grid of 5 km cells (HEALPix), and candidate zones on high-confidence cells only. Full report: [wiki/runs/run-002.md](wiki/runs/run-002.md).
+## Grid
 
-| Check | run-001 | run-002 | Pass |
-|---|---|---|---|
-| Positive controls | none exist for A and B | none exist | no validation |
-| Negatives in the top 10% | 0 of 18 for every target | 0 of 18 for every target | yes |
-| Masks | 17 of 18 | 17 of 18 | no |
-| Self-consistency (KS ≤ 0.05) | 4 of 5 (pits 0.056) | 4 of 5 (pits 0.056) | partly |
-| Reproducibility | 5 of 5 tiles identical | 5 of 5 tiles identical | yes |
+Scores from 0 (absent) to 3 (meets the target), same rubric as v2.
 
-**What it means:**
-- The two artefacts of run-001 are gone from the top: none of the 40 best zones is a tile-edge fragment or a remnant between hidden ground.
-- That does not make the top zones analogs. 2 of 23 places are plausible from the literature (Andrelândia, Brazil; northern Skye, Scotland); the other 21 are unknown.
-- About 30% fewer zones, and a larger share stays stable under slope noise (shadowed regions 23%, lit highlands 75%, mare plains 85%).
-- The ranking changes with the DEM source (NASADEM: Spearman 0.08 and 0.34, top-20 overlap 35 and 45%) and less with the scale (30 m: 60 and 65% kept, against 35 and 40% in run-001). It is not a ranking of places.
+| # | Criterion | v1 | v2 | v3 |
+|---|---|---|---|---|
+| 1 | Sources and traceability | 1 | 3 | 3 |
+| 2 | Relevance of parameters | 1 | 2 | 2 |
+| 3 | Processing | 1 | 2 | 2 |
+| 4 | Validity of calculations | 2 | 3 | 3 |
+| 5 | Relevance of comparison criteria | 1 | 2 | 2 |
+| 6 | Missing data | 1 | 3 | 3 |
+| 7 | Uncertainty | 1 | 2 | 2 |
+| 8 | Mission adaptation | 1 | 2 | 2 |
+| 9 | Interpretation | 2 | 2 | 2 |
+| 10 | Reproducibility | 1 | 3 | 3 |
+| 11 | Transparency | 2 | 3 | 3 |
+| 12 | External validation | 1 | 1 | 1 |
+| 13 | Ground material | 0 | 0 | 2 |
+| | **Total** | **15 / 39** | **28 / 39** | **30 / 39** |
 
-## v3, run-001 (19 November 2026)
+New in v3:
 
-The first global discovery run of v3: topography only, scenarios A (lunar base) and B (lunar robotics), protocol `validation-protocol-v2`. Full report: [wiki/runs/run-001.md](wiki/runs/run-001.md).
-
-| Check | Result | Pass |
+| # | Criterion | v3 |
 |---|---|---|
-| Positive controls | none exist for A and B: no verified reference names an analog site | no validation |
-| Negatives in the top 10% | 0 of 18 for every target (at most 1 allowed) | yes |
-| Masks | 17 of 18 negatives masked (a forest-savanna mosaic in the Chaco is 41% hidden) | no |
-| Self-consistency (KS ≤ 0.05) | 4 of 5 targets; pits 0.056 on 135 sites | partly |
-| Reproducibility | 5 of 5 rebuilt tiles identical | yes |
+| 14 | Global coverage (every land cell assessed or labelled) | 3 |
+| 15 | Multi-scale comparison | 2 |
+| 16 | Similarity and suitability kept apart | 3 |
+| 17 | Mars on its own terms | 2 |
+| 18 | Map honesty (four states) | 3 |
+| | **Total** | **13 / 15** |
 
-**What it means:**
-- 38 of the 40 best zones are explained artefacts: windows left between hidden ground, or cells cut by the edges of the processing tiles.
-- The zone ranking changes a lot with the DEM source (NASADEM: top-20 overlap 40 to 45%) and with the scale (30 m: 35 to 40%). The zone list of run-001 is not a ranking of places.
-- One place is plausible: ridges near the MacDonnell Ranges, Northern Territory, Australia. It is small and borderline.
-- run-002 will rank zones on high-confidence cells only, and merge the parts of cells cut by tile edges (protocol v3).
-
-**Coverage:** 53% of the assessed cells have most of their ground hidden. The coverage overlay of the interface shows where.
-
-## v2 results (current production)
-
-What has been checked, the result, and how to reproduce it. Full protocol and the before/after grid: [wiki/v2/SCIENTIFIC_VALIDATION.md](wiki/v2/SCIENTIFIC_VALIDATION.md). Latest rankings report: [wiki/rankings.md](wiki/rankings.md).
-
-### Results (17 November 2026)
-
-| Check | v1 | v2 |
-|---|---|---|
-| Evaluation grid (13 criteria scored 0 to 3) | 15/39 | 28/39 |
-| Team expectations met (known analogs in the top half of their modes) | 9/11 | **8/11 (73%, below the 75% threshold)** |
-| Negative control (Amazon) excluded in every mode | yes | yes |
-| A random ranking does as well | 2.6% | 10.0% |
-| TypeScript engine and Python scorer agree on 37 sites × 3 modes | sample data only | exact |
-
-v2 was **not retuned** to meet the expectations. They were written by the team that built v1, so they are a consistency check, not an independent benchmark. Each miss is explained by a measurement:
-- Holuhraun is flatter than 95% of the lunar south pole at 1 km;
-- Atacama lies on an active subduction margin;
-- Svalbard has 106 earthquakes M ≥ 4.5 within 300 km.
-
-**Confidence of the assessments:**
-
-| Mode | Low | Medium | High |
-|---|---|---|---|
-| Robotics | 17 | 18 | 1 |
-| Calibration | 3 | 8 | 25 |
-| Colony | 3 | 28 | 5 |
-
-Robotics is the weakest: 1 km terrain statistics change a lot from one kilometre to the next.
-
-**Not covered:** independent expectations (criterion 12) and ground material (criterion 13). Both are open in v3, tasks T25 and T46.
-
-### Rank stability labels (interface)
-
-The share of the ranked list a site moves across between the 10th and 90th percentile of its rank:
-- 6% or less: stable;
-- up to 25%: moderate;
-- more: fragile.
-
-These are presentation choices (`apps/web/src/shared.ts`).
+**What the totals hide:**
+- The v3 gain over v2 is the discovery itself: every land cell, both bodies, honest maps, reproducible releases.
+- The weakest criterion has not moved: external validation (12).
+- The ranking of a place still rests on slope alone.
 
 ## Reproduce
 
 ```bash
-tools/check.sh all                                   # every test, audit, Docker e2e and browser audit
-python tools/validation/science_grid.py              # counted indicators of the grid
-python tools/validation/ablation.py                  # effect of each correction on the rankings
-python tools/scoring/score_sites.py                  # v2 rankings (Python reference scorer)
-python tools/validation/rankings.py --markdown docs/wiki/rankings.md   # against the running API
+python tools/validation/science_grid.py --v3     # counted indicators
+tools/check.sh all                               # tests, types, audit, Docker end-to-end
 ```
 
-Quality baseline of the code: [wiki/baseline.md](wiki/baseline.md).
+The run reports give the commands of each check: [run-002](wiki/runs/run-002.md), [run-mars-001](wiki/runs/run-mars-001.md).

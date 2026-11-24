@@ -1,0 +1,112 @@
+# Validation checks by run (history, before T49)
+
+## v3, run-002 Earth context (20 November 2026)
+
+Frozen ground and aridity, as context layers rather than comparisons with the Moon (E18). Report: [wiki/runs/run-002-context.md](../runs/run-002-context.md).
+
+| T47 check | Result |
+|---|---|
+| A modelled value is flagged as a model | yes: both layers say "model" in the release, the API and the interface |
+| Multi-year statistics carry an interannual sigma | no: the ground temperature sigma is the model spread, and aridity has none; both say so. MODIS, the source with an interannual sigma, waits for an account (D1) |
+| Inversion-prone valleys are flagged when an elevation correction is used | no elevation correction is used on any temperature |
+
+## v3, run-002 geology (20 November 2026)
+
+The lithology of geological maps (Macrostrat), compared with the lunar surface material by crosswalk E17. Full report: [wiki/runs/run-002-geology.md](../runs/run-002-geology.md).
+
+| Check | Result |
+|---|---|
+| A known anorthosite body is recognized | yes: Lac-Saint-Jean (1:5M); not Mistastin (below the map's scale) |
+| Known basalt fields are recognized | yes: Holuhraun, Craters of the Moon, Payunia, the Paraná |
+| Unknown lithology stays missing, never "no match" | yes: 29.2% no map, 21.5 to 21.8% unresolved, shown hatched |
+| Top slope zones that match by geology | 0 of 40 |
+
+## v3, run-002 (19 November 2026)
+
+run-001 again with the two rules of protocol `validation-protocol-v3`: one global equal-area grid of 5 km cells (HEALPix), and candidate zones on high-confidence cells only. Full report: [wiki/runs/run-002.md](../runs/run-002.md).
+
+| Check | run-001 | run-002 | Pass |
+|---|---|---|---|
+| Positive controls | none exist for A and B | none exist | no validation |
+| Negatives in the top 10% | 0 of 18 for every target | 0 of 18 for every target | yes |
+| Masks | 17 of 18 | 17 of 18 | no |
+| Self-consistency (KS ≤ 0.05) | 4 of 5 (pits 0.056) | 4 of 5 (pits 0.056) | partly |
+| Reproducibility | 5 of 5 tiles identical | 5 of 5 tiles identical | yes |
+
+**What it means:**
+- The two artefacts of run-001 are gone from the top: none of the 40 best zones is a tile-edge fragment or a remnant between hidden ground.
+- That does not make the top zones analogs. 2 of 23 places are plausible from the literature (Andrelândia, Brazil; northern Skye, Scotland); the other 21 are unknown.
+- About 30% fewer zones, and a larger share stays stable under slope noise (shadowed regions 23%, lit highlands 75%, mare plains 85%).
+- The ranking changes with the DEM source (NASADEM: Spearman 0.08 and 0.34, top-20 overlap 35 and 45%) and less with the scale (30 m: 60 and 65% kept, against 35 and 40% in run-001). It is not a ranking of places.
+
+## v3, run-001 (19 November 2026)
+
+The first global discovery run of v3: topography only, scenarios A (lunar base) and B (lunar robotics), protocol `validation-protocol-v2`. Full report: [wiki/runs/run-001.md](../runs/run-001.md).
+
+| Check | Result | Pass |
+|---|---|---|
+| Positive controls | none exist for A and B: no verified reference names an analog site | no validation |
+| Negatives in the top 10% | 0 of 18 for every target (at most 1 allowed) | yes |
+| Masks | 17 of 18 negatives masked (a forest-savanna mosaic in the Chaco is 41% hidden) | no |
+| Self-consistency (KS ≤ 0.05) | 4 of 5 targets; pits 0.056 on 135 sites | partly |
+| Reproducibility | 5 of 5 rebuilt tiles identical | yes |
+
+**What it means:**
+- 38 of the 40 best zones are explained artefacts: windows left between hidden ground, or cells cut by the edges of the processing tiles.
+- The zone ranking changes a lot with the DEM source (NASADEM: top-20 overlap 40 to 45%) and with the scale (30 m: 35 to 40%). The zone list of run-001 is not a ranking of places.
+- One place is plausible: ridges near the MacDonnell Ranges, Northern Territory, Australia. It is small and borderline.
+- run-002 will rank zones on high-confidence cells only, and merge the parts of cells cut by tile edges (protocol v3).
+
+**Coverage:** 53% of the assessed cells have most of their ground hidden. The coverage overlay of the interface shows where.
+
+## v2 results (current production)
+
+What has been checked, the result, and how to reproduce it. Full protocol and the before/after grid: [wiki/v2/SCIENTIFIC_VALIDATION.md](../v2/SCIENTIFIC_VALIDATION.md). Latest rankings report: [wiki/rankings.md](../rankings.md).
+
+### Results (17 November 2026)
+
+| Check | v1 | v2 |
+|---|---|---|
+| Evaluation grid (13 criteria scored 0 to 3) | 15/39 | 28/39 |
+| Team expectations met (known analogs in the top half of their modes) | 9/11 | **8/11 (73%, below the 75% threshold)** |
+| Negative control (Amazon) excluded in every mode | yes | yes |
+| A random ranking does as well | 2.6% | 10.0% |
+| TypeScript engine and Python scorer agree on 37 sites × 3 modes | sample data only | exact |
+
+v2 was **not retuned** to meet the expectations. They were written by the team that built v1, so they are a consistency check, not an independent benchmark. Each miss is explained by a measurement:
+- Holuhraun is flatter than 95% of the lunar south pole at 1 km;
+- Atacama lies on an active subduction margin;
+- Svalbard has 106 earthquakes M ≥ 4.5 within 300 km.
+
+**Confidence of the assessments:**
+
+| Mode | Low | Medium | High |
+|---|---|---|---|
+| Robotics | 17 | 18 | 1 |
+| Calibration | 3 | 8 | 25 |
+| Colony | 3 | 28 | 5 |
+
+Robotics is the weakest: 1 km terrain statistics change a lot from one kilometre to the next.
+
+**Not covered:** independent expectations (criterion 12) and ground material (criterion 13). Both are open in v3, tasks T25 and T46.
+
+### Rank stability labels (interface)
+
+The share of the ranked list a site moves across between the 10th and 90th percentile of its rank:
+- 6% or less: stable;
+- up to 25%: moderate;
+- more: fragile.
+
+These are presentation choices (`apps/web/src/shared.ts`).
+
+## Reproduce
+
+```bash
+tools/check.sh all                                   # every test, audit, Docker e2e and browser audit
+python tools/validation/science_grid.py              # counted indicators of the grid
+python tools/validation/ablation.py                  # effect of each correction on the rankings
+python tools/scoring/score_sites.py                  # v2 rankings (Python reference scorer)
+python tools/validation/rankings.py --markdown docs/wiki/rankings.md   # against the running API
+```
+
+Quality baseline of the code: [wiki/baseline.md](../baseline.md).

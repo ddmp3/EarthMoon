@@ -2,6 +2,27 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-24 · T49 v3 validation report and limits (PR #34)
+- **`docs/VALIDATION.md` rewritten for v3** (3 pages). Unfavourable results first:
+  - 0 of 4 scenarios with a positive validation;
+  - masks 17/18 in both releases;
+  - NASADEM keeps 35 to 45% of the top 20;
+  - lunar pits and PSR and Mars polar rankings not robust;
+  - pits self-consistency fails (KS 0.056);
+  - 4 of 60 dossiers plausible, none confirmed;
+  - 0 of 40 top slope zones match by geology;
+  - 53% of lunar cells hidden.
+- **Grid:** v3 scores 30/39 on the 13 v2 criteria (v1 15, v2 28). The 5 new criteria score 13/15 (coverage, multi-scale, similarity and suitability apart, Mars, map honesty).
+  - Scores were judged by Claude, with the evidence in `docs/wiki/validation/v3-grid.md`, for David's review at G5.
+  - Counted figures come from `python tools/validation/science_grid.py --v3`, which reads the run summaries (tested).
+- **`docs/LIMITS.md` updated for v3:**
+  - what a typicality means;
+  - Mars atmosphere, gravity and radiation, and space weathering;
+  - comparability classes;
+  - v3 uncertainties (the v2 "37 hand-picked sites" no longer describes the results);
+  - decisions open before G5 (E10, E17, E20, E1).
+- **The previous `VALIDATION.md`**, the checks by run, moved to `docs/wiki/validation/checks-by-run.md`.
+
 ## 2026-11-24 · T52b Pre-analysis of updates (PR #33)
 - **Decision of David (24/11):** the refresher checks and identifies but never starts a recompute. Before any compute, the volume of an update is analysed: the app will run on Azure later, where each recompute has a cost.
 - **`tools/discovery/impact.py`:** for each detected change, it gives:

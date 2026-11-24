@@ -122,7 +122,7 @@ Status: `todo`, `doing`, `done (PR #n)`, `blocked (reason)`.
 | [T47](tasks/T47-thermal-hydric.md) | Thermal, ice and hydric dimensions | G4 | done (PR #29; E18: Earth context layers, no thermal comparison with the Moon; frozen ground and aridity; thermal cycling waits for the Earthdata account, D1) |
 | [T48](tasks/T48-mars.md) | Mars profiles and discovery | T46, T47 | done (PR #30; phase 1: polar and ice-rich targets, run-mars-001 with protocol mars-v1: no stable zone, no positive control; volcanic plains wait for R5) |
 | [T48b](tasks/T48b-mars-v2.md) | Mars protocol mars-v2: measured Monte Carlo noise | T48 | done (PR #31; noise 0.25° at 115 m, 0.04° at 463 m: 1,111 stable ice-rich zones, polar still 0) |
-| [T49](tasks/T49-validation-report.md) | v3 validation report and limits | T45-T48, T52 | todo |
+| [T49](tasks/T49-validation-report.md) | v3 validation report and limits | T45-T48, T52 | done (PR #34; grid 30/39 against 28/39 for v2, new criteria 13/15; 0 of 4 scenarios with a positive validation; G5 for David) |
 | G5 | Gate: release | T49 | todo |
 | [T50](tasks/T50-release.md) | Docs, release notes, v2 retirement decision | G5 | todo |
 | [T51](tasks/T51-assistant.md) | AI assistant for scientists (optional) | T50 | todo |
