@@ -70,11 +70,11 @@
     "crop": "centred square, 801 x 801"
   },
   "mars-volcanic": {
-    "nasa_id": "PIA26557",
-    "title": "THEMIS Views Mars' Arsia Mons Volcano",
-    "credit": "NASA/JPL-Caltech/ASU",
-    "url": "https://science.nasa.gov/photojournal/themis-views-mars-arsia-mons-volcano/",
-    "crop": "1280 x 1280 square around the volcano, resized to 1200 x 1200"
+    "nasa_id": "PIA00300",
+    "title": "Olympus Mons",
+    "credit": "NASA/JPL/USGS",
+    "url": "https://science.nasa.gov/photojournal/olympus-mons",
+    "crop": "centred square of the 4511 x 4172 JPEG, resized to 1200 x 1200"
   },
   "planet-moon": {
     "title": "CGI Moon Kit, LROC color 2k",

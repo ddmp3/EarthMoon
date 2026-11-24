@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { v3 as v3api, type AnalogPoint, type AnalogZone } from './api'
 import { PlanetGlobe, type GlobePoint } from './PlanetGlobe'
-import { fitZoom } from './globeMath'
 import type { V3Texts } from './text'
 
 type Loader = Pick<typeof v3api, 'analogTarget' | 'analogZone' | 'analogPoint'>
@@ -56,14 +55,14 @@ export function PlanetPanel({ body, scenario, env, release, zoneId, zoneName, on
 
   const current = zoneId && link?.id === zoneId ? link : null
   const highlight = useMemo(() => current?.data?.windows ?? [], [current])
-  // centre on the first window of the same slope (else of the target), zoomed to fit the target's windows
+  // centre on the target (the pole for polar targets), showing the whole planet
   const focus = useMemo(() => {
     const h = current?.data?.windows?.[0] ?? windows[0]
     if (!h) return null
     const n = windows.length || 1
     const lat = windows.reduce((a, w) => a + w.lat, 0) / n
     const centre = Math.abs(lat) > 75 ? { lat: Math.sign(lat) * 90, lon: h.lon } : { lat: h.lat, lon: h.lon }
-    return { ...centre, zoom: fitZoom(windows, centre.lat, centre.lon) }
+    return { ...centre, zoom: 1 }                         // the whole planet first (David, 24/11); zoom is the user's
   }, [current, windows])
   const bodyName = t.bodyLabel
 

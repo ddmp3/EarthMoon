@@ -112,7 +112,7 @@ button.chip.chip-on, button.chip.chip-on:hover { background: var(--accent); colo
 .mission-photo-mars-south img { object-position: 50% 50%; }
 .mission-photo-mars-volcanic img { object-position: 30% 50%; }
 .mission-card:disabled { cursor: default; }
-.mission-card.mission-soon .mission-photo img { filter: grayscale(0.6) brightness(0.7); }
+.mission-card.mission-soon .mission-photo img { filter: grayscale(0.2) brightness(0.85); }
 .mission-card.mission-soon .mission-cta { color: var(--muted); }
 .mission-card.mission-soon:hover { transform: none; border-color: var(--line); box-shadow: none; }
 .mission-card.mission-soon:hover img { transform: none; }
@@ -178,7 +178,7 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 @keyframes spin { to { transform: rotate(360deg); } }
 
 .explore { display: grid; grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); gap: 20px; padding: 24px var(--gutter); }
-.ranking { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); display: grid; grid-template-rows: auto 1fr; height: 560px; overflow: hidden; }
+.ranking { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); display: grid; grid-template-rows: auto 1fr; height: 600px; overflow: hidden; }
 .ranking-head { display: flex; align-items: baseline; justify-content: space-between; padding: 16px 18px 12px; border-bottom: 1px solid var(--line); }
 .ranking-head h3 { font-size: 1.05rem; }
 .ranking-head span { color: var(--muted); font-size: 0.8rem; }
@@ -195,7 +195,15 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .rank-row.is-excluded { opacity: 0.55; }
 
 /* T45c part 2: the Earth map and the planet globe side by side (stacked on narrow screens) */
-.map-pair { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+.map-pair { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: stretch; }
+/* Three blocks of one height (David, 24/11): the ranking and the planet stretch to the Earth map block, which holds the
+   map and, below it, its legend. `contain: size` keeps their own content from setting the height; they scroll inside. */
+.map-block { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--panel); display: grid; grid-template-rows: 560px auto; }
+.map-block .map-wrap { border: 0; border-radius: 0; height: 100%; }
+.map-block .map-legend { position: static; max-width: none; background: transparent; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+.map-block .map-legend-body { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); column-gap: 20px; }
+.map-pair .planet-panel { contain: size; overflow-y: auto; align-content: start; }
+.explore:has(.map-pair) .ranking { height: auto; contain: size; min-height: 560px; }
 .planet-panel { border: 1px solid var(--line); border-radius: 16px; background: var(--panel); padding: 14px 16px; display: grid; gap: 8px; }
 .planet-panel h3 { font-size: 1rem; }
 .planet-panel h4 { font-size: 0.85rem; margin: 6px 0 4px; }
@@ -209,7 +217,7 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .planet-zone { display: grid; width: 100%; text-align: left; background: none; border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; color: var(--text); cursor: pointer; }
 .planet-zone:hover, .planet-zone:focus-visible { border-color: var(--accent); }
 .planet-zone small { color: var(--muted); }
-.map-wrap { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 560px; background: #0a1220; }
+.map-wrap { border: 1px solid var(--line); border-radius: 16px; overflow: hidden; height: 600px; background: #0a1220; }
 .map-wrap .leaflet-container { height: 100%; width: 100%; background: #0a1220; font-family: var(--font-body); }
 .leaflet-control-attribution { background: rgba(var(--bg-rgb), 0.7) !important; color: var(--muted) !important; }
 .leaflet-control-attribution a { color: var(--muted) !important; }
@@ -258,7 +266,12 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
 .segmented button { background: none; border: 0; padding: 7px 14px; font-size: 0.84rem; color: var(--muted); }
 .segmented button[aria-pressed="true"] { background: var(--panel-2); color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
 .segmented button:disabled { opacity: 0.35; cursor: default; }
-.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: var(--accent); margin-right: 8px; vertical-align: -1px; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: linear-gradient(90deg, rgb(43, 58, 103), rgb(61, 122, 140), rgb(120, 166, 121), rgb(227, 193, 111), rgb(217, 119, 78)); margin-right: 8px; vertical-align: -1px; }
+/* slope scale of the Earth / Moon comparator: the ramp of tools/precompute/site_visuals.SLOPE_RAMP (0, 5, 10, 20, 30 degrees) */
+.slope-scale { margin: 10px 0 0; display: grid; gap: 4px; font-size: 0.78rem; color: var(--muted); }
+.slope-bar { position: relative; height: 12px; border-radius: 6px; background: linear-gradient(90deg, rgb(43, 58, 103) 0%, rgb(61, 122, 140) 16.7%, rgb(120, 166, 121) 33.3%, rgb(227, 193, 111) 66.7%, rgb(217, 119, 78) 100%); }
+.slope-band { position: absolute; top: -3px; bottom: -3px; border: 2px solid var(--text); border-radius: 4px; }
+.slope-ticks { display: flex; justify-content: space-between; }
 .twin-facts { display: grid; gap: 12px; }
 .twin-table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
 .twin-table td { white-space: nowrap; }
@@ -317,6 +330,9 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
   .mission-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .comparator, .explore, .credits { grid-template-columns: minmax(0, 1fr); }
   .map-pair { grid-template-columns: minmax(0, 1fr); }
+  .map-block { grid-template-rows: 380px auto; }
+  .map-pair .planet-panel { contain: none; }
+  .explore:has(.map-pair) .ranking { contain: none; height: 420px; min-height: 0; }
   .ranking { height: 420px; }
   .map-wrap { height: 380px; }
 }

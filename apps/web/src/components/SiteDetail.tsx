@@ -101,6 +101,17 @@ function Comparator({ siteId, visual, manifest, children }: { siteId: string; vi
             <span><i className="swatch" />{t.highlight}</span>
           </label>
         </div>
+        {highlight && (
+          <figure aria-label={t.slopeScale} className="slope-scale">
+            <figcaption>{t.slopeScale}</figcaption>
+            <div className="slope-bar">
+              <span className="slope-band" style={{ left: `${(Math.min(lo, 30) / 30) * 100}%`, width: `${((Math.min(hi, 30) - Math.min(lo, 30)) / 30) * 100}%` }}
+                title={t.lunarRange} />
+            </div>
+            <div className="slope-ticks"><span>0°</span><span>10°</span><span>20°</span><span>30°+</span></div>
+            <small>{t.lunarRange}: {lo}–{hi}°</small>
+          </figure>
+        )}
         {!hasPhoto && <p className="note">{t.noPhoto}</p>}
       </div>
 

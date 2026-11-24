@@ -3,9 +3,9 @@
 For each site of data/candidates.json, writes to apps/web/public/sites/<id>/:
     earth.jpg         real satellite view (cloudless Sentinel-2 2016; else Landsat WELD, NASA GIBS; absent if none is fine enough)
     earth-relief.jpg  shaded relief of the site (Copernicus DEM GLO-30 resampled to 40 m)
-    earth-match.png   transparent amber overlay: pixels whose slope is in the typical lunar south pole range
+    earth-match.png   translucent slope overlay: every pixel coloured by its slope on one soft ramp (0 to 30° and more)
     moon-relief.jpg   shaded relief of the lunar twin (LRO LOLA LDEM_85S_40M)
-    moon-match.png    same overlay, Moon side
+    moon-match.png    same overlay and scale, Moon side (the typical lunar range is marked on the legend of the page)
 and apps/web/public/sites/manifest.json (sources, twin coordinates, share of matching slopes).
 
 Lunar twin: the 1 km window of the south pole (south of 85°S) whose mean slope and roughness are closest
@@ -38,6 +38,10 @@ N = int(EXTENT_M / PIXEL_M)          # 300 pixels
 OUT_PX = 600
 R_EARTH = 6_371_000.0
 HIGHLIGHT = (255, 196, 87)            # ambre : pentes concordantes
+# T45c (David, 24/11): one soft, perceptually ordered slope ramp for both bodies, instead of an amber mask. Degrees and
+# colours: deep blue (flat), teal, sage, sand, terracotta (30 degrees and steeper); colour-blind friendly (no red/green pair).
+SLOPE_RAMP = ((0.0, (43, 58, 103)), (5.0, (61, 122, 140)), (10.0, (120, 166, 121)), (20.0, (227, 193, 111)), (30.0, (217, 119, 78)))
+SLOPE_ALPHA = 150
 S2_WMS = "https://tiles.maps.eox.at/wms"
 GIBS_WMS = "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi"
 PHOTO_SOURCES = [
@@ -143,6 +147,25 @@ def save_relief(z: np.ndarray, path: str) -> None:
     Image.fromarray(hillshade(z, PIXEL_M)).resize((OUT_PX, OUT_PX), Image.BICUBIC).save(path, quality=84, optimize=True)
 
 
+def slope_rgba(slope: np.ndarray) -> np.ndarray:
+    """RGBA (uint8) of slopes in degrees on SLOPE_RAMP, linear between its stops; translucent everywhere."""
+    s = np.clip(np.nan_to_num(np.asarray(slope, float), nan=0.0), SLOPE_RAMP[0][0], SLOPE_RAMP[-1][0])
+    stops = np.array([d for d, _ in SLOPE_RAMP])
+    cols = np.array([c for _, c in SLOPE_RAMP], float)
+    rgba = np.zeros((*s.shape, 4), dtype="uint8")
+    for k in range(3):
+        rgba[..., k] = np.round(np.interp(s, stops, cols[:, k])).astype("uint8")
+    rgba[..., 3] = SLOPE_ALPHA
+    return rgba
+
+
+def save_slope_overlay(z: np.ndarray, pixel_m: float, path: str) -> None:
+    """Translucent slope overlay of an elevation grid (same ramp and scale on Earth and on the Moon)."""
+    from PIL import Image
+    s = slope_deg(np.asarray(z, dtype="float64"), pixel_m, pixel_m)
+    Image.fromarray(slope_rgba(s), "RGBA").save(path, optimize=True)
+
+
 def save_mask(mask: np.ndarray, path: str) -> None:
     """Transparent amber overlay at the original grid (300 px, a few KB): the browser upscales it smoothly."""
     from PIL import Image
@@ -241,13 +264,13 @@ def main(argv=None) -> int:
                 raise ValueError("Earth relief unavailable over more than half of the square")
             save_relief(z, os.path.join(folder, "earth-relief.jpg"))
             earth_mask = match_mask(z, PIXEL_M, lo, hi)
-            save_mask(earth_mask, os.path.join(folder, "earth-match.png"))
+            save_slope_overlay(z, PIXEL_M, os.path.join(folder, "earth-match.png"))
             r, c, dist = find_twin(sm, rg, valid, float(pre["slope_mean"]), float(pre["roughness"]), iqr_s, iqr_r)
             cy, cx = int(centre[r]), int(centre[c])
             patch = moon[cy - half:cy + half, cx - half:cx + half]
             save_relief(patch, os.path.join(folder, "moon-relief.jpg"))
             moon_mask = match_mask(patch, PIXEL_M, lo, hi)
-            save_mask(moon_mask, os.path.join(folder, "moon-match.png"))
+            save_slope_overlay(patch, PIXEL_M, os.path.join(folder, "moon-match.png"))
             lat, lon = polar_latlon(cy, cx, size, PIXEL_M)
             entry.update({
                 "earth": {"slope_mean": pre["slope_mean"], "slope_max": pre.get("slope_max"), "roughness": pre["roughness"],
