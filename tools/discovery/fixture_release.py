@@ -54,6 +54,7 @@ def build(out: Path, add: bool = False) -> str:
         run.mkdir()
         (cube / "glo90-90m").mkdir(parents=True)
         write_rows(run / "cells.parquet", rows)
+        (run / "assess.json").write_text(json.dumps({"assessed_tiles": len({r["tile"] for r in rows}), "cells": len(rows)}))
         assert pq.read_schema(run / "cells.parquet").equals(CELL_SCHEMA)
         land = {"lat": lat.ravel(), "lon": lon.ravel()}                       # one synthetic 1 km window per point
         pq.write_table(pa.table(land), cube / "glo90-90m" / "fixture.windows.parquet")

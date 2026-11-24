@@ -14,7 +14,7 @@ const defects = [];
 const notes = [];
 const defect = (where, what) => defects.push(`[${where}] ${what}`);
 
-const MISSIONS = 5;                                          // four lunar missions and Mars (T48)
+const MISSIONS = 4;                                          // four missions per body: the Moon, or Mars (T45c)
 
 async function overflow(page, where) {
   const info = await page.evaluate(() => {
@@ -159,16 +159,34 @@ async function discovery(page, name, shot) {
   await overflow(page, `${name} free criteria (fr)`);
   await shot("12-custom-fr");
   await page.locator(".lang-switch button", { hasText: "EN" }).click();
-  // mission 5, Mars (T48): same screens, scenario D from the Mars release, then French. A fresh rate-limit window, as
-  // a new visitor: the Mars release documents are read anew.
+  // Mars mode (T45c): the body switch turns the whole site to Mars (its own home, colours and terrains), then the
+  // Mars mission, scenario D from the Mars release, then French. A fresh rate-limit window, as a new visitor.
   await new Promise((resolve) => setTimeout(resolve, 61_000));
-  await page.goto(`${WEB}/#mars`, { waitUntil: "networkidle" });
+  await page.goto(`${WEB}/`, { waitUntil: "networkidle" });
+  await page.locator(".body-switch button", { hasText: "Mars" }).click();
+  if ((await page.locator("html").getAttribute("data-body")) !== "mars") defect(name, "Earth-Mars chip: the site is not in its Mars mode");
+  if (!(await page.locator(".hero-copy h1").textContent())?.includes("Find Mars")) defect(name, "Mars home: the title is not the Mars one");
+  if ((await page.locator(".mission-card").count()) !== MISSIONS) defect(name, `Mars home: ${await page.locator(".mission-card").count()} cards instead of ${MISSIONS}`);
+  const marsBroken = await page.evaluate(() => [...document.images].filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src));
+  if (marsBroken.length) defect(name, `Mars home: broken images ${marsBroken.join(", ")}`);
+  await page.locator(".figures dt").first().waitFor({ timeout: 15000 }).catch(() => undefined);   // the Mars release loads after the switch
+  if ((await page.locator(".figures dt").count()) !== 4) defect(name, "Mars home: the figures of the Mars release are missing");
+  await overflow(page, `${name} Mars home`);
+  await shot("13a-mars-home");
+  if (!page.url().endsWith("#mars-home")) defect(name, `Mars home address is ${page.url()}`);
+  await page.locator(".mission-card").nth(1).click();
   await page.locator(".zone-row").first().waitFor({ timeout: 20000 }).catch(() => defect(name, "Mars: no zone list"));
   const envs = await page.locator("#v3-env option").allInnerTexts();
   if (!envs.some((e) => e.includes("North polar terrain"))) defect(name, `Mars: environments are ${envs.join(", ").slice(0, 120)}`);
   if (envs.some((e) => /lunar|Mare|shadowed/i.test(e))) defect(name, "Mars: a lunar environment is offered");
   if (await page.locator("#bare-soil").count()) defect(name, "Mars: the v2 bare-soil filter is shown");
   await overflow(page, `${name} Mars`);
+  if (((await page.locator("#v3-env").inputValue().catch(() => "")) || "") !== "mars-north-polar") defect(name, "Mars: the terrain picked on the home is not selected");
+  if (!((await page.locator(".mission-banner h1").textContent()) || "").includes("North polar terrain")) defect(name, "Mars: the banner does not show the terrain picked");
+  if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars.jpg")) defect(name, "Mars: the banner photo is not the terrain's");
+  await page.locator("#v3-env").selectOption("mars-south-polar");
+  if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars-south.jpg")) defect(name, "Mars: the banner does not follow a terrain changed in the mission");
+  await page.locator("#v3-env").selectOption("mars-north-polar");
   await shot("13-mars");
   await page.locator(".zone-row").first().click();
   await page.locator(".v3-under").waitFor({ timeout: 10000 }).catch(() => defect(name, "Mars: the zone card does not open"));
@@ -181,6 +199,11 @@ async function discovery(page, name, shot) {
   await overflow(page, `${name} Mars (fr)`);
   await shot("15-mars-fr");
   await page.locator(".lang-switch button", { hasText: "EN" }).click();
+  // back to the Moon: the whole site returns to its lunar mode
+  await page.locator(".brand").click();
+  await page.locator(".body-switch button", { hasText: "Moon" }).click();
+  if ((await page.locator("html").getAttribute("data-body")) !== "moon") defect(name, "Earth-Moon chip: the site does not return to its Moon mode");
+  if (!(await page.locator(".hero-copy h1").textContent())?.includes("Find the Moon")) defect(name, "Moon home: the title is not the lunar one");
   // the old address of the separate page opens mission 4
   await page.goto(`${WEB}/#discover`, { waitUntil: "networkidle" });
   if (!(await page.locator(".v3-search").count())) defect(name, "#discover does not open the free-criteria mission");

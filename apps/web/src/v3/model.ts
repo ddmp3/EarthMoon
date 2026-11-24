@@ -144,6 +144,26 @@ function impactLine(s: Status, t: V3Texts): string | null {
   return t.impactLine(imp.length, tiles, hours)
 }
 
+/** Figures of the home banner of a body, read from its current release (T45c): cells assessed, targets compared,
+ * sources, scenarios with a positive validation. Null until the release is loaded: nothing is typed by hand. */
+export function homeFigures(
+  v: { release: { processing?: { step: string; cells?: number }[] } | null; scenarios: { assessed_targets: string[] }[]; method: { sources: unknown[] } | null; status: Status | null },
+  body: 'moon' | 'mars', lang: 'en' | 'fr',
+  labels: { cells: string; targetsMoon: string; targetsMars: string; sources: string; positive: string },
+): { value: string; label: string }[] | null {
+  const cells = v.release?.processing?.find((p) => p.step === 'cells')?.cells
+  if (cells == null || !v.scenarios.length || !v.method || !v.status) return null
+  const m = (Math.round(cells / 1e5) / 10).toFixed(1)
+  const targets = new Set(v.scenarios.flatMap((s) => s.assessed_targets)).size
+  const positive = v.status.validity.checks.find((c) => c.check === 'positives')?.pass === true ? v.scenarios.length : 0
+  return [
+    { value: `${lang === 'fr' ? m.replace('.', ',') : m} M`, label: labels.cells },
+    { value: String(targets), label: body === 'mars' ? labels.targetsMars : labels.targetsMoon },
+    { value: String(v.method.sources.length), label: labels.sources },
+    { value: String(positive), label: labels.positive },
+  ]
+}
+
 /** Source product of a file read by an Earth tile (names as in the catalogue). */
 function sourceName(item: string): string {
   if (item.includes('Copernicus_DSM_COG_10')) return 'Copernicus DEM GLO-30'

@@ -47,5 +47,33 @@
     "credit": "NASA/JPL-Caltech/University of Arizona/Texas A&M University",
     "url": "https://images.nasa.gov/details/PIA10713",
     "crop": "square crop of the horizon and polygonal ground, resized to 1200 x 1200"
+  },
+  "mars-hero": {
+    "nasa_id": "PIA13163",
+    "title": "Northern Ice Cap of Mars",
+    "credit": "NASA/JPL-Caltech/MSSS",
+    "url": "https://science.nasa.gov/photojournal/northern-ice-cap-of-mars",
+    "crop": "top half (limb and cap), 1280 x 640 resized to 1920 x 960"
+  },
+  "mars-south": {
+    "nasa_id": "PIA02393",
+    "title": "South Polar Cap, Summer 2000",
+    "credit": "NASA/JPL/MSSS",
+    "url": "https://science.nasa.gov/photojournal/south-polar-cap-summer-2000",
+    "crop": "centred square, resized to 1200 x 1200"
+  },
+  "mars-ice": {
+    "nasa_id": "PIA22077",
+    "title": "Underground Martian Ice Deposit Exposed at Scarp",
+    "credit": "NASA/JPL-Caltech/UA/USGS",
+    "url": "https://science.nasa.gov/photojournal/underground-martian-ice-deposit-exposed-at-scarp",
+    "crop": "centred square, 801 x 801"
+  },
+  "mars-volcanic": {
+    "nasa_id": "PIA26557",
+    "title": "THEMIS Views Mars' Arsia Mons Volcano",
+    "credit": "NASA/JPL-Caltech/ASU",
+    "url": "https://science.nasa.gov/photojournal/themis-views-mars-arsia-mons-volcano/",
+    "crop": "1280 x 1280 square around the volcano, resized to 1200 x 1200"
   }
 }

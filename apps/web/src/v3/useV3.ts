@@ -14,6 +14,7 @@ export interface V3Release {
   protocol?: string
   commit?: string
   grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } }
+  processing?: { step: string; cells?: number }[]
   geology?: unknown
   context?: unknown
 }
