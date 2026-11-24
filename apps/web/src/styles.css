@@ -66,17 +66,16 @@ a { color: var(--accent); }
 .brand-mark { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 34% 32%, #fff 0 9%, #c9ccd6 10% 38%, #6c7282 62%, #1c2030 100%); box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25), 9px 0 0 -6px var(--earth); }
 .brand strong { display: block; font-family: var(--font-display); font-size: 0.95rem; letter-spacing: 0.04em; }
 .brand small { display: block; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
-.topbar-target { font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 999px; padding: 5px 12px; backdrop-filter: blur(6px); }
 .app { position: relative; }
 .topbar-right { display: flex; align-items: center; gap: 12px; }
 .lang-switch { display: inline-flex; border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 999px; overflow: hidden; backdrop-filter: blur(6px); }
 .lang-switch button { background: none; border: 0; padding: 5px 11px; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; color: rgba(255, 255, 255, 0.75); }
 .lang-switch button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
 .lang-switch button:not([aria-pressed="true"]):hover { color: #fff; }
-.body-switch { display: inline-flex; border: 1px solid rgba(255, 255, 255, 0.28); border-radius: 999px; overflow: hidden; backdrop-filter: blur(6px); }
-.body-switch button { background: none; border: 0; min-height: 36px; padding: 6px 16px; font-family: var(--font-display); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; color: rgba(255, 255, 255, 0.8); cursor: pointer; }
+.body-switch { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.body-switch button { background: none; border: 0; min-height: 36px; padding: 6px 14px; font-size: 0.74rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
 .body-switch button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
-.body-switch button:not([aria-pressed="true"]):hover { color: #fff; }
+.body-switch button:not([aria-pressed="true"]):hover { color: var(--text); }
 
 /* ------------------------------------------------------------------ accueil */
 .hero { position: relative; height: clamp(440px, 62vh, 640px); overflow: hidden; display: flex; align-items: flex-end; }
@@ -311,7 +310,6 @@ select, .builder-number input { background: var(--panel-2); border: 1px solid va
   .figures div:nth-child(3) { padding-left: 0; border-left: 0; }
   .detail-head { grid-template-columns: minmax(0, 1fr); }
   .builder-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .topbar-target { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .mission-card, .mission-card img { transition: none; }

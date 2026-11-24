@@ -38,12 +38,14 @@ export function Home({ body, figures, onBody, onPick, onPickMars }: {
             <h2 id="missions-title">{mars ? t.chooseMissionMars : t.chooseMission}</h2>
             <p>{mars ? t.chooseMissionMarsLead : t.chooseMissionLead}</p>
           </div>
-          <div aria-label={t.bodySwitch} className="target-chips" role="group">
-            {(['moon', 'mars'] as Body[]).map((b) => (
-              <button aria-pressed={body === b} className={`chip${body === b ? ' chip-on' : ''}`} key={b} onClick={() => onBody(b)} type="button">
-                {b === 'mars' ? t.targetMars : t.target}
-              </button>
-            ))}
+          <div className="target-chips">
+            <div aria-label={t.bodySwitch} className="body-switch" role="group">
+              {(['moon', 'mars'] as Body[]).map((b) => (
+                <button aria-pressed={body === b} key={b} onClick={() => onBody(b)} type="button">
+                  {b === 'mars' ? t.targetMars : t.target}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
