@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { CircleMarker, GeoJSON, TileLayer, Tooltip, useMap, useMapEvents } from 'react-leaflet'
 import { useAppStore } from '../store'
 import { layerUrl, v3, type CellCollection, type CellProps, type Zone } from './api'
-import { cellLines, cellState, cividis, geologyClass, PATTERN, type CoverageClass } from './model'
+import { CELL_CAP, cellLines, cellState, cellsInView, cividis, geologyClass, PATTERN, type CoverageClass } from './model'
 import { v3Texts } from './text'
 
 export const TILE_MAX_ZOOM = 7 // raster tiles exist for zoom 0 to 7 (ADR-004); 5 km cells above
@@ -19,13 +19,14 @@ export type MapLayer = 'typicality' | 'geology' | 'frozen' | 'aridity'
 const FROZEN_FILL: Record<string, string> = { met: 'rgb(0, 114, 178)', partial: 'rgb(86, 180, 233)', failed: 'rgb(230, 159, 0)' }
 const ARIDITY_FILL: Record<string, string> = { 'hyper-arid': 'rgb(166, 97, 26)', arid: 'rgb(223, 194, 125)', 'semi-arid': 'rgb(245, 245, 245)', 'dry sub-humid': 'rgb(128, 205, 193)', humid: 'rgb(1, 133, 113)' }
 
-function Cells({ scenario, env, overlay, confidence, onError, layer, release }: {
+function Cells({ scenario, env, overlay, confidence, onError, onInfo, layer, release }: {
   layer: MapLayer
   scenario: string
   env: string
   overlay: boolean
   confidence: boolean
   onError: (message: string | null) => void
+  onInfo: (tooMany: boolean) => void
   release: string
 }) {
   const lang = useAppStore((s) => s.lang)
@@ -39,12 +40,21 @@ function Cells({ scenario, env, overlay, confidence, onError, layer, release }: 
     ctl.current?.abort()
     if (map.getZoom() <= TILE_MAX_ZOOM) {
       onError(null)
+      onInfo(false)
       return
     }
     const b = map.getBounds()
+    const box: [number, number, number, number] = [Math.max(-180, b.getWest()), Math.max(-90, b.getSouth()), Math.min(180, b.getEast()), Math.min(90, b.getNorth())]
+    // more cells than the service serves in one view: say "zoom in", never an error (ADR-004 cap)
+    if (cellsInView(box) > CELL_CAP * 0.95) {
+      onError(null)
+      onInfo(true)
+      return
+    }
+    onInfo(false)
     const c = new AbortController()
     ctl.current = c
-    v3.cells(scenario, env, [Math.max(-180, b.getWest()), Math.max(-90, b.getSouth()), Math.min(180, b.getEast()), Math.min(90, b.getNorth())], c.signal, release)
+    v3.cells(scenario, env, box, c.signal, release)
       .then((d) => {
         setData(d)
         onError(null)
@@ -52,16 +62,22 @@ function Cells({ scenario, env, overlay, confidence, onError, layer, release }: 
       .catch((e: unknown) => {
         if (!c.signal.aborted) {
           setData(null)
-          onError(e instanceof Error ? e.message : String(e))
+          const msg = e instanceof Error ? e.message : String(e)
+          if (/cells in this view/.test(msg)) {
+            onError(null)
+            onInfo(true)
+          } else onError(msg)
         }
       })
-  }, [env, map, onError, release, scenario])
+  }, [env, map, onError, onInfo, release, scenario])
   useMapEvents({ moveend: () => { setZoom(map.getZoom()); load() } })
   useEffect(() => {
     load()
     return () => ctl.current?.abort()
   }, [load])
-  if (!data || zoom <= TILE_MAX_ZOOM) return null
+  const vb = map.getBounds()
+  const tooMany = cellsInView([Math.max(-180, vb.getWest()), Math.max(-90, vb.getSouth()), Math.min(180, vb.getEast()), Math.min(90, vb.getNorth())]) > CELL_CAP * 0.95
+  if (!data || zoom <= TILE_MAX_ZOOM || tooMany) return null
   const geo = data as unknown as GeoJsonObject
   const props = (f?: Feature) => f?.properties as CellProps
   const value = (f?: Feature): PathOptions => {
@@ -99,7 +115,7 @@ function Cells({ scenario, env, overlay, confidence, onError, layer, release }: 
 }
 
 /** v3 layers inside a mission map: typicality tiles to zoom 7, the coverage overlay, cells above zoom 7. */
-export function V3Layers({ release, scenario, env, overlay, confidence, onCellsError, layer = 'typicality' }: {
+export function V3Layers({ release, scenario, env, overlay, confidence, onCellsError, onCellsInfo, layer = 'typicality' }: {
   layer?: MapLayer
   release: string
   scenario: string
@@ -107,6 +123,7 @@ export function V3Layers({ release, scenario, env, overlay, confidence, onCellsE
   overlay: boolean
   confidence: boolean
   onCellsError: (message: string | null) => void
+  onCellsInfo: (tooMany: boolean) => void
 }) {
   const body = useAppStore((s) => s.body)
   return (
@@ -116,12 +133,12 @@ export function V3Layers({ release, scenario, env, overlay, confidence, onCellsE
         errorTileUrl={EMPTY_TILE}
         key={`${layer}-${scenario}-${env}`}
         maxNativeZoom={TILE_MAX_ZOOM}
-        maxZoom={TILE_MAX_ZOOM}
+        maxZoom={MAP_MAX_ZOOM}
         opacity={0.8}
         url={layerUrl(scenario, env, layer, release)}
       />
-      {overlay && <TileLayer errorTileUrl={EMPTY_TILE} key={`co-${scenario}-${env}`} maxNativeZoom={TILE_MAX_ZOOM} maxZoom={TILE_MAX_ZOOM} url={layerUrl(scenario, env, 'coverage', release)} />}
-      <Cells confidence={confidence} env={env} layer={layer} onError={onCellsError} overlay={overlay} release={release} scenario={scenario} />
+      {overlay && <TileLayer errorTileUrl={EMPTY_TILE} key={`co-${scenario}-${env}`} maxNativeZoom={TILE_MAX_ZOOM} maxZoom={MAP_MAX_ZOOM} url={layerUrl(scenario, env, 'coverage', release)} />}
+      <Cells confidence={confidence} env={env} layer={layer} onError={onCellsError} onInfo={onCellsInfo} overlay={overlay} release={release} scenario={scenario} />
     </>
   )
 }

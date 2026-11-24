@@ -164,6 +164,18 @@ export function homeFigures(
   ]
 }
 
+/** Cells the discovery service serves in one view at most (apps/discovery/core.py CELL_CAP, ADR-004). */
+export const CELL_CAP = 5000
+const CELL_KM2 = 25.04
+
+/** Expected number of 5 km cells in a view [west, south, east, north] (its area on the sphere / 25.04 km²). */
+export function cellsInView(b: [number, number, number, number]): number {
+  const R = 6371.0088
+  const rad = Math.PI / 180
+  const area = R * R * Math.max(0, b[2] - b[0]) * rad * Math.abs(Math.sin(b[3] * rad) - Math.sin(b[1] * rad))
+  return area / CELL_KM2
+}
+
 /** Source product of a file read by an Earth tile (names as in the catalogue). */
 function sourceName(item: string): string {
   if (item.includes('Copernicus_DSM_COG_10')) return 'Copernicus DEM GLO-30'
