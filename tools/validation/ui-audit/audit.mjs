@@ -52,6 +52,8 @@ function contrast(a, b) {
 // --- v3 inside the missions (T45b): site marks, site card section, zones tab, zone card, comparison, cells, search,
 // French, contrast, ADR-006 budget. JavaScript of the v2 pages before v3 (main at cdfba91): 128.2 KB gzip.
 const JS_BEFORE_V3_KB = 128.2;
+// T54: the audit sends one refused equation on purpose; its 400 is expected, every other 4xx is a defect
+let refusalExpected = false;
 async function discovery(page, name, shot) {
   const tiles = [];
   const js = new Map();
@@ -75,7 +77,13 @@ async function discovery(page, name, shot) {
   if (kb - JS_BEFORE_V3_KB > 60) defect(name, `${(kb - JS_BEFORE_V3_KB).toFixed(1)} KB gzip of JavaScript added by v3 (budget 60 KB, ADR-006)`);
   if (tiles.length > 40) defect(name, `robotics: ${tiles.length} v3 tile requests for the first view (budget 40, ADR-006)`);
   notes.push(`${name} v3 in robotics: first view ${firstView} ms, JavaScript ${kb.toFixed(1)} KB gzip (+${(kb - JS_BEFORE_V3_KB).toFixed(1)} for v3), ${tiles.length} tile requests`);
-  for (const id of ["v3-env", "v3-overlay"]) if (!(await page.locator(`#${id}`).count())) defect(name, `robotics: no #${id} control`);
+  for (const id of ["criteria-preset", "v3-overlay"]) if (!(await page.locator(`#${id}`).count())) defect(name, `robotics: no #${id} control`);
+  // T54: the mission opens on its precalibrated use, every criterion readable, checked on the known sites
+  if (await page.locator("#v3-env").count()) defect(name, "robotics: the single-environment selector is still offered");
+  await page.locator(".criteria-result").waitFor({ timeout: 30000 }).catch(() => defect(name, "criteria: the preset was not run"));
+  if (!(await page.locator(".criteria-row").count())) defect(name, "criteria: no criterion shown");
+  if (!(await page.locator(".criteria-why").first().innerText()).match(/Why|Source/)) defect(name, "criteria: a criterion without its reason");
+  if (!(await page.locator(".criteria-result").innerText()).match(/sites with data recovered/)) defect(name, "criteria: no check on the known sites");
   if (!(await page.locator(".v3-statusline").innerText()).match(/validated/i)) defect(name, "robotics: no validity line");
   const section = page.locator(".v3-site");
   if (!(await section.count())) defect(name, "site card: no v3 section");
@@ -141,18 +149,27 @@ async function discovery(page, name, shot) {
   }
   // mission 4: the search of the whole Earth, then French
   await page.goto(`${WEB}/#custom`, { waitUntil: "networkidle" });
-  await page.locator(".v3-search").waitFor({ timeout: 20000 }).catch(() => defect(name, "free criteria: no v3 search"));
+  await page.locator(".criteria-result").waitFor({ timeout: 30000 }).catch(() => defect(name, "free criteria: no criteria panel"));
   await page.locator(".zone-row").first().waitFor({ timeout: 20000 }).catch(() => defect(name, "free criteria: the map and zones are not shown before a v2 run"));
-  await page.locator("#v3-min-typicality").fill("0.5");
-  await page.locator("#v3-min-confidence").selectOption("low");
-  await page.getByRole("button", { name: /Search in this view/ }).click();
-  await page.getByRole("tab", { name: /Search results/ }).waitFor({ timeout: 20000 }).catch(() => defect(name, "free criteria: the search gave no result tab"));
-  notes.push(`${name} search: ${(await page.locator(".v3-search [role=status]").innerText().catch(() => "no message")).slice(0, 90)}`);
+  // a scientist writes an equation and tests it: the result is labelled custom, with its check on the known sites
+  await page.locator("#criteria-equation").fill("permafrost >= 0.5 and hidden_ground <= 0.3");
+  await page.locator("#criteria-add-equation").click();
+  await page.locator("#criteria-run").click();
+  await page.locator(".criteria-label.is-custom").waitFor({ timeout: 30000 }).catch(() => defect(name, "free criteria: an edited rule is not labelled custom"));
+  await page.locator("#criteria-equation").fill("permafrost >> 1");
+  await page.locator("#criteria-add-equation").click();
+  refusalExpected = true;
+  await page.locator("#criteria-run").click();
+  await page.locator(".criteria [role=alert]").waitFor({ timeout: 20000 }).catch(() => defect(name, "free criteria: a bad equation gives no reason"));
+  refusalExpected = false;
+  await page.getByRole("tab", { name: /Candidates/ }).waitFor({ timeout: 20000 }).catch(() => defect(name, "free criteria: no candidates tab"));
+  notes.push(`${name} criteria: ${(await page.locator(".criteria-result").innerText().catch(() => "no result")).replace(/\s+/g, " ").slice(0, 140)}`);
   await overflow(page, `${name} free criteria v3`);
   await shot("11-custom-v3");
   await page.locator(".lang-switch button", { hasText: "FR" }).click();
   const fr = await page.locator("main").innerText();
   for (const english of ["Coverage overlay", "Discovered zones", "Search the whole Earth", "Lunar environment", "Not validated", "Data and method",
+    "Selection criteria", "Test these criteria", "Required", "sites with data recovered",
     "Slope a crewed lunar rover", "Robotic lunar exploration", "Minimum typicality"]) {
     if (fr.includes(english)) defect(name, `French interface still shows "${english}"`);
   }
@@ -176,24 +193,24 @@ async function discovery(page, name, shot) {
   if (!page.url().endsWith("#mars-home")) defect(name, `Mars home address is ${page.url()}`);
   await page.locator(".mission-card").nth(1).click();
   await page.locator(".zone-row").first().waitFor({ timeout: 20000 }).catch(() => defect(name, "Mars: no zone list"));
-  const envs = await page.locator("#v3-env option").allInnerTexts();
-  if (!envs.some((e) => e.includes("North polar terrain"))) defect(name, `Mars: environments are ${envs.join(", ").slice(0, 120)}`);
-  if (envs.some((e) => /lunar|Mare|shadowed/i.test(e))) defect(name, "Mars: a lunar environment is offered");
+  const envs = await page.locator("#criteria-preset option").allInnerTexts();
+  if (!envs.some((e) => e.includes("North polar terrain"))) defect(name, `Mars: uses are ${envs.join(", ").slice(0, 120)}`);
+  if (envs.some((e) => /lunar|mare|shadowed/i.test(e))) defect(name, "Mars: a lunar use is offered");
   if (await page.locator("#bare-soil").count()) defect(name, "Mars: the v2 bare-soil filter is shown");
   await overflow(page, `${name} Mars`);
-  if (((await page.locator("#v3-env").inputValue().catch(() => "")) || "") !== "mars-north-polar") defect(name, "Mars: the terrain picked on the home is not selected");
+  if (((await page.locator("#criteria-preset").inputValue().catch(() => "")) || "") !== "mars-north-polar-ice") defect(name, "Mars: the terrain picked on the home is not selected");
   if (!((await page.locator(".mission-banner h1").textContent()) || "").includes("North polar terrain")) defect(name, "Mars: the banner does not show the terrain picked");
   if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars.jpg")) defect(name, "Mars: the banner photo is not the terrain's");
-  await page.locator("#v3-env").selectOption("mars-south-polar");
+  await page.locator("#criteria-preset").selectOption("mars-south-polar-ice");
   if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars-south.jpg")) defect(name, "Mars: the banner does not follow a terrain changed in the mission");
   // T48c: the volcanic plains are a working terrain (protocol mars-v3), with their banner and their zones
-  if (!(await page.locator("#v3-env option[value='mars-volcanic-plains']").count())) defect(name, "Mars: the volcanic plains are not offered");
+  if (!(await page.locator("#criteria-preset option[value='mars-volcanic-geology']").count())) defect(name, "Mars: the volcanic plains are not offered");
   else {
-    await page.locator("#v3-env").selectOption("mars-volcanic-plains");
+    await page.locator("#criteria-preset").selectOption("mars-volcanic-geology");
     if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars-volcanic.jpg")) defect(name, "Mars: the volcanic plains banner is not shown");
     await page.locator(".zone-row").first().waitFor({ timeout: 20000 }).catch(() => defect(name, "Mars: no zone list for the volcanic plains"));
   }
-  await page.locator("#v3-env").selectOption("mars-north-polar");
+  await page.locator("#criteria-preset").selectOption("mars-north-polar-ice");
   await shot("13-mars");
   // T45c part 2: the Mars globe beside the map, linked both ways with the Earth zones
   await page.locator("canvas.planet-globe-canvas").waitFor({ timeout: 20000 }).catch(() => defect(name, "Mars: no 3D globe beside the map"));
@@ -232,7 +249,8 @@ async function discovery(page, name, shot) {
   if (!(await page.locator(".hero-copy h1").textContent())?.includes("Find the Moon")) defect(name, "Moon home: the title is not the lunar one");
   // the old address of the separate page opens mission 4
   await page.goto(`${WEB}/#discover`, { waitUntil: "networkidle" });
-  if (!(await page.locator(".v3-search").count())) defect(name, "#discover does not open the free-criteria mission");
+  await page.locator(".criteria").waitFor({ timeout: 20000 }).catch(() => undefined);
+  if (!(await page.locator(".criteria").count())) defect(name, "#discover does not open the free-criteria mission");
   page.off("response", onResponse);
 }
 
@@ -240,10 +258,12 @@ async function run(name, viewport, mobile) {
   const browser = await chromium.launch();
   const context = await browser.newContext({ viewport, deviceScaleFactor: mobile ? 2 : 1, isMobile: mobile, hasTouch: mobile });
   const page = await context.newPage();
-  page.on("console", (m) => { if (m.type() === "error") defect(name, `console error: ${m.text().slice(0, 220)}`); });
+  // the audit sends one refused equation on purpose (T54): its 400 is expected, every other one is a defect
+
+  page.on("console", (m) => { if (m.type() === "error" && !(refusalExpected && m.text().includes("400"))) defect(name, `console error: ${m.text().slice(0, 220)}`); });
   page.on("pageerror", (e) => defect(name, `page error: ${String(e).slice(0, 220)}`));
   page.on("requestfailed", (r) => { if (!r.failure()?.errorText.includes("ERR_ABORTED")) defect(name, `request failed: ${r.url().slice(0, 120)} (${r.failure()?.errorText})`); });
-  page.on("response", (r) => { if (r.status() >= 400) defect(name, `HTTP ${r.status()}: ${r.url().slice(0, 120)}`); });
+  page.on("response", (r) => { if (r.status() >= 400 && !(refusalExpected && r.status() === 400 && r.url().includes("/api/v3/criteria"))) defect(name, `HTTP ${r.status()}: ${r.url().slice(0, 120)}`); });
   const shot = (file, full = true) => page.screenshot({ path: `${OUT}/${name}-${file}.png`, fullPage: full });
 
   // --- Home
@@ -354,9 +374,9 @@ async function run(name, viewport, mobile) {
   await page.locator("#criterion-min-0").fill("");
   await page.locator("#criterion-max-0").fill("");
   await page.getByRole("button", { name: /Run analysis/ }).click();
-  if (!(await page.locator(".builder .note-error").isVisible())) defect(name, "free criteria: no message for an empty range");
+  if (!(await page.locator(".builder:not(.criteria) .note-error").isVisible())) defect(name, "free criteria: no message for an empty range");
   await page.locator("#criterion-max-0").fill("5");
-  await page.getByRole("button", { name: /Add a criterion/ }).click();
+  await page.locator(".builder:not(.criteria)").getByRole("button", { name: /Add a criterion/ }).click();
   await page.locator("#criterion-param-1").selectOption("t2m_mean");
   await page.locator("#criterion-max-1").fill("-10");
   await page.locator("#criterion-tolerance-1").fill("10");

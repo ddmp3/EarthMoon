@@ -10,6 +10,8 @@ RUN pip install --no-cache-dir -r tools-requirements.txt -r requirements.txt
 COPY data/ui /srv/data/ui
 COPY data/catalog /srv/data/catalog
 COPY data/geology /srv/data/geology
+COPY data/presets /srv/data/presets
+COPY data/validation /srv/data/validation
 COPY tools/discovery /srv/tools/discovery
 COPY apps/discovery /srv/apps/discovery
 WORKDIR /srv/apps/discovery

@@ -257,6 +257,96 @@ def test_the_service_imports_with_only_the_files_its_image_copies(tmp_path):
             src, dst = root / parts[1], srv / parts[2][len("/srv/"):]
             if src.is_dir():
                 shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__", "test_*"))
-    out = subprocess.run([sys.executable, "-I", "-c", "import sys; sys.path.insert(0, '.'); import core"],
+    code = ("import sys; sys.path.insert(0, '.'); import core; from discovery import criteria as cr; "
+            "assert cr.presets(); assert cr.known_points([{'body': 'mars', 'feature': 'basalt'}])[0]")
+    out = subprocess.run([sys.executable, "-I", "-c", code],
                          cwd=srv / "apps/discovery", capture_output=True, text=True)
     assert out.returncode == 0, out.stderr[-800:]
+
+
+# --- T54: criteria over the cells of a release, and their check on the known sites -----------------------------
+
+@pytest.fixture()
+def mars_release(tmp_path):
+    """Cells around the catalogue's Kilauea point (19.425, -155.292) and a box in Siberia; Mars release columns."""
+    pts = [(19.425 + dy, -155.292 + dx) for dy in np.linspace(-0.2, 0.2, 9) for dx in np.linspace(-0.2, 0.2, 9)]
+    pts += [(68.0 + dy, 130.0 + dx) for dy in np.linspace(-0.2, 0.2, 9) for dx in np.linspace(-0.2, 0.2, 9)]
+    lat, lon = np.array(pts).T
+    ids = np.unique(ang2pix(NSIDE, lat, lon))
+    n = ids.size
+    from discovery.healpix import pix2ang
+    clat, _ = pix2ang(NSIDE, ids)
+    hawaii = clat < 40
+    t = "mars-volcanic-plains"
+    cols = {"cell": ids.astype(str), "windows": np.full(n, 25.0), "valid_unmasked": np.full(n, 24.0),
+            "masked_share": np.where(hawaii, 0.1, 0.9), "cover_unknown": np.zeros(n), "confidence": np.full(n, "high"),
+            f"{t}:windows": np.full(n, 25.0), f"{t}:valid": np.full(n, 24.0), f"{t}:median": np.where(hawaii, 0.2, 0.7),
+            f"{t}:p25": np.full(n, 0.1), f"{t}:p75": np.full(n, 0.9), f"{t}:screened_out": pa.array([None] * n, pa.bool_()),
+            "req:base_slope": np.full(n, "met"), "req:climbing_limit_lrv": np.full(n, "met"), "req:climbing_limit_viper": np.full(n, "met"),
+            "geo:mars-volcanic:match": np.where(hawaii, 1.0, 0.0).astype(np.float32),
+            "geo:mars-volcanic:partial": np.zeros(n, np.float32),
+            "geo:mars-volcanic:no_match": np.where(hawaii, 0.0, 1.0).astype(np.float32),
+            "geo:mars-volcanic:unresolved": np.zeros(n, np.float32), "geo:mars-volcanic:no_map": np.zeros(n, np.float32),
+            "ctx:magt_c": np.full(n, np.nan, np.float32), "ctx:magt_sd_c": np.full(n, np.nan, np.float32),
+            "ctx:permafrost_prob": np.where(hawaii, 0.0, 0.95).astype(np.float32), "ctx:frozen_e4": np.full(n, "unknown"),
+            "ctx:aridity_index": np.where(hawaii, 0.15, 0.4).astype(np.float32), "ctx:aridity_class": np.full(n, "arid")}
+    d = tmp_path / "r-44444444"
+    d.mkdir()
+    pq.write_table(pa.table(cols), d / "cells.parquet")
+    (d / "release.json").write_text('{"release": "r-44444444", "methodology_version": "v3", "body": "mars"}')
+    return Release(d, targets=[t])
+
+
+def test_the_criteria_catalogue_lists_variables_present_in_the_release_and_the_presets_of_its_body(mars_release):
+    from core import criteria_catalogue
+    out = criteria_catalogue(mars_release)
+    assert out["body"] == "mars" and out["release"] == "r-44444444"
+    ids = {v["id"] for v in out["variables"]}
+    assert {"volcanic_rock", "basalt", "relief_volcanic_plains", "permafrost", "hidden_ground"} <= ids
+    assert "relief_north_polar" not in ids                                   # target not in this release
+    pres = {p["id"]: p for p in out["presets"]}
+    assert "mars-volcanic-geology" in pres and "moon-rover-mobility" not in pres
+    c = pres["mars-volcanic-geology"]["criteria"][0]
+    assert c["text"] == "volcanic_rock > 0" and c["why"]["fr"] and c["source_text"]
+    assert "required" in out["method"]["en"].lower() and out["method"]["fr"]
+
+
+def test_a_preset_runs_over_every_cell_and_is_checked_on_the_known_sites(mars_release):
+    from core import run_criteria
+    out = run_criteria(mars_release, {"preset": "mars-volcanic-geology"})
+    assert out["counts"]["candidate"] > 0 and out["counts"]["excluded"] > 0
+    assert out["assessed"] == mars_release.ids.size
+    assert 0 < out["land_share"] < 1 and out["custom"] is False
+    cell = out["cells"][0]
+    assert set(cell) >= {"id", "lat", "lon", "states", "preferred_met"} and cell["states"][0] == "met"
+    ks = out["known_sites"]
+    kil = next(c for c in ks["chapters"] if c["name"] == "Kilauea")
+    assert kil["state"] == "candidate" and ks["recovered"] >= 1
+    assert ks["negatives"] == 18                                             # negatives outside this release: to check
+    assert any(c["state"] == "to check" for c in ks["chapters"])             # sites without a cell are unknown, not failed
+
+
+def test_an_edited_rule_or_an_equation_is_run_and_marked_custom(mars_release):
+    from core import run_criteria
+    rule = [{"expression": "permafrost >= 0.5 and hidden_ground <= 0.95", "role": "required"},
+            {"variable": "aridity", "op": "<", "value": 0.2, "role": "preferred"}]
+    out = run_criteria(mars_release, {"preset": "mars-ground-ice", "criteria": rule, "limit": 3})
+    assert out["custom"] is True and len(out["cells"]) <= 3
+    assert out["rule"]["criteria"][0]["text"] == "permafrost >= 0.5 and hidden_ground <= 0.95"
+    assert out["known_sites"]["features"] == [{"body": "mars", "feature": "ice-polygon-terrain"},
+                                              {"body": "mars", "feature": "icy-flows-glacial"}]
+
+
+@pytest.mark.parametrize("bad, why", [
+    ({}, "preset or criteria"),
+    ({"preset": "nope"}, "unknown preset"),
+    ({"preset": "moon-rover-mobility"}, "not for this body"),
+    ({"criteria": [{"expression": "foo > 1", "role": "required"}]}, "unknown variable"),
+    ({"criteria": [{"variable": "aridity", "op": "<", "value": 0.2, "role": "preferred"}]}, "required"),
+    ({"preset": "mars-ground-ice", "limit": 0}, "limit"),
+    ({"preset": "mars-ground-ice", "colour": 1}, "unknown field"),
+])
+def test_bad_criteria_requests_are_refused_with_a_reason(mars_release, bad, why):
+    from core import run_criteria
+    with pytest.raises(QueryError, match=why):
+        run_criteria(mars_release, bad)

@@ -952,6 +952,98 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v3/criteria": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Multi-criteria selection - variables, presets and method (T54)
+         * @description The variables a rule may use in this release (label, unit, source, scale), the use-case presets of its body with every criterion as readable text, why it is there and its source, and the method in plain words.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Variables, presets and method */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        put?: never;
+        /**
+         * Run a preset, an edited rule or an equation over every cell, and check it on the known analog sites (T54)
+         * @description Required criteria are gates (all must be met: candidate; one failed: excluded; one unknown: to check, never excluded). Preferred criteria only order the candidates by how many are met, with no weights. An equation is parsed by a small grammar (numbers, variables, + - * /, comparisons, and, or, not, min, max, abs), never evaluated as code. The answer gives the counts, the land share, the best candidate cells with the state of each criterion, and the known sites of the ESA/Open University catalogue (R66) for the preset's features, with the false alarms among 18 random negatives. A rule that differs from its preset is labelled "custom, not validated". Body limited to 16 KB, 12 criteria, 500 characters per equation.
+         */
+        post: {
+            parameters: {
+                query?: {
+                    /** @description A release id listed by /api/v3/releases, or a body name (moon, mars) for that body's current release (default the current lunar one) */
+                    release?: components["parameters"]["Release"];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** @example mars-volcanic-geology */
+                        preset?: string;
+                        criteria?: {
+                            /** @example permafrost */
+                            variable?: string;
+                            /** @enum {string} */
+                            op?: ">=" | "<=" | ">" | "<";
+                            value?: number;
+                            /** @example permafrost >= 0.5 and hidden_ground <= 0.5 */
+                            expression?: string;
+                            /** @enum {string} */
+                            role: "required" | "preferred";
+                        }[];
+                        /** @default 200 */
+                        limit?: number;
+                    };
+                };
+            };
+            responses: {
+                /** @description Counts, land share, candidate cells and the check on the known sites */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["V3Doc"];
+                    };
+                };
+                400: components["responses"]["BadRequest"];
+                413: components["responses"]["BadRequest"];
+                503: components["responses"]["NoRelease"];
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v3/method": {
         parameters: {
             query?: never;

@@ -281,6 +281,27 @@ def run(web: str, api: str) -> None:
             out.append(f"{sc}: {len(link['windows'])} windows")
         return ", ".join(out)
 
+    def v3_criteria():
+        out = []
+        for rel in ("", "?release=mars"):
+            code, _, b = http(f"{api}/api/v3/criteria{rel}")
+            assert code == 200, f"criteria HTTP {code}: {b[:200]!r}"
+            cat = json.loads(b)
+            assert cat["presets"] and cat["variables"] and cat["method"]["fr"], "no preset, variable or method"
+            p = cat["presets"][0]
+            assert all(c["why"]["fr"] and c["why"]["en"] and c["text"] for c in p["criteria"]), "a criterion without its reason"
+            code, _, b = http(f"{api}/api/v3/criteria{rel}", "POST", {"preset": p["id"], "limit": 5})
+            assert code == 200, f"criteria run HTTP {code}: {b[:200]!r}"
+            r = json.loads(b)
+            assert r["custom"] is False and r["known_sites"]["negatives"] == 18 and len(r["cells"]) <= 5, "preset run malformed"
+            code, _, b = http(f"{api}/api/v3/criteria{rel}", "POST",
+                              {"preset": p["id"], "criteria": [{"expression": "hidden_ground <= 0.5 and aridity < 0.2", "role": "required"}]})
+            assert code == 200 and json.loads(b)["custom"] is True, f"equation HTTP {code}"
+            code, _, b = http(f"{api}/api/v3/criteria{rel}", "POST", {"criteria": [{"expression": "__import__('os') > 1", "role": "required"}]})
+            assert code == 400, f"a bad equation was accepted (HTTP {code})"
+            out.append(f"{cat['body']} {p['id']}: {r['counts']['candidate']} candidates, {r['known_sites']['recovered']}/{r['known_sites']['with_data']} known sites")
+        return "; ".join(out)
+
     check("TF-01", "Front end loads and targets the right API", front_loads)
     check("TF-02", "API health probe", health)
     check("TF-03", "CORS: front-end origin accepted, unknown origin rejected", cors)
@@ -300,6 +321,7 @@ def run(web: str, api: str) -> None:
     check("TF-17", "v3: layer tiles, cells in view and custom query through the internal service", v3_layers_and_service)
     check("TF-18", "v3 Mars (T48): release=mars reads scenario D, its zones and cells; the default stays lunar", v3_mars)
     check("TF-19", "T45c: zones carry a place name; same-slope planetary windows and Earth zones, both ways", v3_analogs)
+    check("TF-20", "T54: criteria presets, a preset run checked on the known sites, an equation, a refused equation", v3_criteria)
 
 
 def main(argv=None) -> int:

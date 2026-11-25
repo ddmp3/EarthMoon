@@ -205,7 +205,7 @@ describe("API v3 (static release)", () => {
     const doc = parse(await readFile(path.join(API_ROOT, "openapi.yaml"), "utf8")) as { paths: Record<string, unknown> };
     for (const p of ["/api/v3/releases", "/api/v3/releases/{id}", "/api/v3/profiles", "/api/v3/profiles/{id}",
       "/api/v3/scenarios", "/api/v3/scenarios/{id}", "/api/v3/zones", "/api/v3/zones/{id}", "/api/v3/coverage", "/api/v3/method", "/api/v3/status",
-      "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png", "/api/v3/cells", "/api/v3/query", "/api/v3/sites"]) {
+      "/api/v3/layers/{scenario}/{env}/{parameter}/{z}/{x}/{y}.png", "/api/v3/cells", "/api/v3/query", "/api/v3/sites", "/api/v3/criteria"]) {
       expect(doc.paths[p], p).toBeDefined();
     }
   });
@@ -345,6 +345,26 @@ describe("API v3 forwarding to the discovery service", () => {
     const big = await fetch(`${api.url}/api/v3/query`, { method: "POST", headers: { "content-type": "application/json" },
       body: JSON.stringify({ scenario: "B", env: "moon-psr", bbox: [-180, -90, 180, 90], tooBig: 1 }) });
     expect(big.status).toBe(400);
+  });
+
+  it("the criteria catalogue and a criteria run are forwarded with the release; unknown fields never reach the service", async () => {
+    const cat = await json(`${api.url}/api/v3/criteria`);
+    expect(cat.status).toBe(200);
+    expect(seen.at(-1)?.url).toBe(`/criteria?release=${RID}`);
+    const ok = await fetch(`${api.url}/api/v3/criteria`, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ preset: "moon-polar-ice", criteria: [{ expression: "permafrost >= 0.5", role: "required" }], limit: 50 }) });
+    expect(ok.status).toBe(200);
+    expect(seen.at(-1)?.url).toBe(`/criteria?release=${RID}`);
+    expect(JSON.parse(seen.at(-1)!.body)).toEqual({ preset: "moon-polar-ice", criteria: [{ expression: "permafrost >= 0.5", role: "required" }], limit: 50 });
+    const before = seen.length;
+    const bad = await fetch(`${api.url}/api/v3/criteria`, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ preset: "moon-polar-ice", colour: "red" }) });
+    expect(bad.status).toBe(400);
+    expect(((await bad.json()) as { error: string }).error).toMatch(/colour/);
+    const big = await fetch(`${api.url}/api/v3/criteria`, { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ criteria: Array(500).fill({ expression: "permafrost >= 0.5", role: "required" }) }) });
+    expect(big.status).toBe(413);
+    expect(seen.length).toBe(before);
   });
 
   it("a query body over 16 KB is refused", async () => {
