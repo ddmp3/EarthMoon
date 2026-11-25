@@ -18,7 +18,10 @@ Status: **blocked** (waiting on an action), **ready** (can be done), **done** (w
 | D8 | A bare-earth DEM (forest and buildings removed, for example FABDEM) | 38% of the evaluated land is masked as hidden ground; slope under forest could be measured instead | Licence (FABDEM is non-commercial; to verify) and its own error model | Verify licence and accuracy; compare on the pilot tiles | ready |
 | D9 | ESA Permafrost_cci v5 | Frozen ground in both hemispheres (Obu 2018 covers only the north) | Licence not stated on page (partly verified) | Verify licence | ready |
 | D11 | Aridity index v3.1 with a stated nodata value, or a land mask | 0 marks both the sea and an index below 0.0001; treated as no data, so the driest cores (Atacama) may show no data | The README (figshare, MD5 ad026eba…) states no nodata value | Ask the authors (Zomer, Trabucco), or mask the sea with our own land cells | ready |
-| D10 | An independent list of expected analogs and negative controls (E10) | Positive validation of scenarios A and B: none exists today | Needs analog researchers outside the project | David or the jury names reviewers | blocked |
+| D10 | An independent list of expected analogs and negative controls (E10) | Positive validation of scenarios A and B: none exists today | Needs analog researchers outside the project | David or the jury names reviewers | partly done (T53): the ESA/Open University catalogue (R66) gives sites per lunar and Martian feature; reviewers still needed for scenarios A and B |
+| D12 | A catalogue of confirmed impact structures (candidate: Earth Impact Database) | Impact craters, ejecta, melt and breccia: 8 lunar and 7 Martian catalogue chapters have no Earth layer (T53) | Licence and download not verified | Verify the source and its terms | ready |
+| D13 | Vegetation cover as a gate (ESA WorldCover, already used for masks) | Ground ice passes 2 of 18 random negatives (boreal forest, wetland); vegetation is a selection criterion (R69) | — | Add the class share per cell as a gate | ready |
+| D14 | Inventories of local deposits (springs, sulphates, iron oxides, sinters) or imaging spectroscopy (D3) | Sulphate 1 of 6 and iron oxide 0 of 5 catalogue chapters found: the deposits are below map scale (T53) | Not verified | Search inventories; D3 | blocked |
 
 ## Moon
 

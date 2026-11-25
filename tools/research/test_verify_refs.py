@@ -64,3 +64,16 @@ def test_check_reference_reports_each_doi_and_unresolvable_ones():
 def test_reference_without_doi_is_manual():
     ref = parse_references(TABLE)[2]
     assert check_reference(ref, fetch=lambda doi: None)["verdict"] == "no DOI: manual check"
+
+
+def test_a_datacite_doi_is_read_as_a_record_when_crossref_does_not_know_it():
+    """Data DOIs (PANGAEA) are registered at DataCite, not Crossref: a 404 at Crossref is not a wrong DOI."""
+    from verify_refs import datacite_record, first_found
+    rec = datacite_record({"data": {"attributes": {"creators": [{"familyName": "Obu", "name": "Obu, Jaroslav"}],
+                                                   "publicationYear": 2018, "publisher": "PANGAEA",
+                                                   "titles": [{"title": "Ground Temperature Map, 2000-2016, Northern Hemisphere Permafrost"}]}}})
+    citation = "Obu, J. et al. (2018). Ground temperature map, 2000-2016, Northern Hemisphere permafrost. PANGAEA. doi:10.1594/PANGAEA.888600"
+    assert compare(citation, rec)["match"] is True
+    fetch = first_found(lambda doi: None, lambda doi: rec)
+    assert fetch("10.1594/PANGAEA.888600") is rec
+    assert first_found(lambda doi: None, lambda doi: None)("x") is None

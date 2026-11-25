@@ -1,0 +1,4993 @@
+{
+ "task": "T53",
+ "frozen_in": "d075808",
+ "sites": [
+  {
+   "chapter": 1,
+   "chapter_name": "The Antarctic Dry Valleys",
+   "name": "The Antarctic Dry Valleys",
+   "lat": -77.5,
+   "lon": 163.0,
+   "cell": 20132824,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": NaN,
+    "aridity_index": NaN
+   }
+  },
+  {
+   "chapter": 1,
+   "chapter_name": "The Antarctic Dry Valleys",
+   "name": "Blood Falls",
+   "lat": -77.722053,
+   "lon": 162.271861,
+   "cell": 20139712,
+   "units": [
+    "granitoid, granite, monzonite",
+    "granodiorite, quartz diorite, monzodiorite",
+    "gravel, sand, breccia",
+    "till, breccia, gravel, tillite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": NaN,
+    "aridity_index": NaN
+   }
+  },
+  {
+   "chapter": 1,
+   "chapter_name": "The Antarctic Dry Valleys",
+   "name": "Wright Valley: South Fork Study Area",
+   "lat": -77.3336,
+   "lon": 161.1724,
+   "cell": 20125826,
+   "units": [
+    "dolerite",
+    "inapplicable",
+    "till, breccia, gravel, tillite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": NaN,
+    "aridity_index": NaN
+   }
+  },
+  {
+   "chapter": 1,
+   "chapter_name": "The Antarctic Dry Valleys",
+   "name": "Beacon Valley",
+   "lat": -77.842,
+   "lon": 160.844,
+   "cell": 20145148,
+   "units": [
+    "dolerite",
+    "gravel, sand, breccia",
+    "quartzite, conglomerate, mudstone",
+    "sandstone, siltstone",
+    "till, breccia, gravel, tillite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": NaN,
+    "aridity_index": NaN
+   }
+  },
+  {
+   "chapter": 2,
+   "chapter_name": "The Atacama Desert",
+   "name": "Yungay Area",
+   "lat": -24.062,
+   "lon": -69.923,
+   "cell": 14342411,
+   "units": [
+    "Granite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": NaN,
+    "aridity_index": NaN
+   }
+  },
+  {
+   "chapter": 2,
+   "chapter_name": "The Atacama Desert",
+   "name": "Pampas de La Joya",
+   "lat": -16.699,
+   "lon": -71.806,
+   "cell": 13112352,
+   "units": [
+    "Siliciclastic"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.005100000184029341
+   }
+  },
+  {
+   "chapter": 3,
+   "chapter_name": "Central Australia",
+   "name": "Central Australia",
+   "lat": -23.7,
+   "lon": 133.87,
+   "note": "the coordinate of the town of Alice Springs",
+   "cell": 14282818,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.13539999723434448
+   }
+  },
+  {
+   "chapter": 4,
+   "chapter_name": "Axel Heiberg Island",
+   "name": "Axel Heiberg Island",
+   "lat": 79.43333333333334,
+   "lon": -90.76666666666667,
+   "cell": 173163,
+   "units": [
+    "redbeds, quartz arenite, arkose, conglomerate, evaporites",
+    "salt, anhydrite, gypsum, dolostone",
+    "sandstone, siltstone, shale, coal; plant fossils",
+    "sandstone, siltstone, shale; marine fossils"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "strict",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 0.7350000143051147
+   }
+  },
+  {
+   "chapter": 4,
+   "chapter_name": "Axel Heiberg Island",
+   "name": "Saline Perennial Springs (Gypsum Hill)",
+   "lat": 79.409175,
+   "lon": -90.732765,
+   "cell": 174342,
+   "units": [
+    "salt, anhydrite, gypsum, dolostone",
+    "sandstone, siltstone, shale, coal; plant fossils",
+    "sandstone, siltstone, shale; marine fossils"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "strict",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 0.6118000149726868
+   }
+  },
+  {
+   "chapter": 4,
+   "chapter_name": "Axel Heiberg Island",
+   "name": "Saline Perennial Springs (Colour Peak)",
+   "lat": 79.388711,
+   "lon": -91.267662,
+   "cell": 174340,
+   "units": [
+    "redbeds, quartz arenite, arkose, conglomerate, evaporites",
+    "salt, anhydrite, gypsum, dolostone",
+    "sandstone, siltstone, shale; marine fossils"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "strict",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 0.6281999945640564
+   }
+  },
+  {
+   "chapter": 4,
+   "chapter_name": "Axel Heiberg Island",
+   "name": "Polygonal Terrain",
+   "lat": 79.2314,
+   "lon": -90.505907,
+   "cell": 179099,
+   "units": [
+    "redbeds, quartz arenite, arkose, conglomerate, evaporites",
+    "sandstone, siltstone, shale, coal; plant fossils"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 0.5580999851226807
+   }
+  },
+  {
+   "chapter": 4,
+   "chapter_name": "Axel Heiberg Island",
+   "name": "Colour Lake Fen",
+   "lat": 79.24918,
+   "lon": -90.45424,
+   "cell": 179099,
+   "units": [
+    "redbeds, quartz arenite, arkose, conglomerate, evaporites",
+    "sandstone, siltstone, shale, coal; plant fossils",
+    "sedimentary and/or volcanic rock: undivided"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "found",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 0.5580999851226807
+   }
+  },
+  {
+   "chapter": 5,
+   "chapter_name": "The Barberton Greenstone Belt",
+   "name": "The Barberton Greenstone Belt",
+   "lat": -25.78611111111111,
+   "lon": 31.053055555555556,
+   "cell": 14620109,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.7293000221252441
+   }
+  },
+  {
+   "chapter": 6,
+   "chapter_name": "Black Point Lava Flow",
+   "name": "Black Point Lava Flow",
+   "lat": 35.7,
+   "lon": -111.3,
+   "cell": 4240956,
+   "units": [
+    "conglomerate, mudstone, sandstone",
+    "conglomerate, sandstone"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.08969999849796295
+   }
+  },
+  {
+   "chapter": 7,
+   "chapter_name": "Cinder Lake",
+   "name": "Cinder Lake",
+   "lat": 35.3225,
+   "lon": -111.51806,
+   "cell": 4298285,
+   "units": [
+    "andesite, dacite, rhyolite, volcanic",
+    "clay, sand, silt, unconsolidated"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "strict"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.3167000114917755
+   }
+  },
+  {
+   "chapter": 9,
+   "chapter_name": "The Golden Deposit",
+   "name": "The Golden Deposit",
+   "lat": 65.19944444444445,
+   "lon": -124.6375,
+   "cell": 938871,
+   "units": [
+    "sandstone, siltstone, shale, coal; plant fossils; "
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 0.9612542986869812,
+    "aridity_index": 0.5393999814987183
+   }
+  },
+  {
+   "chapter": 10,
+   "chapter_name": "The Haughton Impact Structure",
+   "name": "The Haughton Impact Structure",
+   "lat": 75.36666666666666,
+   "lon": -89.68333333333334,
+   "cell": 331706,
+   "units": [
+    "impact breccia, impact melt rock, crater fill",
+    "limestone, dolostone, shale, evaporites, chalk; carbonate reefs"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 1.1557999849319458
+   }
+  },
+  {
+   "chapter": 10,
+   "chapter_name": "The Haughton Impact Structure",
+   "name": "Hydrothermal Supersite",
+   "lat": 75.35138888888888,
+   "lon": -89.54444444444444,
+   "cell": 331707,
+   "units": [
+    "impact breccia, impact melt rock, crater fill",
+    "limestone, dolostone, shale, evaporites, chalk; carbonate reefs"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 1.0843000411987305
+   }
+  },
+  {
+   "chapter": 10,
+   "chapter_name": "The Haughton Impact Structure",
+   "name": "Ice Wedge Polygons",
+   "lat": 75.35744444444444,
+   "lon": -88.67977777777779,
+   "cell": 330083,
+   "units": [
+    "limestone, dolostone, shale, evaporites, chalk; carbonate reefs"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 0.9997000098228455
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Ibn Battuta",
+   "lat": 30.5,
+   "lon": -6.75,
+   "cell": 5019058,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.07750000059604645
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Ben Haddou 1",
+   "lat": 30.99361111111111,
+   "lon": -7.072694444444444,
+   "cell": 4940873,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.11309999972581863
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Ben Haddou 2",
+   "lat": 31.040000000000003,
+   "lon": -7.1210555555555555,
+   "cell": 4935661,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.12610000371932983
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Stromatolites",
+   "lat": 30.791666666666668,
+   "lon": -6.72175,
+   "cell": 4972150,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.07620000094175339
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Travertine",
+   "lat": 30.989,
+   "lon": -6.700111111111111,
+   "cell": 4946091,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.06710000336170197
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Adad",
+   "lat": 30.8,
+   "lon": -6.672138888888889,
+   "cell": 4972151,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.07660000026226044
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Saoun",
+   "lat": 30.700027777777777,
+   "lon": -6.7219444444444445,
+   "cell": 4987787,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.09080000221729279
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Tinerhir",
+   "lat": 31.22861111111111,
+   "lon": -5.238333333333333,
+   "cell": 4909628,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.049800001084804535
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Alnif",
+   "lat": 31.433722222222222,
+   "lon": -5.651666666666667,
+   "cell": 4878350,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.07249999791383743
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Rissani 1",
+   "lat": 31.29416666666667,
+   "lon": -4.4030555555555555,
+   "cell": 4899216,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.03680000081658363
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Rissani 2",
+   "lat": 31.26,
+   "lon": -4.406388888888889,
+   "cell": 4904428,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.03620000183582306
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Rissani 3",
+   "lat": 31.23611111111111,
+   "lon": -4.359722222222222,
+   "cell": 4904429,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.036400001496076584
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Kess Kess",
+   "lat": 31.36777777777778,
+   "lon": -4.0525,
+   "cell": 4888797,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.03869999945163727
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Chebbi",
+   "lat": 31.21388888888889,
+   "lon": -3.995,
+   "cell": 4909646,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.03579999879002571
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Lake Maider",
+   "lat": 30.654999999999998,
+   "lon": -4.714444444444444,
+   "cell": 4993027,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.026399999856948853
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Maider",
+   "lat": 30.774444444444445,
+   "lon": -4.561111111111111,
+   "cell": 4977394,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.025800000876188278
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Zaouia",
+   "lat": 30.72083333333333,
+   "lon": -6.038388888888889,
+   "cell": 4982584,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.044199999421834946
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Zagora",
+   "lat": 30.323055555555555,
+   "lon": -5.704444444444444,
+   "cell": 5045133,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.028300000354647636
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Mhamid",
+   "lat": 29.90694444444444,
+   "lon": -5.687222222222222,
+   "cell": 5107677,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.020899999886751175
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Sebkha Tazra",
+   "lat": 27.92666666666667,
+   "lon": -12.321944444444444,
+   "cell": 5420301,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.031199999153614044
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Sebkha Tah",
+   "lat": 27.701944444444443,
+   "lon": -12.797777777777778,
+   "cell": 5451566,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.019999999552965164
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Sebkha Oum Dba",
+   "lat": 27.541944444444447,
+   "lon": -13.006388888888889,
+   "cell": 5477624,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.019500000402331352
+   }
+  },
+  {
+   "chapter": 11,
+   "chapter_name": "Ibn Battuta",
+   "name": "Sebkha Aridal",
+   "lat": 26.164166666666667,
+   "lon": -14.0025,
+   "cell": 5696513,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.01679999940097332
+   }
+  },
+  {
+   "chapter": 12,
+   "chapter_name": "Iceland",
+   "name": "Iceland",
+   "lat": 65.0,
+   "lon": -18.0,
+   "cell": 956205,
+   "units": [
+    "basalt"
+   ],
+   "rocks": {
+    "basalt": "strict",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.2975662350654602,
+    "aridity_index": 2.4793999195098877
+   }
+  },
+  {
+   "chapter": 12,
+   "chapter_name": "Iceland",
+   "name": "Askja",
+   "lat": 65.03,
+   "lon": -16.75,
+   "cell": 953451,
+   "units": [
+    "basalt",
+    "tuff-breccia, agglomerate, or pyroclastic breccia"
+   ],
+   "rocks": {
+    "basalt": "strict",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 0.6780575513839722,
+    "aridity_index": 3.1786000728607178
+   }
+  },
+  {
+   "chapter": 12,
+   "chapter_name": "Iceland",
+   "name": "Eyjafjallajokull",
+   "lat": 63.63333333333333,
+   "lon": -19.6,
+   "cell": 1061265,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 3.9879000186920166
+   }
+  },
+  {
+   "chapter": 12,
+   "chapter_name": "Iceland",
+   "name": "Krysuvik",
+   "lat": 63.89583888888889,
+   "lon": -22.052488888888888,
+   "cell": 1040947,
+   "units": [
+    "basalt",
+    "tuff-breccia, agglomerate, or pyroclastic breccia"
+   ],
+   "rocks": {
+    "basalt": "strict",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 2.279900074005127
+   }
+  },
+  {
+   "chapter": 14,
+   "chapter_name": "Kilauea",
+   "name": "Kilauea",
+   "lat": 19.425,
+   "lon": -155.29194444444445,
+   "cell": 6799412,
+   "units": [
+    "Ash; basalt",
+    "Lava flows; basalt"
+   ],
+   "rocks": {
+    "basalt": "strict",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 1.6090999841690063
+   }
+  },
+  {
+   "chapter": 14,
+   "chapter_name": "Kilauea",
+   "name": "Ka'u Desert",
+   "lat": 19.40861111111111,
+   "lon": -155.29666666666665,
+   "cell": 6804623,
+   "units": [
+    "Ash; basalt",
+    "Lava flows; basalt"
+   ],
+   "rocks": {
+    "basalt": "strict",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 1.6121000051498413
+   }
+  },
+  {
+   "chapter": 15,
+   "chapter_name": "Lonar Crater",
+   "name": "Lonar Crater",
+   "lat": 19.976666666666667,
+   "lon": 76.50833333333334,
+   "cell": 6703740,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.4334999918937683
+   }
+  },
+  {
+   "chapter": 16,
+   "chapter_name": "Meteor Crater",
+   "name": "Meteor Crater",
+   "lat": 35.02722222222222,
+   "lon": -111.0225,
+   "cell": 4339989,
+   "units": [
+    "gypsum, mudstone, sandstone",
+    "sedimentary, limestone, sandstone"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "strict",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.17749999463558197
+   }
+  },
+  {
+   "chapter": 17,
+   "chapter_name": "Mistastin Lake Crater",
+   "name": "Mistastin Lake Crater",
+   "lat": 55.88333333333333,
+   "lon": -63.3,
+   "cell": 1753405,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.09120394289493561,
+    "aridity_index": 1.8180999755859375
+   }
+  },
+  {
+   "chapter": 18,
+   "chapter_name": "Mt. Etna",
+   "name": "Mt. Etna",
+   "lat": 37.755,
+   "lon": 14.995,
+   "cell": 3950913,
+   "units": [
+    "andesite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 1.0008000135421753
+   }
+  },
+  {
+   "chapter": 20,
+   "chapter_name": "Pavilion Lake",
+   "name": "Pavilion Lake",
+   "lat": 50.85,
+   "lon": -121.73333333333333,
+   "cell": 2290492,
+   "units": [
+    "limestone, marble, calcareous sedimentary rocks",
+    "marine sedimentary and volcanic rocks"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "found",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.7591000199317932
+   }
+  },
+  {
+   "chapter": 21,
+   "chapter_name": "Pilbara",
+   "name": "Pilbara",
+   "lat": -21.0,
+   "lon": 119.0,
+   "cell": 13834371,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "strict",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.12630000710487366
+   }
+  },
+  {
+   "chapter": 22,
+   "chapter_name": "The Ries Impact Crater",
+   "name": "The Ries Impact Crater",
+   "lat": 48.88333333333333,
+   "lon": 10.616666666666667,
+   "cell": 2511172,
+   "units": [
+    "clay",
+    "sand"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "strict"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.9781000018119812
+   }
+  },
+  {
+   "chapter": 23,
+   "chapter_name": "Rio Tinto",
+   "name": "Rio Tinto",
+   "lat": 37.25,
+   "lon": -6.95,
+   "note": "the coordinate of the city of Huelva, at the mouth of the river",
+   "cell": 4023563,
+   "units": [
+    "gravel, conglomerate, sand and silt",
+    "sandstone, conglomerate, clay; limestone and evaporites"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.32565000653266907
+   }
+  },
+  {
+   "chapter": 24,
+   "chapter_name": "Sudbury Impact Crater",
+   "name": "Sudbury Impact Crater",
+   "lat": 46.6,
+   "lon": -81.18333333333334,
+   "cell": 2786095,
+   "units": [
+    "carbonaceous slate",
+    "wacke, minor siltstone"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 1.2024999856948853
+   }
+  },
+  {
+   "chapter": 25,
+   "chapter_name": "Sunset Crater",
+   "name": "Sunset Crater",
+   "lat": 35.36416666666667,
+   "lon": -111.50305555555556,
+   "cell": 4293073,
+   "units": [
+    "andesite, dacite, rhyolite, volcanic"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "strict",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.29600000381469727
+   }
+  },
+  {
+   "chapter": 26,
+   "chapter_name": "Svalbard",
+   "name": "Svalbard",
+   "lat": 78.0,
+   "lon": 16.0,
+   "cell": 222503,
+   "units": [
+    "sandstone, siltstone, shale; marine fossils"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 0.9572226405143738,
+    "aridity_index": 1.1770000457763672
+   }
+  },
+  {
+   "chapter": 26,
+   "chapter_name": "Svalbard",
+   "name": "Bockfjord Volcanic Complex",
+   "lat": 79.49805555555555,
+   "lon": 13.205555555555556,
+   "cell": 169986,
+   "units": [
+    "sandstone, siltstone, shale, limestone",
+    "sandstone, siltstone, shale; marine fossils or metamorphosed equivalent"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 2.6870999336242676
+   }
+  },
+  {
+   "chapter": 26,
+   "chapter_name": "Svalbard",
+   "name": "Ebbadalen Formation",
+   "lat": 78.70972222222223,
+   "lon": 16.717777777777776,
+   "cell": 196622,
+   "units": [
+    "gneiss, migmatite, mica schist, quartzite, granite, minor amphibolite",
+    "sandstone, siltstone, shale, limestone"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 2.156100034713745
+   }
+  },
+  {
+   "chapter": 26,
+   "chapter_name": "Svalbard",
+   "name": "Murchison Fjord",
+   "lat": 79.8786111111111,
+   "lon": 18.488055555555558,
+   "cell": 157417,
+   "units": [
+    "limestone, claystone, sandstone",
+    "quartz sandstone, siltstone, claystone, limestone, dolostone, conglomerate, tillite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 3.36929988861084
+   }
+  },
+  {
+   "chapter": 26,
+   "chapter_name": "Svalbard",
+   "name": "Adventtoppen and Hiorthfjellet",
+   "lat": 78.273,
+   "lon": 15.745,
+   "note": "first point only; the second is printed as ?",
+   "cell": 213261,
+   "units": [
+    "sandstone, siltstone, shale; marine fossils",
+    "shale, chert, iron-formation, greywacke, turbidite, argillaceous limestone, matrix-supported conglomerate"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "found",
+    "silica": "found",
+    "iron-oxide": "absent",
+    "phyllosilicate": "strict"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 0.9726008772850037,
+    "aridity_index": 1.3319000005722046
+   }
+  },
+  {
+   "chapter": 27,
+   "chapter_name": "Tenerife",
+   "name": "Tenerife",
+   "lat": 28.22443611111111,
+   "lon": -16.626833333333334,
+   "cell": 5373331,
+   "units": [
+    "gravel, conglomerate, sand and silt",
+    "mafic and felsic volcanic rocks",
+    "mafic volcanic rocks"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "found",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.23929999768733978
+   }
+  },
+  {
+   "chapter": 28,
+   "chapter_name": "The Turpan Desert",
+   "name": "The Turpan Desert",
+   "lat": 42.63,
+   "lon": 89.86,
+   "cell": 3285764,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.008700000122189522
+   }
+  },
+  {
+   "chapter": 29,
+   "chapter_name": "Utah Desert",
+   "name": "Utah Desert",
+   "lat": 38.40645833333333,
+   "lon": -110.79190277777778,
+   "cell": 3860488,
+   "units": [
+    "salt",
+    "sandstone",
+    "sandstone, shale"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "strict",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.09290000051259995
+   }
+  },
+  {
+   "chapter": 30,
+   "chapter_name": "Yellowstone",
+   "name": "Yellowstone",
+   "lat": 44.6,
+   "lon": -110.5,
+   "cell": 3036599,
+   "units": [
+    "igneous, rhyolite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "found",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.7437999844551086
+   }
+  },
+  {
+   "chapter": 30,
+   "chapter_name": "Yellowstone",
+   "name": "Grand Prismatic Springs",
+   "lat": 44.525,
+   "lon": -110.83805555555556,
+   "cell": 3041525,
+   "units": [
+    "igneous, rhyolite"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "found",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.7315000295639038
+   }
+  }
+ ],
+ "excluded": [
+  {
+   "chapter": 2,
+   "name": "The Atacama Desert",
+   "at": "20 °S to 30 °S",
+   "reason": "a latitude range, not a point"
+  },
+  {
+   "chapter": 8,
+   "name": "Columbia River Basalt Group",
+   "at": "Various",
+   "reason": "no coordinate"
+  },
+  {
+   "chapter": 10,
+   "name": "Impact Breccia Supersite",
+   "at": "75.11.53N, 81.51.4W.",
+   "reason": "8° of longitude (about 240 km) east of the structure's own coordinate: inconsistent with the chapter"
+  },
+  {
+   "chapter": 13,
+   "name": "Kamchatka",
+   "at": "Extending from lat. 51°N to lat. 61°N",
+   "reason": "a latitude range, and no site-specific coordinate"
+  },
+  {
+   "chapter": 19,
+   "name": "The Namib Desert",
+   "at": "Extends from the Olifants River in South Africa 32 °S to the Carunjamba",
+   "reason": "a range, and no site-specific coordinate"
+  },
+  {
+   "chapter": 30,
+   "name": "Chocolate Pots",
+   "at": "6°43’19”W; 30°42’01”N.",
+   "reason": "the catalogue prints a point in Morocco (the Saoun site of chapter 11), not in Yellowstone"
+  }
+ ],
+ "negatives": [
+  {
+   "name": "negative 1 (Tree cover)",
+   "lat": -24.74451,
+   "lon": -59.80577,
+   "cell": 14452010,
+   "units": [
+    "Siliciclastic"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.555899977684021
+   }
+  },
+  {
+   "name": "negative 2 (Herbaceous wetland)",
+   "lat": -14.27833,
+   "lon": 27.62983,
+   "cell": 12696832,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.5360999703407288
+   }
+  },
+  {
+   "name": "negative 3 (Tree cover)",
+   "lat": 60.2508,
+   "lon": 126.42008,
+   "cell": 1341034,
+   "units": [
+    "limestone, dolostone, shale, evaporites, chalk; carbonate  reefs; "
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 0.9994078874588013,
+    "aridity_index": 0.8112000226974487
+   }
+  },
+  {
+   "name": "negative 4 (Tree cover)",
+   "lat": -2.03268,
+   "lon": 102.86246,
+   "cell": 10545365,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 2.169800043106079
+   }
+  },
+  {
+   "name": "negative 5 (Permanent water bodies)",
+   "lat": 47.65239,
+   "lon": -4.49236,
+   "cell": 2661066,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": NaN,
+    "aridity_index": NaN
+   }
+  },
+  {
+   "name": "negative 6 (Cropland)",
+   "lat": 40.41076,
+   "lon": 114.81135,
+   "cell": 3582306,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.3472999930381775
+   }
+  },
+  {
+   "name": "negative 7 (Permanent water bodies)",
+   "lat": 25.31917,
+   "lon": 36.47288,
+   "cell": 5827544,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": NaN,
+    "aridity_index": NaN
+   }
+  },
+  {
+   "name": "negative 8 (Permanent water bodies)",
+   "lat": -6.46227,
+   "lon": 131.60289,
+   "cell": 11332793,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": null,
+    "aridity_index": null
+   }
+  },
+  {
+   "name": "negative 9 (Herbaceous wetland)",
+   "lat": 62.95809,
+   "lon": 69.60863,
+   "cell": 1115101,
+   "units": [
+    "redbeds, quartz arenite, arkose, conglomerate, evaporites; "
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.37252914905548096,
+    "aridity_index": 1.1039999723434448
+   }
+  },
+  {
+   "name": "negative 10 (Cropland)",
+   "lat": 55.18539,
+   "lon": 30.95912,
+   "cell": 1822468,
+   "units": [
+    "Major:{dolomite/dolostone}, Minor{limestone,marl,clay}"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "found"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 1.0815999507904053
+   }
+  },
+  {
+   "name": "negative 11 (Cropland)",
+   "lat": -35.86273,
+   "lon": -60.25775,
+   "cell": 16156327,
+   "units": [
+    "Siliciclastic"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "absent",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.7752000093460083
+   }
+  },
+  {
+   "name": "negative 12 (Built-up)",
+   "lat": 43.40703,
+   "lon": 13.20335,
+   "cell": 3187997,
+   "units": [
+    "carbonate sedimentary rock",
+    "limestone",
+    "siliciclastic"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "absent"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.8899999856948853
+   }
+  },
+  {
+   "name": "negative 13 (Herbaceous wetland)",
+   "lat": 68.81483,
+   "lon": -82.14648,
+   "cell": 689776,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "strict",
+    "aridity": "absent",
+    "permafrost_prob": 1.0,
+    "aridity_index": 1.0321999788284302
+   }
+  },
+  {
+   "name": "negative 14 (Built-up)",
+   "lat": 15.03911,
+   "lon": 75.40412,
+   "cell": 7542855,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.4309999942779541
+   }
+  },
+  {
+   "name": "negative 15 (Mangroves)",
+   "lat": 25.9822,
+   "lon": -81.64236,
+   "cell": 5726806,
+   "units": [
+    "carbonate",
+    "clay, limestone, sand, unconsolidated, minor gravel"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "strict",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "strict"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "unknown",
+    "permafrost_prob": null,
+    "aridity_index": null
+   }
+  },
+  {
+   "name": "negative 16 (Built-up)",
+   "lat": 46.96149,
+   "lon": 32.01609,
+   "cell": 2740556,
+   "units": [
+    "Major:{clay}, Minor{sand,sandstone,limestone}"
+   ],
+   "rocks": {
+    "basalt": "absent",
+    "anorthosite": "absent",
+    "volcanic": "absent",
+    "sulphate": "absent",
+    "carbonate": "found",
+    "silica": "absent",
+    "iron-oxide": "absent",
+    "phyllosilicate": "strict"
+   },
+   "context": {
+    "ground-ice": "absent",
+    "aridity": "absent",
+    "permafrost_prob": 0.0,
+    "aridity_index": 0.42669999599456787
+   }
+  },
+  {
+   "name": "negative 17 (Mangroves)",
+   "lat": 12.37286,
+   "lon": -15.57398,
+   "cell": 8005406,
+   "units": [
+    "sedimentary"
+   ],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.7184000015258789
+   }
+  },
+  {
+   "name": "negative 18 (Mangroves)",
+   "lat": 16.0458,
+   "lon": 81.11548,
+   "cell": 7370942,
+   "units": [],
+   "rocks": {
+    "basalt": "unknown",
+    "anorthosite": "unknown",
+    "volcanic": "unknown",
+    "sulphate": "unknown",
+    "carbonate": "unknown",
+    "silica": "unknown",
+    "iron-oxide": "unknown",
+    "phyllosilicate": "unknown"
+   },
+   "context": {
+    "ground-ice": "unknown",
+    "aridity": "absent",
+    "permafrost_prob": NaN,
+    "aridity_index": 0.5644000172615051
+   }
+  }
+ ],
+ "base_rates": {
+  "basalt": 0.014993469707191327,
+  "anorthosite": 0.0009015679055165729,
+  "volcanic": 0.029057948610956466,
+  "ground-ice": 0.09143807465623853,
+  "aridity": 0.21020110506783754,
+  "_note": "shares of all assessed land cells; rock rules use the first-listed (strict) rule of geology.py; a missing value counts as not passing"
+ },
+ "features": [
+  {
+   "body": "moon",
+   "feature": "basalt",
+   "kind": "rock",
+   "rule": "basalt",
+   "chapters": [
+    6,
+    7,
+    8,
+    12,
+    14,
+    15,
+    18,
+    25,
+    27
+   ],
+   "per_chapter": {
+    "6": "absent",
+    "7": "absent",
+    "12": "strict",
+    "14": "strict",
+    "15": "unknown",
+    "18": "absent",
+    "25": "absent",
+    "27": "absent"
+   },
+   "recovery": {
+    "with_data": 7,
+    "found": 2,
+    "share": 0.2857142857142857,
+    "verdict": "not recovered"
+   },
+   "other_chapters_found": 0,
+   "other_chapters_with_data": 13,
+   "false_alarms": 0,
+   "base_rate": 0.014993469707191327,
+   "discrimination": "discriminating",
+   "current_protocol": {
+    "target": "moon-mare-plains",
+    "per_chapter": {
+     "6": [
+      {
+       "site": "Black Point Lava Flow",
+       "median": 0.044,
+       "percentile": 59.3,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "7": [
+      {
+       "site": "Cinder Lake",
+       "median": 0.291,
+       "percentile": 83.1,
+       "confidence": "medium",
+       "recognised": false
+      }
+     ],
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.466,
+       "percentile": 91.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Askja",
+       "median": 0.044,
+       "percentile": 59.3,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": 0.003,
+       "percentile": 35.5,
+       "confidence": "low",
+       "recognised": false
+      },
+      {
+       "site": "Krysuvik",
+       "median": 0.132,
+       "percentile": 71.8,
+       "confidence": "medium",
+       "recognised": false
+      }
+     ],
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": 0.179,
+       "percentile": 75.8,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.815,
+       "percentile": 99.3,
+       "confidence": "high",
+       "recognised": true
+      }
+     ],
+     "15": [
+      {
+       "site": "Lonar Crater",
+       "median": 0.653,
+       "percentile": 97.1,
+       "confidence": "low",
+       "recognised": true
+      }
+     ],
+     "18": [
+      {
+       "site": "Mt. Etna",
+       "median": 0.01,
+       "percentile": 45.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "25": [
+      {
+       "site": "Sunset Crater",
+       "median": 0.409,
+       "percentile": 89.0,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "27": [
+      {
+       "site": "Tenerife",
+       "median": 0.019,
+       "percentile": 51.2,
+       "confidence": "high",
+       "recognised": false
+      }
+     ]
+    },
+    "recognised_chapters": 2,
+    "chapters_with_value": 8
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "basalt",
+   "kind": "rock",
+   "rule": "basalt",
+   "chapters": [
+    2,
+    6,
+    7,
+    8,
+    11,
+    12,
+    14,
+    15,
+    18,
+    25,
+    27
+   ],
+   "per_chapter": {
+    "2": "absent",
+    "6": "absent",
+    "7": "absent",
+    "11": "unknown",
+    "12": "strict",
+    "14": "strict",
+    "15": "unknown",
+    "18": "absent",
+    "25": "absent",
+    "27": "absent"
+   },
+   "recovery": {
+    "with_data": 8,
+    "found": 2,
+    "share": 0.25,
+    "verdict": "not recovered"
+   },
+   "other_chapters_found": 0,
+   "other_chapters_with_data": 12,
+   "false_alarms": 0,
+   "base_rate": 0.014993469707191327,
+   "discrimination": "discriminating",
+   "current_protocol": {
+    "target": "mars-volcanic-plains",
+    "per_chapter": {
+     "2": [
+      {
+       "site": "Yungay Area",
+       "median": 0.075,
+       "percentile": 20.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Pampas de La Joya",
+       "median": 0.224,
+       "percentile": 42.4,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "6": [
+      {
+       "site": "Black Point Lava Flow",
+       "median": 0.446,
+       "percentile": 63.2,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "7": [
+      {
+       "site": "Cinder Lake",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "11": [
+      {
+       "site": "Ibn Battuta",
+       "median": 0.171,
+       "percentile": 35.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ben Haddou 1",
+       "median": 0.376,
+       "percentile": 57.9,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ben Haddou 2",
+       "median": 0.376,
+       "percentile": 57.9,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Stromatolites",
+       "median": 0.159,
+       "percentile": 33.6,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Travertine",
+       "median": 0.367,
+       "percentile": 57.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Adad",
+       "median": 0.159,
+       "percentile": 33.6,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Saoun",
+       "median": 0.095,
+       "percentile": 23.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Tinerhir",
+       "median": 0.118,
+       "percentile": 27.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Alnif",
+       "median": 0.188,
+       "percentile": 37.5,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Rissani 1",
+       "median": 0.427,
+       "percentile": 61.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Rissani 2",
+       "median": 0.427,
+       "percentile": 61.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Rissani 3",
+       "median": 0.552,
+       "percentile": 71.0,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Kess Kess",
+       "median": 0.991,
+       "percentile": 99.5,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Chebbi",
+       "median": 0.976,
+       "percentile": 98.7,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Lake Maider",
+       "median": 0.32,
+       "percentile": 52.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Maider",
+       "median": 0.224,
+       "percentile": 42.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Zaouia",
+       "median": 0.065,
+       "percentile": 18.5,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Zagora",
+       "median": 0.428,
+       "percentile": 61.8,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Mhamid",
+       "median": 0.327,
+       "percentile": 53.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Sebkha Tazra",
+       "median": 0.381,
+       "percentile": 58.2,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Sebkha Tah",
+       "median": 0.809,
+       "percentile": 88.5,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Sebkha Oum Dba",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Sebkha Aridal",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.435,
+       "percentile": 62.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Askja",
+       "median": 0.11,
+       "percentile": 26.2,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Krysuvik",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.192,
+       "percentile": 38.0,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "15": [
+      {
+       "site": "Lonar Crater",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      }
+     ],
+     "18": [
+      {
+       "site": "Mt. Etna",
+       "median": 0.012,
+       "percentile": 6.5,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "25": [
+      {
+       "site": "Sunset Crater",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      }
+     ],
+     "27": [
+      {
+       "site": "Tenerife",
+       "median": 0.01,
+       "percentile": 5.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ]
+    },
+    "recognised_chapters": 1,
+    "chapters_with_value": 7
+   }
+  },
+  {
+   "body": "moon",
+   "feature": "anorthosite",
+   "kind": "rock",
+   "rule": "anorthosite",
+   "chapters": [
+    17
+   ],
+   "per_chapter": {
+    "17": "unknown"
+   },
+   "recovery": {
+    "with_data": 0,
+    "found": 0,
+    "share": null,
+    "verdict": "not testable"
+   },
+   "other_chapters_found": 0,
+   "other_chapters_with_data": 20,
+   "false_alarms": 0,
+   "base_rate": 0.0009015679055165729,
+   "discrimination": "discriminating",
+   "current_protocol": {
+    "target": "moon-polar-lit-highlands",
+    "per_chapter": {
+     "17": [
+      {
+       "site": "Mistastin Lake Crater",
+       "median": 0.482,
+       "percentile": 86.7,
+       "confidence": "low",
+       "recognised": false
+      }
+     ]
+    },
+    "recognised_chapters": 0,
+    "chapters_with_value": 1
+   }
+  },
+  {
+   "body": "moon",
+   "feature": "volcanic-structure",
+   "kind": "rock",
+   "rule": "volcanic",
+   "chapters": [
+    12,
+    13,
+    14,
+    18,
+    25
+   ],
+   "per_chapter": {
+    "12": "strict",
+    "14": "strict",
+    "18": "strict",
+    "25": "strict"
+   },
+   "recovery": {
+    "with_data": 4,
+    "found": 4,
+    "share": 1.0,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 5,
+   "other_chapters_with_data": 16,
+   "false_alarms": 0,
+   "base_rate": 0.029057948610956466,
+   "discrimination": "discriminating"
+  },
+  {
+   "body": "moon",
+   "feature": "lava-flows",
+   "kind": "rock",
+   "rule": "volcanic",
+   "chapters": [
+    2,
+    8,
+    14
+   ],
+   "per_chapter": {
+    "2": "absent",
+    "14": "strict"
+   },
+   "recovery": {
+    "with_data": 2,
+    "found": 1,
+    "share": 0.5,
+    "verdict": "not testable"
+   },
+   "other_chapters_found": 8,
+   "other_chapters_with_data": 18,
+   "false_alarms": 0,
+   "base_rate": 0.029057948610956466,
+   "discrimination": "discriminating",
+   "current_protocol": {
+    "target": "moon-mare-plains",
+    "per_chapter": {
+     "2": [
+      {
+       "site": "Yungay Area",
+       "median": 0.173,
+       "percentile": 75.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Pampas de La Joya",
+       "median": 0.283,
+       "percentile": 82.6,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": 0.179,
+       "percentile": 75.8,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.815,
+       "percentile": 99.3,
+       "confidence": "high",
+       "recognised": true
+      }
+     ]
+    },
+    "recognised_chapters": 1,
+    "chapters_with_value": 2
+   }
+  },
+  {
+   "body": "moon",
+   "feature": "pyroclastic-deposits",
+   "kind": "rock",
+   "rule": "volcanic",
+   "chapters": [
+    2,
+    12
+   ],
+   "per_chapter": {
+    "2": "absent",
+    "12": "strict"
+   },
+   "recovery": {
+    "with_data": 2,
+    "found": 1,
+    "share": 0.5,
+    "verdict": "not testable"
+   },
+   "other_chapters_found": 8,
+   "other_chapters_with_data": 18,
+   "false_alarms": 0,
+   "base_rate": 0.029057948610956466,
+   "discrimination": "discriminating"
+  },
+  {
+   "body": "mars",
+   "feature": "volcanic-structure",
+   "kind": "rock",
+   "rule": "volcanic",
+   "chapters": [
+    2,
+    12,
+    13,
+    14,
+    18,
+    25,
+    27
+   ],
+   "per_chapter": {
+    "2": "absent",
+    "12": "strict",
+    "14": "strict",
+    "18": "strict",
+    "25": "strict",
+    "27": "found"
+   },
+   "recovery": {
+    "with_data": 6,
+    "found": 5,
+    "share": 0.8333333333333334,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 4,
+   "other_chapters_with_data": 14,
+   "false_alarms": 0,
+   "base_rate": 0.029057948610956466,
+   "discrimination": "discriminating",
+   "current_protocol": {
+    "target": "mars-volcanic-plains",
+    "per_chapter": {
+     "2": [
+      {
+       "site": "Yungay Area",
+       "median": 0.075,
+       "percentile": 20.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Pampas de La Joya",
+       "median": 0.224,
+       "percentile": 42.4,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.435,
+       "percentile": 62.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Askja",
+       "median": 0.11,
+       "percentile": 26.2,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Krysuvik",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.192,
+       "percentile": 38.0,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "18": [
+      {
+       "site": "Mt. Etna",
+       "median": 0.012,
+       "percentile": 6.5,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "25": [
+      {
+       "site": "Sunset Crater",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      }
+     ],
+     "27": [
+      {
+       "site": "Tenerife",
+       "median": 0.01,
+       "percentile": 5.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ]
+    },
+    "recognised_chapters": 0,
+    "chapters_with_value": 5
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "lava-flows",
+   "kind": "rock",
+   "rule": "volcanic",
+   "chapters": [
+    2,
+    6,
+    7,
+    8,
+    11,
+    12,
+    13,
+    14,
+    18,
+    25,
+    26,
+    27,
+    30
+   ],
+   "per_chapter": {
+    "2": "absent",
+    "6": "absent",
+    "7": "strict",
+    "11": "unknown",
+    "12": "strict",
+    "14": "strict",
+    "18": "strict",
+    "25": "strict",
+    "26": "absent",
+    "27": "found",
+    "30": "found"
+   },
+   "recovery": {
+    "with_data": 10,
+    "found": 7,
+    "share": 0.7,
+    "verdict": "not recovered"
+   },
+   "other_chapters_found": 2,
+   "other_chapters_with_data": 10,
+   "false_alarms": 0,
+   "base_rate": 0.029057948610956466,
+   "discrimination": "discriminating",
+   "current_protocol": {
+    "target": "mars-volcanic-plains",
+    "per_chapter": {
+     "2": [
+      {
+       "site": "Yungay Area",
+       "median": 0.075,
+       "percentile": 20.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Pampas de La Joya",
+       "median": 0.224,
+       "percentile": 42.4,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "6": [
+      {
+       "site": "Black Point Lava Flow",
+       "median": 0.446,
+       "percentile": 63.2,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "7": [
+      {
+       "site": "Cinder Lake",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "11": [
+      {
+       "site": "Ibn Battuta",
+       "median": 0.171,
+       "percentile": 35.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ben Haddou 1",
+       "median": 0.376,
+       "percentile": 57.9,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ben Haddou 2",
+       "median": 0.376,
+       "percentile": 57.9,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Stromatolites",
+       "median": 0.159,
+       "percentile": 33.6,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Travertine",
+       "median": 0.367,
+       "percentile": 57.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Adad",
+       "median": 0.159,
+       "percentile": 33.6,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Saoun",
+       "median": 0.095,
+       "percentile": 23.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Tinerhir",
+       "median": 0.118,
+       "percentile": 27.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Alnif",
+       "median": 0.188,
+       "percentile": 37.5,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Rissani 1",
+       "median": 0.427,
+       "percentile": 61.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Rissani 2",
+       "median": 0.427,
+       "percentile": 61.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Rissani 3",
+       "median": 0.552,
+       "percentile": 71.0,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Kess Kess",
+       "median": 0.991,
+       "percentile": 99.5,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Chebbi",
+       "median": 0.976,
+       "percentile": 98.7,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Lake Maider",
+       "median": 0.32,
+       "percentile": 52.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Maider",
+       "median": 0.224,
+       "percentile": 42.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Zaouia",
+       "median": 0.065,
+       "percentile": 18.5,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Zagora",
+       "median": 0.428,
+       "percentile": 61.8,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Mhamid",
+       "median": 0.327,
+       "percentile": 53.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Sebkha Tazra",
+       "median": 0.381,
+       "percentile": 58.2,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Sebkha Tah",
+       "median": 0.809,
+       "percentile": 88.5,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Sebkha Oum Dba",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Sebkha Aridal",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.435,
+       "percentile": 62.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Askja",
+       "median": 0.11,
+       "percentile": 26.2,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Krysuvik",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.192,
+       "percentile": 38.0,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "18": [
+      {
+       "site": "Mt. Etna",
+       "median": 0.012,
+       "percentile": 6.5,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "25": [
+      {
+       "site": "Sunset Crater",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      }
+     ],
+     "26": [
+      {
+       "site": "Svalbard",
+       "median": 0.017,
+       "percentile": 8.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Bockfjord Volcanic Complex",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Ebbadalen Formation",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Murchison Fjord",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Adventtoppen and Hiorthfjellet",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "27": [
+      {
+       "site": "Tenerife",
+       "median": 0.01,
+       "percentile": 5.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "30": [
+      {
+       "site": "Yellowstone",
+       "median": null,
+       "percentile": null,
+       "confidence": "medium",
+       "recognised": null
+      },
+      {
+       "site": "Grand Prismatic Springs",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ]
+    },
+    "recognised_chapters": 1,
+    "chapters_with_value": 8
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "pyroclastic-deposits",
+   "kind": "rock",
+   "rule": "volcanic",
+   "chapters": [
+    12,
+    13,
+    14,
+    27
+   ],
+   "per_chapter": {
+    "12": "strict",
+    "14": "strict",
+    "27": "found"
+   },
+   "recovery": {
+    "with_data": 3,
+    "found": 3,
+    "share": 1.0,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 6,
+   "other_chapters_with_data": 17,
+   "false_alarms": 0,
+   "base_rate": 0.029057948610956466,
+   "discrimination": "discriminating"
+  },
+  {
+   "body": "mars",
+   "feature": "sulphate",
+   "kind": "rock",
+   "rule": "sulphate",
+   "chapters": [
+    2,
+    4,
+    9,
+    23,
+    26,
+    29
+   ],
+   "per_chapter": {
+    "2": "absent",
+    "4": "strict",
+    "9": "absent",
+    "23": "absent",
+    "26": "absent",
+    "29": "absent"
+   },
+   "recovery": {
+    "with_data": 6,
+    "found": 1,
+    "share": 0.16666666666666666,
+    "verdict": "not recovered"
+   },
+   "other_chapters_found": 1,
+   "other_chapters_with_data": 14,
+   "false_alarms": 0,
+   "base_rate": null,
+   "discrimination": "base rate not computed"
+  },
+  {
+   "body": "mars",
+   "feature": "carbonate",
+   "kind": "rock",
+   "rule": "carbonate",
+   "chapters": [
+    1,
+    4,
+    10,
+    11,
+    26
+   ],
+   "per_chapter": {
+    "1": "absent",
+    "4": "found",
+    "10": "strict",
+    "11": "unknown",
+    "26": "strict"
+   },
+   "recovery": {
+    "with_data": 4,
+    "found": 3,
+    "share": 0.75,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 3,
+   "other_chapters_with_data": 16,
+   "false_alarms": 5,
+   "base_rate": null,
+   "discrimination": "false alarms"
+  },
+  {
+   "body": "mars",
+   "feature": "silica",
+   "kind": "rock",
+   "rule": "silica",
+   "chapters": [
+    5,
+    12,
+    21,
+    30
+   ],
+   "per_chapter": {
+    "5": "unknown",
+    "12": "absent",
+    "21": "unknown",
+    "30": "absent"
+   },
+   "recovery": {
+    "with_data": 2,
+    "found": 0,
+    "share": 0.0,
+    "verdict": "not testable"
+   },
+   "other_chapters_found": 1,
+   "other_chapters_with_data": 18,
+   "false_alarms": 0,
+   "base_rate": null,
+   "discrimination": "base rate not computed"
+  },
+  {
+   "body": "mars",
+   "feature": "iron-oxide",
+   "kind": "rock",
+   "rule": "iron-oxide",
+   "chapters": [
+    2,
+    9,
+    12,
+    23,
+    30
+   ],
+   "per_chapter": {
+    "2": "absent",
+    "9": "absent",
+    "12": "absent",
+    "23": "absent",
+    "30": "absent"
+   },
+   "recovery": {
+    "with_data": 5,
+    "found": 0,
+    "share": 0.0,
+    "verdict": "not recovered"
+   },
+   "other_chapters_found": 0,
+   "other_chapters_with_data": 15,
+   "false_alarms": 0,
+   "base_rate": null,
+   "discrimination": "base rate not computed"
+  },
+  {
+   "body": "mars",
+   "feature": "phyllosilicate",
+   "kind": "rock",
+   "rule": "phyllosilicate",
+   "chapters": [
+    10,
+    11,
+    22,
+    29,
+    30
+   ],
+   "per_chapter": {
+    "10": "found",
+    "11": "unknown",
+    "22": "strict",
+    "29": "found",
+    "30": "absent"
+   },
+   "recovery": {
+    "with_data": 4,
+    "found": 3,
+    "share": 0.75,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 8,
+   "other_chapters_with_data": 16,
+   "false_alarms": 4,
+   "base_rate": null,
+   "discrimination": "false alarms"
+  },
+  {
+   "body": "moon",
+   "feature": "water-ice",
+   "kind": "context",
+   "rule": "ground-ice",
+   "chapters": [
+    1,
+    4,
+    10,
+    12,
+    26
+   ],
+   "per_chapter": {
+    "1": "unknown",
+    "4": "strict",
+    "10": "strict",
+    "12": "strict",
+    "26": "strict"
+   },
+   "recovery": {
+    "with_data": 4,
+    "found": 4,
+    "share": 1.0,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 1,
+   "other_chapters_with_data": 15,
+   "false_alarms": 2,
+   "base_rate": 0.09143807465623853,
+   "discrimination": "false alarms",
+   "current_protocol": {
+    "target": "moon-psr",
+    "per_chapter": {
+     "1": [
+      {
+       "site": "The Antarctic Dry Valleys",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Blood Falls",
+       "median": 0.264,
+       "percentile": 68.1,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Wright Valley: South Fork Study Area",
+       "median": 0.573,
+       "percentile": 84.3,
+       "confidence": "medium",
+       "recognised": true
+      },
+      {
+       "site": "Beacon Valley",
+       "median": 0.242,
+       "percentile": 66.6,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "4": [
+      {
+       "site": "Axel Heiberg Island",
+       "median": 0.466,
+       "percentile": 78.7,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Saline Perennial Springs (Gypsum Hill)",
+       "median": 0.635,
+       "percentile": 87.3,
+       "confidence": "medium",
+       "recognised": true
+      },
+      {
+       "site": "Saline Perennial Springs (Colour Peak)",
+       "median": 0.52,
+       "percentile": 81.5,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Polygonal Terrain",
+       "median": 0.0,
+       "percentile": 0.0,
+       "confidence": "low",
+       "recognised": false
+      },
+      {
+       "site": "Colour Lake Fen",
+       "median": 0.0,
+       "percentile": 0.0,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "10": [
+      {
+       "site": "The Haughton Impact Structure",
+       "median": 0.509,
+       "percentile": 80.9,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Hydrothermal Supersite",
+       "median": 0.553,
+       "percentile": 83.3,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Ice Wedge Polygons",
+       "median": 0.032,
+       "percentile": 47.6,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.276,
+       "percentile": 68.9,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Askja",
+       "median": 0.586,
+       "percentile": 85.0,
+       "confidence": "medium",
+       "recognised": true
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": 0.101,
+       "percentile": 56.1,
+       "confidence": "low",
+       "recognised": false
+      },
+      {
+       "site": "Krysuvik",
+       "median": 0.713,
+       "percentile": 91.3,
+       "confidence": "medium",
+       "recognised": true
+      }
+     ],
+     "26": [
+      {
+       "site": "Svalbard",
+       "median": 0.0,
+       "percentile": 33.0,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Bockfjord Volcanic Complex",
+       "median": 0.256,
+       "percentile": 67.6,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Ebbadalen Formation",
+       "median": 0.178,
+       "percentile": 62.0,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Murchison Fjord",
+       "median": 0.595,
+       "percentile": 85.4,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Adventtoppen and Hiorthfjellet",
+       "median": 0.175,
+       "percentile": 61.8,
+       "confidence": "medium",
+       "recognised": false
+      }
+     ]
+    },
+    "recognised_chapters": 5,
+    "chapters_with_value": 5
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "ice-polygon-terrain",
+   "kind": "context",
+   "rule": "ground-ice",
+   "chapters": [
+    1,
+    3,
+    4,
+    9,
+    10,
+    26
+   ],
+   "per_chapter": {
+    "1": "unknown",
+    "3": "unknown",
+    "4": "strict",
+    "9": "strict",
+    "10": "strict",
+    "26": "strict"
+   },
+   "recovery": {
+    "with_data": 4,
+    "found": 4,
+    "share": 1.0,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 1,
+   "other_chapters_with_data": 15,
+   "false_alarms": 2,
+   "base_rate": 0.09143807465623853,
+   "discrimination": "false alarms",
+   "current_protocol": {
+    "target": "mars-ice-rich-midlatitudes",
+    "per_chapter": {
+     "1": [
+      {
+       "site": "The Antarctic Dry Valleys",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Blood Falls",
+       "median": 0.011,
+       "percentile": 8.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Wright Valley: South Fork Study Area",
+       "median": 0.013,
+       "percentile": 9.1,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Beacon Valley",
+       "median": 0.001,
+       "percentile": 3.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "3": [
+      {
+       "site": "Central Australia",
+       "median": 0.755,
+       "percentile": 82.1,
+       "confidence": "high",
+       "recognised": true
+      }
+     ],
+     "4": [
+      {
+       "site": "Axel Heiberg Island",
+       "median": 0.02,
+       "percentile": 11.6,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Saline Perennial Springs (Gypsum Hill)",
+       "median": 0.024,
+       "percentile": 13.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Saline Perennial Springs (Colour Peak)",
+       "median": null,
+       "percentile": null,
+       "confidence": "medium",
+       "recognised": null
+      },
+      {
+       "site": "Polygonal Terrain",
+       "median": 0.043,
+       "percentile": 19.7,
+       "confidence": "low",
+       "recognised": false
+      },
+      {
+       "site": "Colour Lake Fen",
+       "median": 0.043,
+       "percentile": 19.7,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "9": [
+      {
+       "site": "The Golden Deposit",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      }
+     ],
+     "10": [
+      {
+       "site": "The Haughton Impact Structure",
+       "median": 0.429,
+       "percentile": 59.9,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Hydrothermal Supersite",
+       "median": 0.226,
+       "percentile": 42.8,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ice Wedge Polygons",
+       "median": 0.187,
+       "percentile": 38.4,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "26": [
+      {
+       "site": "Svalbard",
+       "median": 0.017,
+       "percentile": 10.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Bockfjord Volcanic Complex",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Ebbadalen Formation",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Murchison Fjord",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Adventtoppen and Hiorthfjellet",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ]
+    },
+    "recognised_chapters": 1,
+    "chapters_with_value": 5
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "icy-flows-glacial",
+   "kind": "context",
+   "rule": "ground-ice",
+   "chapters": [
+    1,
+    4,
+    10,
+    12,
+    13,
+    26
+   ],
+   "per_chapter": {
+    "1": "unknown",
+    "4": "strict",
+    "10": "strict",
+    "12": "strict",
+    "26": "strict"
+   },
+   "recovery": {
+    "with_data": 4,
+    "found": 4,
+    "share": 1.0,
+    "verdict": "recovered"
+   },
+   "other_chapters_found": 1,
+   "other_chapters_with_data": 15,
+   "false_alarms": 2,
+   "base_rate": 0.09143807465623853,
+   "discrimination": "false alarms",
+   "current_protocol": {
+    "target": "mars-ice-rich-midlatitudes",
+    "per_chapter": {
+     "1": [
+      {
+       "site": "The Antarctic Dry Valleys",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Blood Falls",
+       "median": 0.011,
+       "percentile": 8.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Wright Valley: South Fork Study Area",
+       "median": 0.013,
+       "percentile": 9.1,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Beacon Valley",
+       "median": 0.001,
+       "percentile": 3.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "4": [
+      {
+       "site": "Axel Heiberg Island",
+       "median": 0.02,
+       "percentile": 11.6,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Saline Perennial Springs (Gypsum Hill)",
+       "median": 0.024,
+       "percentile": 13.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Saline Perennial Springs (Colour Peak)",
+       "median": null,
+       "percentile": null,
+       "confidence": "medium",
+       "recognised": null
+      },
+      {
+       "site": "Polygonal Terrain",
+       "median": 0.043,
+       "percentile": 19.7,
+       "confidence": "low",
+       "recognised": false
+      },
+      {
+       "site": "Colour Lake Fen",
+       "median": 0.043,
+       "percentile": 19.7,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "10": [
+      {
+       "site": "The Haughton Impact Structure",
+       "median": 0.429,
+       "percentile": 59.9,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Hydrothermal Supersite",
+       "median": 0.226,
+       "percentile": 42.8,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ice Wedge Polygons",
+       "median": 0.187,
+       "percentile": 38.4,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.67,
+       "percentile": 76.0,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Askja",
+       "median": 0.2,
+       "percentile": 39.7,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Krysuvik",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "26": [
+      {
+       "site": "Svalbard",
+       "median": 0.017,
+       "percentile": 10.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Bockfjord Volcanic Complex",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Ebbadalen Formation",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Murchison Fjord",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Adventtoppen and Hiorthfjellet",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ]
+    },
+    "recognised_chapters": 1,
+    "chapters_with_value": 5
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "present-day-aridity",
+   "kind": "context",
+   "rule": "aridity",
+   "chapters": [
+    1,
+    2,
+    11
+   ],
+   "per_chapter": {
+    "1": "unknown",
+    "2": "strict",
+    "11": "strict"
+   },
+   "recovery": {
+    "with_data": 2,
+    "found": 2,
+    "share": 1.0,
+    "verdict": "not testable"
+   },
+   "other_chapters_found": 6,
+   "other_chapters_with_data": 24,
+   "false_alarms": 0,
+   "base_rate": 0.21020110506783754,
+   "discrimination": "gate only"
+  },
+  {
+   "body": "moon",
+   "feature": "impact-crater",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    3,
+    7,
+    10,
+    15,
+    16,
+    17,
+    22,
+    24
+   ],
+   "current_protocol": {
+    "target": "moon-polar-lit-highlands",
+    "per_chapter": {
+     "3": [
+      {
+       "site": "Central Australia",
+       "median": 0.262,
+       "percentile": 76.3,
+       "confidence": "medium",
+       "recognised": false
+      }
+     ],
+     "7": [
+      {
+       "site": "Cinder Lake",
+       "median": 0.099,
+       "percentile": 64.8,
+       "confidence": "medium",
+       "recognised": false
+      }
+     ],
+     "10": [
+      {
+       "site": "The Haughton Impact Structure",
+       "median": 0.41,
+       "percentile": 83.5,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Hydrothermal Supersite",
+       "median": 0.47,
+       "percentile": 86.2,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ice Wedge Polygons",
+       "median": 0.012,
+       "percentile": 49.6,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "15": [
+      {
+       "site": "Lonar Crater",
+       "median": 0.147,
+       "percentile": 69.0,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "16": [
+      {
+       "site": "Meteor Crater",
+       "median": 0.0,
+       "percentile": 0.0,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "17": [
+      {
+       "site": "Mistastin Lake Crater",
+       "median": 0.482,
+       "percentile": 86.7,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "22": [
+      {
+       "site": "The Ries Impact Crater",
+       "median": 0.0,
+       "percentile": 0.0,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "24": [
+      {
+       "site": "Sudbury Impact Crater",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      }
+     ]
+    },
+    "recognised_chapters": 0,
+    "chapters_with_value": 7
+   }
+  },
+  {
+   "body": "moon",
+   "feature": "ejecta",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    7,
+    10,
+    17,
+    22,
+    24
+   ]
+  },
+  {
+   "body": "moon",
+   "feature": "impact-melt",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    10,
+    15,
+    17,
+    24
+   ]
+  },
+  {
+   "body": "moon",
+   "feature": "impact-breccia",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    10,
+    15,
+    17,
+    22,
+    24
+   ],
+   "current_protocol": {
+    "target": "moon-polar-lit-highlands",
+    "per_chapter": {
+     "10": [
+      {
+       "site": "The Haughton Impact Structure",
+       "median": 0.41,
+       "percentile": 83.5,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Hydrothermal Supersite",
+       "median": 0.47,
+       "percentile": 86.2,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Ice Wedge Polygons",
+       "median": 0.012,
+       "percentile": 49.6,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "15": [
+      {
+       "site": "Lonar Crater",
+       "median": 0.147,
+       "percentile": 69.0,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "17": [
+      {
+       "site": "Mistastin Lake Crater",
+       "median": 0.482,
+       "percentile": 86.7,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "22": [
+      {
+       "site": "The Ries Impact Crater",
+       "median": 0.0,
+       "percentile": 0.0,
+       "confidence": "low",
+       "recognised": false
+      }
+     ],
+     "24": [
+      {
+       "site": "Sudbury Impact Crater",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      }
+     ]
+    },
+    "recognised_chapters": 0,
+    "chapters_with_value": 4
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "impact-crater",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    2,
+    7,
+    10,
+    15,
+    16,
+    22,
+    24
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "impact-ejecta",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    3,
+    10,
+    22,
+    24
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "impact-melt-sheets",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    10,
+    15,
+    24
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "impact-hydrothermal-deposits",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    10,
+    15,
+    24
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "impact-gullies",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    3,
+    15,
+    16
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "crater-lakes",
+   "kind": "no data",
+   "rule": "impact-structures",
+   "needs": "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)",
+   "chapters": [
+    10,
+    15
+   ]
+  },
+  {
+   "body": "moon",
+   "feature": "regolith",
+   "kind": "no data",
+   "rule": "regolith-and-soils",
+   "needs": "surface material: grain size and cohesion (candidate: SoilGrids 2.0, R34, as classes; not ingested)",
+   "chapters": [
+    6,
+    7,
+    14
+   ]
+  },
+  {
+   "body": "moon",
+   "feature": "granular-flows",
+   "kind": "no data",
+   "rule": "regolith-and-soils",
+   "needs": "surface material: grain size and cohesion (candidate: SoilGrids 2.0, R34, as classes; not ingested)",
+   "chapters": [
+    3,
+    13
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "wind-soils-regolith",
+   "kind": "no data",
+   "rule": "regolith-and-soils",
+   "needs": "surface material: grain size and cohesion (candidate: SoilGrids 2.0, R34, as classes; not ingested)",
+   "chapters": [
+    1,
+    2,
+    6,
+    7,
+    11,
+    12,
+    13,
+    14,
+    19,
+    25,
+    26,
+    27,
+    29
+   ]
+  },
+  {
+   "body": "moon",
+   "feature": "collapse-pits",
+   "kind": "no data",
+   "rule": "volcanic-landforms",
+   "needs": "landform inventories (caves, lava tubes) or relief below 30 m; none ingested",
+   "chapters": [
+    12,
+    14
+   ],
+   "current_protocol": {
+    "target": "moon-pits",
+    "per_chapter": {
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.738,
+       "percentile": 93.4,
+       "confidence": "high",
+       "recognised": true
+      },
+      {
+       "site": "Askja",
+       "median": 0.151,
+       "percentile": 62.9,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": 0.03,
+       "percentile": 39.5,
+       "confidence": "low",
+       "recognised": false
+      },
+      {
+       "site": "Krysuvik",
+       "median": 0.487,
+       "percentile": 81.2,
+       "confidence": "medium",
+       "recognised": false
+      }
+     ],
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": 0.258,
+       "percentile": 67.9,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.59,
+       "percentile": 86.3,
+       "confidence": "high",
+       "recognised": true
+      }
+     ]
+    },
+    "recognised_chapters": 2,
+    "chapters_with_value": 2
+   }
+  },
+  {
+   "body": "moon",
+   "feature": "wrinkle-ridges",
+   "kind": "no data",
+   "rule": "volcanic-landforms",
+   "needs": "landform inventories (caves, lava tubes) or relief below 30 m; none ingested",
+   "chapters": [
+    8,
+    14
+   ],
+   "current_protocol": {
+    "target": "moon-mare-plains",
+    "per_chapter": {
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": 0.179,
+       "percentile": 75.8,
+       "confidence": "medium",
+       "recognised": false
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.815,
+       "percentile": 99.3,
+       "confidence": "high",
+       "recognised": true
+      }
+     ]
+    },
+    "recognised_chapters": 1,
+    "chapters_with_value": 1
+   }
+  },
+  {
+   "body": "moon",
+   "feature": "rilles-channels",
+   "kind": "no data",
+   "rule": "volcanic-landforms",
+   "needs": "landform inventories (caves, lava tubes) or relief below 30 m; none ingested",
+   "chapters": [
+    2,
+    18,
+    27
+   ],
+   "current_protocol": {
+    "target": "moon-mare-plains",
+    "per_chapter": {
+     "2": [
+      {
+       "site": "Yungay Area",
+       "median": 0.173,
+       "percentile": 75.4,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Pampas de La Joya",
+       "median": 0.283,
+       "percentile": 82.6,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "18": [
+      {
+       "site": "Mt. Etna",
+       "median": 0.01,
+       "percentile": 45.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "27": [
+      {
+       "site": "Tenerife",
+       "median": 0.019,
+       "percentile": 51.2,
+       "confidence": "high",
+       "recognised": false
+      }
+     ]
+    },
+    "recognised_chapters": 0,
+    "chapters_with_value": 3
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "lava-tubes",
+   "kind": "no data",
+   "rule": "volcanic-landforms",
+   "needs": "landform inventories (caves, lava tubes) or relief below 30 m; none ingested",
+   "chapters": [
+    12,
+    14,
+    27
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "collapse-pits",
+   "kind": "no data",
+   "rule": "volcanic-landforms",
+   "needs": "landform inventories (caves, lava tubes) or relief below 30 m; none ingested",
+   "chapters": [
+    14
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "wrinkle-ridges",
+   "kind": "no data",
+   "rule": "volcanic-landforms",
+   "needs": "landform inventories (caves, lava tubes) or relief below 30 m; none ingested",
+   "chapters": [
+    8,
+    12,
+    14,
+    27
+   ],
+   "current_protocol": {
+    "target": "mars-volcanic-plains",
+    "per_chapter": {
+     "12": [
+      {
+       "site": "Iceland",
+       "median": 0.435,
+       "percentile": 62.3,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Askja",
+       "median": 0.11,
+       "percentile": 26.2,
+       "confidence": "high",
+       "recognised": false
+      },
+      {
+       "site": "Eyjafjallajokull",
+       "median": null,
+       "percentile": null,
+       "confidence": "low",
+       "recognised": null
+      },
+      {
+       "site": "Krysuvik",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      }
+     ],
+     "14": [
+      {
+       "site": "Kilauea",
+       "median": null,
+       "percentile": null,
+       "confidence": "high",
+       "recognised": null
+      },
+      {
+       "site": "Ka'u Desert",
+       "median": 0.192,
+       "percentile": 38.0,
+       "confidence": "high",
+       "recognised": false
+      }
+     ],
+     "27": [
+      {
+       "site": "Tenerife",
+       "median": 0.01,
+       "percentile": 5.9,
+       "confidence": "high",
+       "recognised": false
+      }
+     ]
+    },
+    "recognised_chapters": 0,
+    "chapters_with_value": 3
+   }
+  },
+  {
+   "body": "mars",
+   "feature": "fluvial-lakes",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    1,
+    3,
+    20,
+    29
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "fluvial-channels",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    3,
+    23,
+    26,
+    29
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "deltas-fans",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    2,
+    3,
+    26
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "fluvial-gullies",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    1,
+    3,
+    13,
+    14,
+    26
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "dunes",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    2,
+    3,
+    11,
+    12,
+    19,
+    25,
+    28
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "yardangs",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    19
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "transverse-aeolian-ridges",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    19,
+    25
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "dust-devils",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    28
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "mud-volcanoes",
+   "kind": "no data",
+   "rule": "fluvial-and-aeolian-landforms",
+   "needs": "landform maps (dune fields, lakes, channels); candidates not verified",
+   "chapters": [
+    3,
+    11
+   ]
+  },
+  {
+   "body": "mars",
+   "feature": "hydrothermal-deposits",
+   "kind": "no data",
+   "rule": "hydrothermal",
+   "needs": "an inventory of hot springs and sinters; not verified",
+   "chapters": [
+    2,
+    3,
+    5,
+    9,
+    11,
+    12,
+    13,
+    21,
+    30
+   ]
+  }
+ ]
+}
