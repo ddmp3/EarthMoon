@@ -4,7 +4,7 @@
 - **A fact is written only if it was read at its source.** Otherwise it says "not verified".
 - **Large data** lives outside git (`earthmoon-data/`). Only small derived products and manifests with SHA-256 are committed.
 
-## Used by the current releases (16 sources)
+## Used by the current releases (17 sources)
 
 | Role | Source | Licence (catalogue) |
 |---|---|---|
@@ -12,16 +12,17 @@
 | Hidden ground (masks) | ESA WorldCover 2021 v200 (7 classes: tree, cropland, built-up, snow and ice, water, wetland, mangroves) | CC BY 4.0 |
 | Antarctic ground | Rock outcrop of Antarctica v7.3 (UK Polar Data Centre) | CC BY 4.0 |
 | Countries (place names, bias by continent) | Natural Earth Admin 0, 1:110m | public domain |
-| Geology (context, T46) | Macrostrat map tiles, crosswalk E17 | CC BY 4.0 |
+| Geology (context, T46) | Macrostrat map tiles, crosswalks E17 (Moon) and E20 (Mars) | CC BY 4.0 |
 | Frozen ground (context, model) | Ground temperature map 2000 to 2016 (Obu et al., PANGAEA) | CC BY 3.0 |
 | Aridity (context, model) | Global Aridity Index v3 (Zomer and Trabucco) | CC BY 4.0 |
 | Moon terrain | LOLA LDEM_85S_40M (PDS), SLDEM2015 (NASA GSFC) | PDS, open |
 | Moon illumination and shadow | LOLA polar illumination (PGDA) | open |
 | Moon environments | LROC pits atlas; Lunar Prospector special products; USGS Unified Geologic Map of the Moon | not stated on page (pits, LP); CC0, cite authors (USGS) |
 | Mars terrain | MOLA MEGDR v2.0 (PDS) | PDS |
+| Mars geology (volcanic plains, T48c) | Geologic map of Mars, Tanaka et al. 2014 (USGS SIM 3292), downloaded by David | not stated on page |
 | Mars ice | SWIM 1.0 ice consistency (2019; superseded by SWIM 2.0, data improvement R9) | not stated on page |
 
-15 of 16 are "verified" in the catalogue; the LROC pits atlas is "partly verified". Each source also has a `refresh` block: the signal that is watched, its check interval, and the publication cadence quoted from its page or "not verified" (T52).
+16 of 17 are "verified" in the catalogue; the LROC pits atlas is "partly verified". The Mars geologic map has no automatic signal: its USGS pages refuse automated reading. Each source also has a `refresh` block: the signal that is watched, its check interval, and the publication cadence quoted from its page or "not verified" (T52).
 
 ## Provenance
 - **Each Earth tile** of a release lists the source files it read, with their version (ETag, size, SHA-256) and their date at the source, plus when it was computed and with which code. It is served by `GET /api/v3/tiles/{lat,lon}/provenance` and shown in the site panel.
@@ -35,7 +36,6 @@
 ## Catalogued, not used yet
 - **The catalogues hold 46 Earth, 37 lunar and 30 Martian products.** The ones not used yet wait for a check, an account or a decision: [plan/data-improvements.md](plan/data-improvements.md).
 - **Examples:**
-  - the Mars geologic map (R5);
   - SWIM 2.0 (R9);
   - MOLA-HRSC at 200 m (R1);
   - MODIS and EMIT, which need an Earthdata account (D1).

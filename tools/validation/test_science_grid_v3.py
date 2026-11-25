@@ -36,7 +36,7 @@ def test_positive_controls_are_counted_with_their_result():
 def test_the_sources_of_the_releases_are_counted_from_the_catalogue():
     v = v3_indicators()
     s = v["sources"]
-    assert s["used"] == 16 and s["with_refresh"] == 16 and s["watched"] == 11
+    assert s["used"] == 17 and s["with_refresh"] == 17 and s["watched"] == 11
 
 
 def test_the_markdown_table_lists_every_counted_indicator():
