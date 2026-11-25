@@ -186,6 +186,13 @@ async function discovery(page, name, shot) {
   if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars.jpg")) defect(name, "Mars: the banner photo is not the terrain's");
   await page.locator("#v3-env").selectOption("mars-south-polar");
   if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars-south.jpg")) defect(name, "Mars: the banner does not follow a terrain changed in the mission");
+  // T48c: the volcanic plains are a working terrain (protocol mars-v3), with their banner and their zones
+  if (!(await page.locator("#v3-env option[value='mars-volcanic-plains']").count())) defect(name, "Mars: the volcanic plains are not offered");
+  else {
+    await page.locator("#v3-env").selectOption("mars-volcanic-plains");
+    if (!((await page.locator(".mission-banner img").getAttribute("src")) || "").endsWith("/mars-volcanic.jpg")) defect(name, "Mars: the volcanic plains banner is not shown");
+    await page.locator(".zone-row").first().waitFor({ timeout: 20000 }).catch(() => defect(name, "Mars: no zone list for the volcanic plains"));
+  }
   await page.locator("#v3-env").selectOption("mars-north-polar");
   await shot("13-mars");
   // T45c part 2: the Mars globe beside the map, linked both ways with the Earth zones

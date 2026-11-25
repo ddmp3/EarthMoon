@@ -1,0 +1,58 @@
+{
+ "run-mars-002/assess.json": {
+  "bytes": 104,
+  "sha256": "7001f0cd01bfe49829302bfda2cb20eed5c6464df159d8b9e2509054d4a40e77"
+ },
+ "run-mars-002/cells.parquet": {
+  "bytes": 529314592,
+  "sha256": "6ab4433fd73bad2e01288eb855c8c851b97907202573fd8b815dd48f48153182"
+ },
+ "run-mars-002/context.json": {
+  "bytes": 1550,
+  "sha256": "1cab1372321e039f4a12de7e3323eea818b5ad53a0bd5cb47454abce54d99bc2"
+ },
+ "run-mars-002/context.parquet": {
+  "bytes": 52334251,
+  "sha256": "3265cc73ac3c29ca0f7ba5b6911a79ff9d96b2787fe11d84ab215509bd7286c2"
+ },
+ "run-mars-002/geology.json": {
+  "bytes": 583,
+  "sha256": "62dafda2768a80a9f6c9c3f97f2d7b68cafe12882ff6961e30a84aeeb80539c9"
+ },
+ "run-mars-002/geology.parquet": {
+  "bytes": 21490501,
+  "sha256": "40c52ab5aba7987f255a4bdb40ef0e88f68e6ea94fd3f08c09ebc5d926e95ec1"
+ },
+ "run-mars-002/land-cells.npy": {
+  "bytes": 59281424,
+  "sha256": "bb2ec6c9d58b76854d891ea7600b26731597fa0f1efe74159592bd764c435f18"
+ },
+ "run-mars-002/refs.npz": {
+  "bytes": 2175362,
+  "sha256": "59f9864e253840f9ee056db4d833f3b26b75096e9d6205e9037975a239a9ef43"
+ },
+ "run-mars-002/validation.json": {
+  "bytes": 27389,
+  "sha256": "e27827baa1acf2ebd2e5aa9070aafebd220a2f1773adeef16622adfb6f682085"
+ },
+ "run-mars-002/zones-D-mars-ice-rich-midlatitudes.json": {
+  "bytes": 17610011,
+  "sha256": "c97bca4a35c178ed4bcf84e31f7999a4816c28c7cc8ae8d0c7c55c8e27b0a155"
+ },
+ "run-mars-002/zones-D-mars-north-polar.json": {
+  "bytes": 20971287,
+  "sha256": "6f6ee9b0f7583945a28ee4ce6b6ea6b8ef7e166ef90dd02aa80f213ef68bef86"
+ },
+ "run-mars-002/zones-D-mars-south-polar.json": {
+  "bytes": 18100573,
+  "sha256": "5059715443144c983eb13df561c0cc9b46d65b231e3c03be3793c0bacfe8e2c8"
+ },
+ "run-mars-002/zones-D-mars-volcanic-plains.json": {
+  "bytes": 16587381,
+  "sha256": "43657fc4071d338c3cc8dacdbab579ce394738d396e5e9f5f96d2cbecf71e8b6"
+ },
+ "run-mars-002/zones.json": {
+  "bytes": 72401,
+  "sha256": "ef3ddcb6841c109a7f87c7fa884e8680e9716036167caac81b680e341489f741"
+ }
+}

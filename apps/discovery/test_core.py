@@ -242,3 +242,21 @@ def test_a_release_dropped_from_the_index_is_freed(tmp_path, release, monkeypatc
     (root / "index.json").write_text(_json.dumps({"current": "r-00000001", "releases": [{"id": "r-00000001"}]}))
     service._release(None)
     assert list(service._RELEASES) == ["r-00000001"]
+
+
+def test_the_service_imports_with_only_the_files_its_image_copies(tmp_path):
+    """The image copies a few folders (Dockerfile COPY lines). A module that reads a data file at import must have it
+    copied, or the service dies at start (T48c: geology.py read data/geology, which the image lacked)."""
+    import shutil
+    import subprocess
+    root = Path(__file__).resolve().parents[2]
+    srv = tmp_path / "srv"
+    for line in (root / "apps/discovery/Dockerfile").read_text(encoding="utf-8").splitlines():
+        parts = line.split()
+        if len(parts) == 3 and parts[0] == "COPY" and parts[2].startswith("/srv/"):
+            src, dst = root / parts[1], srv / parts[2][len("/srv/"):]
+            if src.is_dir():
+                shutil.copytree(src, dst, ignore=shutil.ignore_patterns("__pycache__", "test_*"))
+    out = subprocess.run([sys.executable, "-I", "-c", "import sys; sys.path.insert(0, '.'); import core"],
+                         cwd=srv / "apps/discovery", capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr[-800:]

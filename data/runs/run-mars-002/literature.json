@@ -1,0 +1,197 @@
+{
+ "note": "Web searches for the 20 dossier zones of run-mars-002 (protocol mars-v3, section 5). Rule as in run-mars-001, fixed before reading the results: a match needs a source naming the place itself as an analog of the target environment, or describing its relief as the target's slope profile does at the MOLA scale; regional descriptions, analogs nearby or analogs of another environment give no match. A match is my judgement. The 14 ice-rich zones were searched for run-mars-001 and are reused. No finding was used to rank or remove a zone.",
+ "searches": [
+  {
+   "zone": "D-01",
+   "place": "Nye County, Nevada, United States",
+   "query": "Lunar Crater volcanic field Nye County Nevada Mars analog basalt plains",
+   "finding": "the Lunar Crater volcanic field (cinder cones, maars, alkali basalt flows; Apollo training and rover tests) is the named analog nearby, about 20 km north of the zone's northern edge (Lunar Crater near 38.38N, zone 38.03 to 38.18N); the zone itself is an alluvial basin floor between ranges (hillshade) with 98% of its geology samples not basalt; no source names this basin",
+   "sources": [
+    "https://pubs.usgs.gov/publication/pp599I",
+    "https://en.wikipedia.org/wiki/Lunar_Crater_volcanic_field"
+   ],
+   "match": null,
+   "run": "run-mars-002, 25/11/2026"
+  },
+  {
+   "zone": "D-02",
+   "place": "Fungurume, Lubudi, Lualaba, République démocratique du Congo",
+   "query": "Fungurume Lualaba plateau relief Mars analog volcanic",
+   "finding": "no source links this Katanga plateau to Mars or to volcanic analogs; the hillshade shows a sedimentary plateau and ridges, geology samples 100% not basalt",
+   "sources": [],
+   "match": null,
+   "run": "run-mars-002, 25/11/2026"
+  },
+  {
+   "zone": "D-03",
+   "place": "Halfa - حلفا, الولاية الشمالية Northern State, السودان",
+   "query": "Wadi Halfa Northern State Sudan desert plain Mars analog",
+   "finding": "Nubian Desert stony plains; NASA study of SW Egypt desert landforms compared with Mars (wind streaks), not this place, not ice-rich ground",
+   "source": "https://ntrs.nasa.gov/api/citations/19830008725/downloads/19830008725.pdf",
+   "match": null,
+   "run": "run-mars-001 (D-01), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-04",
+   "place": "Тэлмэн ᠲᠡᠯᠡᠮᠡᠨ, Завхан ᠵᠠᠪᠬᠠᠨ, Монгол улс ᠮᠤᠩᠭᠤᠯ ᠤᠯᠤᠰ",
+   "query": "Zavkhan Mongolia Telmen lake steppe plain permafrost Mars analog",
+   "finding": "Telmen Lake basin; the Mongolian Mars-analog work is about the Valley of the Gobi Lakes (early Mars lakes), not this place",
+   "source": "https://mdpi.com/2075-163X/10/9/792",
+   "match": null,
+   "run": "run-mars-001 (D-02), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-05",
+   "place": "Guadalupe County, Texas, United States",
+   "query": "Mato Grosso ... or Guadalupe County Texas Mars analog site",
+   "finding": "nothing on this place",
+   "source": null,
+   "match": null,
+   "run": "run-mars-001 (D-03), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-06",
+   "place": "Divide County, North Dakota, United States",
+   "query": "Divide County North Dakota prairie Mars analog",
+   "finding": "North Dakota badlands and eastern glacial landforms are cited as analogs, not Divide County",
+   "source": "https://www.ndstudies.gov/nightsky/mars.html",
+   "match": null,
+   "run": "run-mars-001 (D-04), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-07",
+   "place": "Солнечный муниципальный округ, Хабаровский край, Дальневосточный федеральный округ, Россия",
+   "query": "Khabarovsk Krai Solnechny district ... Mars analog terrain",
+   "finding": "nothing on this place",
+   "source": null,
+   "match": null,
+   "run": "run-mars-001 (D-05), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-08",
+   "place": "Iron County, Utah, United States",
+   "query": "Escalante Desert Iron County Utah Mars analog; Black Rock Desert volcanic field Utah basalt Mars analog",
+   "finding": "Utah analogs are described regionally (USGS overview) and at the Mars Desert Research Station (Wayne County); the Black Rock Desert volcanic field (Millard County) is ranked for hydrovolcanic biosignature potential; neither is this place, an alluvial basin floor of the Escalante Desert",
+   "sources": [
+    "https://pubs.usgs.gov/publication/70201979",
+    "https://gsa.confex.com/gsa/2024AM/webprogram/Paper405147.html"
+   ],
+   "match": null,
+   "run": "run-mars-002, 25/11/2026"
+  },
+  {
+   "zone": "D-09",
+   "place": "Yuma County, Arizona, United States",
+   "query": "Sentinel Plain basalt field Arizona Gila Bend Mars analog",
+   "finding": "the Sentinel-Arlington basalt field was proposed as a Mars analog in a withdrawn 2005 abstract, and lies east of this zone; the zone is an alluvial basin floor in Yuma County, 61% of geology samples not basalt and none basalt",
+   "sources": [
+    "https://gsa.confex.com/gsa/2005AM/webprogram/Paper94449.html"
+   ],
+   "match": null,
+   "run": "run-mars-002, 25/11/2026"
+  },
+  {
+   "zone": "D-10",
+   "place": "ناحية الرياض, قضاء الحويجة, محافظة كركوك - پارێزگای کەرکووک, 34000, العراق",
+   "query": "Hawija Kirkuk plain Iraq geology Mars analog",
+   "finding": "Hawija lies in the low folded zone with Miocene to Quaternary sediments; no source names it as an analog",
+   "sources": [
+    "https://iasj.rdd.edu.iq/journals/uploads/2025/10/20/b42ce8100c189f28991145d9ba918b1b.pdf"
+   ],
+   "match": null,
+   "run": "run-mars-002, 25/11/2026"
+  },
+  {
+   "zone": "D-11",
+   "place": "دهستان دامنکوه, بخش مرکزی, شهرستان دامغان, استان سمنان, ایران",
+   "query": "Damghan plain Semnan Iran Mars analog playa alluvial fan",
+   "finding": "the Damghan basin is studied for its alluvial fans and playa at the foot of the Alborz; no source names it as a Mars analog",
+   "sources": [
+    "https://meetingorganizer.copernicus.org/EGU2014/EGU2014-4034.pdf"
+   ],
+   "match": null,
+   "run": "run-mars-002, 25/11/2026"
+  },
+  {
+   "zone": "D-12",
+   "place": "ᐄᔨᔨᐤ ᐊᔅᒌ ᒉᐃᒥᔅ ᐯᐃ Eeyou Istchee Baie-James, Jamésie, Nord-du-Québec, Québec, Canada",
+   "query": "Eeyou Istchee James Bay lowlands permafrost palsa Mars analog",
+   "finding": "palsas and permafrost retreat described; no Mars analog link",
+   "source": "https://openpolar.no/Record/ftrepec:oai:RePEc:wly:perpro:v:20:y:2009:i:4:p:383-389",
+   "match": null,
+   "run": "run-mars-001 (D-06), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-13",
+   "place": "Kapoeta East, Eastern Equatoria, South Sudan",
+   "query": "... Kapoeta South Sudan ... Mars analog site",
+   "finding": "nothing on this place",
+   "source": null,
+   "match": null,
+   "run": "run-mars-001 (D-07), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-14",
+   "place": "Ачинский муниципальный округ, Красноярский край, Сибирский федеральный округ, Россия",
+   "query": "... Achinsk Krasnoyarsk ... Mars analog terrain",
+   "finding": "nothing on this place",
+   "source": null,
+   "match": null,
+   "run": "run-mars-001 (D-08), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-15",
+   "place": "Tessaoua, Maradi, Niger",
+   "query": "... Tessaoua Niger ... Mars analog site",
+   "finding": "nothing on this place",
+   "source": null,
+   "match": null,
+   "run": "run-mars-001 (D-09), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-16",
+   "place": "Панфилов ауданы, Жетісу облысы, Қазақстан",
+   "query": "... Kazakhstan Panfilov Zhetisu Mars analog terrain",
+   "finding": "nothing on this place",
+   "source": null,
+   "match": null,
+   "run": "run-mars-001 (D-10), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-17",
+   "place": "North Slave Region, Northwest Territories, Canada",
+   "query": "North Slave region Northwest Territories permafrost Mars analog",
+   "finding": "discontinuous permafrost studies; no Mars analog link",
+   "source": "https://data.researchlicensing.ece.gov.nt.ca/Scientific/17661",
+   "match": null,
+   "run": "run-mars-001 (D-11), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-18",
+   "place": "مديرية مأرب, محافظة مأرب, اليمن",
+   "query": "Marib Yemen desert plain Mars analog",
+   "finding": "the nearby analog is the Dhofar desert, Oman (AMADEE-18), not this place",
+   "source": "https://phys.org/news/2018-02-mars-earth-simulation-remote-oman.html",
+   "match": null,
+   "run": "run-mars-001 (D-12), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-19",
+   "place": "Tindouf ⵜⵉⵏⴷⵓⴼ تندوف, دائرة تندوف ⴰⴷⴷⴰⵢⵔⵜ ⵏ ⵜⵉⵏⴷⵓⴼ, تندوف ⵜⵉⵏⴷⵓⴼ, 37000, ⵍⵣⵣⴰⵢⴻⵔ الجزائر",
+   "query": "Tindouf hamada Algeria flat plain Mars analog",
+   "finding": "the Tindouf Basin is proposed as an analog for Noachian soil geochemistry (Astrobiology 2019), not for ice-rich terrain",
+   "source": "https://openpolar.no/Record/ftimperialcol:oai:spiral.imperial.ac.uk:10044%2F1%2F58583",
+   "match": null,
+   "run": "run-mars-001 (D-13), 23/11/2026: same zone, same centre, not searched again"
+  },
+  {
+   "zone": "D-20",
+   "place": "Nova Bandeirantes, Mato Grosso, Região Centro-Oeste, 78565-000, Brasil",
+   "query": "Mato Grosso Nova Bandeirantes Paranaíta ... Mars analog site",
+   "finding": "nothing on this place",
+   "source": null,
+   "match": null,
+   "run": "run-mars-001 (D-14), 23/11/2026: same zone, same centre, not searched again"
+  }
+ ]
+}

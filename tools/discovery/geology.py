@@ -15,10 +15,11 @@ from functools import lru_cache
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-GROUPS = ("highland", "mare", "pits")
+GROUPS = ("highland", "mare", "pits", "mars-volcanic")
 TARGET_GROUP = {
     "moon-polar-lit-highlands": "highland", "moon-psr": "highland", "moon-south-polar-cap-v2": "highland",
     "moon-persistently-lit": "highland", "moon-mare-plains": "mare", "moon-pits": "pits",
+    "mars-volcanic-plains": "mars-volcanic",
 }
 # E17, rows of docs/wiki/methods/geology-crosswalk.md
 CROSSWALK = {
@@ -30,6 +31,17 @@ CROSSWALK = {
 }
 # names that say only a class or a type: they cannot tell anorthosite or basalt from other rocks
 GENERIC = {"igneous", "plutonic", "volcanic", "mafic", "ultramafic", "metamorphic", "metaigneous", "metavolcanic"}
+
+
+def _macrostrat_volcanic() -> set[str]:
+    """Lithologies Macrostrat itself types as volcanic (data/geology/macrostrat-lithologies.json)."""
+    d = json.loads((ROOT / "data/geology/macrostrat-lithologies.json").read_text(encoding="utf-8"))
+    return {x["name"].lower() for x in d["lithologies"] if x.get("type") == "volcanic"}
+
+
+# E20 (David, 20/11/2026): the volcanic units of the Tanaka 2014 Mars map match Earth basalt; the other volcanic rocks
+# (Macrostrat's own type "volcanic", not a hand-made list) are partial; class names stay unresolved
+CROSSWALK["mars-volcanic"] = {"match": {"basalt"}, "partial": _macrostrat_volcanic() - {"basalt"} - GENERIC}
 # words of map legends that name a Macrostrat lithology in another form (whole words only)
 ALIASES = {"granitic": "granite", "gabbroic": "gabbro", "anorthositic": "anorthosite", "tholeiite": "basalt",
            "tholeiitic basalt": "basalt", "metaanorthosite": "metaanorthosite", "noritic": "norite",

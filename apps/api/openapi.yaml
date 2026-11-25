@@ -661,9 +661,9 @@ components:
         geology:
           type: object
           nullable: true
-          description: "T46: mean share of the 9 samples of the zone's cells in each geology state, for the group of lunar environments of the target (crosswalk E17). null when the release has no geology."
+          description: "T46: mean share of the 9 samples of the zone's cells in each geology state, for the group of environments of the target (crosswalk E17 on the Moon, E20 for the Martian volcanic plains). null when the release has no geology."
           properties:
-            group: { type: string, enum: [highland, mare, pits] }
+            group: { type: string, enum: [highland, mare, pits, mars-volcanic] }
             source: { type: string }
             match: { type: number }
             partial: { type: number }

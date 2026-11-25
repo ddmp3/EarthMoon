@@ -1402,10 +1402,10 @@ export interface components {
                 };
                 sources?: string[];
             } | null;
-            /** @description T46: mean share of the 9 samples of the zone's cells in each geology state, for the group of lunar environments of the target (crosswalk E17). null when the release has no geology. */
+            /** @description T46: mean share of the 9 samples of the zone's cells in each geology state, for the group of environments of the target (crosswalk E17 on the Moon, E20 for the Martian volcanic plains). null when the release has no geology. */
             geology?: {
                 /** @enum {string} */
-                group?: "highland" | "mare" | "pits";
+                group?: "highland" | "mare" | "pits" | "mars-volcanic";
                 source?: string;
                 match?: number;
                 partial?: number;

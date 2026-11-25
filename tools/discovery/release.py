@@ -130,13 +130,18 @@ GEO_STATES = ("match", "partial", "no_match", "unresolved", "no_map")
 GEO_SOURCE = "Macrostrat carto tiles, zoom 8 (CC-BY 4.0); crosswalk E17"
 
 
+def geo_source(group: str) -> str:
+    """Source of a geology state: Macrostrat with the crosswalk of the body (E17 Moon, E20 Mars volcanic units)."""
+    return GEO_SOURCE.replace("E17", "E20") if group.startswith("mars-") else GEO_SOURCE
+
+
 def zone_geology(ix: dict, rows: np.ndarray, target: str) -> dict | None:
     """Mean share of each geology state over the 9 samples of every cell of a zone, for the target's group (T46)."""
     from discovery.geology import TARGET_GROUP
     geo, g = ix.get("geo"), TARGET_GROUP.get(target)
     if not geo or g is None or f"geo:{g}:match" not in geo or rows.size == 0:
         return None
-    return {"group": g, "source": GEO_SOURCE,
+    return {"group": g, "source": geo_source(g),
             **{st: round(float(np.nanmean(geo[f"geo:{g}:{st}"][rows])), 4) for st in GEO_STATES}}
 
 

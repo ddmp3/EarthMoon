@@ -21,7 +21,7 @@ TILED = ("copernicus-dem-glo30", "copernicus-dem-glo90", "esa-worldcover")
 CONTEXT = ("obu-permafrost-2018", "global-aridity-index-v3", "macrostrat")
 # profile input prefix -> catalogue id (release.MOON_CUBE_FILES and mars_run.INPUT_SOURCES)
 PREFIX = {"SLDEM2015_": "sldem2015", "GeoUnits.": "usgs-unified-geologic-map", "ironhd": "lp-grs-ns-special-products",
-          "mola": "mgs-mola-megdr", "swim": "swim-ice-consistency"}
+          "mola": "mgs-mola-megdr", "swim": "swim-ice-consistency", "tanaka2014": "usgs-mars-geologic-map-2014"}
 SCALES = {"moon": 3, "mars": 2}                         # Earth cube scales per body (90 m and two 30 m; 115 m and 463 m)
 
 

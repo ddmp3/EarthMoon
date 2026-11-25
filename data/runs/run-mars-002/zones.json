@@ -1,0 +1,3330 @@
+{
+ "rule": {
+  "tau": 0.5,
+  "min_cells": 3,
+  "grid": {
+   "tau": [
+    0.5,
+    0.7,
+    0.9
+   ],
+   "min_cells": [
+    1,
+    3,
+    9
+   ]
+  }
+ },
+ "scenarios": {
+  "D": {
+   "targets": {
+    "mars-ice-rich-midlatitudes": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 17071,
+       "area_km2": 18738972.9
+      },
+      "tau=0.5,min=3": {
+       "zones": 11768,
+       "area_km2": 18554915.6
+      },
+      "tau=0.5,min=9": {
+       "zones": 5310,
+       "area_km2": 17782510.7
+      },
+      "tau=0.7,min=1": {
+       "zones": 17509,
+       "area_km2": 11430255.0
+      },
+      "tau=0.7,min=3": {
+       "zones": 13262,
+       "area_km2": 11278943.4
+      },
+      "tau=0.7,min=9": {
+       "zones": 5921,
+       "area_km2": 10394256.6
+      },
+      "tau=0.9,min=1": {
+       "zones": 16463,
+       "area_km2": 3957983.4
+      },
+      "tau=0.9,min=3": {
+       "zones": 13763,
+       "area_km2": 3859370.6
+      },
+      "tau=0.9,min=9": {
+       "zones": 4715,
+       "area_km2": 2750545.4
+      }
+     },
+     "zones": 11768,
+     "top": [
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 11,
+       "area_km2": 275.4,
+       "lat": 21.80512,
+       "lon": 30.11512,
+       "median": 0.9995,
+       "cell_median_p25": 0.9838,
+       "cell_median_p75": 0.9995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "21,30"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 11,
+       "area_km2": 275.4,
+       "lat": 48.75695,
+       "lon": 97.83542,
+       "median": 0.9995,
+       "cell_median_p25": 0.5096,
+       "cell_median_p75": 0.9995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "48,97"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": 29.74525,
+       "lon": -97.93334,
+       "median": 0.9995,
+       "cell_median_p25": 0.9995,
+       "cell_median_p75": 0.9995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "29,-98"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 48.90614,
+       "lon": -103.89127,
+       "median": 0.9995,
+       "cell_median_p25": 0.8275,
+       "cell_median_p75": 0.9995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "48,-104"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 51.24392,
+       "lon": 136.7847,
+       "median": 0.9995,
+       "cell_median_p25": 0.9995,
+       "cell_median_p75": 0.9995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "51,136"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 10,
+       "area_km2": 250.3,
+       "lat": 51.15256,
+       "lon": -76.72979,
+       "median": 0.9984,
+       "cell_median_p25": 0.9218,
+       "cell_median_p75": 0.9995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "51,-77"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": 4.76916,
+       "lon": 34.65656,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "4,34"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 8,
+       "area_km2": 200.3,
+       "lat": 56.76543,
+       "lon": 90.76417,
+       "median": 0.9984,
+       "cell_median_p25": 0.8106,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "56,90"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": 13.4919,
+       "lon": 8.21949,
+       "median": 0.9984,
+       "cell_median_p25": 0.7379,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "13,8"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": 44.15952,
+       "lon": 80.31318,
+       "median": 0.9984,
+       "cell_median_p25": 0.7806,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "44,80"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": 63.47761,
+       "lon": -113.18926,
+       "median": 0.9984,
+       "cell_median_p25": 0.9026,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "63,-114"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 15.96748,
+       "lon": 46.11665,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "15,46",
+        "16,46"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 26.85782,
+       "lon": -7.09133,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "26,-8"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": -9.86324,
+       "lon": -57.868,
+       "median": 0.9984,
+       "cell_median_p25": 0.9859,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-10,-58"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 31.86436,
+       "lon": 83.07215,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "31,83"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -9.76506,
+       "lon": -56.69033,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-10,-57"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -15.12563,
+       "lon": 127.88565,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-16,127"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -23.13752,
+       "lon": 137.55564,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-24,137"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -26.23519,
+       "lon": 20.20338,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-27,20"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-ice-rich-midlatitudes",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -49.43099,
+       "lon": -72.75644,
+       "median": 0.9984,
+       "cell_median_p25": 0.9984,
+       "cell_median_p75": 0.9984,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-50,-73"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      }
+     ]
+    },
+    "mars-north-polar": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 37167,
+       "area_km2": 25274509.8
+      },
+      "tau=0.5,min=3": {
+       "zones": 11847,
+       "area_km2": 24490939.4
+      },
+      "tau=0.5,min=9": {
+       "zones": 4139,
+       "area_km2": 23628608.8
+      },
+      "tau=0.7,min=1": {
+       "zones": 39933,
+       "area_km2": 15484498.0
+      },
+      "tau=0.7,min=3": {
+       "zones": 12770,
+       "area_km2": 14644749.0
+      },
+      "tau=0.7,min=9": {
+       "zones": 4248,
+       "area_km2": 13690339.7
+      },
+      "tau=0.9,min=1": {
+       "zones": 44988,
+       "area_km2": 3694264.7
+      },
+      "tau=0.9,min=3": {
+       "zones": 11149,
+       "area_km2": 2652858.8
+      },
+      "tau=0.9,min=9": {
+       "zones": 2675,
+       "area_km2": 1730869.8
+      }
+     },
+     "zones": 11847,
+     "top": [
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 18.30315,
+       "lon": -91.19493,
+       "median": 0.9774,
+       "cell_median_p25": 0.9038,
+       "cell_median_p75": 0.9852,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "18,-92"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 54.8905,
+       "lon": 20.55228,
+       "median": 0.975,
+       "cell_median_p25": 0.9411,
+       "cell_median_p75": 0.9752,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "54,20"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 67.42375,
+       "lon": 54.05762,
+       "median": 0.972,
+       "cell_median_p25": 0.9507,
+       "cell_median_p75": 0.9781,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "67,53",
+        "67,54"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 51.26929,
+       "lon": -103.25197,
+       "median": 0.9674,
+       "cell_median_p25": 0.9223,
+       "cell_median_p75": 0.9753,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "51,-104"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 43.01364,
+       "lon": 122.71548,
+       "median": 0.9667,
+       "cell_median_p25": 0.9449,
+       "cell_median_p75": 0.9687,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "42,122",
+        "43,122"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 69.15719,
+       "lon": -93.45554,
+       "median": 0.9666,
+       "cell_median_p25": 0.9049,
+       "cell_median_p75": 0.9758,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "69,-94"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 30.79587,
+       "lon": -95.94014,
+       "median": 0.9646,
+       "cell_median_p25": 0.9199,
+       "cell_median_p75": 0.9754,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "30,-96"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 9.04301,
+       "lon": 17.18496,
+       "median": 0.964,
+       "cell_median_p25": 0.9406,
+       "cell_median_p75": 0.9687,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "9,17"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 11.40535,
+       "lon": -2.02034,
+       "median": 0.9621,
+       "cell_median_p25": 0.9521,
+       "cell_median_p75": 0.9722,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "11,-3"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 53.318,
+       "lon": 68.7471,
+       "median": 0.9591,
+       "cell_median_p25": 0.7376,
+       "cell_median_p75": 0.96,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "53,68"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 1.63208,
+       "lon": 32.95856,
+       "median": 0.9586,
+       "cell_median_p25": 0.9006,
+       "cell_median_p75": 0.9724,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "1,32",
+        "1,33"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 11.94716,
+       "lon": 0.06217,
+       "median": 0.957,
+       "cell_median_p25": 0.946,
+       "cell_median_p75": 0.9888,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "11,0"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 12.47905,
+       "lon": -5.56025,
+       "median": 0.9567,
+       "cell_median_p25": 0.9514,
+       "cell_median_p75": 0.9717,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "12,-6"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 45.06756,
+       "lon": 35.89915,
+       "median": 0.9545,
+       "cell_median_p25": 0.7931,
+       "cell_median_p75": 0.9627,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "45,35"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -11.44024,
+       "lon": -48.52264,
+       "median": 0.954,
+       "cell_median_p25": 0.9268,
+       "cell_median_p75": 0.9549,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-12,-49"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 12.09902,
+       "lon": -0.52954,
+       "median": 0.9535,
+       "cell_median_p25": 0.903,
+       "cell_median_p75": 0.96,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "12,-1"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 17.93918,
+       "lon": -91.89256,
+       "median": 0.9532,
+       "cell_median_p25": 0.7449,
+       "cell_median_p75": 0.9745,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "17,-92",
+        "18,-92"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -18.62869,
+       "lon": 16.74981,
+       "median": 0.9529,
+       "cell_median_p25": 0.8755,
+       "cell_median_p75": 0.9642,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-19,16"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 27.7817,
+       "lon": -80.84804,
+       "median": 0.9524,
+       "cell_median_p25": 0.936,
+       "cell_median_p75": 0.9672,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "27,-81"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-north-polar",
+       "scenario": "D",
+       "cells": 9,
+       "area_km2": 225.3,
+       "lat": 11.02846,
+       "lon": 10.26477,
+       "median": 0.9522,
+       "cell_median_p25": 0.9224,
+       "cell_median_p75": 0.9612,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "10,10",
+        "11,10"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      }
+     ]
+    },
+    "mars-south-polar": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 38048,
+       "area_km2": 19908958.6
+      },
+      "tau=0.5,min=3": {
+       "zones": 12166,
+       "area_km2": 19105610.5
+      },
+      "tau=0.5,min=9": {
+       "zones": 4194,
+       "area_km2": 18214865.2
+      },
+      "tau=0.7,min=1": {
+       "zones": 42055,
+       "area_km2": 10880811.8
+      },
+      "tau=0.7,min=3": {
+       "zones": 13388,
+       "area_km2": 9990642.3
+      },
+      "tau=0.7,min=9": {
+       "zones": 4438,
+       "area_km2": 8990243.7
+      },
+      "tau=0.9,min=1": {
+       "zones": 38300,
+       "area_km2": 2166929.5
+      },
+      "tau=0.9,min=3": {
+       "zones": 7181,
+       "area_km2": 1224386.7
+      },
+      "tau=0.9,min=9": {
+       "zones": 1169,
+       "area_km2": 585017.9
+      }
+     },
+     "zones": 12166,
+     "top": [
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 18.30315,
+       "lon": -91.19493,
+       "median": 0.9556,
+       "cell_median_p25": 0.8542,
+       "cell_median_p75": 0.9677,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "18,-92"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 67.42375,
+       "lon": 54.05762,
+       "median": 0.9551,
+       "cell_median_p25": 0.926,
+       "cell_median_p75": 0.9599,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "67,53",
+        "67,54"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 11.94716,
+       "lon": 0.06217,
+       "median": 0.9546,
+       "cell_median_p25": 0.9106,
+       "cell_median_p75": 0.9811,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "11,0"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 12.47905,
+       "lon": -5.56025,
+       "median": 0.954,
+       "cell_median_p25": 0.9467,
+       "cell_median_p75": 0.9653,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "12,-6"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 54.8905,
+       "lon": 20.55228,
+       "median": 0.9525,
+       "cell_median_p25": 0.9056,
+       "cell_median_p75": 0.9556,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "54,20"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -15.79478,
+       "lon": 26.52341,
+       "median": 0.9506,
+       "cell_median_p25": 0.8699,
+       "cell_median_p75": 0.952,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-16,26"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -18.62869,
+       "lon": 16.74981,
+       "median": 0.9489,
+       "cell_median_p25": 0.8449,
+       "cell_median_p75": 0.9579,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-19,16"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 9.24491,
+       "lon": 17.47506,
+       "median": 0.9483,
+       "cell_median_p25": 0.9004,
+       "cell_median_p75": 0.9555,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "9,17"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 9,
+       "area_km2": 225.3,
+       "lat": 11.02846,
+       "lon": 10.26477,
+       "median": 0.9452,
+       "cell_median_p25": 0.9059,
+       "cell_median_p75": 0.9601,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "10,10",
+        "11,10"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 11.40535,
+       "lon": -2.02034,
+       "median": 0.9433,
+       "cell_median_p25": 0.9336,
+       "cell_median_p75": 0.9588,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "11,-3"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 51.26929,
+       "lon": -103.25197,
+       "median": 0.9417,
+       "cell_median_p25": 0.8794,
+       "cell_median_p75": 0.9553,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "51,-104"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": -29.24966,
+       "lon": -71.38527,
+       "median": 0.9416,
+       "cell_median_p25": 0.886,
+       "cell_median_p75": 0.9448,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-30,-72"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 69.15719,
+       "lon": -93.45554,
+       "median": 0.9403,
+       "cell_median_p25": 0.8567,
+       "cell_median_p75": 0.967,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "69,-94"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 43.01364,
+       "lon": 122.71548,
+       "median": 0.9399,
+       "cell_median_p25": 0.916,
+       "cell_median_p75": 0.9502,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "42,122",
+        "43,122"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 30.14398,
+       "lon": 71.17804,
+       "median": 0.9384,
+       "cell_median_p25": 0.9149,
+       "cell_median_p75": 0.959,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "30,71"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 7.96999,
+       "lon": 8.44398,
+       "median": 0.9375,
+       "cell_median_p25": 0.9104,
+       "cell_median_p75": 0.9561,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "7,8",
+        "8,8"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 60.53501,
+       "lon": -101.99384,
+       "median": 0.9375,
+       "cell_median_p25": 0.7373,
+       "cell_median_p75": 0.9475,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "60,-102",
+        "60,-103"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 30.79587,
+       "lon": -95.94014,
+       "median": 0.9371,
+       "cell_median_p25": 0.8757,
+       "cell_median_p75": 0.9527,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "30,-96"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 9.04301,
+       "lon": 17.18496,
+       "median": 0.9367,
+       "cell_median_p25": 0.9194,
+       "cell_median_p75": 0.957,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "9,17"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-south-polar",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 45.06756,
+       "lon": 35.89915,
+       "median": 0.9363,
+       "cell_median_p25": 0.7325,
+       "cell_median_p75": 0.9553,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "45,35"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      }
+     ]
+    },
+    "mars-volcanic-plains": {
+     "grid": {
+      "tau=0.5,min=1": {
+       "zones": 15929,
+       "area_km2": 17582606.2
+      },
+      "tau=0.5,min=3": {
+       "zones": 11235,
+       "area_km2": 17417951.0
+      },
+      "tau=0.5,min=9": {
+       "zones": 5076,
+       "area_km2": 16679093.1
+      },
+      "tau=0.7,min=1": {
+       "zones": 16657,
+       "area_km2": 9795144.0
+      },
+      "tau=0.7,min=3": {
+       "zones": 13086,
+       "area_km2": 9667891.1
+      },
+      "tau=0.7,min=9": {
+       "zones": 5808,
+       "area_km2": 8777896.9
+      },
+      "tau=0.9,min=1": {
+       "zones": 14887,
+       "area_km2": 3305170.8
+      },
+      "tau=0.9,min=3": {
+       "zones": 12705,
+       "area_km2": 3224633.2
+      },
+      "tau=0.9,min=9": {
+       "zones": 4167,
+       "area_km2": 2174139.5
+      }
+     },
+     "zones": 11235,
+     "top": [
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 7,
+       "area_km2": 175.2,
+       "lat": 38.10015,
+       "lon": -116.03991,
+       "median": 0.9998,
+       "cell_median_p25": 0.6346,
+       "cell_median_p75": 0.9998,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "38,-117"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -10.54683,
+       "lon": 26.4457,
+       "median": 0.9998,
+       "cell_median_p25": 0.9998,
+       "cell_median_p75": 0.9998,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-11,26"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 38.1374,
+       "lon": -113.30008,
+       "median": 0.9994,
+       "cell_median_p25": 0.9994,
+       "cell_median_p75": 0.9994,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "38,-114"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 33.12253,
+       "lon": -113.93323,
+       "median": 0.9994,
+       "cell_median_p25": 0.9994,
+       "cell_median_p75": 0.9994,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "33,-114"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 35.05173,
+       "lon": 43.80852,
+       "median": 0.9994,
+       "cell_median_p25": 0.9994,
+       "cell_median_p75": 0.9994,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "35,43"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 10,
+       "area_km2": 250.3,
+       "lat": 36.22405,
+       "lon": 54.63546,
+       "median": 0.9986,
+       "cell_median_p25": 0.5073,
+       "cell_median_p75": 0.9986,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "36,54"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": 5.8536,
+       "lon": -71.86876,
+       "median": 0.9982,
+       "cell_median_p25": 0.9982,
+       "cell_median_p75": 0.9982,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "5,-72"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 9.66097,
+       "lon": 0.02302,
+       "median": 0.9978,
+       "cell_median_p25": 0.9978,
+       "cell_median_p75": 0.9978,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "9,0"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 10,
+       "area_km2": 250.3,
+       "lat": 27.81485,
+       "lon": -103.08903,
+       "median": 0.9974,
+       "cell_median_p25": 0.8766,
+       "cell_median_p75": 0.9974,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "27,-104"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 6,
+       "area_km2": 150.2,
+       "lat": -26.44236,
+       "lon": 132.20261,
+       "median": 0.9974,
+       "cell_median_p25": 0.9974,
+       "cell_median_p75": 0.9974,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-27,132"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 65.56633,
+       "lon": -128.41724,
+       "median": 0.9974,
+       "cell_median_p25": 0.9974,
+       "cell_median_p75": 0.9974,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "65,-129"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 7.43752,
+       "lon": 2.63622,
+       "median": 0.9974,
+       "cell_median_p25": 0.9974,
+       "cell_median_p75": 0.9974,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "7,2"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 15.25473,
+       "lon": 36.54739,
+       "median": 0.9966,
+       "cell_median_p25": 0.9966,
+       "cell_median_p75": 0.9966,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "15,36"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": -6.05009,
+       "lon": 27.35226,
+       "median": 0.9962,
+       "cell_median_p25": 0.9962,
+       "cell_median_p75": 0.9962,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "-7,27"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 27.121,
+       "lon": 11.67306,
+       "median": 0.9962,
+       "cell_median_p25": 0.9962,
+       "cell_median_p75": 0.9962,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "27,11"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 59.32058,
+       "lon": -101.81405,
+       "median": 0.9962,
+       "cell_median_p25": 0.9962,
+       "cell_median_p75": 0.9962,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "59,-102"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 5,
+       "area_km2": 125.2,
+       "lat": 12.50507,
+       "lon": 8.12279,
+       "median": 0.9954,
+       "cell_median_p25": 0.9793,
+       "cell_median_p75": 0.9954,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "12,8"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 4,
+       "area_km2": 100.1,
+       "lat": 24.54776,
+       "lon": 9.22103,
+       "median": 0.9954,
+       "cell_median_p25": 0.9954,
+       "cell_median_p75": 0.9954,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "24,9"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 9,
+       "area_km2": 225.3,
+       "lat": 30.12327,
+       "lon": 56.85341,
+       "median": 0.995,
+       "cell_median_p25": 0.6831,
+       "cell_median_p75": 0.995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "30,56"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      },
+      {
+       "target": "mars-volcanic-plains",
+       "scenario": "D",
+       "cells": 3,
+       "area_km2": 75.1,
+       "lat": 67.75623,
+       "lon": 56.15864,
+       "median": 0.995,
+       "cell_median_p25": 0.9556,
+       "cell_median_p75": 0.995,
+       "high_confidence_share": 1.0,
+       "tiles": [
+        "67,56"
+       ],
+       "req:base_slope": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_lrv": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "req:climbing_limit_viper": {
+        "met": 0,
+        "failed": 0,
+        "unknown": 0
+       },
+       "suitability_median": null
+      }
+     ]
+    }
+   },
+   "dossier_zones": [
+    {
+     "target": "mars-volcanic-plains",
+     "scenario": "D",
+     "cells": 7,
+     "area_km2": 175.2,
+     "lat": 38.10015,
+     "lon": -116.03991,
+     "median": 0.9998,
+     "cell_median_p25": 0.6346,
+     "cell_median_p75": 0.9998,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "38,-117"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-volcanic-plains",
+     "scenario": "D",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": -10.54683,
+     "lon": 26.4457,
+     "median": 0.9998,
+     "cell_median_p25": 0.9998,
+     "cell_median_p75": 0.9998,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-11,26"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 11,
+     "area_km2": 275.4,
+     "lat": 21.80512,
+     "lon": 30.11512,
+     "median": 0.9995,
+     "cell_median_p25": 0.9838,
+     "cell_median_p75": 0.9995,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "21,30"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 11,
+     "area_km2": 275.4,
+     "lat": 48.75695,
+     "lon": 97.83542,
+     "median": 0.9995,
+     "cell_median_p25": 0.5096,
+     "cell_median_p75": 0.9995,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "48,97"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 7,
+     "area_km2": 175.2,
+     "lat": 29.74525,
+     "lon": -97.93334,
+     "median": 0.9995,
+     "cell_median_p25": 0.9995,
+     "cell_median_p75": 0.9995,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "29,-98"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 5,
+     "area_km2": 125.2,
+     "lat": 48.90614,
+     "lon": -103.89127,
+     "median": 0.9995,
+     "cell_median_p25": 0.8275,
+     "cell_median_p75": 0.9995,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "48,-104"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": 51.24392,
+     "lon": 136.7847,
+     "median": 0.9995,
+     "cell_median_p25": 0.9995,
+     "cell_median_p75": 0.9995,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "51,136"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-volcanic-plains",
+     "scenario": "D",
+     "cells": 6,
+     "area_km2": 150.2,
+     "lat": 38.1374,
+     "lon": -113.30008,
+     "median": 0.9994,
+     "cell_median_p25": 0.9994,
+     "cell_median_p75": 0.9994,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "38,-114"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-volcanic-plains",
+     "scenario": "D",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": 33.12253,
+     "lon": -113.93323,
+     "median": 0.9994,
+     "cell_median_p25": 0.9994,
+     "cell_median_p75": 0.9994,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "33,-114"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-volcanic-plains",
+     "scenario": "D",
+     "cells": 4,
+     "area_km2": 100.1,
+     "lat": 35.05173,
+     "lon": 43.80852,
+     "median": 0.9994,
+     "cell_median_p25": 0.9994,
+     "cell_median_p75": 0.9994,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "35,43"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-volcanic-plains",
+     "scenario": "D",
+     "cells": 10,
+     "area_km2": 250.3,
+     "lat": 36.22405,
+     "lon": 54.63546,
+     "median": 0.9986,
+     "cell_median_p25": 0.5073,
+     "cell_median_p75": 0.9986,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "36,54"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 10,
+     "area_km2": 250.3,
+     "lat": 51.15256,
+     "lon": -76.72979,
+     "median": 0.9984,
+     "cell_median_p25": 0.9218,
+     "cell_median_p75": 0.9995,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "51,-77"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 8,
+     "area_km2": 200.3,
+     "lat": 4.76916,
+     "lon": 34.65656,
+     "median": 0.9984,
+     "cell_median_p25": 0.9984,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "4,34"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 8,
+     "area_km2": 200.3,
+     "lat": 56.76543,
+     "lon": 90.76417,
+     "median": 0.9984,
+     "cell_median_p25": 0.8106,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "56,90"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 7,
+     "area_km2": 175.2,
+     "lat": 13.4919,
+     "lon": 8.21949,
+     "median": 0.9984,
+     "cell_median_p25": 0.7379,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "13,8"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 7,
+     "area_km2": 175.2,
+     "lat": 44.15952,
+     "lon": 80.31318,
+     "median": 0.9984,
+     "cell_median_p25": 0.7806,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "44,80"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 7,
+     "area_km2": 175.2,
+     "lat": 63.47761,
+     "lon": -113.18926,
+     "median": 0.9984,
+     "cell_median_p25": 0.9026,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "63,-114"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 6,
+     "area_km2": 150.2,
+     "lat": 15.96748,
+     "lon": 46.11665,
+     "median": 0.9984,
+     "cell_median_p25": 0.9984,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "15,46",
+      "16,46"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 6,
+     "area_km2": 150.2,
+     "lat": 26.85782,
+     "lon": -7.09133,
+     "median": 0.9984,
+     "cell_median_p25": 0.9984,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "26,-8"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    },
+    {
+     "target": "mars-ice-rich-midlatitudes",
+     "scenario": "D",
+     "cells": 5,
+     "area_km2": 125.2,
+     "lat": -9.86324,
+     "lon": -57.868,
+     "median": 0.9984,
+     "cell_median_p25": 0.9859,
+     "cell_median_p75": 0.9984,
+     "high_confidence_share": 1.0,
+     "tiles": [
+      "-10,-58"
+     ],
+     "req:base_slope": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_lrv": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "req:climbing_limit_viper": {
+      "met": 0,
+      "failed": 0,
+      "unknown": 0
+     },
+     "suitability_median": null,
+     "also_for": []
+    }
+   ]
+  }
+ }
+}

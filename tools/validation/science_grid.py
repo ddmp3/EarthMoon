@@ -105,7 +105,7 @@ def to_markdown() -> str:
 
 # ---- v3 (T49): counted from the run summaries and catalogues in the repository ----
 ROOT = os.path.join(HERE, "..", "..")
-V3_RUNS = ("run-002", "run-mars-001")                       # the runs served by the current releases
+V3_RUNS = ("run-002", "run-mars-002")                       # the runs served by the current releases
 
 
 def _json(*parts):
@@ -126,7 +126,7 @@ def _release_sources() -> set:
 def v3_indicators() -> dict:
     import collections
     out: dict = {"runs": list(V3_RUNS), "masks": {}, "negatives_top10": {}, "self_consistency": {}, "monte_carlo": {},
-                 "reproducibility": {}, "dossiers": {}, "cells": {}}
+                 "reproducibility": {}, "dossiers": {}, "cells": {}, "positive_controls": {}}
     scenarios_with_positives = 0
     for run in V3_RUNS:
         v = _json("data", "runs", run, "validation.json")
@@ -146,6 +146,11 @@ def v3_indicators() -> dict:
             if k in ("consequence",):
                 continue
             scenarios_with_positives += isinstance(val, dict) and val.get("pass") is True
+        pcs = v.get("positive_controls") or {}       # per target (validate_run.py positives); a pass counts for its scenario
+        out["positive_controls"][run] = {
+            t: f"median percentile {p['median_percentile']:.1f} of {p['evaluated']} controls ({'pass' if p['pass'] else 'fail'})"
+            for t, p in pcs.items() if isinstance(p, dict) and p.get("median_percentile") is not None}
+        scenarios_with_positives += len({t.split(":")[0] for t, p in pcs.items() if isinstance(p, dict) and p.get("pass") is True})
         out["dossiers"][run] = dict(collections.Counter(o["outcome"] for o in _json("docs", "wiki", "runs", run, "outcomes.json")))
         out["cells"][run] = _json("data", "runs", run, "assess.json")["cells"]
     n_scen = len([f for f in os.listdir(os.path.join(DATA, "scenarios")) if f.endswith(".yaml")])   # C has no run yet
@@ -178,6 +183,7 @@ def v3_markdown() -> str:
         ("Self-consistency (KS <= 0.05)", v["self_consistency"]),
         ("Reproducibility (identical SHA-256)", v["reproducibility"]),
         ("Monte Carlo: zones stable in 90% of runs", {r: ", ".join(f"{t} {x}" for t, x in m.items()) for r, m in v["monte_carlo"].items()}),
+        ("Positive controls per target", {r: "; ".join(f"{t}: {x}" for t, x in m.items()) or "none" for r, m in v["positive_controls"].items()}),
         ("Dossiers of the top zones", {r: ", ".join(f"{k} {n}" for k, n in sorted(d.items())) for r, d in v["dossiers"].items()}),
     ]
     lines = ["| Indicator | " + " | ".join(v["runs"]) + " |", "|---|" + "---|" * len(v["runs"])]

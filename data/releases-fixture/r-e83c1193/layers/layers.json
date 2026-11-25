@@ -1,0 +1,22 @@
+{
+ "layers": [
+  "mars-ice-rich-midlatitudes/typicality",
+  "mars-ice-rich-midlatitudes/coverage",
+  "mars-north-polar/typicality",
+  "mars-north-polar/coverage",
+  "mars-south-polar/typicality",
+  "mars-south-polar/coverage",
+  "mars-volcanic-plains/typicality",
+  "mars-volcanic-plains/coverage",
+  "mars-volcanic-plains/geology",
+  "_earth/frozen",
+  "_earth/aridity"
+ ],
+ "zoom": [
+  0,
+  7
+ ],
+ "tiles": 73,
+ "bytes": 148824,
+ "mb_per_layer": 0.0
+}

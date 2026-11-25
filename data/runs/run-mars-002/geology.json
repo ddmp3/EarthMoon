@@ -1,0 +1,34 @@
+{
+ "cells": 7400488,
+ "tiles": 34241,
+ "missing_tiles": 0,
+ "no_map_share": 0.36833312734091167,
+ "highland": {
+  "match": 0.0005,
+  "partial": 0.0014,
+  "no match": 0.4322,
+  "unresolved": 0.1976,
+  "no map": 0.3683
+ },
+ "mare": {
+  "match": 0.01,
+  "partial": 0.0002,
+  "no match": 0.4246,
+  "unresolved": 0.1968,
+  "no map": 0.3683
+ },
+ "pits": {
+  "match": 0.0,
+  "partial": 0.01,
+  "no match": 0.4263,
+  "unresolved": 0.1954,
+  "no map": 0.3683
+ },
+ "mars-volcanic": {
+  "match": 0.011,
+  "partial": 0.0097,
+  "no match": 0.4155,
+  "unresolved": 0.1955,
+  "no map": 0.3683
+ }
+}

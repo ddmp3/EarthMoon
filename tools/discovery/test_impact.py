@@ -58,3 +58,9 @@ def test_the_cube_inputs_of_a_lunar_target_map_to_their_catalogue_source(tmp_pat
 def test_a_source_no_release_uses_has_no_impact(tmp_path):
     out = im.impact("emit-l2b-minerals", {"changed": ["x"], "withdrawn": [], "added": []}, world(tmp_path))
     assert out["releases"] == [] and out["cpu_hours_estimate"] == 0
+
+
+def test_the_mars_geologic_map_input_is_traced_to_its_catalogue_entry():
+    """A new version of the Tanaka map must reach the volcanic-plains target in the pre-analysis."""
+    from discovery.impact import _sources_of_inputs
+    assert _sources_of_inputs({"tanaka2014/SIM3292_Global_Geology.shp": {}}) == {"usgs-mars-geologic-map-2014"}

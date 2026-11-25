@@ -2,7 +2,9 @@
 
 **Status: accepted by David on 20/11/2026 ("go!"): E19 windows of 25 x 25 planetary pixels, E20 volcanic units against Earth basalt, interface option A (a fifth mission).**
 
-**Run:** [run-mars-001](../runs/run-mars-001.md) (23/11/2026, protocol mars-v1) for the polar and ice-rich targets. The volcanic plains wait for the Tanaka map (data improvement R5).
+**Runs:**
+- [run-mars-001](../runs/run-mars-001.md) (23/11/2026, protocols mars-v1 and mars-v2): polar and ice-rich targets.
+- [run-mars-002](../runs/run-mars-002.md) (25/11/2026, protocol mars-v3): the four targets, with the volcanic plains (T48c).
 
 Mars is analysed on its own terms (mission rule): no lunar criterion is reused with new weights.
 
@@ -15,6 +17,21 @@ Four environments of the T20 specs, all built from verified global data:
 | South polar terrain | same | same | negatives only |
 | Ice-rich mid-latitudes | MOLA 128 pixels per degree (about 460 m), inside SWIM ice consistency (3 km) | slope; Martian ice against Earth permafrost, as classes (proxy, scenario D) | negatives only |
 | Volcanic plains | MOLA 128 pixels per degree, inside the volcanic units of the Mars geologic map (Tanaka et al. 2014) | slope; geology: Martian volcanic units against Earth basalt (Macrostrat) | **positive controls exist**: Big Craters, Mauna Ulu, Kīlauea Iki, Kīlauea caldera (R29) |
+
+## Volcanic plains (T48c, protocol mars-v3)
+- **Map:** Tanaka et al. 2014 (USGS SIM 3292), downloaded by David on 24/11/2026; shapefile `SIM3292_Global_Geology`, 1,311 polygons, 44 units.
+- **Units:** every unit whose own description (`UnitDesc`) says "volcanic": 11 units (AHv, Av, eHv, lAv, lAvf, lHv, lHvf, lNv, and the edifices Ave, Hve, Nve). Confirmed by David on 24/11/2026.
+- **Windows:**
+  - a MOLA 128 ppd window (11.6 km) counts when its centre is inside a unit, because the map is at 1:20,000,000;
+  - it also needs a MOLA shot in half of its pixels (E19);
+  - result: **4,983 windows** of 232,956 inside the units; without the edifices, 4,735.
+- **Observed-share sensitivity** ([data](../../../data/runs/run-mars-002/observed-share-sensitivity.json)):
+  - median slope 0.42° below 10% observed, 0.60° at 50% and more;
+  - interpolation between tracks smooths slopes, so the rule removes artificially smooth windows;
+  - latitudes are not shifted (median 8.7° kept, about 9.5° overall).
+- **Geology (E20):**
+  - basalt is a match; Macrostrat's other lithologies of type "volcanic" are partial; class names stay unresolved;
+  - shown beside slope, never combined with it.
 
 Later, through the data improvement backlog:
 - aqueous mineral sites (OMEGA, CRISM; site sets);

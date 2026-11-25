@@ -35,6 +35,7 @@ PROFILE_KM_PER_DEG = 30.32                                          # Moon
 BLOCK_KM: dict = {}                                                 # held-out block side per target; 5 km when absent
 POSITIVES = {"A": "none: no verified reference names a site (protocol table)", "B": "none (same)",
              "consequence": "no positive validation for scenarios A and B"}
+POSITIVE_TARGETS: dict = {}                                         # scenario -> targets its controls validate
 SIGMA_BY_SCALE: dict = {}                                           # Monte Carlo slope noise per scale; SIGMA when absent
 REPRO = {"scale": "glo30-40m", "product": "glo30", "pixel": "40", "window_px": None}
 
@@ -66,6 +67,19 @@ def in_top_decile(median: float, masked_share: float, evaluated: np.ndarray) -> 
         return False
     v = evaluated[np.isfinite(evaluated)]
     return bool(median >= np.percentile(v, 90))
+
+
+def positive_summary(percentiles: list) -> dict:
+    """Protocol section 2: the median percentile of the control cells must reach 75; the share in the top 10% is
+    reported. A control without a value is left out (missing data is never a bad value); with fewer than 3 controls
+    left there is no positive validation (pass None)."""
+    v = np.array([p for p in percentiles if p is not None and np.isfinite(p)], float)
+    out = {"evaluated": int(v.size)}
+    if v.size < 3:
+        return {**out, "median_percentile": None, "top10_share": None, "pass": None,
+                "note": "fewer than 3 controls with a value: no positive validation"}
+    med = float(np.median(v))
+    return {**out, "median_percentile": round(med, 2), "top10_share": round(float(np.mean(v >= 90)), 3), "pass": med >= 75}
 
 
 # --- checks (IO) -------------------------------------------------------------------------------------------
@@ -124,6 +138,36 @@ def negatives(run: Path, cells: dict, cube: Path, rock_path: str) -> dict:
     masked_or_flagged = sum(bool(r["ground_hidden"]) or r["flagged"] for r in rows)
     return {"points": rows, "top10": per, "masks": {"masked_or_flagged": masked_or_flagged, "of": len(rows),
                                                       "pass": masked_or_flagged == len(rows)}}
+
+
+def positives(cells: dict) -> dict:
+    """Percentile of each positive control's cell among all cells with a value, for the targets its scenario's
+    controls validate (data/validation/positives.yaml, POSITIVE_TARGETS)."""
+    import yaml
+    doc = yaml.safe_load((ROOT / "data/validation/positives.yaml").read_text(encoding="utf-8"))["scenarios"]
+    out = {}
+    for sc, targets in POSITIVE_TARGETS.items():
+        ctl = doc[sc]["controls"]
+        plat, plon = np.array([c["lat"] for c in ctl]), np.array([c["lon"] for c in ctl])
+        where = cell_rows(global_cell(plat, plon), cells)
+        conf = cells.get("confidence")
+        ms = _num(cells["masked_share"])
+        for t in targets:
+            med = _num(cells.get(f"{t}:median", [None] * len(cells["cell"])))
+            rows = []
+            for k, c in enumerate(ctl):
+                j = int(where[k])
+                if j < 0 or not np.isfinite(med[j]):
+                    rows.append({**c, "cell": None if j < 0 else str(cells["cell"][j]), "median": None, "percentile": None,
+                                 "note": "no Earth value at this target's scale (sea, no DEM or no window)"})
+                    continue
+                rows.append({**c, "cell": str(cells["cell"][j]), "median": round(float(med[j]), 4),
+                             "percentile": round(percentile_rank(med[j], med), 2),
+                             "masked_share": round(float(np.nan_to_num(ms[j], nan=1.0)), 3),
+                             "confidence": None if conf is None else str(conf[j])})
+            out[f"{sc}:{t}"] = {"reference": doc[sc].get("reference"), "controls": rows,
+                                **positive_summary([r["percentile"] for r in rows])}
+    return out
 
 
 def self_consistency(profiles_windows: Path) -> dict:
@@ -342,7 +386,7 @@ def reproducibility(run: Path, cube: Path, refs_path: str, rock_path: str, tiles
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("what", choices=["negatives", "self", "bias", "mc", "repro", "all"])
+    ap.add_argument("what", choices=["negatives", "positives", "self", "bias", "mc", "repro", "all"])
     ap.add_argument("--run", type=Path, default=Path("/data/run002"))
     ap.add_argument("--cube", type=Path, default=Path("/data/cube"))
     ap.add_argument("--profiles-windows", type=Path, default=Path("/data/profiles/moon"))
@@ -356,10 +400,12 @@ def main(argv=None) -> int:
     out_path = a.run / "validation.json"
     out = json.loads(out_path.read_text()) if out_path.exists() else {}
     out["positives"] = dict(POSITIVES)
-    steps = ["negatives", "self", "bias", "mc", "repro"] if a.what == "all" else [a.what]
+    steps = ["negatives", "positives", "self", "bias", "mc", "repro"] if a.what == "all" else [a.what]
     for s in steps:
         if s == "negatives":
             out["negatives"] = negatives(a.run, cells, a.cube, a.rock)
+        elif s == "positives":
+            out["positive_controls"] = positives(cells)
         elif s == "self":
             out["self_consistency"] = self_consistency(a.profiles_windows)
         elif s == "bias":

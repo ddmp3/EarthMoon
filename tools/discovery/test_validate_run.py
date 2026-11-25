@@ -63,3 +63,19 @@ def test_monte_carlo_reads_the_window_slopes_written_by_the_assessment(tmp_path,
     assert out["A:moon-psr"]["zones"] == 2 and out["A:moon-psr"]["sample_cells"] == len(ids)
     shares = [z["mc_top_decile_share"] for z in json.loads((run / "zones-A-moon-psr.json").read_text())]
     assert all(0 <= s <= 1 for s in shares)
+
+
+def test_positive_controls_pass_when_their_median_percentile_reaches_75():
+    """Protocol section 2: median percentile of the control cells >= 75; the share in the top 10% is reported."""
+    from discovery.validate_run import positive_summary
+    out = positive_summary([95.0, 80.0, 70.0, 91.0])
+    assert out == {"evaluated": 4, "median_percentile": 85.5, "top10_share": 0.5, "pass": True}
+    assert positive_summary([95.0, 60.0, 70.0])["pass"] is False
+
+
+def test_controls_without_a_value_are_not_counted_and_under_three_give_no_positive_validation():
+    """Missing data is never a bad value: a control with no Earth value is left out, not ranked last."""
+    from discovery.validate_run import positive_summary
+    out = positive_summary([95.0, None, 99.0, float("nan")])
+    assert out["evaluated"] == 2 and out["pass"] is None
+    assert "fewer than 3" in out["note"]

@@ -3,12 +3,12 @@ import type { Lang } from "./i18n"
 import type { SelectedMode } from "./store"
 
 export const MISSION_ORDER: SelectedMode[] = ["robotics", "calibration", "colony", "custom"]
-/** Mars terrains of the Mars home (scenario D targets; the volcanic plains wait for the geologic map, R5). */
+/** Mars terrains of the Mars home (scenario D targets; the volcanic plains since protocol mars-v3, T48c). */
 export const MARS_MISSIONS: { id: string; image: string; soon?: boolean }[] = [
   { id: "mars-ice-rich-midlatitudes", image: "mars-ice" },
   { id: "mars-north-polar", image: "mars" },
   { id: "mars-south-polar", image: "mars-south" },
-  { id: "mars-volcanic-plains", image: "mars-volcanic", soon: true },
+  { id: "mars-volcanic-plains", image: "mars-volcanic" },
 ]
 export const missionImage = (mode: SelectedMode) => `${import.meta.env.BASE_URL}img/${mode}.jpg`
 

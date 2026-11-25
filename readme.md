@@ -24,7 +24,7 @@ It is a **screening tool**: "worth a closer look", not "an analog". No scenario 
 - 6.3 M lunar and 7.4 M Mars cells assessed;
 - evaluation grid 30/39 (v1 15/39, v2 28/39), plus 13/15 on the five v3 criteria;
 - 0 of 4 scenarios with a positive validation;
-- 16 sources, each with its provenance and its refresh check.
+- 17 sources, each with its provenance and its refresh check.
 
 ## Documentation
 

@@ -61,13 +61,13 @@ def build(out: Path, add: bool = False) -> str:
         (run / "validation.json").write_text(json.dumps({"note": "synthetic fixture: no validation was run"}))
         np.save(run / "land-cells.npy", ids)
         geo = {"cell": pa.array([str(c) for c in ids])}                      # synthetic geology (T46): random shares
-        for g in ("highland", "mare", "pits"):
+        groups = ("highland", "mare", "pits") + (("mars-volcanic",) if BODY == "mars" else ())   # E20 since T48c
+        for g in groups:
             w = rng.dirichlet(np.ones(5), size=ids.size).astype(np.float32)
             for k, st in enumerate(("match", "partial", "no_match", "unresolved", "no_map")):
                 geo[f"geo:{g}:{st}"] = pa.array(w[:, k])
-        if BODY == "moon":                                                # Martian geology waits for the Tanaka map
-            pq.write_table(pa.table(geo), run / "geology.parquet")
-            (run / "geology.json").write_text(json.dumps({"note": "synthetic fixture geology"}))
+        pq.write_table(pa.table(geo), run / "geology.parquet")
+        (run / "geology.json").write_text(json.dumps({"note": "synthetic fixture geology"}))
         fz = rng.choice(["met", "partial", "failed", "not covered"], size=ids.size)        # synthetic context (T47)
         ar = rng.choice(["hyper-arid", "arid", "semi-arid", "dry sub-humid", "humid", "no data"], size=ids.size)
         pq.write_table(pa.table({"cell": pa.array([str(c) for c in ids]), "ctx:frozen_e4": pa.array(fz.tolist()),

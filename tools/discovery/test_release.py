@@ -192,3 +192,10 @@ def test_without_context_a_zone_says_so():
     z = {"target": "moon-psr", "scenario": "A", "cells": 1, "area_km2": 25.0, "lat": 1.0, "lon": 2.0, "median": 0.8,
          "cell_median_p25": 0.7, "cell_median_p75": 0.9, "high_confidence_share": 1.0, "cell_ids": ["1"]}
     assert zone_record(z, 1, 0.5, 3, _cells())["context"] is None
+
+
+def test_the_geology_source_names_the_crosswalk_of_each_body():
+    """E17 for the lunar groups, E20 for the Martian volcanic units (T48c)."""
+    from discovery.release import geo_source
+    assert geo_source("mare").endswith("crosswalk E17")
+    assert geo_source("mars-volcanic").endswith("crosswalk E20")

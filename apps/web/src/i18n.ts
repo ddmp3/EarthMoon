@@ -53,8 +53,8 @@ const en = {
     },
     'mars-volcanic-plains': {
       title: 'Volcanic plains',
-      text: 'The only Martian terrain with verified analog sites on Earth, in Hawaii and Idaho. It needs the Mars geologic map first.',
-      tags: ['Geology', 'Positive controls'],
+      text: 'Where Earth relief resembles the Martian volcanic plains of the geologic map, compared in windows of 11.6 km. The only Martian terrain with verified analog sites on Earth, in Hawaii and Idaho.',
+      tags: ['MOLA 463 m', 'Geology', 'Positive controls'],
       credit: 'Olympus Mons, Viking 1 orbiter mosaic, PIA00300 · NASA/JPL/USGS',
     },
   } as Record<string, { title: string; text: string; tags: string[]; credit: string }>,
@@ -244,8 +244,8 @@ const fr: Texts = {
     },
     'mars-volcanic-plains': {
       title: 'Plaines volcaniques',
-      text: 'Le seul terrain martien avec des sites analogues vérifiés sur Terre, à Hawaï et dans l’Idaho. Il attend d’abord la carte géologique de Mars.',
-      tags: ['Géologie', 'Contrôles positifs'],
+      text: 'Où le relief terrestre ressemble aux plaines volcaniques martiennes de la carte géologique, comparées par fenêtres de 11,6 km. Le seul terrain martien avec des sites analogues vérifiés sur Terre, à Hawaï et dans l’Idaho.',
+      tags: ['MOLA 463 m', 'Géologie', 'Contrôles positifs'],
       credit: 'Olympus Mons, Viking 1 orbiter mosaic, PIA00300 · NASA/JPL/USGS',
     },
   },

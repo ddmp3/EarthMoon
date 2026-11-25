@@ -1,0 +1,160 @@
+{
+ "volcanic_windows": 232956,
+ "observed_share_quantiles": {
+  "10": 0.206,
+  "25": 0.256,
+  "50": 0.315,
+  "75": 0.376,
+  "90": 0.432
+ },
+ "by_observed_bin": [
+  {
+   "bin": [
+    0,
+    0.1
+   ],
+   "windows": 813,
+   "slope_p25": 0.238,
+   "slope_p50": 0.424,
+   "slope_p75": 0.745,
+   "lat_median": 5.0
+  },
+  {
+   "bin": [
+    0.1,
+    0.2
+   ],
+   "windows": 18873,
+   "slope_p25": 0.268,
+   "slope_p50": 0.469,
+   "slope_p75": 0.896,
+   "lat_median": 7.2
+  },
+  {
+   "bin": [
+    0.2,
+    0.3
+   ],
+   "windows": 81494,
+   "slope_p25": 0.298,
+   "slope_p50": 0.519,
+   "slope_p75": 0.994,
+   "lat_median": 9.9
+  },
+  {
+   "bin": [
+    0.3,
+    0.4
+   ],
+   "windows": 90670,
+   "slope_p25": 0.322,
+   "slope_p50": 0.56,
+   "slope_p75": 1.063,
+   "lat_median": 9.5
+  },
+  {
+   "bin": [
+    0.4,
+    0.5
+   ],
+   "windows": 36123,
+   "slope_p25": 0.337,
+   "slope_p50": 0.58,
+   "slope_p75": 1.103,
+   "lat_median": 9.3
+  },
+  {
+   "bin": [
+    0.5,
+    1.0
+   ],
+   "windows": 4983,
+   "slope_p25": 0.34,
+   "slope_p50": 0.598,
+   "slope_p75": 1.189,
+   "lat_median": 8.7
+  }
+ ],
+ "by_lat_band": [
+  {
+   "band": [
+    -90,
+    -70
+   ],
+   "volcanic_windows": 784,
+   "kept": 0,
+   "slope_p50_all": 1.169,
+   "slope_p50_kept": null
+  },
+  {
+   "band": [
+    -70,
+    -50
+   ],
+   "volcanic_windows": 11174,
+   "kept": 54,
+   "slope_p50_all": 1.073,
+   "slope_p50_kept": 1.077
+  },
+  {
+   "band": [
+    -50,
+    -30
+   ],
+   "volcanic_windows": 14337,
+   "kept": 219,
+   "slope_p50_all": 0.641,
+   "slope_p50_kept": 0.776
+  },
+  {
+   "band": [
+    -30,
+    -10
+   ],
+   "volcanic_windows": 45348,
+   "kept": 973,
+   "slope_p50_all": 0.534,
+   "slope_p50_kept": 0.578
+  },
+  {
+   "band": [
+    -10,
+    10
+   ],
+   "volcanic_windows": 46679,
+   "kept": 1358,
+   "slope_p50_all": 0.549,
+   "slope_p50_kept": 0.628
+  },
+  {
+   "band": [
+    10,
+    30
+   ],
+   "volcanic_windows": 60984,
+   "kept": 1435,
+   "slope_p50_all": 0.451,
+   "slope_p50_kept": 0.522
+  },
+  {
+   "band": [
+    30,
+    50
+   ],
+   "volcanic_windows": 45483,
+   "kept": 866,
+   "slope_p50_all": 0.527,
+   "slope_p50_kept": 0.664
+  },
+  {
+   "band": [
+    50,
+    70
+   ],
+   "volcanic_windows": 8167,
+   "kept": 78,
+   "slope_p50_all": 0.456,
+   "slope_p50_kept": 0.481
+  }
+ ]
+}

@@ -34,9 +34,9 @@ def _millions(n):
 
 
 def expected():
-    moon, mars = V["cells"]["run-002"], V["cells"]["run-mars-001"]
-    n_pol = _mc("run-mars-001", "D:mars-north-polar")[1] + _mc("run-mars-001", "D:mars-south-polar")[1]
-    ice = _mc("run-mars-001", "D:mars-ice-rich-midlatitudes")
+    moon, mars = V["cells"]["run-002"], V["cells"]["run-mars-002"]
+    n_pol = _mc("run-mars-002", "D:mars-north-polar")[1] + _mc("run-mars-002", "D:mars-south-polar")[1]
+    ice = _mc("run-mars-002", "D:mars-ice-rich-midlatitudes")
     mare = _mc("run-002", "B:moon-mare-plains")
     pits = _mc("run-002", "A:moon-pits")
     psr = _mc("run-002", "A:moon-psr")
@@ -44,6 +44,7 @@ def expected():
     ra, rb = V["resolution_30m"]["A"]["top_overlap"], V["resolution_30m"]["B"]["top_overlap"]
     plaus = sum(d.get("plausible", 0) for d in V["dossiers"].values())
     total = sum(sum(d.values()) for d in V["dossiers"].values())
+    pc_med = V["positive_controls"]["run-mars-002"]["D:mars-volcanic-plains"].split()[2]
     hidden = round(V["hidden_share"]["run-002"] * 100)
     s, c = V["sources"], _catalog_counts()
     masks = V["masks"]["run-002"].split("/")
@@ -60,6 +61,7 @@ def expected():
                                f"lunar mare plains {mare[0] / mare[1]:.0%}, Mars ice-rich mid-latitudes {ice[0]:,} of {ice[1]:,}",
                                "fails for lunar pits** (KS 0.056",
                                f"Of {total} dossiers (lunar and Mars), {plaus} are plausible",
+                               f"Mars volcanic plains: their 4 positive controls fail (median percentile {pc_med}",
                                f"{hidden}% of lunar cells are half or more masked"],
         "docs/DATA.md": [f"{s['verified']} of {s['used']} are \"verified\"",
                          f"{c['earth']} Earth, {c['moon']} lunar and {c['mars']} Martian products"],
