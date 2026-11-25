@@ -7,7 +7,7 @@
 - **Data:**
   - outputs in `earthmoon-data/run-mars-002/` (not in git);
   - summaries in `data/runs/run-mars-002/`;
-  - release `r-a673f19b`, now the current Mars release of the site.
+  - release `r-4fea11f8`, now the current Mars release of the site. A first export, `r-a673f19b`, listed the Tanaka map as "not in catalogue" in its sources; it is kept, not served.
 - **Earlier run:** run-mars-001 stays as it is ([run-mars-001](run-mars-001.md)).
 
 ## Unfavourable results first

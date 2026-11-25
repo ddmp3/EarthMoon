@@ -8,7 +8,7 @@ One entry per merged task. Newest first. Each entry gives the PR, what changed, 
   - Profile: 4,983 windows, slope median 0.60°.
   - Without the 3 edifice units: 4,735 windows, median 0.57° (sensitivity, not used to rank).
 - **Protocol mars-v3**, frozen and tagged before the run. It adds this target and its 4 positive controls (R29). Thresholds are unchanged.
-- **run-mars-002 and release `r-a673f19b`:**
+- **run-mars-002 and release `r-4fea11f8`:**
   - all 7.4 M cells assessed;
   - phase 1 targets identical to run-mars-001, cell by cell;
   - 11,235 volcanic-plains zones, 1,028 of them stable in the Monte Carlo.
@@ -20,6 +20,9 @@ One entry per merged task. Newest first. Each entry gives the PR, what changed, 
   - the 6 volcanic-plains zones of the top 20 are sedimentary basin floors and plateaus, with no basalt;
   - all 20 outcomes are "unknown".
 - **Geology on Mars (E20):** a basalt and volcanic crosswalk, shown beside slope and never combined with it. The Mars mission's geology layer and the API include it.
+- **Fixes found on the way:**
+  - the release listed the Tanaka map as "not in catalogue": the input is now traced to its entry, which gets a refresh block (17 release sources);
+  - the discovery service died at start: its image lacked `data/geology`, now read at import. A test now imports the service from the files its image copies.
 - **Tools:**
   - the dossier tool reuses the place names of earlier runs, so Nominatim is never asked twice;
   - `validate_run.py positives` is added.
