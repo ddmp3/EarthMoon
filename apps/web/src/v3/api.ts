@@ -163,6 +163,37 @@ export interface AnalogPoint {
   zones: { id: string; lat: number; lon: number; typicality: number | null; slope_median: number | null; place?: { en: string | null; fr: string | null } }[]
 }
 
+/** T54: multi-criteria selection. */
+export type Bilingual = { en: string; fr: string }
+export interface Criterion {
+  variable?: string
+  op?: '>=' | '<=' | '>' | '<'
+  value?: number
+  expression?: string
+  role: 'required' | 'preferred'
+  why?: Bilingual
+  source?: string
+  source_text?: Bilingual
+  text?: string
+}
+export interface CriteriaVariable { id: string; label: Bilingual; unit: string; range: number[]; source: Bilingual; scale: Bilingual; help: Bilingual }
+export interface CriteriaPreset {
+  id: string; body: string; mission: string; terrain?: string | null; targets: string[]
+  title: Bilingual; use: Bilingual; imitates: Bilingual; criteria: Criterion[]
+  known_sites: { features: { body: string; feature: string }[]; note?: Bilingual }
+}
+export interface CriteriaCatalogue { release: string; body: string; variables: CriteriaVariable[]; presets: CriteriaPreset[]; method: Bilingual }
+export interface KnownSitePoint { name: string; chapter: number; chapter_name: string; lat: number; lon: number; cell: string | null; state: string; states: string[] }
+export interface CriteriaRun {
+  release: string; body: string; preset: string | null; custom: boolean; label: string
+  rule: { criteria: Criterion[] }; counts: { candidate: number; 'to check': number; excluded: number }
+  assessed: number; land_share: number; area_km2: number
+  cells: { id: string; lat: number; lon: number; states: string[]; preferred_met: number; confidence: string | null }[]
+  known_sites: { features: { body: string; feature: string }[]; recovered: number; with_data: number; unknown: number
+    false_alarms: number; negatives: number; source: string
+    chapters: { chapter: number; name: string; state: string; sites: KnownSitePoint[] }[] }
+}
+
 export const v3 = {
   releases: () => get<ReleaseIndex>('releases'),
   release: (id: string) => get<{ release: string; run: string; processing?: { step: string; cells?: number }[]; geology?: unknown; context?: unknown; grid: { tau: number[]; min_cells: number[]; nominal: { tau: number; min_cells: number } } }>(`releases/${encodeURIComponent(id)}`),
@@ -185,6 +216,13 @@ export const v3 = {
     const data = (await response.json().catch(() => ({}))) as Record<string, unknown>
     if (!response.ok) throw new Error(typeof data.error === 'string' ? data.error : `HTTP ${response.status}`)
     return data as unknown as QueryResult
+  },
+  criteria: (release?: string) => get<CriteriaCatalogue>(withRelease('criteria', release)),
+  runCriteria: async (body: { preset?: string; criteria?: Criterion[]; limit?: number }, release?: string) => {
+    const response = await fetch(`${apiUrl()}/api/v3/${withRelease('criteria', release)}`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+    const data = (await response.json().catch(() => ({}))) as Record<string, unknown>
+    if (!response.ok) throw new Error(typeof data.error === 'string' ? data.error : `HTTP ${response.status}`)
+    return data as unknown as CriteriaRun
   },
   cells: (scenario: string, env: string, bbox: [number, number, number, number], signal?: AbortSignal, release?: string) =>
     get<CellCollection>(`cells?${q({ scenario, env, bbox: bbox.map((v) => v.toFixed(4)).join(','), release })}`, signal),

@@ -2,6 +2,29 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-25 · T54: selection by use, multi-criteria, readable and editable (PR #42)
+- **David's request:** criteria easy to read and to change in the interface; a scientist tests a rule or an equation and sees the result. Then: apply the documented best practices (T53).
+- **Method** ([wiki/methods/criteria](docs/wiki/methods/criteria.md)):
+  - a preset per use, with what it imitates;
+  - required criteria are gates applied together (catalogue R66, NASA R68 and R69); a missing value makes a cell "to check", never excluded;
+  - preferred criteria only order the candidates, with no weights;
+  - every criterion shows why and its source;
+  - every rule is checked on the catalogue's known sites and on 18 random negatives.
+- **Interface:**
+  - a "Selection criteria" panel in every v3 mission, already run on the mission's use;
+  - thresholds, roles and variables editable; criteria added or removed; equations parsed by a small grammar, never run as code;
+  - candidates on the map and in a list; known sites recovered, with the criterion that excluded each one;
+  - an edited rule is labelled "custom, not validated".
+  - The single-environment selector is removed: the use chooses the environment. The layer selector only chooses what the map shows.
+  - The old single-criterion search of the free mission is replaced by the panel.
+- **Service and API:** `GET` and `POST /api/v3/criteria`, about 2 s over 7.4 M cells, with their own rate limit.
+- **Results on the current releases** (development check, not independent):
+  - volcanic Mars: 5 of 12 known sites, 0 false alarms, 1.5% of the land;
+  - ground ice: 4 of 6 (Mars) and 4 of 5 (Moon), 0 false alarms; the bare-ground gate removes the boreal false alarms of T53;
+  - lunar basalt: 2 of 9, global maps miss it;
+  - rover mobility and base terrain pass 35 to 39% of the land: gates only.
+- **Unfavourable finding:** with the 1 km relief required, the rover and base presets excluded every known test site (3 of 3, 8 of 8). That relief is now preferred: rover sites are chosen for terrain at the rover's scale (30 m windows, review D1).
+
 ## 2026-11-25 · T53: known analog sites against the literature criteria (PR #41)
 - **Question (David):** science already classifies analogs and defines criteria; do ours agree?
 - **Independent source:** the *Catalogue of Planetary Analogues* (Open University for ESA, 2012, R66).

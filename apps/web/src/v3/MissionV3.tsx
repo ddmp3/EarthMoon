@@ -18,7 +18,7 @@ function useV3Texts() {
 }
 
 /** v3 settings in the mission's control bar: lunar environment, coverage overlay, Data and method. */
-export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = false, onScenario, layer, onLayer }: {
+export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = false, onScenario, layer, onLayer, showEnv = true }: {
   layer: MapLayer
   onLayer: (l: MapLayer) => void
   v: V3State
@@ -27,6 +27,8 @@ export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = f
   onMethod: () => void
   scenarioPicker?: boolean
   onScenario?: (id: string) => void
+  /** T54: the use preset chooses the environment; the selector stays only where no preset drives it. */
+  showEnv?: boolean
 }) {
   const { t, lang } = useV3Texts()
   const s = v.scenario
@@ -42,7 +44,7 @@ export function V3Controls({ v, overlay, onOverlay, onMethod, scenarioPicker = f
           </select>
         </label>
       )}
-      {s && (
+      {s && showEnv && (
         <label className="field">
           <span>{t.environment}</span>
           <select id="v3-env" onChange={(e) => v.setEnv(e.target.value)} value={v.env}>

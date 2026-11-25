@@ -75,12 +75,19 @@ export function createApp(deps: AppDeps): express.Express {
       message: { error: "Too many requests, try again in a minute" } }),
   );
 
+  // Criteria (T54): a panel opens with one catalogue read and one run per use chosen; its own limit, out of the general one.
+  app.use(
+    "/api/v3/criteria",
+    rateLimit({ windowMs: 60_000, limit: deps.rateLimitPerMinute ?? 120, standardHeaders: "draft-7", legacyHeaders: false,
+      message: { error: "Too many requests, try again in a minute" } }),
+  );
+
   app.use(
     "/api",
     rateLimit({
       windowMs: 60_000,
       limit: deps.rateLimitPerMinute ?? 120,
-      skip: (req) => req.originalUrl.startsWith("/api/v3/cells"),
+      skip: (req) => req.originalUrl.startsWith("/api/v3/cells") || req.originalUrl.startsWith("/api/v3/criteria"),
       standardHeaders: "draft-7",
       legacyHeaders: false,
       message: { error: "Too many requests, try again in a minute" },

@@ -6,6 +6,17 @@ Read first: `CLAUDE.md`, `docs/plan/README.md`, [T53](T53-known-analogs.md) and 
 - "The selection criteria must be easy to identify and to change from the interface. I must be able to adjust the parameters easily, to align with the scientific needs."
 - "A scientist must be able to test their selection algorithm or their equation, to validate that their criteria are good, and see the results."
 
+## Decisions (David, 25/11/2026)
+- "Apply the best practices you documented. The criteria must be readable and the method clear and understandable."
+- **Applied from T53:**
+  - one preset per use, with what it imitates;
+  - required criteria are gates applied together (catalogue R66, NASA R68 and R69);
+  - preferred criteria only order the candidates, with no weights;
+  - every criterion carries its reason and its source;
+  - every rule is checked on the catalogue's known sites;
+  - the single-environment selector is removed from the missions.
+- Method page: [wiki/methods/criteria](../../wiki/methods/criteria.md).
+
 ## What the user gets
 1. **Every criterion is visible:** for each feature and use, the user sees:
    - its rule;

@@ -413,6 +413,64 @@ paths:
         "400": { $ref: "#/components/responses/BadRequest" }
         "413": { $ref: "#/components/responses/BadRequest" }
         "503": { $ref: "#/components/responses/NoRelease" }
+  /api/v3/criteria:
+    get:
+      tags: [V3]
+      summary: Multi-criteria selection - variables, presets and method (T54)
+      description: >-
+        The variables a rule may use in this release (label, unit, source, scale), the use-case presets of its body
+        with every criterion as readable text, why it is there and its source, and the method in plain words.
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      responses:
+        "200":
+          description: Variables, presets and method
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "503": { $ref: "#/components/responses/NoRelease" }
+    post:
+      tags: [V3]
+      summary: Run a preset, an edited rule or an equation over every cell, and check it on the known analog sites (T54)
+      description: >-
+        Required criteria are gates (all must be met: candidate; one failed: excluded; one unknown: to check, never
+        excluded). Preferred criteria only order the candidates by how many are met, with no weights. An equation is
+        parsed by a small grammar (numbers, variables, + - * /, comparisons, and, or, not, min, max, abs), never
+        evaluated as code. The answer gives the counts, the land share, the best candidate cells with the state of each
+        criterion, and the known sites of the ESA/Open University catalogue (R66) for the preset's features, with the
+        false alarms among 18 random negatives. A rule that differs from its preset is labelled "custom, not validated".
+        Body limited to 16 KB, 12 criteria, 500 characters per equation.
+      parameters: [{ $ref: "#/components/parameters/Release" }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                preset: { type: string, example: mars-volcanic-geology }
+                criteria:
+                  type: array
+                  maxItems: 12
+                  items:
+                    type: object
+                    required: [role]
+                    properties:
+                      variable: { type: string, example: permafrost }
+                      op: { type: string, enum: [">=", "<=", ">", "<"] }
+                      value: { type: number }
+                      expression: { type: string, maxLength: 500, example: "permafrost >= 0.5 and hidden_ground <= 0.5" }
+                      role: { type: string, enum: [required, preferred] }
+                limit: { type: integer, minimum: 1, maximum: 500, default: 200 }
+      responses:
+        "200":
+          description: Counts, land share, candidate cells and the check on the known sites
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/V3Doc" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "413": { $ref: "#/components/responses/BadRequest" }
+        "503": { $ref: "#/components/responses/NoRelease" }
   /api/v3/method:
     get:
       tags: [V3]

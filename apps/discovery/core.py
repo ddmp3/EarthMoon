@@ -36,6 +36,7 @@ class Release:
         head = json.loads((self.folder / "release.json").read_text(encoding="utf-8"))
         self.head = {"release": head["release"], "methodology_version": head["methodology_version"]}
         self.targets = list(targets)
+        self.body = head.get("body") or ("mars" if any(x.startswith("mars-") for x in targets) else "moon")
         import pyarrow as pa
         import pyarrow.compute as pc
         need = {"cell", "windows", "valid_unmasked", "masked_share", "cover_unknown", "confidence"}
@@ -218,3 +219,135 @@ def run_query(rel: Release, q: dict) -> dict:
             "matched": int(idx.size), "area_km2": round(idx.size * cell_area_km2(), 1),
             "cells": [{"id": str(rel.ids[i]), "lat": round(float(rel.lat[i]), 5), "lon": round(float(rel.lon[i]), 5),
                        "typicality": round(float(med[i]), 4), "confidence": _txt(conf[i])} for i in top]}
+
+
+# --- T54: multi-criteria selection (tools/discovery/criteria.py) ---------------------------------------------------
+
+CRITERIA_FIELDS = {"preset", "criteria", "limit"}
+METHOD = {
+    "en": ("A preset names a use and what it imitates. Required criteria are gates: a cell is a candidate only when it "
+           "meets every one. A cell that fails one is excluded; a cell where one is unknown (missing data) is to check, "
+           "never excluded. Preferred criteria never exclude: they order the candidates by how many are met, with no "
+           "weights. Every rule is checked on the known analog sites of the ESA/Open University catalogue and on 18 "
+           "random negatives."),
+    "fr": ("Un préréglage nomme un usage et ce qu'il imite. Les critères obligatoires sont des filtres : une cellule est "
+           "candidate seulement si elle les remplit tous. Une cellule qui en manque un est exclue ; une cellule où l'un "
+           "est inconnu (donnée manquante) est à vérifier, jamais exclue. Les critères souhaités n'excluent jamais : ils "
+           "ordonnent les candidates par nombre de critères remplis, sans poids. Chaque règle est vérifiée sur les sites "
+           "analogues connus du catalogue ESA/Open University et sur 18 points témoins tirés au hasard."),
+}
+
+
+def _crit_col(rel: Release):
+    return lambda name: rel._cols.get(name)
+
+
+def _rel_variables(rel: Release) -> list[dict]:
+    from discovery import criteria as cr
+    out = []
+    for v in cr.variables(rel.body, rel.targets):
+        if "group" in v:
+            ok = all(f"geo:{v['group']}:{s}" in rel._cols for s in ("no_map", "unresolved", *v["states"]))
+        else:
+            ok = v["column"] in rel._cols
+        if ok:
+            out.append({k: v[k] for k in ("id", "label", "unit", "range", "source", "scale", "help")})
+    return out
+
+
+def _with_text(crit: list[dict]) -> list[dict]:
+    from discovery import criteria as cr
+    return [{**c, "text": cr.as_text(c)} for c in crit]
+
+
+def criteria_catalogue(rel: Release) -> dict:
+    """Variables a rule may use in this release, the presets of its body (with every criterion as text), the method."""
+    from discovery import criteria as cr
+    names = {v["id"] for v in _rel_variables(rel)}
+    pres = []
+    for p in cr.presets():
+        if p["body"] != rel.body or not set(p["targets"]) <= set(rel.targets):
+            continue
+        if not all((c.get("variable") in names) or c.get("expression") for c in p["criteria"]):
+            continue
+        pres.append({**{k: p[k] for k in ("id", "body", "mission", "targets", "title", "use", "imitates", "known_sites")},
+                     "terrain": p.get("terrain"), "criteria": _with_text(p["criteria"])})
+    return {**rel.head, "body": rel.body, "variables": _rel_variables(rel), "presets": pres, "method": METHOD}
+
+
+_STATE = {1.0: "met", 0.0: "failed"}
+
+
+def _states(states: list[np.ndarray], i: int) -> list[str]:
+    return [_STATE.get(float(s[i]), "unknown") for s in states]
+
+
+def run_criteria(rel: Release, q: dict) -> dict:
+    """A preset, or an edited rule, over every cell of the release, then on the known sites and the negatives."""
+    from discovery import criteria as cr
+    if not isinstance(q, dict):
+        raise QueryError("the request must be a JSON object")
+    extra = set(q) - CRITERIA_FIELDS
+    if extra:
+        raise QueryError(f"unknown field: {sorted(extra)[0]}")
+    if "preset" not in q and "criteria" not in q:
+        raise QueryError("give a preset or criteria")
+    preset = None
+    if "preset" in q:
+        preset = next((p for p in cr.presets() if p["id"] == q["preset"]), None)
+        if preset is None:
+            raise QueryError(f"unknown preset: {str(q['preset'])[:40]}")
+        if preset["body"] != rel.body:
+            raise QueryError(f"preset {preset['id']} is not for this body ({rel.body})")
+    limit = q.get("limit", 200)
+    if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= MAX_RETURNED:
+        raise QueryError(f"limit must be an integer from 1 to {MAX_RETURNED}")
+    crit = q["criteria"] if "criteria" in q else preset["criteria"]
+    names = {v["id"] for v in _rel_variables(rel)}
+    try:
+        cr.check_rule({"criteria": crit}, names)
+        out = cr.select(_crit_col(rel), rel.body, rel.targets, {"criteria": crit})
+    except cr.CriteriaError as e:
+        raise QueryError(str(e)) from e
+    sig = lambda cs: [(cr.as_text(c), c["role"]) for c in cs]  # noqa: E731
+    custom = preset is None or sig(crit) != sig(preset["criteria"])
+    keys = ("variable", "op", "value", "expression", "role", "why", "source", "source_text")
+    rule_out = [{k: c[k] for k in keys if k in c} for c in crit]
+    cells = [{"id": str(rel.ids[i]), "lat": round(float(rel.lat[i]), 5), "lon": round(float(rel.lon[i]), 5),
+              "states": _states(out["states"], i), "preferred_met": int(out["preferred_met"][i]),
+              "confidence": _txt(rel.col("confidence")[i])} for i in out["order"][:limit]]
+    known = _known_sites(rel, out, preset["known_sites"]["features"] if preset else [])
+    return {**rel.head, "body": rel.body, "preset": preset["id"] if preset else None, "custom": custom,
+            "label": "custom, not validated" if custom else "preset",
+            "rule": {"criteria": _with_text(rule_out)}, "counts": out["counts"], "assessed": int(rel.ids.size),
+            "land_share": round(out["counts"]["candidate"] / max(rel.ids.size, 1), 5),
+            "area_km2": round(out["counts"]["candidate"] * cell_area_km2(), 1), "cells": cells, "known_sites": known}
+
+
+def _cell_index(rel: Release, lat: float, lon: float) -> int | None:
+    cid = int(np.asarray(ang2pix(NSIDE, np.array([float(lat)]), np.array([float(lon)]))).ravel()[0])
+    k = int(np.searchsorted(rel.ids, cid))
+    return k if k < rel.ids.size and rel.ids[k] == cid else None
+
+
+def _known_sites(rel: Release, out: dict, features: list[dict]) -> dict:
+    from discovery import criteria as cr
+    sites, chapters, negatives = cr.known_points(features)
+
+    def state(p):
+        k = _cell_index(rel, p["lat"], p["lon"])
+        if k is None:
+            return "to check", None, ["unknown"] * len(out["states"])
+        return str(out["state"][k]), str(rel.ids[k]), _states(out["states"], k)
+    pts = []
+    for s in sites:
+        st, cell, per = state(s)
+        pts.append({"name": s["name"], "chapter": s["chapter"], "chapter_name": s["chapter_name"], "lat": round(s["lat"], 5),
+                    "lon": round(s["lon"], 5), "cell": cell, "state": st, "states": per})
+    neg = [state(n)[0] for n in negatives]
+    chk = cr.site_check(pts, neg, chapters)
+    return {"features": features, "recovered": chk["recovered"], "with_data": chk["with_data"], "unknown": chk["unknown"],
+            "false_alarms": chk["false_alarms"], "negatives": chk["negatives"],
+            "chapters": [{"chapter": ch, "name": v["sites"][0]["chapter_name"], "state": v["state"], "sites": v["sites"]}
+                         for ch, v in chk["chapters"].items()],
+            "source": "The Catalogue of Planetary Analogues (Open University for ESA, 2012), R66"}

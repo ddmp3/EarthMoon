@@ -13,7 +13,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import Body, FastAPI, HTTPException, Query
 
-from core import QueryError, Release, cells_at, cells_in_bbox, run_query
+from core import QueryError, Release, cells_at, cells_in_bbox, criteria_catalogue, run_criteria, run_query
 
 ROOT = Path(os.environ.get("RELEASES_DIR", "/data/releases"))
 _RELEASES: dict[str, Release] = {}
@@ -88,5 +88,19 @@ def points(body: dict = Body(...), release: str | None = Query(None, max_length=
         if not isinstance(envs, list) or not envs:
             raise QueryError("envs must be a non-empty list")
         return cells_at(_release(release), body.get("points"), envs)
+    except QueryError as e:
+        raise HTTPException(400, str(e)) from e
+
+
+@app.get("/criteria")
+def criteria(release: str | None = Query(None, max_length=20)) -> dict:
+    """Variables, presets and method of the multi-criteria selection (T54)."""
+    return criteria_catalogue(_release(release))
+
+
+@app.post("/criteria")
+def criteria_run(q: dict = Body(...), release: str | None = Query(None, max_length=20)) -> dict:
+    try:
+        return run_criteria(_release(release), q)
     except QueryError as e:
         raise HTTPException(400, str(e)) from e

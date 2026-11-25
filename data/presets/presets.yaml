@@ -1,0 +1,224 @@
+# Use-case presets (task T54). Each preset is a use, what it imitates, and its criteria, each with why and a source.
+# Method (docs/wiki/methods/criteria.md): required criteria are gates applied together; preferred criteria never
+# exclude, they order the candidates by how many are met (no weights). Missing data makes a cell "to check", never
+# excluded. Every preset is checked on the known sites the ESA/Open University catalogue (R66) lists for its features.
+#
+# Thresholds: those tested in T53 keep their T53 value (volcanic rock present, permafrost probability 0.5). The
+# vegetation gate (hidden ground at most half) is the zone rule of protocol v3; T53 showed it is needed (ground ice
+# passed 2 boreal negatives). These checks are a development check on the same catalogue, not an independent one.
+# `extra` criteria are appended to `criteria` (the polar presets share the ice criteria and differ by relief target).
+sources:
+  R28: {en: "Foucher et al. 2021: an analog is defined by its use; compare the specific properties the use needs",
+        fr: "Foucher et al. 2021 : un analogue se définit par son usage ; comparer les propriétés précises dont l'usage a besoin"}
+  R29: {en: "Hughes et al. 2019: basaltic terrains of Idaho and Hawai'i as analogs for Mars geology",
+        fr: "Hughes et al. 2019 : terrains basaltiques de l'Idaho et d'Hawaï, analogues de la géologie de Mars"}
+  R32: {en: "Obu et al. 2019: Northern Hemisphere permafrost map", fr: "Obu et al. 2019 : carte du pergélisol de l'hémisphère nord"}
+  R65: {en: "Preston and Dartnell 2014: present-day Mars analogs are among the driest places on Earth",
+        fr: "Preston et Dartnell 2014 : les analogues du Mars actuel sont parmi les lieux les plus secs de la Terre"}
+  R66: {en: "ESA/Open University Catalogue of Planetary Analogues: Earth sites per lunar and Martian feature",
+        fr: "Catalogue ESA/Open University des analogues planétaires : sites terrestres par trait lunaire et martien"}
+  R68: {en: "Sanders et al. 2011: mission applicability (terrain, rocks, regolith), access, infrastructure",
+        fr: "Sanders et al. 2011 : pertinence pour la mission (terrain, roches, régolithe), accès, infrastructure"}
+  R69: {en: "Morse et al. 2024: topography, access, vegetation cover, signal, geologic diversity",
+        fr: "Morse et al. 2024 : relief, accès, couverture végétale, réseau, diversité géologique"}
+  E2: {en: "Expert decision E2: base footprint slope at most 10°", fr: "Décision d'expert E2 : pente d'emprise de base d'au plus 10°"}
+  LRV: {en: "Apollo Lunar Roving Vehicle: 20 to 23° in favourable conditions (scenario B)",
+        fr: "Rover lunaire Apollo : 20 à 23° dans de bonnes conditions (scénario B)"}
+  v3: {en: "Our relief comparison (protocol v3, mars-v3): slope distribution against the planetary profile",
+       fr: "Notre comparaison de relief (protocole v3, mars-v3) : distribution des pentes contre le profil planétaire"}
+
+presets:
+  # ---------------------------------------------------------------- Mars
+  - id: mars-volcanic-geology
+    body: mars
+    mission: mars
+    terrain: mars-volcanic-plains
+    targets: [mars-volcanic-plains]
+    title: {en: "Volcanic geology of Mars", fr: "Géologie volcanique de Mars"}
+    use: {en: "Train field geology and test instruments on volcanic rock like the Martian plains and volcanoes.",
+          fr: "Former à la géologie de terrain et tester des instruments sur des roches volcaniques comme celles des plaines et volcans martiens."}
+    imitates: {en: "the volcanic units of the Tanaka et al. 2014 map", fr: "les unités volcaniques de la carte de Tanaka et al. 2014"}
+    criteria:
+      - {variable: volcanic_rock, op: ">", value: 0, role: required, source: R66,
+         why: {en: "The feature first: volcanic rock is mapped in the cell.", fr: "Le trait d'abord : une roche volcanique est cartographiée dans la cellule."}}
+      - {variable: hidden_ground, op: "<=", value: 0.5, role: required, source: R69,
+         why: {en: "The rock must be visible: at most half of the ground under vegetation, crops, buildings or water.",
+               fr: "La roche doit être visible : au plus la moitié du sol sous végétation, cultures, bâti ou eau."}}
+      - {variable: basalt, op: ">", value: 0, role: preferred, source: R29,
+         why: {en: "Basalt itself, the rock of the Martian plains (global maps often name only a broader class).",
+               fr: "Le basalte lui-même, roche des plaines martiennes (les cartes mondiales ne donnent souvent qu'une classe plus large)."}}
+      - {variable: aridity, op: "<", value: 0.2, role: preferred, source: R65,
+         why: {en: "Dry ground, like present-day Mars analogs.", fr: "Sol sec, comme les analogues du Mars actuel."}}
+      - {variable: relief_volcanic_plains, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the plains at 11.6 km: useful for traverses, not for the rock itself.",
+               fr: "Relief comme les plaines à 11,6 km : utile pour les traversées, pas pour la roche elle-même."}}
+    known_sites:
+      features: [{body: mars, feature: volcanic-structure}, {body: mars, feature: lava-flows}, {body: mars, feature: basalt},
+                 {body: mars, feature: pyroclastic-deposits}]
+
+  - id: mars-ground-ice
+    body: mars
+    mission: mars
+    terrain: mars-ice-rich-midlatitudes
+    targets: [mars-ice-rich-midlatitudes]
+    title: {en: "Ground ice of the Martian mid-latitudes", fr: "Glace du sol des moyennes latitudes martiennes"}
+    use: {en: "Study ice-related landforms and test drilling or radar in frozen ground.",
+          fr: "Étudier les formes liées à la glace et tester forage ou radar dans un sol gelé."}
+    imitates: {en: "the ice-rich mid-latitudes (SWIM)", fr: "les moyennes latitudes riches en glace (SWIM)"}
+    criteria: &ice_criteria
+      - {variable: permafrost, op: ">=", value: 0.5, role: required, source: R32,
+         why: {en: "The feature first: frozen ground is likely (probability at least 0.5).",
+               fr: "Le trait d'abord : un sol gelé est probable (probabilité d'au moins 0,5)."}}
+      - {variable: hidden_ground, op: "<=", value: 0.5, role: required, source: R69,
+         why: {en: "Bare ground: boreal forest and wetland are frozen too, but are not analogs.",
+               fr: "Sol nu : forêt boréale et tourbières sont gelées aussi, mais ne sont pas des analogues."}}
+      - {variable: aridity, op: "<", value: 0.2, role: preferred, source: R65,
+         why: {en: "Cold and dry, like the polar deserts used as Mars analogs.", fr: "Froid et sec, comme les déserts polaires utilisés comme analogues de Mars."}}
+    extra:
+      - {variable: relief_ice_rich_midlatitudes, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the ice-rich mid-latitudes at 11.6 km.", fr: "Relief comme les moyennes latitudes riches en glace à 11,6 km."}}
+    known_sites:
+      features: [{body: mars, feature: ice-polygon-terrain}, {body: mars, feature: icy-flows-glacial}]
+
+  - id: mars-north-polar-ice
+    body: mars
+    mission: mars
+    terrain: mars-north-polar
+    targets: [mars-north-polar]
+    title: {en: "North polar terrain of Mars", fr: "Terrains polaires nord de Mars"}
+    use: {en: "Rehearse work on frozen polar ground.", fr: "Répéter le travail sur un sol polaire gelé."}
+    imitates: {en: "the north polar terrain", fr: "les terrains polaires nord"}
+    criteria: *ice_criteria
+    extra:
+      - {variable: relief_north_polar, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the north polar terrain at 2.9 km.", fr: "Relief comme les terrains polaires nord à 2,9 km."}}
+    known_sites:
+      features: [{body: mars, feature: ice-polygon-terrain}, {body: mars, feature: icy-flows-glacial}]
+
+  - id: mars-south-polar-ice
+    body: mars
+    mission: mars
+    terrain: mars-south-polar
+    targets: [mars-south-polar]
+    title: {en: "South polar terrain of Mars", fr: "Terrains polaires sud de Mars"}
+    use: {en: "Rehearse work on frozen polar ground.", fr: "Répéter le travail sur un sol polaire gelé."}
+    imitates: {en: "the south polar terrain", fr: "les terrains polaires sud"}
+    criteria: *ice_criteria
+    extra:
+      - {variable: relief_south_polar, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the south polar terrain at 2.9 km.", fr: "Relief comme les terrains polaires sud à 2,9 km."}}
+    known_sites:
+      features: [{body: mars, feature: ice-polygon-terrain}, {body: mars, feature: icy-flows-glacial}]
+
+  # ---------------------------------------------------------------- Moon
+  - id: moon-rover-mobility
+    body: moon
+    mission: robotics
+    targets: [moon-south-polar-cap-v2]
+    title: {en: "Rover mobility on lunar polar relief", fr: "Mobilité de rover sur un relief polaire lunaire"}
+    use: {en: "Test rover traverses on slopes like the lunar south polar region, on bare ground.",
+          fr: "Tester des traversées de rover sur des pentes comme la région polaire sud lunaire, sur sol nu."}
+    imitates: {en: "the slopes of the lunar south polar region (LOLA)", fr: "les pentes de la région polaire sud lunaire (LOLA)"}
+    # Changed after the development check of 25/11/2026: with the 1 km relief required, the 3 rover test sites of the
+    # catalogue (Black Point, Cinder Lake, Kilauea) were all excluded by that criterion alone. Test sites are chosen for
+    # terrain at the scale of the rover (R69: slope and obstacles; R28: obstacle height and size), which needs 30 m
+    # windows (review, D1). Until then the 1 km relief is preferred, not required.
+    criteria:
+      - {variable: climb_lrv_ok, op: ">=", value: 1, role: required, source: LRV,
+         why: {en: "Drivable: half of the window at or below the Apollo rover's 20°.",
+               fr: "Praticable : la moitié de la fenêtre à 20° ou moins, limite du rover Apollo."}}
+      - {variable: hidden_ground, op: "<=", value: 0.5, role: required, source: R69,
+         why: {en: "Bare ground: vegetation cover is a selection criterion of rover test sites.",
+               fr: "Sol nu : la couverture végétale est un critère de choix des sites d'essai de rovers."}}
+      - {variable: basalt_or_related, op: ">", value: 0, role: preferred, source: R68,
+         why: {en: "Volcanic regolith like the lunar test sites of Arizona and Hawai'i.",
+               fr: "Régolithe volcanique comme les sites d'essai lunaires d'Arizona et d'Hawaï."}}
+      - {variable: aridity, op: "<", value: 0.2, role: preferred, source: R65,
+         why: {en: "Dry ground.", fr: "Sol sec."}}
+      - {variable: relief_south_polar_cap_v2, op: ">=", value: 0.5, role: preferred, source: R28,
+         why: {en: "Slopes like the south polar region at 1 km. Preferred only: rover test sites are chosen for terrain at the rover's scale, which our 1 km windows do not see.",
+               fr: "Pentes comme la région polaire sud à 1 km. Seulement souhaité : les sites d'essai de rovers sont choisis pour le terrain à l'échelle du rover, que nos fenêtres de 1 km ne voient pas."}}
+    known_sites:
+      features: [{body: moon, feature: regolith}]
+
+  - id: moon-base-terrain
+    body: moon
+    mission: colony
+    targets: [moon-polar-lit-highlands]
+    title: {en: "Terrain of a polar base", fr: "Terrain d'une base polaire"}
+    use: {en: "Rehearse site characterisation and building on terrain like the lit polar highlands.",
+          fr: "Répéter la caractérisation de site et la construction sur un terrain comme les hautes terres polaires éclairées."}
+    imitates: {en: "the lit polar highlands (LOLA)", fr: "les hautes terres polaires éclairées (LOLA)"}
+    # Changed after the development check of 25/11/2026: with the 1 km relief required, all 8 impact sites of the
+    # catalogue were excluded by that criterion alone (same scale reason as moon-rover-mobility). It is preferred now.
+    criteria:
+      - {variable: base_slope_ok, op: ">=", value: 1, role: required, source: E2,
+         why: {en: "A base footprint is possible: slope at most 10°.", fr: "Une emprise de base est possible : pente d'au plus 10°."}}
+      - {variable: hidden_ground, op: "<=", value: 0.5, role: required, source: R69,
+         why: {en: "Bare ground.", fr: "Sol nu."}}
+      - {variable: anorthosite_or_related, op: ">", value: 0, role: preferred, source: R66,
+         why: {en: "Highland rock: anorthosite or related, the material of the lunar highlands.",
+               fr: "Roche des hautes terres : anorthosite ou apparentée, matériau des hautes terres lunaires."}}
+      - {variable: permafrost, op: ">=", value: 0.5, role: preferred, source: R32,
+         why: {en: "Cold, frozen ground for construction tests in the cold.", fr: "Sol froid et gelé pour des essais de construction au froid."}}
+      - {variable: relief_polar_lit_highlands, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the lit highlands at 1 km.", fr: "Relief comme les hautes terres éclairées à 1 km."}}
+    known_sites:
+      features: [{body: moon, feature: impact-crater}, {body: moon, feature: impact-breccia}]
+      note: {en: "the catalogue's Earth sites for the impact terrain of the lunar highlands", fr: "les sites terrestres du catalogue pour le terrain d'impact des hautes terres lunaires"}
+
+  - id: moon-polar-ice
+    body: moon
+    mission: colony
+    targets: [moon-psr]
+    title: {en: "Ice in lunar cold traps", fr: "Glace des pièges froids lunaires"}
+    use: {en: "Rehearse prospecting and sampling of ice-bearing ground.", fr: "Répéter la prospection et l'échantillonnage d'un sol contenant de la glace."}
+    imitates: {en: "the ice of permanently shadowed craters", fr: "la glace des cratères en ombre permanente"}
+    criteria:
+      - {variable: permafrost, op: ">=", value: 0.5, role: required, source: R32,
+         why: {en: "The feature first: frozen ground is likely.", fr: "Le trait d'abord : un sol gelé est probable."}}
+      - {variable: hidden_ground, op: "<=", value: 0.5, role: required, source: R69,
+         why: {en: "Bare ground, not boreal forest.", fr: "Sol nu, pas de forêt boréale."}}
+      - {variable: aridity, op: "<", value: 0.2, role: preferred, source: R65,
+         why: {en: "Cold and dry.", fr: "Froid et sec."}}
+      - {variable: relief_psr, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the shadowed craters at 1 km.", fr: "Relief comme les cratères en ombre à 1 km."}}
+    known_sites:
+      features: [{body: moon, feature: water-ice}]
+
+  - id: moon-mare-basalt
+    body: moon
+    mission: custom
+    targets: [moon-mare-plains]
+    title: {en: "Basalt of the lunar maria", fr: "Basalte des mers lunaires"}
+    use: {en: "Train geology and test instruments on basalt like the lunar maria.",
+          fr: "Former à la géologie et tester des instruments sur du basalte comme celui des mers lunaires."}
+    imitates: {en: "the mare basalts", fr: "les basaltes des mers"}
+    criteria:
+      - {variable: basalt_or_related, op: ">", value: 0, role: required, source: R66,
+         why: {en: "The feature first: basalt or related rock is mapped in the cell.", fr: "Le trait d'abord : basalte ou roche apparentée cartographié dans la cellule."}}
+      - {variable: hidden_ground, op: "<=", value: 0.5, role: required, source: R69,
+         why: {en: "The rock must be visible.", fr: "La roche doit être visible."}}
+      - {variable: aridity, op: "<", value: 0.2, role: preferred, source: R65,
+         why: {en: "Dry ground.", fr: "Sol sec."}}
+      - {variable: relief_mare_plains, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the mare plains at 1 km.", fr: "Relief comme les plaines de mers à 1 km."}}
+    known_sites:
+      features: [{body: moon, feature: basalt}, {body: moon, feature: lava-flows}]
+
+  - id: moon-pits
+    body: moon
+    mission: colony
+    targets: [moon-pits]
+    title: {en: "Lava pits and tubes", fr: "Fosses et tubes de lave"}
+    use: {en: "Rehearse exploring pits and lava tubes, possible shelters.", fr: "Répéter l'exploration de fosses et tubes de lave, abris possibles."}
+    imitates: {en: "the lunar pits (LROC)", fr: "les fosses lunaires (LROC)"}
+    criteria:
+      - {variable: basalt_or_related, op: ">", value: 0, role: required, source: R66,
+         why: {en: "Lava tubes form in basaltic lava.", fr: "Les tubes de lave se forment dans la lave basaltique."}}
+      - {variable: hidden_ground, op: "<=", value: 0.5, role: required, source: R69,
+         why: {en: "Bare ground.", fr: "Sol nu."}}
+      - {variable: relief_pits, op: ">=", value: 0.5, role: preferred, source: v3,
+         why: {en: "Relief like the context of lunar pits.", fr: "Relief comme le contexte des fosses lunaires."}}
+    known_sites:
+      features: [{body: moon, feature: collapse-pits}]

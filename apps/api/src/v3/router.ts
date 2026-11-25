@@ -279,9 +279,27 @@ export function v3Router(
     }),
   );
 
+  r.get(
+    "/criteria",
+    handle(async (_req, release) => forward(`/criteria?${new URLSearchParams({ release }).toString()}`)),
+  );
+
+  r.post(
+    "/criteria",
+    handle(async (req, release) => {
+      if (Number(req.headers["content-length"] ?? 0) > QUERY_MAX_BYTES) throw new TooLarge(`The criteria body is limited to ${QUERY_MAX_BYTES / 1024} KB`);
+      const body = req.body as Record<string, unknown> | undefined;
+      if (!body || typeof body !== "object" || Array.isArray(body)) throw new BadRequest("The criteria request must be a JSON object");
+      const unknown = Object.keys(body).filter((k) => !CRITERIA_FIELDS.includes(k));
+      if (unknown.length > 0) throw new BadRequest(`Unknown field: ${unknown[0].slice(0, 40)}`);
+      return forward(`/criteria?${new URLSearchParams({ release }).toString()}`, { body });
+    }),
+  );
+
   return r;
 }
 
+const CRITERIA_FIELDS = ["preset", "criteria", "limit"];
 const QUERY_TIMEOUT_MS = 30_000;
 const QUERY_MAX_BYTES = 16 * 1024;
 const QUERY_FIELDS = ["scenario", "env", "min_typicality", "min_confidence", "requirements_met", "bbox", "limit"];
