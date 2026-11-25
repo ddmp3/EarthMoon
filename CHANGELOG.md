@@ -2,6 +2,21 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-25 · T53: known analog sites against the literature criteria (PR #41)
+- **Question (David):** science already classifies analogs and defines criteria; do ours agree?
+- **Independent source:** the *Catalogue of Planetary Analogues* (Open University for ESA, 2012, R66).
+  - 15 lunar and 31 Martian features, each with its Earth sites;
+  - 68 points in 27 chapters; 6 entries excluded with their reason.
+  - Sites, rules and pass thresholds frozen before any value (commit d075808).
+- **Literature criteria** (R28, R65 to R69): a site is an analog for one feature and one use (material or landform first), then cost, access, permits, infrastructure, vegetation.
+- **Results** ([report](docs/wiki/validation/known-analogs.md)):
+  - the volcanic class recovers 4 of 4 (Moon) and 5 of 6 (Mars) volcanic chapters, 0 false alarms, 2.9% of the land;
+  - ground ice recovers 4 of 4, but 2 of 18 negatives pass (boreal forest, wetland): a gate that needs vegetation;
+  - basalt recovers 2 of 7 and 2 of 8: global maps call Etna "andesite"; sulphate 1 of 6, iron oxide 0 of 5;
+  - 29 of 46 features have no Earth layer (impact structures, regolith, landforms, hydrothermal).
+- **Our current protocol at the same sites, on slope:** 0 of 7 impact craters, 0 of 5 volcanoes, 1 of 7 Martian basalt chapters recognised. The lunar shadowed-crater target "recognises" 5 of 5 ice chapters for their relief, not their ice.
+- **Also:** the reference check reads data DOIs at DataCite (R64 was reported "not found" by Crossref): 62 of 62 DOIs verified. Data backlog D10 partly done, D12 to D14 added.
+
 ## 2026-11-25 · T48c: Mars volcanic plains, protocol mars-v3, run-mars-002 (PR #40)
 - **Data:** the Tanaka et al. 2014 geologic map of Mars (R5), downloaded by David (USGS refuses automated download).
 - **Target:** the 11 units the map describes as volcanic, MOLA windows of 11.6 km with at least half of their pixels observed.

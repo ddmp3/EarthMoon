@@ -1,0 +1,123 @@
+# Criteria of task T53. Frozen before any value was read at the catalogue sites.
+#
+# 1. What the literature says makes a site an analog (texts read on 25/11/2026; quotes verbatim).
+literature:
+  - id: foucher2021
+    ref: "Foucher, F. et al. (2021). Definition and use of functional analogues in planetary exploration. Planetary and Space Science 197, 105162. doi:10.1016/j.pss.2021.105162 (R28)"
+    read_at: https://kar.kent.ac.uk/109579/
+    says:
+      - "it is, thus, important to focus on the specific properties that need to be imitated and to consider analogue properties rather than analogue sites or samples alone"
+      - "Functional analogues are defined as terrestrial sites, materials or objects exhibiting general properties more or less similar to those anticipated on the targeted extraterrestrial body, but having specific analogue properties that are highly or perfectly relevant for a given use"
+      - "Sites used for their planetary analogy; Sites used for analogies in their mechanical and chemical processes; Sites used for their petrological and mineralogical analogy; Analogue sites of astrobiological interest; Engineering analogue sites"
+      - "in a rover ground clearance test, the composition of obstacles is not directly relevant, only their height and size"
+  - id: cafe2012
+    ref: "Preston, L., Grady, M. and Barber, S. (2012). The Catalogue of Planetary Analogues; and CAFE Executive Summary Report. The Open University for ESA, contract 4000104716/11/NL/AF"
+    read_at: https://esamultimedia.esa.int/docs/gsp/C4000104716ExS.pdf
+    says:
+      - "the number one priority for choosing an analogue site [...] is scientific merit and relevance for the Moon and/or Mars. Once this criterion has been satisfied, the next consideration is the cost of the mission, followed by the accessibility of the site in terms of permits and physical access, and then the ability of the site to house the infrastructure needed"
+      - "The sites shall contain more than one geologic unit."
+      - "Planetary analogue sites have been assigned for each of the features identified"
+  - id: lee2008
+    ref: "Lee, P. et al. (2008). Terrestrial analogs for lunar science and exploration: a systematic approach. Joint Annual Meeting of LEAG-ICEUM-SRR, abstract 4126"
+    read_at: https://publications.ri.cmu.edu/storage/publications/pub_files/pub4/lee_pascal_2008_1/lee_pascal_2008_1.pdf
+    says:
+      - "Key factors to be considered in the evaluation and selection of any analog are: 1) aspect(s) of interest, 2) application(s), 3) function(s), 4) fidelity, 5) cost-effectiveness"
+      - "no place on Earth offers a high fidelity analog to all aspects of the lunar surface environment"
+      - "Ease of access (which includes the logistics of transportation, the preexistence of local infrastructure, land access permits required, etc.) is critical."
+  - id: sanders2011
+    ref: "Sanders, G. B., Larson, W. E., Picard, M. and Hamilton, J. C. (2011). Use of Hawaii analog sites for lunar science and in-situ resource utilization. EPSC-DPS Joint Meeting 2011, EPSC Abstracts 6"
+    read_at: https://ntrs.nasa.gov/api/citations/20110015560/downloads/20110015560.pdf
+    says:
+      - "1) mission applicability (terrain, rock distribution, mineral, chemical, and physical attributes of the surface and subsurface soils/regolith), 2) ease of access to the site for personnel and test equipment, and 3) availability of local infrastructure"
+  - id: morse2024
+    ref: "Morse, Z. R. et al. (2024). The Augmented Reality Data Visualization Analog Research Campaign (ARDVARC) overview: field site selection and initial analysis. 55th LPSC, abstract 2463"
+    read_at: https://www.hou.usra.edu/meetings/lpsc2024/pdf/2463.pdf
+    says:
+      - "five criteria: local topography (including slope and obstacles for rover traverses); logistical accessibility; vegetation cover; cellular signal (for communication and teleoperation of the rover); and local geologic diversity"
+  - id: preston2014
+    ref: "Preston, L. J. and Dartnell, L. R. (2014). Planetary habitability: lessons learned from terrestrial analogues. International Journal of Astrobiology 13, 81-98. doi:10.1017/S1473550413000396"
+    read_at: https://www.cambridge.org/core/journals/international-journal-of-astrobiology/article/planetary-habitability-lessons-learned-from-terrestrial-analogues/244C9EB88B74D6905133DD2228DD3112
+    says:
+      - "no analogue site is a perfect representation of another planet or moon and there are no clearly defined and followed criteria with which to evaluate them"
+      - 'Atacama Desert: "One of the driest regions on Earth, <2 mm precipitation per year" (Table 1, Present Mars)'
+      - 'The Antarctic Dry Valleys: "One of the coldest and driest regions on Earth" (Table 1, Present Mars)'
+      - 'Ibn Battuta Centre Sites, Morocco: "Arid desert environment, flood basalts and carbonates present" (Table 1)'
+
+# 2. Earth rule per catalogue feature, with its data. Lithology rules read the Macrostrat map unit at the centre and
+# 8 points at 1.6 km around each site point (cached carto tiles, zoom 8; geology.py). The names are Macrostrat's own
+# lithology names and types (data/geology/macrostrat-lithologies.json); no hand-made rock list.
+#   found:   a unit at one or more of the 9 points lists the rock (anywhere in its lithology text)
+#   strict:  a unit at one or more of the 9 points lists the rock first (the E17 rule of geology.py)
+#   absent:  units are mapped at the points and none lists the rock
+#   unknown: no unit at any point, or the units name only generic classes (igneous, volcanic, mafic, sedimentary...)
+lithology:
+  basalt: {names: [basalt], features: {moon: [basalt], mars: [basalt]}}
+  anorthosite: {names: [anorthosite], features: {moon: [anorthosite]}}
+  volcanic: {macrostrat_type: volcanic, features: {moon: [volcanic-structure, lava-flows, pyroclastic-deposits],
+             mars: [volcanic-structure, lava-flows, pyroclastic-deposits]},
+             note: "any lithology Macrostrat types as volcanic, the generic word 'volcanic' included"}
+  sulphate: {names: [gypsum, anhydrite], features: {mars: [sulphate]},
+             note: "'evaporite' alone is reported, not counted: it may be halite"}
+  carbonate: {macrostrat_type: carbonate, features: {mars: [carbonate]}}
+  silica: {names: [chert, flint, novaculite, radiolarite, porcellanite, siliceous ooze, diatomite], features: {mars: [silica]}}
+  iron-oxide: {names: [ironstone, iron formation, laterite], features: {mars: [iron-oxide]}}
+  phyllosilicate: {names: [clay, claystone, mudstone, shale, argillite, bentonite], features: {mars: [phyllosilicate]},
+                   proxy: "clay-rich rocks; a map unit does not state its clay minerals"}
+
+# Context rules: the values of the run files at the 5 km cell of the point (run-002 context.parquet).
+context:
+  ground-ice:
+    rule: "permafrost probability >= 0.5 (Obu et al. 2019, R32)"
+    features: {moon: [water-ice], mars: [ice-polygon-terrain, icy-flows-glacial]}
+    unknown: "south of the map (Northern Hemisphere only) or no value"
+  aridity:
+    rule: "aridity index < 0.2: arid or hyper-arid (UNEP classes, context.py)"
+    features: {mars: [present-day-aridity]}
+    positives_from: preston2014
+    chapters: [1, 2, 11]
+    unknown: "no value (the aridity map does not cover Antarctica: not verified, read from the value)"
+
+# Features with no Earth layer in the project. Each needs a mapped inventory or a finer measurement.
+no_data:
+  impact-structures: {features: {moon: [impact-crater, ejecta, impact-melt, impact-breccia],
+                      mars: [impact-crater, impact-ejecta, impact-melt-sheets, impact-hydrothermal-deposits, impact-gullies, crater-lakes]},
+                      needs: "a catalogue of confirmed impact structures (candidate: Earth Impact Database; licence and download not verified)"}
+  regolith-and-soils: {features: {moon: [regolith, granular-flows], mars: [wind-soils-regolith]},
+                       needs: "surface material: grain size and cohesion (candidate: SoilGrids 2.0, R34, as classes; not ingested)"}
+  volcanic-landforms: {features: {moon: [collapse-pits, wrinkle-ridges, rilles-channels], mars: [lava-tubes, collapse-pits, wrinkle-ridges]},
+                       needs: "landform inventories (caves, lava tubes) or relief below 30 m; none ingested"}
+  fluvial-and-aeolian-landforms: {features: {mars: [fluvial-lakes, fluvial-channels, deltas-fans, fluvial-gullies, dunes, yardangs, transverse-aeolian-ridges, dust-devils, mud-volcanoes]},
+                                  needs: "landform maps (dune fields, lakes, channels); candidates not verified"}
+  hydrothermal: {features: {mars: [hydrothermal-deposits]}, needs: "an inventory of hot springs and sinters; not verified"}
+
+# 3. Our current protocol at the same sites: the target each feature is closest to (fixed now), read in the run files.
+current_protocol:
+  moon:
+    run: run-002
+    targets:
+      basalt: moon-mare-plains
+      lava-flows: moon-mare-plains
+      wrinkle-ridges: moon-mare-plains
+      rilles-channels: moon-mare-plains
+      collapse-pits: moon-pits
+      anorthosite: moon-polar-lit-highlands
+      impact-crater: moon-polar-lit-highlands
+      impact-breccia: moon-polar-lit-highlands
+      water-ice: moon-psr
+  mars:
+    run: run-mars-002
+    targets:
+      basalt: mars-volcanic-plains
+      lava-flows: mars-volcanic-plains
+      volcanic-structure: mars-volcanic-plains
+      wrinkle-ridges: mars-volcanic-plains
+      ice-polygon-terrain: mars-ice-rich-midlatitudes
+      icy-flows-glacial: mars-ice-rich-midlatitudes
+  recognised: "cell median typicality >= 0.5 (the zone rule, tau 0.5)"
+  locate: "the 5 km cell holding the point (HEALPix, discover.global_cell)"
+
+# 4. Pass rules (task T53).
+pass_rules:
+  recovery: "found at >= 75% of the chapters that list the feature and have data; fewer than 3 such chapters: not testable"
+  false_alarms: "at most 1 of the 18 random negatives (data/validation/negatives.yaml)"
+  base_rate: "share of land cells where the strict rule holds, from existing run files only; above 10%: a gate, not a discriminator"

@@ -1,0 +1,152 @@
+# Extract of The Catalogue of Planetary Analogues (task T53). Frozen before any value was read at these sites.
+# Facts only (feature directory, chapter names, coordinates as printed). The catalogue itself is not redistributed.
+source:
+  title: "CAFE, Concepts for Activities in the Field for Exploration. TN2: The Catalogue of Planetary Analogues"
+  authors: "Louisa Preston, Monica Grady, Simeon Barber (Planetary and Space Sciences Research Institute, The Open University, UK)"
+  contract: "ESA contract 4000104716/11/NL/AF"
+  version: "Final Version: December 5th 2012"
+  url: https://esamultimedia.esa.int/docs/gsp/The_Catalogue_of_Planetary_Analogues.pdf
+  retrieved: 2026-11-25
+  sha256: f1ec1641617b114f5a8f49c7956aaddbf0e5277aebc63a77d9c950bdb1cdba20
+  pages: 171
+  licence: "not stated in the document"
+  linked_from: https://www.esa.int/Our_Activities/Preparing_for_the_Future/Discovery_and_Preparation/Cataloguing_otherworldly_landscapes_on_Earth
+  selection_criteria_quote: >-
+    "the number one priority for choosing an analogue site [...] is scientific merit and relevance for the Moon and/or
+    Mars. Once this criterion has been satisfied, the next consideration is the cost of the mission, followed by the
+    accessibility of the site in terms of permits and physical access, and then the ability of the site to house the
+    infrastructure needed" (CAFE Executive Summary, same authors, https://esamultimedia.esa.int/docs/gsp/C4000104716ExS.pdf)
+
+# Directory, pages 3-4: feature -> chapters, as printed. "Water: All" (Mars) and Astrobiology are not used: they are
+# not features one layer can test.
+directory:
+  moon:
+    impact-crater: [3, 7, 10, 15, 16, 17, 22, 24]
+    ejecta: [7, 10, 17, 22, 24]
+    impact-melt: [10, 15, 17, 24]
+    regolith: [6, 7, 14]
+    volcanic-structure: [12, 13, 14, 18, 25]
+    lava-flows: [2, 8, 14]
+    pyroclastic-deposits: [2, 12]
+    collapse-pits: [12, 14]
+    wrinkle-ridges: [8, 14]
+    rilles-channels: [2, 18, 27]
+    granular-flows: [3, 13]
+    anorthosite: [17]
+    basalt: [6, 7, 8, 12, 14, 15, 18, 25, 27]
+    impact-breccia: [10, 15, 17, 22, 24]
+    water-ice: [1, 4, 10, 12, 26]
+  mars:
+    impact-crater: [2, 7, 10, 15, 16, 22, 24]
+    impact-ejecta: [3, 10, 22, 24]
+    impact-melt-sheets: [10, 15, 24]
+    impact-hydrothermal-deposits: [10, 15, 24]
+    impact-gullies: [3, 15, 16]
+    crater-lakes: [10, 15]
+    volcanic-structure: [2, 12, 13, 14, 18, 25, 27]
+    lava-flows: [2, 6, 7, 8, 11, 12, 13, 14, 18, 25, 26, 27, 30]
+    lava-tubes: [12, 14, 27]
+    pyroclastic-deposits: [12, 13, 14, 27]
+    collapse-pits: [14]
+    wrinkle-ridges: [8, 12, 14, 27]
+    hydrothermal-deposits: [2, 3, 5, 9, 11, 12, 13, 21, 30]
+    mud-volcanoes: [3, 11]
+    fluvial-lakes: [1, 3, 20, 29]
+    fluvial-channels: [3, 23, 26, 29]
+    deltas-fans: [2, 3, 26]
+    fluvial-gullies: [1, 3, 13, 14, 26]
+    wind-soils-regolith: [1, 2, 6, 7, 11, 12, 13, 14, 19, 25, 26, 27, 29]
+    dunes: [2, 3, 11, 12, 19, 25, 28]
+    yardangs: [19]
+    transverse-aeolian-ridges: [19, 25]
+    dust-devils: [28]
+    ice-polygon-terrain: [1, 3, 4, 9, 10, 26]
+    icy-flows-glacial: [1, 4, 10, 12, 13, 26]
+    basalt: [2, 6, 7, 8, 11, 12, 14, 15, 18, 25, 27]
+    phyllosilicate: [10, 11, 22, 29, 30]
+    sulphate: [2, 4, 9, 23, 26, 29]
+    iron-oxide: [2, 9, 12, 23, 30]
+    silica: [5, 12, 21, 30]
+    carbonate: [1, 4, 10, 11, 26]
+
+# Chapters: the location coordinate ("Coordinates", section N.1) and the site-specific points (section N.6), as printed.
+# Rule fixed before any value: a printed point is used as it is; a range, "Various" or an empty field is excluded;
+# a point the catalogue itself contradicts is excluded with the reason. `fix` only removes spaces the PDF text
+# extraction put inside numbers; the digits are those printed.
+chapters:
+  1: {name: The Antarctic Dry Valleys, at: "77°30'S 163°00'E", sites: [
+       {name: Blood Falls, at: "77.722053°S, 162.271861°E"},
+       {name: "Wright Valley: South Fork Study Area", at: "77.3336°S, 161.1724°E."},
+       {name: Beacon Valley, at: "77.842°S 160.844°E."}]}
+  2: {name: The Atacama Desert, at: "20 °S to 30 °S", excluded: "a latitude range, not a point", sites: [
+       {name: Yungay Area, at: "24.062 S, 69.923 W."},
+       {name: Pampas de La Joya, at: "16.699 S, 71.806 W"}]}
+  3: {name: Central Australia, at: "Alice Springs is located at 23.7°S, 133.87°E", note: "the coordinate of the town of Alice Springs"}
+  4: {name: Axel Heiberg Island, at: "79°26' N, 90°46' W.", sites: [
+       {name: "Saline Perennial Springs (Gypsum Hill)", at: "Gypsum Hill: 79.409175N, 90.732765W"},
+       {name: "Saline Perennial Springs (Colour Peak)", at: "Colour Peak: 79.388711N, 91.267662W"},
+       {name: Polygonal Terrain, at: "79.2314N, 90.505907W."},
+       {name: Colour Lake Fen, at: "79.24918N, 90.45424W."}]}
+  5: {name: The Barberton Greenstone Belt, at: "25°47′10″S 31°3′11″E"}
+  6: {name: Black Point Lava Flow, at: "35° 42′ 0.0″ N, 111° 18′ 0.0″ W"}
+  7: {name: Cinder Lake, at: "35.3225°, -111.51806°"}
+  8: {name: Columbia River Basalt Group, at: "Various", excluded: "no coordinate"}
+  9: {name: The Golden Deposit, at: "65° 11'58\"N, 124° 38'15\"W"}
+  10: {name: The Haughton Impact Structure, at: "75° 22' N, 89° 41' W.", sites: [
+       {name: Hydrothermal Supersite, at: "75.21.5N 89.32.40W."},
+       {name: Impact Breccia Supersite, at: "75.11.53N, 81.51.4W.",
+        excluded: "8° of longitude (about 240 km) east of the structure's own coordinate: inconsistent with the chapter"},
+       {name: Ice Wedge Polygons, at: "75.21.26.8 N 88.40.47.2 W"}]}
+  11: {name: Ibn Battuta, at: "30.5°, -6.75°", sites: [
+       {name: Ben Haddou 1, at: "7°4'21,7\"W; 30°59'37\"N"},
+       {name: Ben Haddou 2, at: "7°7’15,8”W; 31°2’24”N."},
+       {name: Stromatolites, at: "6°43’18,3”W; 30°47’30”N."},
+       {name: Travertine, at: "6°42’0,4”W; 30°59’20,4”N."},
+       {name: Adad, at: "6°40’19,7”W; 30°47’60”N."},
+       {name: Saoun, at: "6°43’19”W; 30°42’0,1”N."},
+       {name: Tinerhir, at: "5°14’18”W; 31°13’43”N."},
+       {name: Alnif, at: "5°39’6”W; 31°26’1,4”N."},
+       {name: Rissani 1, at: "4°24’11”W; 31°17’39”N."},
+       {name: Rissani 2, at: "4°24’23”W; 31°15’36”N."},
+       {name: Rissani 3, at: "4°21’35”W; 31°14’10”N."},
+       {name: Kess Kess, at: "4°3’9”W; 31°22’4”N."},
+       {name: Chebbi, at: "3°59’42”W; 31°12’50”N."},
+       {name: Lake Maider, at: "4°42’52”W; 30°39’18”N."},
+       {name: Maider, at: "4°33’40”W; 30°46’28”N."},
+       {name: Zaouia, at: "6°2’18,2”W; 30°43’15”N."},
+       {name: Zagora, at: "5°42’16”W; 30°19’23”N."},
+       {name: Mhamid, at: "5°41’14”W; 29°54’25”N."},
+       {name: Sebkha Tazra, at: "12°19’19”W; 27°55’36”N."},
+       {name: Sebkha Tah, at: "12°47’52”W; 27°42’7”N."},
+       {name: Sebkha Oum Dba, at: "13°0’23”W; 27°32’31”N."},
+       {name: Sebkha Aridal, at: "14°0’9”W; 26°9’51”N."}]}
+  12: {name: Iceland, at: "65° 0′ 0″ N, 18° 0′ 0″ W", sites: [
+       {name: Askja, at: "65° 1′ 48″ N, 16° 45′ 0″ W."},
+       {name: Eyjafjallajokull, at: "63° 38′ 0″ N, 19° 36′ 0″ W."},
+       {name: Krysuvik, at: "63° 53′ 45.02″ N, 22° 3′ 8.96″ W."}]}
+  13: {name: Kamchatka, at: "Extending from lat. 51°N to lat. 61°N", excluded: "a latitude range, and no site-specific coordinate"}
+  14: {name: Kilauea, at: "19°25′30″N 155°17′31″W", sites: [
+       {name: Ka'u Desert, at: "19°24′31″N 155°17′48″W."}]}
+  15: {name: Lonar Crater, at: "19° 58'36\"N 76° 30'30\"E"}
+  16: {name: Meteor Crater, at: "35°1′38″N 111°1′21″W"}
+  17: {name: Mistastin Lake Crater, at: "N 55° 53' W 63° 18'"}
+  18: {name: Mt. Etna, at: "37° 45′ 18″ N, 14° 59′ 42″ E"}
+  19: {name: The Namib Desert, at: "Extends from the Olifants River in South Africa 32 °S to the Carunjamba", excluded: "a range, and no site-specific coordinate"}
+  20: {name: Pavilion Lake, at: "50°51′N, 121°44′W"}
+  21: {name: Pilbara, at: "21°S 119°E"}
+  22: {name: The Ries Impact Crater, at: "N 48° 53' E 10° 37'"}
+  23: {name: Rio Tinto, at: "Huelva is located at 37°15′N 6°57′W", note: "the coordinate of the city of Huelva, at the mouth of the river"}
+  24: {name: Sudbury Impact Crater, at: "46°36′N 81°11′W"}
+  25: {name: Sunset Crater, at: "35°21′51″N 111°30′11″W"}
+  26: {name: Svalbard, at: "78°N 16°E", sites: [
+       {name: Bockfjord Volcanic Complex, at: "79°29’5 3” N, 13°12 ’20” E", fix: "79°29’53” N, 13°12’20” E"},
+       {name: Ebbadalen Formation, at: "78°42’35” N, 16°43’04” E."},
+       {name: Murchison Fjord, at: "79°52’43” N, 18°29’17” E."},
+       {name: Adventtoppen and Hiorthfjellet, at: "78° 16′ 22.8″ N, 15° 44′ 42″ E and ?", note: "first point only; the second is printed as ?"}]}
+  27: {name: Tenerife, at: "28°13'27.97\"N, 16°37'36.60\"W"}
+  28: {name: The Turpan Desert, at: "42.63°N, 89.86°E."}
+  29: {name: Utah Desert, at: "38°24′23.25″N 110°47′30.85″W"}
+  30: {name: Yellowstone, at: "44°36′N 110°30′W", sites: [
+       {name: Grand Prismatic Springs, at: "44°31′30″N 110°50′17″W."},
+       {name: Chocolate Pots, at: "6°43’19”W; 30°42’01”N.",
+        excluded: "the catalogue prints a point in Morocco (the Saoun site of chapter 11), not in Yellowstone"}]}
