@@ -14,7 +14,7 @@ David's order: finish the delivery (T50), then redo the interface (T45c), then r
 - **E17:** review the lunar geology crosswalk (delegated to Claude on 20/11).
 - **E20:** review the Mars volcanic crosswalk.
 - **E1:** verify the VIPER climbing limit.
-- **R5:** the Tanaka 2014 Mars map (David downloads it in a browser). It brings the volcanic plains target and the only positive controls of scenario D.
+- **R5:** the Tanaka 2014 Mars map: downloaded by David on 24/11/2026, used in T48c (volcanic plains, protocol mars-v3).
 - **R9:** SWIM 2.0, which supersedes the 2019 ice-consistency products. It needs a protocol mars-v3, decided before any rerun.
 - **Scenario C (instruments):** no run yet, and its requirements are open (E15).
 

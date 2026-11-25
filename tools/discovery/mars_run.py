@@ -24,7 +24,8 @@ PIXEL_M = {"glo90-115m-w25": 115.77, "glo90-463m-w25": 463.08}        # the cube
 WINDOW_PX = 25
 MC_SIGMA_DEG = {"glo90-115m-w25": 0.25, "glo90-463m-w25": 0.04}        # protocol mars-v2, measured (slope_noise.py)
 TARGETS = {"mars-ice-rich-midlatitudes": "glo90-463m-w25", "mars-north-polar": "glo90-115m-w25",
-           "mars-south-polar": "glo90-115m-w25"}
+           "mars-south-polar": "glo90-115m-w25",
+           "mars-volcanic-plains": "glo90-463m-w25"}                  # protocol mars-v3 (24/11/2026), T48c
 
 
 def share_confidence(valid: int, windows: int, masked: int, unknown_mask: int) -> str:
@@ -73,9 +74,10 @@ def configure_validation(v) -> None:
     v.PROFILE_KM_PER_DEG = 2 * math.pi * MARS_R_M / 1000 / 360
     v.BLOCK_KM.clear()
     v.BLOCK_KM.update({t: 5 * PIXEL_M[s] * WINDOW_PX / 1000 for t, s in TARGETS.items()})   # 5 windows, as on the Moon
-    v.POSITIVES = {"D": "none for the phase 1 targets: the verified controls of scenario D (R29) are volcanic plains, "
-                        "which wait for the Mars geologic map (Tanaka et al. 2014)",
+    # protocol mars-v3: the verified controls of scenario D (R29) are volcanic plains; they validate that target only
+    v.POSITIVES = {"D (polar and ice-rich targets)": "none: the R29 controls are volcanic plains",
                    "consequence": "no positive validation for the polar and ice-rich targets"}
+    v.POSITIVE_TARGETS = {"D": ["mars-volcanic-plains"]}
     # protocol mars-v2 (23/11/2026): slope noise of the Monte Carlo measured from the DEM error at each scale
     # (tools/discovery/slope_noise.py, data/runs/run-mars-001/slope-noise.json), instead of the lunar 0.5 degree
     v.SIGMA_BY_SCALE.clear()
@@ -87,7 +89,7 @@ def configure_validation(v) -> None:
 def configure_release(r) -> None:
     """Settings of the release module `r` for the Mars release: scenario D, Martian profiles and sources."""
     r.BODY = "mars"
-    r.PROTOCOL = "validation-protocol-mars-v2"
+    r.PROTOCOL = "validation-protocol-mars-v3"
     r.SCENARIO_FILES = {"D": "D-mars.yaml"}
     r.PROFILE_DIR, r.PROFILE_GLOB = "data/profiles/mars", "mars-*.json"
     r.EARTH_SOURCES = ["copernicus-dem-glo90", "esa-worldcover", "add-rock-outcrop-v7-3", "natural-earth-admin0-110m"]

@@ -66,3 +66,12 @@ def test_a_grid_with_scaling_in_its_label_is_converted_to_metres(tmp_path):
 </Element_Array><Axis_Array><elements>1</elements></Axis_Array><Axis_Array><elements>2</elements></Axis_Array></Array_2D_Image>""")
     z = read_pds4(tmp_path / "megt_n_512_1.img")
     assert z.tolist() == [[0.0, 1.0]]
+
+
+def test_volcanic_plains_keep_observed_windows_inside_volcanic_units_and_report_edifices_apart():
+    from discovery.mars import volcanic_selection
+    units = np.array(["AHv", "Ave", "mNh", "AHv", ""], dtype=object)
+    observed = np.array([0.9, 0.8, 0.9, 0.2, 0.9])
+    sel, sens = volcanic_selection(units, observed, volcanic={"AHv", "Ave"}, edifices={"Ave"})
+    assert sel.tolist() == [True, True, False, False, False]          # the last AHv window is mostly interpolated
+    assert sens == {"all_volcanic_units": 2, "without_edifices": 1, "any_observed_share": 3}

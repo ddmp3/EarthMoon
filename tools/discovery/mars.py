@@ -163,6 +163,61 @@ def sample_swim(path: Path, lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
     return vals
 
 
+def volcanic_selection(units: np.ndarray, observed: np.ndarray, volcanic: set, edifices: set) -> tuple[np.ndarray, dict]:
+    """Windows of the volcanic plains (T48c, E20): centre inside a volcanic unit of the Tanaka map and at least
+    MIN_OBSERVED of the pixels hold a MOLA shot (E19, as for the ice-rich target). Sensitivity counts: without the
+    volcanic edifices, and with any observed share."""
+    u = np.asarray(units, dtype=object)
+    obs = np.asarray(observed, float) >= MIN_OBSERVED
+    in_v = np.array([x in volcanic for x in u], bool)
+    in_e = np.array([x in edifices for x in u], bool)
+    sel = in_v & obs
+    return sel, {"all_volcanic_units": int(sel.sum()), "without_edifices": int((sel & ~in_e).sum()),
+                 "any_observed_share": int(in_v.sum())}
+
+
+GLOBAL_TILES = (("88n", 88.0), ("44n", 44.0), ("00n", 0.0), ("44s", -44.0))   # the 128 ppd MEGDR tiles, top latitude
+
+
+def build_volcanic(mola: Path, geology: Path, out_dir: Path, json_dir: Path) -> dict:
+    """The volcanic plains environment (T48c): MOLA 128 ppd windows of the whole planet inside the volcanic units of
+    the Tanaka et al. 2014 map (`geology`: the SIM3292_Global_Geology shapefile, without extension)."""
+    import json
+    import pyarrow as pa
+    import pyarrow.parquet as pq
+    from discovery.mars_geology import UnitMap, edifice_units, volcanic_units
+    from discovery.profiles import file_input, summarise
+    name = "mars-volcanic-plains"
+    tiles = [(mola / f"megt{la}{lo}hb.img", mola / f"megc{la}{lo}hb.img", top, float(lo))
+             for la, top in GLOBAL_TILES for lo in ("000", "090", "180", "270")]
+    w = global_windows(tiles, 128, -90.0, 90.0)
+    gmap = UnitMap.read(geology)
+    vol, edi = volcanic_units(gmap.descriptions), edifice_units(gmap.descriptions)
+    units = gmap.unit_at(w["lat"], w["lon"])
+    sel, sens = volcanic_selection(units, w["observed_frac"], vol, edi)
+    params = {"units": sorted(vol), "edifices": sorted(edi), "unit_rule": "map description (UnitDesc) contains 'volcanic'",
+              "window_rule": "window centre inside a unit (map at 1:20,000,000)", "min_observed": MIN_OBSERVED,
+              "pixel_m": round(2 * math.pi * MARS_R_M / 360 / 128, 2), "window_px": WINDOW_PX, "windows_by_rule": sens,
+              "windows_by_unit": {u: int(((units == u) & sel).sum()) for u in sorted(vol)}}
+    shp = Path(str(geology) + ".shp")
+    inputs = {"tanaka2014/SIM3292_Global_Geology.shp": file_input(shp),
+              **{f"mola/{t[0].name}": file_input(t[0]) for t in tiles}}
+    cols = {k: np.asarray(w[k])[sel].astype("float32") for k in (*METRICS, "observed_frac")}
+    cols["lat"] = np.asarray(w["lat"])[sel].astype("float64")
+    cols["lon"] = np.asarray(w["lon"])[sel].astype("float64")
+    cols["unit"] = np.asarray(units)[sel].astype(str)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    pq.write_table(pa.table(cols), out_dir / f"{name}.windows.parquet", compression="zstd")
+    full = {k: np.asarray(w[k]) for k in METRICS}
+    rec = {"id": name, "body": "mars", "spec": f"data/profiles/spec/{name}.yaml", "inputs": inputs, "params": params,
+           "decision": "E19, E20", **summarise(full, sel, METRICS)}
+    no_edifice = sel & ~np.array([x in edi for x in units], bool)
+    rec["sensitivity"] = {"without_edifices": summarise(full, no_edifice, METRICS)}
+    json_dir.mkdir(parents=True, exist_ok=True)
+    (json_dir / f"{name}.json").write_text(json.dumps(rec, indent=1) + "\n", encoding="utf-8")
+    return {name: {"windows": rec["windows"], "slope_mean": rec["metrics"]["slope_mean"], "params": params}}
+
+
 def build_profiles(mola: Path, swim: Path, out_dir: Path, json_dir: Path) -> dict:
     """The three MOLA environments of phase 1 (polar terrain north and south, ice-rich mid-latitudes): windows
     parquet for the comparison engine, and a JSON summary per environment. Volcanic plains wait for the Tanaka map."""
@@ -219,8 +274,15 @@ def main(argv=None) -> int:
     ap.add_argument("--swim", type=Path, default=Path("/data/swim/Northern_Ci.tif"))
     ap.add_argument("--out", type=Path, default=Path("/data/profiles/mars"))
     ap.add_argument("--json", type=Path, default=Path("data/profiles/mars"))
+    ap.add_argument("--only", choices=["phase1", "volcanic"], default="phase1",
+                    help="phase1: polar and ice-rich (T48); volcanic: the volcanic plains (T48c)")
+    ap.add_argument("--geology", type=Path, default=Path(
+        "/data/mars-geology/extracted/SIM3292_MarsGlobalGeologicGIS_20M/SIM3292_Shapefiles/SIM3292_Global_Geology"))
     a = ap.parse_args(argv)
-    print(json.dumps(build_profiles(a.mola, a.swim, a.out, a.json), indent=1))
+    if a.only == "volcanic":
+        print(json.dumps(build_volcanic(a.mola, a.geology, a.out, a.json), indent=1))
+    else:
+        print(json.dumps(build_profiles(a.mola, a.swim, a.out, a.json), indent=1))
     return 0
 
 

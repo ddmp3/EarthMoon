@@ -2,15 +2,15 @@ id: mars-volcanic-plains
 body: mars
 name: Volcanic plains
 kind: distribution
-status: conditional
-blocked_by: [usgs-mars-geologic-map-2014]
+status: ready
 catalogue_environments: [volcanic-plains]
 selection:
-  rule: MOLA windows inside volcanic units of the Mars geologic map (Tanaka et al. 2014).
+  rule: MOLA 128 ppd windows (25 x 25 pixels, E19) whose centre falls inside a volcanic unit of the Mars geologic map (Tanaka et al. 2014), with a MOLA shot in at least half of their pixels.
   steps:
-    - {product: usgs-mars-geologic-map-2014, condition: "volcanic unit", uses: [map_unit]}
-    - {product: mgs-mola-megdr, condition: "windows inside the units", uses: []}
-  parameters: []
+    - {product: usgs-mars-geologic-map-2014, condition: "unit whose map description (UnitDesc) contains 'volcanic' (11 units, E20; confirmed by David on 24/11/2026)", uses: [map_unit]}
+    - {product: mgs-mola-megdr, condition: "window centre inside the units; observed share >= 0.5 (E19)", uses: []}
+  parameters:
+    - {name: units, value: "every unit the map describes as volcanic", sensitivity: ["without the 3 volcanic edifices (Ave, Hve, Nve)"]}
 parameters:
   - dimension: topography
     names: [slope_mean, slope_p95, roughness_detrended]
@@ -27,4 +27,7 @@ statistics:
   joint: every window vector kept
 biases:
   - Map at 1:20,000,000 (from the title); unit boundaries are coarse.
+  - Units are morphology and age, not measured composition.
+  - The observed-share rule (E19) keeps 4,983 of 232,956 windows in volcanic units; MOLA tracks are sparsest near the equator, where most of these units lie. The effect on slopes is reported in run-mars-002.
+  - Thermal inertia is not compared (E18: no thermal comparison with Earth in this phase).
 cannot_characterize: [lava age, gravity, atmosphere]

@@ -35,9 +35,11 @@ def mars():
 
 
 def test_the_mars_run_assesses_only_martian_targets_with_their_own_scales(mars):
-    assert set(mars.TARGET_SCALE) == {"mars-north-polar", "mars-south-polar", "mars-ice-rich-midlatitudes"}
+    assert set(mars.TARGET_SCALE) == {"mars-north-polar", "mars-south-polar", "mars-ice-rich-midlatitudes",
+                                      "mars-volcanic-plains"}                   # protocol mars-v3 adds the plains
     assert mars.TARGET_SCALE["mars-north-polar"] == "glo90-115m-w25"
     assert mars.TARGET_SCALE["mars-ice-rich-midlatitudes"] == "glo90-463m-w25"
+    assert mars.TARGET_SCALE["mars-volcanic-plains"] == "glo90-463m-w25"
     assert mars.SCENARIO_TARGETS == {"D": sorted(mars.TARGET_SCALE)} and mars.ELIMINATING == {"D": []}
     names = mars.CELL_SCHEMA.names
     assert "mars-south-polar:median" in names and not any(n.startswith("moon-") for n in names)
@@ -131,7 +133,9 @@ def test_validation_reads_the_martian_masked_unit_and_blocks_of_five_windows():
     assert v.MASK_REACH_KM == pytest.approx(25 * 115.77 / 1000 / math.sqrt(2))
     assert v.BLOCK_KM["mars-ice-rich-midlatitudes"] == pytest.approx(5 * 25 * 463.08 / 1000)
     assert v.PROFILE_KM_PER_DEG == pytest.approx(59.27, abs=0.01)
-    assert "D" in v.POSITIVES and v.REPRO["window_px"] == 25
+    assert v.REPRO["window_px"] == 25
+    # protocol mars-v3: the R29 controls validate the volcanic plains target only
+    assert v.POSITIVE_TARGETS == {"D": ["mars-volcanic-plains"]} and "D" not in v.POSITIVES
     # protocol mars-v2: Monte Carlo slope noise measured from the DEM error at each scale (slope-noise.json)
     assert v.SIGMA_BY_SCALE == {"glo90-115m-w25": 0.25, "glo90-463m-w25": 0.04}
 
@@ -141,7 +145,7 @@ def test_the_mars_release_lists_scenario_d_martian_profiles_and_their_sources(ma
     from discovery import release as rel
     r = types.SimpleNamespace(COVERAGE_TEXT=dict(rel.COVERAGE_TEXT))
     mars_run.configure_release(r)
-    assert r.BODY == "mars" and r.PROTOCOL == "validation-protocol-mars-v2" and r.SCENARIO_FILES == {"D": "D-mars.yaml"}
+    assert r.BODY == "mars" and r.PROTOCOL == "validation-protocol-mars-v3" and r.SCENARIO_FILES == {"D": "D-mars.yaml"}
     assert "copernicus-dem-glo30" not in r.EARTH_SOURCES
     assert "80%" in r.COVERAGE_TEXT["evaluated"] and set(r.COVERAGE_TEXT) == set(rel.COVERAGE_TEXT)
 

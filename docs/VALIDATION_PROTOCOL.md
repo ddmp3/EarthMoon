@@ -2,6 +2,32 @@
 
 v1 was frozen with the git tag `validation-protocol-v1` before T43, v2 with `validation-protocol-v2` before run-001, v3 with `validation-protocol-v3` before run-002. Any change after a tag creates a new version, with its reason, and is reported next to the results. Results are never retuned to pass.
 
+## Mars: protocol mars-v3 (decided by David on 24/11/2026, frozen with the tag `validation-protocol-mars-v3` before run-mars-002)
+
+**Why.** The Mars geologic map (Tanaka et al. 2014, R5) is now available, so the volcanic plains target can be computed. It is the only Mars target with verified positive controls (R29).
+
+**What changes:**
+- **A fourth target in scenario D: volcanic plains** ([methods/mars](wiki/methods/mars.md)).
+  - **Windows:** MOLA 128 ppd windows (11.6 km, E19). A window counts when its centre falls inside a unit that the map itself describes as volcanic: 11 units, 3 of them volcanic edifices (E20).
+  - **Observed share:** at least half of the window's pixels hold a MOLA shot (E19, as for the ice-rich target).
+  - **Earth side:** compared at 463.08 m, like the ice-rich target.
+- **Positive controls apply to this target only:** Big Craters, Mauna Ulu, Kīlauea Iki and Kīlauea caldera (R29, `data/validation/positives.yaml`).
+  - **Pass rule (section 2):** the median percentile of their cells is 75 or more; the share in the top 10% is also reported.
+  - **Missing value:** a control cell without an Earth value is left out, never ranked last. With fewer than 3 controls left, there is no positive validation.
+- **Geology context (E20):**
+  - each cell gets a state for this target: basalt is a match; Macrostrat's other volcanic lithologies are partial; class names such as "volcanic" are unresolved;
+  - it is shown beside the slope result and never combined with it.
+- **Sensitivity, reported and not used to rank:**
+  - the profile without the 3 volcanic edifices;
+  - the slopes of the windows dropped by the observed-share rule.
+
+**Unchanged:** everything else in mars-v2, including:
+- the Monte Carlo noise at 463.08 m (0.04°);
+- the 18 negatives and every pass threshold;
+- the three phase 1 targets, which still have no positive control.
+
+**Run:** run-mars-002 recomputes the whole of scenario D, because the zones and the top decile are per target but the cells are shared. run-mars-001 stays as it is and is reported next to it.
+
 ## Mars: protocol mars-v2 (decided by David on 23/11/2026, frozen before its Monte Carlo)
 
 **Why.** The run-mars-001 Monte Carlo (mars-v1) kept the lunar slope noise of 0.5°, and no zone stayed stable. At the MOLA scale, Martian slopes are very low (median 0.7 to 0.8°), so a 0.5° noise is as wide as most of the reference. That value was set for 1 km lunar windows, not derived for these scales.

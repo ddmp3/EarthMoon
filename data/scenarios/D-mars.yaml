@@ -3,7 +3,7 @@ name: Mars exploration and settlement
 objective: >-
   Find Earth places that share Martian processes and properties: ice-rich ground, aqueous minerals, aeolian dust,
   dryness and rover-scale terrain. Mars is profiled from Martian data only; no lunar criterion is reused.
-targets: [mars-ice-rich-midlatitudes, mars-north-polar, mars-south-polar, mars-aqueous-mineral-sites, mars-hirise-terrain]
+targets: [mars-ice-rich-midlatitudes, mars-north-polar, mars-south-polar, mars-volcanic-plains, mars-aqueous-mineral-sites, mars-hirise-terrain]
 similarity:
   - {parameter: slope_mean, status: "waiting for T48", why: "MOLA and HiRISE terrain, at the planetary pixel scale (T22)"}
   - {parameter: mineral_class, status: "waiting for T46", why: "clays, sulfates and other aqueous groups"}

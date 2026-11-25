@@ -546,6 +546,7 @@ products:
     status: verified
     verified_on: "2026-11-18"
     verified_url: https://pubs.usgs.gov/publication/sim3292
+    local_copy: {file: sim3292_database.zip, size: 808910442, sha256: ef75f059b1f2f5a47aff55e6c6e39500cf1ab65e743fabc5d463b97bc10b6541, downloaded: "2026-11-24", by: "David, in a browser (the host refuses automated download)", used: "SIM3292_Shapefiles/SIM3292_Global_Geology (1,311 polygons, 44 units, Mars 2000 sphere)"}
 
   - id: robbins-hynek-mars-craters
     body: mars

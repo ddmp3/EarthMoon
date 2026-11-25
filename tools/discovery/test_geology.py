@@ -111,3 +111,15 @@ def test_in_a_mixed_unit_the_lunar_rock_counts_only_when_the_map_lists_it_first(
     assert unit_state("anorthosite, gabbro, granite", "highland") == ("match", True)
     assert unit_state("basalt, sandstone", "mare") == ("match", True)
     assert unit_state("sandstone, basalt", "mare") == ("unresolved", True)
+
+
+def test_martian_volcanic_units_match_earth_basalt_and_other_volcanic_rocks_partly():
+    """E20: volcanic units of the Tanaka map against Earth; partial rocks are Macrostrat's other volcanic lithologies."""
+    from discovery.geology import CROSSWALK, TARGET_GROUP
+    assert TARGET_GROUP["mars-volcanic-plains"] == "mars-volcanic" and "mars-volcanic" in GROUPS
+    assert unit_state("basalt", "mars-volcanic") == ("match", False)
+    assert unit_state("andesite", "mars-volcanic")[0] == "partial"
+    assert unit_state("tuff", "mars-volcanic")[0] == "partial"
+    assert unit_state("volcanic", "mars-volcanic")[0] == "unresolved"      # a class name, never a no match
+    assert unit_state("sandstone", "mars-volcanic")[0] == "no match"
+    assert "basalt" not in CROSSWALK["mars-volcanic"]["partial"] and "volcanic" not in CROSSWALK["mars-volcanic"]["partial"]
