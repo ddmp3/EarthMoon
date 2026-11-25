@@ -46,3 +46,11 @@ def test_dossier_outcome_rule_is_applied_in_a_fixed_order():
     assert outcome(100, 4, 0.36, True)[0] == "explained artefact" and "hidden ground" in outcome(100, 4, 0.36, True)[1]
     assert outcome(35, 3, 0.0, True)[0] == "plausible"
     assert outcome(35, 3, 0.0, None)[0] == "unknown"
+
+
+def test_a_place_already_geocoded_by_an_earlier_run_is_reused_never_queried_twice():
+    """Nominatim policy: results are cached and never queried twice (same zone centre, earlier facts.json)."""
+    from discovery.dossier import known_place
+    earlier = [{"D-01": {"lat": 21.80512, "lon": 30.11512, "place": "Halfa"}}]
+    assert known_place(earlier, 21.80512, 30.11512) == "Halfa"
+    assert known_place(earlier, 21.9, 30.11512) is None

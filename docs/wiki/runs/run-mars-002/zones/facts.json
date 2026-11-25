@@ -1,0 +1,799 @@
+{
+ "D-01": {
+  "target": "mars-volcanic-plains",
+  "scenario": "D",
+  "cells": 7,
+  "area_km2": 175.2,
+  "lat": 38.10015,
+  "lon": -116.03991,
+  "median": 0.9998,
+  "cell_median_p25": 0.6346,
+  "cell_median_p75": 0.9998,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Nye County, Nevada, United States",
+  "cell_medians": [
+   0.9998,
+   0.9998,
+   0.9998,
+   0.9998,
+   0.6346,
+   0.6346,
+   0.6346
+  ],
+  "mc_top_decile_share": 0.968
+ },
+ "D-02": {
+  "target": "mars-volcanic-plains",
+  "scenario": "D",
+  "cells": 4,
+  "area_km2": 100.1,
+  "lat": -10.54683,
+  "lon": 26.4457,
+  "median": 0.9998,
+  "cell_median_p25": 0.9998,
+  "cell_median_p75": 0.9998,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Fungurume, Lubudi, Lualaba, République démocratique du Congo",
+  "cell_medians": [
+   0.9998,
+   0.9998,
+   0.9998,
+   0.9998
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-03": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 11,
+  "area_km2": 275.4,
+  "lat": 21.80512,
+  "lon": 30.11512,
+  "median": 0.9995,
+  "cell_median_p25": 0.9838,
+  "cell_median_p75": 0.9995,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Halfa - حلفا, الولاية الشمالية Northern State, السودان",
+  "cell_medians": [
+   0.9838,
+   0.9838,
+   0.9838,
+   0.9838,
+   0.9838,
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-04": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 11,
+  "area_km2": 275.4,
+  "lat": 48.75695,
+  "lon": 97.83542,
+  "median": 0.9995,
+  "cell_median_p25": 0.5096,
+  "cell_median_p75": 0.9995,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Тэлмэн ᠲᠡᠯᠡᠮᠡᠨ, Завхан ᠵᠠᠪᠬᠠᠨ, Монгол улс ᠮᠤᠩᠭᠤᠯ ᠤᠯᠤᠰ",
+  "cell_medians": [
+   0.9995,
+   0.9995,
+   0.5096,
+   0.9995,
+   0.9995,
+   0.5096,
+   0.5096,
+   0.9995,
+   0.9995,
+   0.5096,
+   0.5096
+  ],
+  "mc_top_decile_share": 0.99
+ },
+ "D-05": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 7,
+  "area_km2": 175.2,
+  "lat": 29.74525,
+  "lon": -97.93334,
+  "median": 0.9995,
+  "cell_median_p25": 0.9995,
+  "cell_median_p75": 0.9995,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Guadalupe County, Texas, United States",
+  "cell_medians": [
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995,
+   0.7775
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-06": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 5,
+  "area_km2": 125.2,
+  "lat": 48.90614,
+  "lon": -103.89127,
+  "median": 0.9995,
+  "cell_median_p25": 0.8275,
+  "cell_median_p75": 0.9995,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Divide County, North Dakota, United States",
+  "cell_medians": [
+   0.8275,
+   0.8275,
+   0.9995,
+   0.9995,
+   0.9995
+  ],
+  "mc_top_decile_share": 0.998
+ },
+ "D-07": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 4,
+  "area_km2": 100.1,
+  "lat": 51.24392,
+  "lon": 136.7847,
+  "median": 0.9995,
+  "cell_median_p25": 0.9995,
+  "cell_median_p75": 0.9995,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Солнечный муниципальный округ, Хабаровский край, Дальневосточный федеральный округ, Россия",
+  "cell_medians": [
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-08": {
+  "target": "mars-volcanic-plains",
+  "scenario": "D",
+  "cells": 6,
+  "area_km2": 150.2,
+  "lat": 38.1374,
+  "lon": -113.30008,
+  "median": 0.9994,
+  "cell_median_p25": 0.9994,
+  "cell_median_p75": 0.9994,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Iron County, Utah, United States",
+  "cell_medians": [
+   0.9994,
+   0.9994,
+   0.9994,
+   0.9994,
+   0.9994,
+   0.9994
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-09": {
+  "target": "mars-volcanic-plains",
+  "scenario": "D",
+  "cells": 4,
+  "area_km2": 100.1,
+  "lat": 33.12253,
+  "lon": -113.93323,
+  "median": 0.9994,
+  "cell_median_p25": 0.9994,
+  "cell_median_p75": 0.9994,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Yuma County, Arizona, United States",
+  "cell_medians": [
+   0.9994,
+   0.9994,
+   0.9994,
+   0.9994
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-10": {
+  "target": "mars-volcanic-plains",
+  "scenario": "D",
+  "cells": 4,
+  "area_km2": 100.1,
+  "lat": 35.05173,
+  "lon": 43.80852,
+  "median": 0.9994,
+  "cell_median_p25": 0.9994,
+  "cell_median_p75": 0.9994,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "ناحية الرياض, قضاء الحويجة, محافظة كركوك - پارێزگای کەرکووک, 34000, العراق",
+  "cell_medians": [
+   0.9994,
+   0.9994,
+   0.9994,
+   0.9994
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-11": {
+  "target": "mars-volcanic-plains",
+  "scenario": "D",
+  "cells": 10,
+  "area_km2": 250.3,
+  "lat": 36.22405,
+  "lon": 54.63546,
+  "median": 0.9986,
+  "cell_median_p25": 0.5073,
+  "cell_median_p75": 0.9986,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "دهستان دامنکوه, بخش مرکزی, شهرستان دامغان, استان سمنان, ایران",
+  "cell_medians": [
+   0.5073,
+   0.9986,
+   0.9986,
+   0.5073,
+   0.5073,
+   0.9986,
+   0.9986,
+   0.5073,
+   0.9986,
+   0.9986
+  ],
+  "mc_top_decile_share": 0.996
+ },
+ "D-12": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 10,
+  "area_km2": 250.3,
+  "lat": 51.15256,
+  "lon": -76.72979,
+  "median": 0.9984,
+  "cell_median_p25": 0.9218,
+  "cell_median_p75": 0.9995,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "ᐄᔨᔨᐤ ᐊᔅᒌ ᒉᐃᒥᔅ ᐯᐃ Eeyou Istchee Baie-James, Jamésie, Nord-du-Québec, Québec, Canada",
+  "cell_medians": [
+   0.9995,
+   0.9995,
+   0.9995,
+   0.9995,
+   0.8963,
+   0.8963,
+   0.8963,
+   0.9984,
+   0.9984,
+   0.9984
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-13": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 8,
+  "area_km2": 200.3,
+  "lat": 4.76916,
+  "lon": 34.65656,
+  "median": 0.9984,
+  "cell_median_p25": 0.9984,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Kapoeta East, Eastern Equatoria, South Sudan",
+  "cell_medians": [
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-14": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 8,
+  "area_km2": 200.3,
+  "lat": 56.76543,
+  "lon": 90.76417,
+  "median": 0.9984,
+  "cell_median_p25": 0.8106,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Ачинский муниципальный округ, Красноярский край, Сибирский федеральный округ, Россия",
+  "cell_medians": [
+   0.6722,
+   0.6722,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.8567
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-15": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 7,
+  "area_km2": 175.2,
+  "lat": 13.4919,
+  "lon": 8.21949,
+  "median": 0.9984,
+  "cell_median_p25": 0.7379,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Tessaoua, Maradi, Niger",
+  "cell_medians": [
+   0.7379,
+   0.7379,
+   0.7379,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984
+  ],
+  "mc_top_decile_share": 0.998
+ },
+ "D-16": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 7,
+  "area_km2": 175.2,
+  "lat": 44.15952,
+  "lon": 80.31318,
+  "median": 0.9984,
+  "cell_median_p25": 0.7806,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Панфилов ауданы, Жетісу облысы, Қазақстан",
+  "cell_medians": [
+   0.7587,
+   0.7587,
+   0.9984,
+   0.9984,
+   0.8025,
+   0.9984,
+   0.9984
+  ],
+  "mc_top_decile_share": 0.998
+ },
+ "D-17": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 7,
+  "area_km2": 175.2,
+  "lat": 63.47761,
+  "lon": -113.18926,
+  "median": 0.9984,
+  "cell_median_p25": 0.9026,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "North Slave Region, Northwest Territories, Canada",
+  "cell_medians": [
+   0.9026,
+   0.9026,
+   0.7129,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-18": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 6,
+  "area_km2": 150.2,
+  "lat": 15.96748,
+  "lon": 46.11665,
+  "median": 0.9984,
+  "cell_median_p25": 0.9984,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "مديرية مأرب, محافظة مأرب, اليمن",
+  "cell_medians": [
+   0.9984,
+   0.9984,
+   0.6493,
+   0.9984,
+   0.9984,
+   0.9984
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-19": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 6,
+  "area_km2": 150.2,
+  "lat": 26.85782,
+  "lon": -7.09133,
+  "median": 0.9984,
+  "cell_median_p25": 0.9984,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Tindouf ⵜⵉⵏⴷⵓⴼ تندوف, دائرة تندوف ⴰⴷⴷⴰⵢⵔⵜ ⵏ ⵜⵉⵏⴷⵓⴼ, تندوف ⵜⵉⵏⴷⵓⴼ, 37000, ⵍⵣⵣⴰⵢⴻⵔ الجزائر",
+  "cell_medians": [
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9984
+  ],
+  "mc_top_decile_share": 1.0
+ },
+ "D-20": {
+  "target": "mars-ice-rich-midlatitudes",
+  "scenario": "D",
+  "cells": 5,
+  "area_km2": 125.2,
+  "lat": -9.86324,
+  "lon": -57.868,
+  "median": 0.9984,
+  "cell_median_p25": 0.9859,
+  "cell_median_p75": 0.9984,
+  "high_confidence_share": 1.0,
+  "req:base_slope": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_lrv": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "req:climbing_limit_viper": {
+   "met": 0,
+   "failed": 0,
+   "unknown": 0
+  },
+  "suitability_median": null,
+  "also_for": [],
+  "place": "Nova Bandeirantes, Mato Grosso, Região Centro-Oeste, 78565-000, Brasil",
+  "cell_medians": [
+   0.9474,
+   0.9984,
+   0.9984,
+   0.9984,
+   0.9859
+  ],
+  "mc_top_decile_share": 1.0
+ }
+}

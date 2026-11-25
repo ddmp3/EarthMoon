@@ -1,0 +1,122 @@
+[
+ {
+  "zone": "D-01",
+  "target": "mars-volcanic-plains",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of volcanic plains; the hillshade shows a sedimentary basin floor or plateau, no artefact seen; no basalt in the zone's geology samples (E20)"
+ },
+ {
+  "zone": "D-02",
+  "target": "mars-volcanic-plains",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of volcanic plains; the hillshade shows a sedimentary basin floor or plateau, no artefact seen; no basalt in the zone's geology samples (E20)"
+ },
+ {
+  "zone": "D-03",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-04",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-05",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-06",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-07",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-08",
+  "target": "mars-volcanic-plains",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of volcanic plains; the hillshade shows a sedimentary basin floor or plateau, no artefact seen; no basalt in the zone's geology samples (E20)"
+ },
+ {
+  "zone": "D-09",
+  "target": "mars-volcanic-plains",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of volcanic plains; the hillshade shows a sedimentary basin floor or plateau, no artefact seen; no basalt in the zone's geology samples (E20)"
+ },
+ {
+  "zone": "D-10",
+  "target": "mars-volcanic-plains",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of volcanic plains; the hillshade shows a sedimentary basin floor or plateau, no artefact seen; no basalt in the zone's geology samples (E20)"
+ },
+ {
+  "zone": "D-11",
+  "target": "mars-volcanic-plains",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of volcanic plains; the hillshade shows a sedimentary basin floor or plateau, no artefact seen; no basalt in the zone's geology samples (E20)"
+ },
+ {
+  "zone": "D-12",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-13",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-14",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-15",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-16",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-17",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-18",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-19",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ },
+ {
+  "zone": "D-20",
+  "target": "mars-ice-rich-midlatitudes",
+  "outcome": "unknown",
+  "why": "no source names this place as an analog of the target environment; the hillshade shows a low-relief plain, no artefact seen"
+ }
+]

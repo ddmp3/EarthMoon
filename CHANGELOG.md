@@ -2,6 +2,31 @@
 
 One entry per merged task. Newest first. Each entry gives the PR, what changed, and the measured effect where there is one.
 
+## 2026-11-25 · T48c: Mars volcanic plains, protocol mars-v3, run-mars-002 (PR #40)
+- **Data:** the Tanaka et al. 2014 geologic map of Mars (R5), downloaded by David (USGS refuses automated download).
+- **Target:** the 11 units the map describes as volcanic, MOLA windows of 11.6 km with at least half of their pixels observed.
+  - Profile: 4,983 windows, slope median 0.60°.
+  - Without the 3 edifice units: 4,735 windows, median 0.57° (sensitivity, not used to rank).
+- **Protocol mars-v3**, frozen and tagged before the run. It adds this target and its 4 positive controls (R29). Thresholds are unchanged.
+- **run-mars-002 and release `r-a673f19b`:**
+  - all 7.4 M cells assessed;
+  - phase 1 targets identical to run-mars-001, cell by cell;
+  - 11,235 volcanic-plains zones, 1,028 of them stable in the Monte Carlo.
+- **Unfavourable result: the positive controls fail.**
+  - Median percentile 27.9; the rule needs 75 or more.
+  - The Hawaiian and Idaho windows hold shield flanks and caldera walls (2.6° to 4.9°).
+  - Their geology matches: basalt at all 4 sites (E20).
+- **Dossiers:**
+  - the 6 volcanic-plains zones of the top 20 are sedimentary basin floors and plateaus, with no basalt;
+  - all 20 outcomes are "unknown".
+- **Geology on Mars (E20):** a basalt and volcanic crosswalk, shown beside slope and never combined with it. The Mars mission's geology layer and the API include it.
+- **Tools:**
+  - the dossier tool reuses the place names of earlier runs, so Nominatim is never asked twice;
+  - `validate_run.py positives` is added.
+- **Review, added in the same PR:**
+  - a simulated panel of 5 expert roles (`docs/wiki/review/`). These are AI reviewers, not real experts.
+  - an improvement plan (`docs/plan/review-2026-11-25.md`), awaiting David's decisions.
+
 ## 2026-11-24 · Fix: zooming with the layer on (PR #39)
 - **Reported by David:** at zoom 8 with the layer active, a view of more than 5,000 cells (the cap of the discovery service, ADR-004) showed a red error.
 - **The page now:**

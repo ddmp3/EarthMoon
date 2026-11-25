@@ -150,6 +150,22 @@ def test_the_mars_release_lists_scenario_d_martian_profiles_and_their_sources(ma
     assert "80%" in r.COVERAGE_TEXT["evaluated"] and set(r.COVERAGE_TEXT) == set(rel.COVERAGE_TEXT)
 
 
+def test_every_martian_profile_input_names_a_catalogue_source(mars, monkeypatch):
+    """The 'Data and method' panel must never say 'not in catalogue' for a Mars input (the Tanaka map was missed)."""
+    import json
+    import types
+    from pathlib import Path
+    from discovery import release as rel
+    r = types.SimpleNamespace(COVERAGE_TEXT=dict(rel.COVERAGE_TEXT))
+    mars_run.configure_release(r)
+    monkeypatch.setattr(rel, "INPUT_SOURCES", r.INPUT_SOURCES)
+    root = Path(__file__).resolve().parents[2]
+    profs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((root / "data/profiles/mars").glob("mars-*.json"))]
+    used = rel.profile_sources(profs, [p["id"] for p in profs])
+    assert "usgs-mars-geologic-map-2014" in used
+    assert [s["id"] for s in rel.method(used, [])["sources"] if s.get("status") == "not in catalogue"] == []
+
+
 def test_release_index_keeps_the_lunar_default_and_a_current_release_per_body():
     from discovery.release import keep_releases
     listed = [{"id": f"r-m{k}"} for k in range(4)] + [{"id": "r-x1", "body": "mars"}]

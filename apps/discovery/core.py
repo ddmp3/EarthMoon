@@ -14,7 +14,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "tools"))
 from discovery.healpix import NSIDE, ang2pix, cell_area_km2, corners, pix2ang  # noqa: E402
 from discovery.geology import TARGET_GROUP  # noqa: E402
-from discovery.release import GEO_SOURCE, GEO_STATES, coverage_class  # noqa: E402
+from discovery.release import GEO_STATES, coverage_class, geo_source  # noqa: E402
 
 CONTEXT_COLUMNS = ("ctx:frozen_e4", "ctx:magt_c", "ctx:magt_sd_c", "ctx:permafrost_prob", "ctx:aridity_index", "ctx:aridity_class")
 CELL_CAP = 5000                       # cells in one view (ADR-004)
@@ -116,7 +116,7 @@ def _props(rel: Release, idx: np.ndarray, t: str) -> list[dict]:
     def geology(k: int):
         if geo is None or not np.isfinite(geo["match"][k]):
             return None
-        return {"group": g, "source": GEO_SOURCE, **{st: num(geo[st][k]) for st in GEO_STATES}}
+        return {"group": g, "source": geo_source(g), **{st: num(geo[st][k]) for st in GEO_STATES}}
 
     has_ctx = "ctx:frozen_e4" in rel._cols
 

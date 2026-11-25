@@ -108,6 +108,15 @@ def place_name(lat: float, lon: float) -> str:
         return f"not resolved ({type(e).__name__})"
 
 
+def known_place(earlier: list[dict], lat: float, lon: float) -> str | None:
+    """Place name of a zone with the same centre in the facts of an earlier run (Nominatim: never query twice)."""
+    for facts in earlier:
+        for f in facts.values():
+            if abs(f.get("lat", 1e9) - lat) < 1e-6 and abs(f.get("lon", 1e9) - lon) < 1e-6 and f.get("place"):
+                return str(f["place"])
+    return None
+
+
 def zone_hillshade(zone: dict, cache: Path, out_png: Path, pixel_m: float = 40.0, half_km: float = 15.0) -> None:
     """Hillshade of a square of 2 x half_km around the zone centre, on a local equal-area grid."""
     import rasterio
@@ -140,7 +149,9 @@ def main(argv=None) -> int:
     ap.add_argument("--run", type=Path, required=True)
     ap.add_argument("--cache", type=Path, required=True)
     ap.add_argument("--out", type=Path, required=True)
+    ap.add_argument("--reuse", type=Path, nargs="*", default=[], help="facts.json of earlier runs: their names are reused")
     a = ap.parse_args(argv)
+    earlier = [json.loads(p.read_text(encoding="utf-8")) for p in a.reuse if p.exists()]
     zones = json.loads((a.run / "zones.json").read_text())["scenarios"]
     cells = load_cells(str(a.run / "cells.parquet"))
     by_id = {c: i for i, c in enumerate(cells["cell"])}
@@ -154,7 +165,7 @@ def main(argv=None) -> int:
             idx = [by_id[c] for c in match["cell_ids"] if c in by_id]
             med = [cells[f"{z['target']}:median"][i] for i in idx]
             zone_hillshade(z, a.cache, a.out / "zones" / f"{zid}.png")
-            facts[zid] = {**{k: z[k] for k in z if k not in ("tiles",)}, "place": place_name(z["lat"], z["lon"]),
+            facts[zid] = {**{k: z[k] for k in z if k not in ("tiles",)}, "place": known_place(earlier, z["lat"], z["lon"]) or place_name(z["lat"], z["lon"]),
                           "cell_medians": [round(float(m), 4) for m in med if m is not None],
                           "mc_top_decile_share": match.get("mc_top_decile_share")}
             print(zid, facts[zid]["place"][:80], flush=True)

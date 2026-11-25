@@ -288,3 +288,18 @@ describe('cells in a view (the 5,000-cell cap of the discovery service)', () => 
     expect(cellsInView([0, 0, 8, 6])).toBeGreaterThan(CELL_CAP)          // a wide screen at zoom 8 can exceed the cap
   })
 })
+
+describe('geology source of each body', () => {
+  it('names crosswalk E17 on the Moon and E20 for the Martian volcanic plains, in both languages', async () => {
+    const { v3Texts } = await import('./text')
+    expect(v3Texts('en', 'moon').geoSource).toMatch(/E17/)
+    for (const lang of ['en', 'fr'] as const) {
+      const mars = v3Texts(lang, 'mars')
+      expect(mars.geoSource).toMatch(/E20/)
+      expect(mars.geologyMissing).not.toMatch(/R5/)                  // the map is in: geology waits for nothing
+      const rows = zoneDimensions({ median: 0.5, p25: 0.4, p75: 0.6 }, 9, mars,
+        { group: 'mars-volcanic', source: '', match: 0.5, partial: 0.2, no_match: 0.1, unresolved: 0.2, no_map: 0 })
+      expect(rows[1].source).toMatch(/E20/)
+    }
+  })
+})

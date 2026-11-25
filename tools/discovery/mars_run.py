@@ -93,7 +93,7 @@ def configure_release(r) -> None:
     r.SCENARIO_FILES = {"D": "D-mars.yaml"}
     r.PROFILE_DIR, r.PROFILE_GLOB = "data/profiles/mars", "mars-*.json"
     r.EARTH_SOURCES = ["copernicus-dem-glo90", "esa-worldcover", "add-rock-outcrop-v7-3", "natural-earth-admin0-110m"]
-    r.INPUT_SOURCES = {"mola": "mgs-mola-megdr", "swim": "swim-ice-consistency"}
+    r.INPUT_SOURCES = {"mola": "mgs-mola-megdr", "swim": "swim-ice-consistency", "tanaka2014": "usgs-mars-geologic-map-2014"}
     r.NOT_COMPARABLE_TEXT = "later phase: site sets or rover-scale terrain (HiRISE), not in phase 1"
     r.SCREENING = False
     r.COVERAGE_AREA = "cells"

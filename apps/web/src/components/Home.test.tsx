@@ -49,11 +49,13 @@ describe('Home of Mars (T45c)', () => {
       ['Ice-rich mid-latitudes', 'North polar terrain', 'South polar terrain', 'Volcanic plains'])
   })
 
-  it('opens the Mars mission on the terrain picked; the volcanic plains wait for their data', () => {
+  it('opens the Mars mission on the terrain picked, the volcanic plains included (protocol mars-v3)', () => {
     const onPickMars = vi.fn()
     render(<Home body="mars" figures={null} onBody={vi.fn()} onPick={vi.fn()} onPickMars={onPickMars} />)
     fireEvent.click(cards()[1])
     expect(onPickMars).toHaveBeenCalledWith('mars-north-polar')
-    expect((cards()[3] as HTMLButtonElement).disabled).toBe(true)
+    expect((cards()[3] as HTMLButtonElement).disabled).toBe(false)
+    fireEvent.click(cards()[3])
+    expect(onPickMars).toHaveBeenCalledWith('mars-volcanic-plains')
   })
 })

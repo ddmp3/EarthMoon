@@ -32,7 +32,8 @@ Specs: `data/profiles/spec/*.yaml`. Check: `python tools/profiles/profiles.py`. 
 | `mars-north-polar`, `mars-south-polar` | ready | MOLA polar grid poleward of phi (75, 80 or 85°) | Labelled "polar terrain": a latitude rule mixes deposits, ice and plains |
 | `mars-aqueous-mineral-sites` | ready, site set | OMEGA detection sites and CRISM footprints passing the T48 rule | Detections, not abundances; targeted |
 | `mars-hirise-terrain` | ready | Every window of the 1,377 public HiRISE DTMs | Targeted sites, not a random sample of Mars |
-| `mars-volcanic-plains`, `mars-sedimentary-basins` | conditional | Units of the Tanaka 2014 map | Map verified in T14; switch to ready in T48 |
+| `mars-volcanic-plains` | ready | Volcanic units of the Tanaka 2014 map | Map downloaded by David 24/11/2026; computed in T48c (4,983 windows) |
+| `mars-sedimentary-basins` | conditional | Units of the Tanaka 2014 map | Map available since T48c; unit rule not decided |
 | `mars-caves` | conditional, site set | Cave candidate catalogue | Blocked: catalogue not verified |
 
 ## Rejected

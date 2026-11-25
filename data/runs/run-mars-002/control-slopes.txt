@@ -1,0 +1,62 @@
+mars volcanic slope p25/p50/p75 [0.34, 0.598, 1.189]
+['mars-volcanic-plains:windows', 'mars-volcanic-plains:valid', 'mars-volcanic-plains:median', 'mars-volcanic-plains:share_above_half', 'mars-volcanic-plains:p25', 'mars-volcanic-plains:p75', 'mars-volcanic-plains:screened_out']
+[
+ {
+  "control": "Big Craters",
+  "windows_within_12km": 3,
+  "earth_slope": [
+   3.69,
+   0.67,
+   0.95
+  ],
+  "earth_slope_percentile_in_mars_profile": [
+   93.2,
+   54.6,
+   67.8
+  ]
+ },
+ {
+  "control": "Mauna Ulu",
+  "windows_within_12km": 3,
+  "earth_slope": [
+   2.59,
+   4.46,
+   4.88
+  ],
+  "earth_slope_percentile_in_mars_profile": [
+   89.5,
+   94.6,
+   95.3
+  ]
+ },
+ {
+  "control": "Kilauea Iki",
+  "windows_within_12km": 3,
+  "earth_slope": [
+   4.02,
+   2.59,
+   4.46
+  ],
+  "earth_slope_percentile_in_mars_profile": [
+   93.9,
+   89.5,
+   94.6
+  ]
+ },
+ {
+  "control": "Kilauea caldera",
+  "windows_within_12km": 4,
+  "earth_slope": [
+   4.02,
+   2.59,
+   2.88,
+   4.46
+  ],
+  "earth_slope_percentile_in_mars_profile": [
+   93.9,
+   89.5,
+   90.4,
+   94.6
+  ]
+ }
+]
