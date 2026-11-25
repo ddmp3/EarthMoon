@@ -9,7 +9,7 @@
   - Rules: [criteria.yaml](../../../data/validation/known-analogs/criteria.yaml).
   - Sites: [catalogue.yaml](../../../data/validation/known-analogs/catalogue.yaml).
 - **Results:** [results.json](../../../data/runs/known-analogs/results.json), with every point, its map units and its values.
-- **No new global computation:** only cached data and existing run files.
+- **No new global computation:** only cached data and existing run files. The map units in `results.json` are Macrostrat data (CC BY 4.0, Peters et al., macrostrat.org).
 
 ## 1. What makes a site an analog, according to the literature
 | Source | Criteria, in their words |
